@@ -5,31 +5,17 @@ import { Input } from "@/components/ui/input";
 import { useMenuSidebar } from "@/stores/useMenuSidebar";
 import { mdiLoading } from "@mdi/js";
 import { Icon } from "@mdi/react";
-import { IconChevronsLeft, IconChevronsRight } from "@tabler/icons-react";
-import { Link } from "react-router-dom";
 import type React from "react";
 import { useRef, useState, useEffect } from "react";
-import {
-	DropdownMenu,
-	DropdownMenuTrigger,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
-import { User, LogOut } from "lucide-react";
 import { useUser } from "@/context/useUserContext";
-import { useProfile } from "@/hooks/useAuth";
+import { HamburgerMenu } from "iconsax-reactjs";
 
 export default function CommonHeader() {
 	const { toggle } = useMenuSidebar();
-	const { isOpen } = useMenuSidebar();
 	const [searchTerm, setSearchTerm] = useState("");
 	const inputRef = useRef<HTMLInputElement>(null);
-	const { data: userProfile } = useProfile();
 	const isLoading = false;
 	const { logoutUser } = useUser();
-	
-	const username = userProfile?.data?.name || "User";
 
 	const handleSearchSubmit = () => {
 	};
@@ -43,35 +29,20 @@ export default function CommonHeader() {
       p-4 px-4 bg-mainDarkBackgroundV1 border-b border-b-darkBorderV1 flex justify-between items-center h-[78px]"
 			>
 				<div className="flex items-center w-[244px] justify-between">
-					<Link to="/" className="block" suppressHydrationWarning>
-						<span className="block">
-							<img 
-							height={500}
-							width={500}
-							draggable={false}
-							src="/images/vgu-logo2.webp" alt="vgu-logo" className="w-auto h-24 object-contain" />
-						</span>
-					</Link>
-					<Button
-						variant="ghost"
-						size="icon"
+					<button
 						onClick={toggle}
-						className="bg-[#29323A] hover:bg-[#29323A]/80 !text-white/70 !h-8 !w-8"
+						className="bg-[#29323A] flex items-center justify-center hover:bg-[#29323A]/80 !text-white/70 !p-0 !h-10 !w-10 rounded-full"
 					>
-						{isOpen ? (
-							<IconChevronsLeft size={24} className="text-mainActiveV1 !h-5 !w-5" />
-						) : (
-							<IconChevronsRight size={24} className="text-mainActiveV1 !h-5 !w-5" />
-						)}
-					</Button>
+						<HamburgerMenu size="20" color="#fff"/>
+					</button>
 				</div>
 				<div className="relative hidden md:block">
 					<form onSubmit={handleSearchSubmit} className="relative flex items-center gap-4">
-						<div className="relative w-[440px] flex justify-between items-center border border-mainTextV1 rounded-sm bg-transparent">
+						<div className="relative w-[440px] flex justify-between items-center rounded-sm bg-[#29323A]">
 							<Input
 								ref={inputRef}
 								placeholder="Search..."
-								className="w-[90%] text-maintext pr-10 border-none focus:!outline-none focus:!ring-0 focus:!border-none !bg-transparent text-gray-800"
+								className="w-[90%] pr-10 border-none focus:!outline-none focus:!ring-0 focus:!border-none !bg-transparent !text-white/80 placeholder:text-white/80"
 								value={searchTerm}
 								onChange={handleSearchChange}
 								disabled={isLoading}
@@ -88,32 +59,7 @@ export default function CommonHeader() {
 						<button type="submit" style={{ display: "none" }} aria-hidden="true"></button>
 					</form>
 				</div>
-				<div className="flex items-center gap-2">
-					<DropdownMenu modal={false}>
-						<DropdownMenuTrigger asChild>
-							<div className="h-11 w-11 flex-shrink-0 border border-slate-300 rounded-full overflow-hidden cursor-pointer bg-slate-100">
-								<img 
-								draggable={false}
-								src={`/images/${userProfile?.data?.gender ? userProfile?.data?.gender : "male"}-${userProfile?.data?.role ? userProfile?.data?.role : "student"}.webp` || "/images/student.webp"} alt={"default-avatar"} className="object-cover h-full w-full" width={100} height={100}/>
-							</div>
-						</DropdownMenuTrigger>
-						<DropdownMenuContent align="end" className="w-56 mt-4">
-							<div className="px-3 py-2 text-[13px] text-gray-800 font-semibold select-none">
-								Hello, {username}
-							</div>
-							<DropdownMenuSeparator />
-							<DropdownMenuItem className="gap-2 text-gray-800 font-semibold">
-								<User className="w-4 h-4" />
-								Account
-							</DropdownMenuItem>
-							<DropdownMenuItem className="gap-2 text-red-500 font-semibold" onClick={logoutUser}>
-								<LogOut className="w-4 h-4" />	
-								Logout
-							</DropdownMenuItem>
-						</DropdownMenuContent>
-					</DropdownMenu>
-
-				</div>
+				<Button onClick={logoutUser}>Logout</Button>
 			</div>
 		</>
 	);

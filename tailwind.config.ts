@@ -50,7 +50,7 @@ const config: Config = {
 				mainTextV1: "#4A5F73",
 				secondaryTextV1: "#687D92",
 				mainTextHoverV1: "#41C651",
-				mainDarkBackgroundV1: "#1C252E",
+				mainDarkBackgroundV1: "#001314",
 				mainSuccessV1: "#41C651",
 				mainSuccessHoverV1: "#2D8B38",
 				mainWarningV1: "#F0934E",
