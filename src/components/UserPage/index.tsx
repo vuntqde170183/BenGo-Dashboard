@@ -1,8 +1,5 @@
-
-
 import { useEffect, useState } from "react";
-import { useGetAllUsers, useDeleteUser } from "@/hooks/useUser";
-import { useGetAllDepartments } from "@/hooks/useDepartment";
+import { useAdminUsers, useDeleteUser } from "@/hooks/useAdmin";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -27,7 +24,6 @@ import { DeleteDialog } from "@/components/ui/delete-dialog";
 export default function UserPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [roleFilter, setRoleFilter] = useState<string>("all");
-  const [departmentFilter, setDepartmentFilter] = useState<string>("all");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
@@ -35,34 +31,19 @@ export default function UserPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(10);
 
-  const { data: departmentsData } = useGetAllDepartments(1, 1000);
-
   const roleParam = roleFilter && roleFilter !== "all" ? roleFilter : undefined;
-  const departmentParam = departmentFilter && departmentFilter !== "all" ? departmentFilter : undefined;
   
-  const { data: usersData, isLoading, refetch } = useGetAllUsers(currentPage, pageSize, roleParam, departmentParam);
-  const { mutateAsync: deleteUserMutation, isPending: isDeleting } = useDeleteUser();
-
-  const filteredUsers = usersData?.data ? usersData.data.filter(user => {
-    if (searchQuery.trim()) {
-      return (
-        user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        user.role.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (user.fullName && user.fullName.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        (user.studentId && user.studentId.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        (user.phoneNumber && user.phoneNumber.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        (user.department && user.department.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        (user.department && user.department.code.toLowerCase().includes(searchQuery.toLowerCase()))
-      );
-    }
-    
-    return true;
-  }) : [];
+  const { data: usersData, isLoading, refetch } = useAdminUsers({
+    search: searchQuery,
+    role: roleParam,
+    page: currentPage,
+    limit: pageSize
+  });
+  const { mutate: deleteUserMutation, isPending: isDeleting } = useDeleteUser();
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchQuery, roleFilter, departmentFilter]);
+  }, [searchQuery, roleFilter]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -74,10 +55,6 @@ export default function UserPage() {
 
   const handleRoleFilterChange = (value: string) => {
     setRoleFilter(value);
-  };
-
-  const handleDepartmentFilterChange = (value: string) => {
-    setDepartmentFilter(value);
   };
 
   const handleEdit = (id: string) => {
@@ -96,8 +73,8 @@ export default function UserPage() {
     }
 
     try {
-      const response = await deleteUserMutation(selectedUserId);
-      return response;
+      deleteUserMutation(selectedUserId);
+      return Promise.resolve();
     } catch (error) {
       throw error;
     }
@@ -107,8 +84,7 @@ export default function UserPage() {
     setCurrentPage(page);
   };
 
-  const hasSearchFilter = searchQuery.trim();
-  const displayUsers = hasSearchFilter ? filteredUsers : (usersData?.data || []);
+  const displayUsers = usersData?.data || [];
   return (
     <div className="space-y-6 bg-white p-4 rounded-lg border border-lightBorderV1">
       <Breadcrumb>
@@ -154,22 +130,9 @@ export default function UserPage() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Roles</SelectItem>
-                  <SelectItem value="admin">Admin</SelectItem>
-                  <SelectItem value="coordinator">Coordinator</SelectItem>
-                  <SelectItem value="student">Student</SelectItem>
-                </SelectContent>
-              </Select>
-              <Select value={departmentFilter} onValueChange={handleDepartmentFilterChange}>
-                <SelectTrigger className="w-[200px] focus:border-mainTextHoverV1">
-                  <SelectValue placeholder="Filter by department" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Departments</SelectItem>
-                  {departmentsData?.data?.map((dept) => (
-                    <SelectItem key={dept._id} value={dept._id}>
-                      {dept.name}
-                    </SelectItem>
-                  ))}
+                  <SelectItem value="ADMIN">Admin</SelectItem>
+                  <SelectItem value="CUSTOMER">Customer</SelectItem>
+                  <SelectItem value="DRIVER">Driver</SelectItem>
                 </SelectContent>
               </Select>
               <Button
@@ -200,7 +163,7 @@ export default function UserPage() {
             ) : (
               <UserTable
                 users={displayUsers}
-                isSearching={!!searchQuery}
+                isSearching={false}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
                 currentPage={currentPage}
@@ -208,21 +171,12 @@ export default function UserPage() {
               />
             )}
           </Card>
-          {!hasSearchFilter && usersData?.totalPages && usersData.totalPages > 1 && (
+          {usersData?.meta?.total && usersData.meta.total > pageSize && (
             <Pagination
               page={currentPage}
               pageSize={pageSize}
-              total={usersData.total || 0}
-              totalPages={usersData.totalPages}
-              onPageChange={handlePageChange}
-            />
-          )}
-          {hasSearchFilter && filteredUsers.length > pageSize && (
-            <Pagination
-              page={currentPage}
-              pageSize={pageSize}
-              total={filteredUsers.length}
-              totalPages={Math.ceil(filteredUsers.length / pageSize)}
+              total={usersData.meta.total}
+              totalPages={Math.ceil(usersData.meta.total / pageSize)}
               onPageChange={handlePageChange}
             />
           )}

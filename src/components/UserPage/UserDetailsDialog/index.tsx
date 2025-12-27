@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { useGetUserById, useUpdateUser } from "@/hooks/useUser";
-import { IUpdateUserBody } from "@/interface/request/user";
+import { useGetUserById, useUpdateUser } from "@/hooks/useAdmin";
+import { IUpdateUserBody } from "@/interface/auth";
 import { toast } from "react-toastify";
 import { IconEdit } from "@tabler/icons-react";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -119,7 +119,7 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
     updateUserMutation(
       { id: userId, data: updateData },
       {
-        onSuccess: (response) => {
+        onSuccess: (_response: any) => {
           toast.success("Update user successfully!");
           setIsEditing(false);
           onSuccess?.();

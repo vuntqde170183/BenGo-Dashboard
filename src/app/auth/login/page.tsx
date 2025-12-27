@@ -1,240 +1,119 @@
+"use client"
+
 import { useState } from "react"
-import { useNavigate, Link } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { useLogin } from "@/hooks/useAuth"
-import { useUser } from "@/context/useUserContext"
-import { toast } from "react-toastify"
-import { Eye, EyeOff } from "lucide-react"
+import { Eye, EyeSlash, Lock1 } from 'iconsax-reactjs';
 
 export default function LoginPage() {
-  const navigate = useNavigate()
-  const { mutateAsync: loginUser, isPending } = useLogin()
-  const { loginUser: setUserContext, fetchUserProfile } = useUser()
-
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  })
-
-  const [errors, setErrors] = useState<{
-    email?: string
-    password?: string
-    general?: string
-  }>({})
-
   const [showPassword, setShowPassword] = useState(false)
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }))
-    if (errors[name as keyof typeof errors]) {
-      setErrors(prev => ({
-        ...prev,
-        [name]: undefined
-      }))
-    }
-  }
-
-  const validateForm = () => {
-    const newErrors: typeof errors = {}
-    if (!formData.email) {
-      newErrors.email = "Email is required"
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Invalid email format"
-    }
-    if (!formData.password) {
-      newErrors.password = "Password is required"
-    } else if (formData.password && formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters"
-    }
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
-
-  const handleLogin = async () => {
-    if (!validateForm()) return
-
-    try {
-      const loginResponse = await loginUser({
-        email: formData.email,
-        password: formData.password
-      })
-
-      if (loginResponse?.status === true && loginResponse?.data?.token) {
-        if (typeof window !== "undefined") {
-          const token = loginResponse.data.token
-          const role = loginResponse.data.role
-          const userProfile = JSON.stringify(loginResponse)
-
-          localStorage.setItem("token", token)
-          localStorage.setItem("accessToken", token)
-          localStorage.setItem("userProfile", userProfile)
-
-          setUserContext(loginResponse.data, token)
-          await fetchUserProfile()
-
-          const responseData = loginResponse.data as any
-          let redirectPath = `/${role}`
-
-          if (role === "coordinator" && responseData.department) {
-            const departmentName =
-              typeof responseData.department === "string"
-                ? responseData.department
-                : responseData.department?.name || responseData.department?.code || "unknown"
-            redirectPath = `/coordinator/${departmentName}`
-          }
-
-            navigate(redirectPath)
-        }
-        toast.success("Login successful!")
-      } else {
-        toast.error("Login failed: No token received")
-      }
-    } catch (error: any) {
-      const errorMessage = error?.response?.data?.message || error?.message || "Login failed"
-      toast.error(errorMessage)
-    }
-  }
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    await handleLogin()
-  }
+  const [email, setEmail] = useState("roseannepark@gmail.com")
+  const [password, setPassword] = useState("password123")
 
   return (
-    <div
-      style={{
-        backgroundImage: "url('/images/vgu-bg.png')",
-        backgroundSize: "100% 100%",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-      }}
-      className="h-screen w-screen flex justify-center items-center"
-    >
-      <div className="w-[450px] mx-auto bg-white/30 backdrop-blur-lg shadow-lg border-0 overflow-hidden rounded-xl">
-        <div className="flex flex-col items-center gap-4 py-4 bg-white/30 backdrop-blur-lg shadow-lg border-0 rounded-none">
-          <img
-            height={300}
-            width={300}
-            draggable={false}
-            src="/images/vgu-logo.webp"
-            alt="vgu-logo"
-            className="w-auto h-20"
-          />
-        </div>
-        <div className="bg-white/20 w-full backdrop-blur-lg shadow-lg border-0 rounded-none overflow-hidden">
-          <div className="bg-transparent shadow-none p-4 rounded-none border-none pb-10">
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="text-center mb-6">
-                <h1 className="text-xl font-semibold text-gray-800 mb-2">Login to your account</h1>
+    <div className="min-h-screen flex items-center overflow-y-hidden justify-center bg-[#001110] p-4 relative overflow-hidden w-full">
+      {/* Background decorative shapes */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500 rounded-full blur-3xl opacity-60" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-teal-600 rounded-full blur-3xl opacity-40" />
+
+      <div className="w-full max-w-5xl bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl overflow-hidden relative z-10">
+        <div className="grid lg:grid-cols-2">
+          {/* Left Panel - Welcome Section */}
+          <div 
+          style={{
+            backgroundImage: "url('/images/login-bg.jpg')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+          className="p-8 relative overflow-hidden">
+            <div className="absolute top-20 right-0 w-64 h-64 bg-teal-400 rounded-full opacity-40 blur-2xl" />
+          </div>
+
+          {/* Right Form */}
+          <div className="p-8 flex flex-col justify-center bg-gradient-to-br from-white to-gray-50">
+            <div className="max-w-md mx-auto w-full space-y-8">
+              {/* Header */}
+              <div className="text-center space-y-3">
+                <h2 className="text-3xl font-bold bg-gradient-to-r from-teal-600 to-emerald-600 bg-clip-text text-transparent uppercase">
+                  Admin Portal
+                </h2>
+                <p className="text-gray-500 text-sm">
+                  Sign in to access the BenGo admin dashboard
+                </p>
               </div>
 
-              {errors.general && (
-                <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-sm text-sm">
-                  {errors.general}
-                </div>
-              )}
-
-              <div className="space-y-4">
-                <div>
-                  <Label htmlFor="email" className="text-sm font-semibold text-gray-800 mb-2 block">
-                    Email
+              {/* Form */}
+              <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+                <div className="space-y-2">
+                  <Label htmlFor="email" className="text-xs text-gray-500 uppercase tracking-wide">
+                    Admin Email
                   </Label>
                   <Input
                     id="email"
-                    name="email"
                     type="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    className="h-10 border-gray-200 transition-all duration-200 bg-white/50 focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
-                    placeholder="Enter your email"
-                    disabled={isPending}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="border-0 border-b-2 border-gray-200 rounded-none px-0 focus-visible:ring-0 focus-visible:border-[#41C651]"
                   />
-                  {errors.email && (
-                    <p className="text-red-500 text-xs mt-1">{errors.email}</p>
-                  )}
                 </div>
 
-                <div>
-                  <Label htmlFor="password" className="text-sm font-semibold text-gray-800 mb-2 block">
+                <div className="space-y-2">
+                  <Label htmlFor="password" className="text-xs text-gray-500 uppercase tracking-wide">
                     Password
                   </Label>
                   <div className="relative">
                     <Input
                       id="password"
-                      name="password"
                       type={showPassword ? "text" : "password"}
-                      value={formData.password}
-                      onChange={handleInputChange}
-                      className="h-10 border-gray-200 transition-all duration-200 bg-white/50 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 pr-12"
-                      placeholder="Enter your password"
-                      disabled={isPending}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="border-0 border-b-2 border-gray-200 rounded-none px-0 pr-10 focus-visible:ring-0 focus-visible:border-primary"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-800 transition-colors"
-                      disabled={isPending}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
                     >
-                      {showPassword ? (
-                        <EyeOff className="h-5 w-5" />
-                      ) : (
-                        <Eye className="h-5 w-5" />
-                      )}
+                      {showPassword ? <EyeSlash size="20" color="currentColor" /> : <Eye size="20" color="currentColor" />}
                     </button>
                   </div>
-                  {errors.password && (
-                    <p className="text-red-500 text-xs mt-1">{errors.password}</p>
-                  )}
                 </div>
-              </div>
 
-              <Button
-                type="submit"
-                disabled={isPending}
-                className="w-full h-10 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold shadow-orange-500/25 hover:shadow-sm hover:shadow-orange-500/30 transition-all duration-200 transform hover:-translate-y-0.5 rounded-sm disabled:opacity-70 disabled:cursor-not-allowed"
-              >
-                {isPending ? (
-                  <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                    Logging in...
+                {/* Remember Me & Forgot Password */}
+                <div className="flex items-center justify-between">
+                  <label className="flex items-center gap-2 cursor-pointer group">
+                    <input 
+                      type="checkbox" 
+                      className="w-4 h-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500 cursor-pointer"
+                    />
+                    <span className="text-sm text-gray-600 group-hover:text-gray-900 transition-colors">Remember me</span>
+                  </label>
+                  <a href="#" className="text-sm font-medium text-secondary transition-colors">
+                    Forgot password?
+                  </a>
+                </div>
+
+                {/* Login Button */}
+                <Button
+                  type="submit"
+                  className="w-full"
+                >
+                  Sign In to Dashboard
+                </Button>
+
+                {/* Security Notice */}
+                <div className="text-center pt-4 border-t border-gray-200">
+                  <div className="text-xs flex items-center gap-2">
+                    <Lock1 size="16" color="#7F8788"/>
+                    <span>Secure admin access only · Contact support if you need assistance</span> 
                   </div>
-                ) : (
-                  "Login"
-                )}
-              </Button>
-
-              <div className="flex justify-between items-center">
-                <Link
-                  to="/auth/forgot-password"
-                  className="text-sm text-blue-600 hover:text-blue-700 font-semibold transition-colors"
-                >
-                  Forgot password?
-                </Link>
-                <Link
-                  to="/auth/register"
-                  className="text-sm text-blue-600 hover:text-blue-700 font-semibold transition-colors"
-                >
-                  Sign up
-                </Link>
-              </div>
-            </form>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       </div>
     </div>
   )
 }
-
-
-
-
-
-
-
-

@@ -1,12 +1,11 @@
 
-
 import { useState } from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { IUser } from "@/interface/response/user";
+import { IUser } from "@/interface/auth";
 import { motion } from "framer-motion";
-import { IconEdit, IconTrash, IconMail, IconUserCircle, IconShield, IconUser, IconId, IconBuildingBank, IconMenu3 } from "@tabler/icons-react";
+import { IconTrash, IconMenu3 } from "@tabler/icons-react";
 import { Activity } from "lucide-react";
 import { getRoleBadge } from "@/lib/badge-helpers";
 interface UserTableProps {
@@ -109,7 +108,7 @@ export const UserTable = ({ users, isSearching, onEdit, onDelete, currentPage = 
                   {getRoleBadge(user.role)}
                 </TableCell>
                 <TableCell>
-                  {getStatusBadge(user.active)}
+                  {getStatusBadge(user.active ?? false)}
                 </TableCell>
                 <TableCell className="text-right">
                   <div className="flex justify-end space-x-2">

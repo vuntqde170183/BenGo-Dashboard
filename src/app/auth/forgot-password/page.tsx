@@ -83,7 +83,7 @@ export default function ForgotPasswordPage() {
                   type="email"
                   value={email}
                   onChange={handleEmailChange}
-                  className="h-10 border-gray-200 transition-all duration-200 bg-white/50 focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  className="h-10 border-gray-200 transition-all duration-200 bg-white/50 focus:ring-2 focus:ring-green-500 focus:border-green-500"
                   placeholder="Enter your email"
                   disabled={isSendingReset}
                 />
@@ -95,7 +95,7 @@ export default function ForgotPasswordPage() {
               <Button
                 type="submit"
                 disabled={isSendingReset || !email}
-                className="w-full h-10 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold shadow-orange-500/25 hover:shadow-sm hover:shadow-orange-500/30 transition-all duration-200 transform hover:-translate-y-0.5 rounded-sm disabled:opacity-70 disabled:cursor-not-allowed"
+                className="w-full h-10 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold shadow-green-500/25 hover:shadow-sm hover:shadow-green-500/30 transition-all duration-200 transform hover:-translate-y-0.5 rounded-sm disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {isSendingReset ? (
                   <div className="flex items-center gap-2">

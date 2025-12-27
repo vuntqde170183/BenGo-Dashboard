@@ -131,7 +131,7 @@ export default function EventStats() {
           </div>
           <div>
             <span className="text-gray-800">Upcoming percentage: </span>
-            <span className="font-semibold text-orange-600">{mockEventData.upcomingPercentage}%</span>
+            <span className="font-semibold text-green-600">{mockEventData.upcomingPercentage}%</span>
           </div>
         </div>
       </div>

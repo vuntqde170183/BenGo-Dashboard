@@ -1,18 +1,16 @@
 
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { useCreateUser } from "@/hooks/useUser";
-import { useGetAllDepartments } from "@/hooks/useDepartment";
+import { useCreateUser } from "@/hooks/useAdmin";
 import { useUploadFile } from "@/hooks/useUpload";
-import { ICreateUserBody } from "@/interface/request/user";
-import { IUploadResponse } from "@/interface/response/upload";
+import { ICreateUserBody, IUploadResponse } from "@/interface/auth";
 import { toast } from "react-toastify";
-import { IconLoader2, IconUser, IconX, IconUpload, IconPlus } from "@tabler/icons-react";
+import { IconLoader2, IconX, IconUpload, IconPlus } from "@tabler/icons-react";
 import { motion } from 'framer-motion';
 import {
   Dialog,
@@ -45,9 +43,6 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
 
   const { mutate: createUserMutation, isPending } = useCreateUser();
   const { mutate: uploadFileMutation } = useUploadFile();
-  const { data: departmentsData, isLoading: isLoadingDepartments } = useGetAllDepartments();
-
-  const departments = departmentsData?.data || [];
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -87,7 +82,10 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
 
     setIsUploadingAvatar(true);
 
-    uploadFileMutation({ file }, {
+    const formDataToUpload = new FormData();
+    formDataToUpload.append('file', file);
+
+    uploadFileMutation(formDataToUpload, {
       onSuccess: (response: IUploadResponse) => {
         if (response?.status) {
           const imageUrl = response?.data?.url;
@@ -151,7 +149,7 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
     };
 
     createUserMutation(submitData, {
-      onSuccess: (response) => {
+      onSuccess: (_response: any) => {
         toast.success("Create user successfully!");
         handleClose();
         onSuccess?.();
@@ -197,7 +195,7 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
               <div className="flex items-center justify-between">
                 <Label className="text-gray-800">Avatar</Label>
                 {isUploadingAvatar && (
-                  <div className="flex items-center gap-2 text-sm text-orange-600">
+                  <div className="flex items-center gap-2 text-sm text-green-600">
                     <IconLoader2 className="h-4 w-4 animate-spin" />
                     <span>Uploading avatar...</span>
                   </div>
@@ -214,12 +212,12 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
                     disabled={isUploadingAvatar}
                   />
                   <Label htmlFor="avatar-upload" className={`cursor-pointer ${isUploadingAvatar ? 'opacity-50 cursor-not-allowed' : ''}`}>
-                    <div className="flex items-center justify-center gap-2 px-4 py-4 border-2 border-dashed border-lightBorderV1 rounded-lg hover:border-mainTextHoverV1 hover:bg-orange-50/50 transition-all duration-200 group">
-                      <div className="flex items-center justify-center w-12 h-12 flex-shrink-0 rounded-full bg-orange-100 group-hover:bg-orange-200 transition-colors duration-200">
+                    <div className="flex items-center justify-center gap-2 px-4 py-4 border-2 border-dashed border-lightBorderV1 rounded-lg hover:border-mainTextHoverV1 hover:bg-green-50/50 transition-all duration-200 group">
+                      <div className="flex items-center justify-center w-12 h-12 flex-shrink-0 rounded-full bg-green-100 group-hover:bg-green-200 transition-colors duration-200">
                         {isUploadingAvatar ? (
-                          <IconLoader2 className="h-5 w-5 text-orange-600 animate-spin" />
+                          <IconLoader2 className="h-5 w-5 text-green-600 animate-spin" />
                         ) : (
-                          <IconUpload className="h-5 w-5 text-orange-600" />
+                          <IconUpload className="h-5 w-5 text-green-600" />
                         )}
                       </div>
                       <div className="text-center">
@@ -394,31 +392,6 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
                   {errors.phoneNumber && (
                     <p className="text-red-500 text-sm">{errors.phoneNumber}</p>
                   )}
-                </div>
-              )}
-
-              {(formData.role === "student" || formData.role === "coordinator") && (
-                <div className="space-y-2">
-                  <Label htmlFor="department" className="text-gray-800">
-                    Department
-                  </Label>
-                  <Select
-                    value={formData.department}
-                    onValueChange={(value) => handleSelectChange('department', value)}
-                    disabled={isLoadingDepartments}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder={isLoadingDepartments ? "Đang tải..." : "Chọn khoa"} />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="none">No department</SelectItem>
-                      {departments.map((department) => (
-                        <SelectItem key={department._id} value={department._id}>
-                          {department.name} ({department.code})
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
                 </div>
               )}
             </div>

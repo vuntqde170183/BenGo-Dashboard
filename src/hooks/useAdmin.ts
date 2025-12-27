@@ -46,6 +46,32 @@ export const useDeleteUser = () => {
   });
 };
 
+export const useCreateUser = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: any) => adminUserApi.createUser(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "users"] });
+      toast.success("User created successfully");
+    },
+  });
+};
+
+export const useUpdateUser = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string; data: any }) => adminUserApi.updateUser(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "users"] });
+      toast.success("User updated successfully");
+    },
+  });
+};
+
+// Alias for consistency with other components
+export const useGetUserById = useUserDetails;
+
+
 // Driver Management
 export const useAdminDrivers = (params: any) => {
   return useQuery({

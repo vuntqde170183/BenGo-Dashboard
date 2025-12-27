@@ -213,7 +213,7 @@ export default function RegisterPage() {
                     type="text"
                     value={formData.name}
                     onChange={handleInputChange}
-                    className="h-10 border-gray-200 transition-all duration-200 bg-white/50 focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                    className="h-10 border-gray-200 transition-all duration-200 bg-white/50 focus:ring-2 focus:ring-green-500 focus:border-green-500"
                     placeholder="Enter your full name"
                     disabled={isPending || isSendingCode}
                   />
@@ -232,7 +232,7 @@ export default function RegisterPage() {
                     type="email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    className="h-10 border-gray-200 transition-all duration-200 bg-white/50 focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                    className="h-10 border-gray-200 transition-all duration-200 bg-white/50 focus:ring-2 focus:ring-green-500 focus:border-green-500"
                     placeholder="Enter your email"
                     disabled={isPending || isSendingCode}
                   />
@@ -253,7 +253,7 @@ export default function RegisterPage() {
                         type={showPassword ? "text" : "password"}
                         value={formData.password}
                         onChange={handleInputChange}
-                        className="h-10 border-gray-200 transition-all duration-200 bg-white/50 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 pr-12"
+                        className="h-10 border-gray-200 transition-all duration-200 bg-white/50 focus:ring-2 focus:ring-green-500 focus:border-green-500 pr-12"
                         placeholder="Enter your password"
                         disabled={isPending}
                       />
@@ -287,7 +287,7 @@ export default function RegisterPage() {
                       type="text"
                       value={formData.verificationCode}
                       onChange={handleInputChange}
-                      className="h-10 border-gray-200 transition-all duration-200 bg-white/50 focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                      className="h-10 border-gray-200 transition-all duration-200 bg-white/50 focus:ring-2 focus:ring-green-500 focus:border-green-500"
                       placeholder="Enter verification code"
                       disabled={isPending || isVerifyingCode}
                       maxLength={6}
@@ -303,7 +303,7 @@ export default function RegisterPage() {
                 <Button
                   type="submit"
                   disabled={isPending || isSendingCode}
-                  className="w-full h-10 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold shadow-orange-500/25 hover:shadow-sm hover:shadow-orange-500/30 transition-all duration-200 transform hover:-translate-y-0.5 rounded-sm disabled:opacity-70 disabled:cursor-not-allowed"
+                  className="w-full h-10 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold shadow-green-500/25 hover:shadow-sm hover:shadow-green-500/30 transition-all duration-200 transform hover:-translate-y-0.5 rounded-sm disabled:opacity-70 disabled:cursor-not-allowed"
                 >
                   {isSendingCode ? (
                     <div className="flex items-center gap-2">
@@ -335,7 +335,7 @@ export default function RegisterPage() {
                     type="button"
                     onClick={handleConfirm}
                     disabled={isPending || isVerifyingCode || !formData.verificationCode}
-                    className="flex-1 h-10 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold shadow-orange-500/25 hover:shadow-sm hover:shadow-orange-500/30 transition-all duration-200 transform hover:-translate-y-0.5 rounded-sm disabled:opacity-70 disabled:cursor-not-allowed"
+                    className="flex-1 h-10 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold shadow-green-500/25 hover:shadow-sm hover:shadow-green-500/30 transition-all duration-200 transform hover:-translate-y-0.5 rounded-sm disabled:opacity-70 disabled:cursor-not-allowed"
                   >
                     {isVerifyingCode ? (
                       <div className="flex items-center gap-2">

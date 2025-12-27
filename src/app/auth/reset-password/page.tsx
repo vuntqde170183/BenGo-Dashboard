@@ -147,7 +147,7 @@ function ResetPasswordContent() {
                         type="text"
                         value={passwordResetData.resetCode}
                         onChange={handlePasswordResetInputChange}
-                        className="h-10 border-gray-200 transition-all duration-200 bg-white/50 focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                        className="h-10 border-gray-200 transition-all duration-200 bg-white/50 focus:ring-2 focus:ring-green-500 focus:border-green-500"
                         placeholder="Enter reset code"
                                disabled={isVerifyingCode || isResetting}
                         maxLength={6}
@@ -167,7 +167,7 @@ function ResetPasswordContent() {
                           type={showNewPassword ? "text" : "password"}
                           value={passwordResetData.newPassword}
                           onChange={handlePasswordResetInputChange}
-                          className="h-10 border-gray-200 transition-all duration-200 bg-white/50 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 pr-12"
+                          className="h-10 border-gray-200 transition-all duration-200 bg-white/50 focus:ring-2 focus:ring-green-500 focus:border-green-500 pr-12"
                           placeholder="Enter new password"
                           disabled={isVerifyingCode}
                         />
@@ -199,7 +199,7 @@ function ResetPasswordContent() {
                           type={showNewPassword ? "text" : "password"}
                           value={passwordResetData.confirmPassword}
                           onChange={handlePasswordResetInputChange}
-                          className="h-10 border-gray-200 transition-all duration-200 bg-white/50 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 pr-12"
+                          className="h-10 border-gray-200 transition-all duration-200 bg-white/50 focus:ring-2 focus:ring-green-500 focus:border-green-500 pr-12"
                           placeholder="Confirm new password"
                           disabled={isVerifyingCode}
                         />
@@ -236,7 +236,7 @@ function ResetPasswordContent() {
                         type="button"
                         onClick={handleResetPassword}
                                disabled={isVerifyingCode || isResetting || !passwordResetData.resetCode || !passwordResetData.newPassword || !passwordResetData.confirmPassword}
-                        className="flex-1 h-10 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold shadow-orange-500/25 hover:shadow-sm hover:shadow-orange-500/30 transition-all duration-200 transform hover:-translate-y-0.5 rounded-sm disabled:opacity-70 disabled:cursor-not-allowed"
+                        className="flex-1 h-10 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold shadow-green-500/25 hover:shadow-sm hover:shadow-green-500/30 transition-all duration-200 transform hover:-translate-y-0.5 rounded-sm disabled:opacity-70 disabled:cursor-not-allowed"
                       >
                                {isVerifyingCode || isResetting ? (
                           <div className="flex items-center gap-2">
@@ -270,7 +270,7 @@ export default function ResetPasswordPage() {
   return (
     <Suspense fallback={
       <div className="h-screen w-screen flex justify-center items-center">
-        <div className="w-4 h-4 border-2 border-orange-500/30 border-t-orange-500 rounded-full animate-spin"></div>
+        <div className="w-4 h-4 border-2 border-green-500/30 border-t-green-500 rounded-full animate-spin"></div>
       </div>
     }>
       <ResetPasswordContent />

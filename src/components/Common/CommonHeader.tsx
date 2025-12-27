@@ -16,16 +16,16 @@ import {
 	DropdownMenuItem,
 	DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { useGetUserProfile } from "@/hooks/useUser";
 import { User, LogOut } from "lucide-react";
 import { useUser } from "@/context/useUserContext";
+import { useProfile } from "@/hooks/useAuth";
 
 export default function CommonHeader() {
 	const { toggle } = useMenuSidebar();
 	const { isOpen } = useMenuSidebar();
 	const [searchTerm, setSearchTerm] = useState("");
 	const inputRef = useRef<HTMLInputElement>(null);
-	const { data: userProfile } = useGetUserProfile();
+	const { data: userProfile } = useProfile();
 	const isLoading = false;
 	const { logoutUser } = useUser();
 	
@@ -49,7 +49,6 @@ export default function CommonHeader() {
 							height={500}
 							width={500}
 							draggable={false}
-							quality={100}
 							src="/images/vgu-logo2.webp" alt="vgu-logo" className="w-auto h-24 object-contain" />
 						</span>
 					</Link>
@@ -95,7 +94,6 @@ export default function CommonHeader() {
 							<div className="h-11 w-11 flex-shrink-0 border border-slate-300 rounded-full overflow-hidden cursor-pointer bg-slate-100">
 								<img 
 								draggable={false}
-								quality={100}
 								src={`/images/${userProfile?.data?.gender ? userProfile?.data?.gender : "male"}-${userProfile?.data?.role ? userProfile?.data?.role : "student"}.webp` || "/images/student.webp"} alt={"default-avatar"} className="object-cover h-full w-full" width={100} height={100}/>
 							</div>
 						</DropdownMenuTrigger>

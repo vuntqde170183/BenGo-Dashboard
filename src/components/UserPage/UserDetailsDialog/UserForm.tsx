@@ -6,10 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { useGetAllDepartments } from "@/hooks/useDepartment";
+// import { useGetAllDepartments } from "@/hooks/useDepartment"; // TODO: Backend API doesn't exist yet
 import { useUploadFile } from "@/hooks/useUpload";
-import { IUpdateUserBody } from "@/interface/request/user";
-import { IUploadResponse } from "@/interface/response/upload";
+import { IUpdateUserBody, IUploadResponse } from "@/interface/auth";
 import { toast } from "react-toastify";
 import { IconLoader2, IconEdit, IconX, IconUpload, IconCheck } from "@tabler/icons-react";
 
@@ -33,9 +32,10 @@ export const UserForm = ({
   onCancel,
 }: UserFormProps) => {
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
-  const { data: departmentsData, isLoading: isLoadingDepartments } = useGetAllDepartments();
+  // const { data: departmentsData, isLoading: isLoadingDepartments } = useGetAllDepartments(); // TODO: Backend API doesn't exist yet
   const { mutate: uploadFileMutation } = useUploadFile();
-  const departments = departmentsData?.data || [];
+  const departments: any[] = []; // departmentsData?.data || [];
+  const isLoadingDepartments = false;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -108,7 +108,7 @@ export const UserForm = ({
         <div className="flex items-center justify-between">
           <Label className="text-gray-800">Avatar</Label>
           {isUploadingAvatar && (
-            <div className="flex items-center gap-2 text-sm text-orange-600">
+            <div className="flex items-center gap-2 text-sm text-green-600">
               <IconLoader2 className="h-4 w-4 animate-spin" />
               <span>Uploading avatar...</span>
             </div>
@@ -125,12 +125,12 @@ export const UserForm = ({
               disabled={isUploadingAvatar}
             />
             <Label htmlFor="avatar-upload" className={`cursor-pointer ${isUploadingAvatar ? 'opacity-50 cursor-not-allowed' : ''}`}>
-              <div className="flex items-center justify-center gap-2 px-4 py-4 border-2 border-dashed border-lightBorderV1 rounded-lg hover:border-mainTextHoverV1 hover:bg-orange-50/50 transition-all duration-200 group">
-                <div className="flex items-center justify-center w-12 h-12 flex-shrink-0 rounded-full bg-orange-100 group-hover:bg-orange-200 transition-colors duration-200">
+              <div className="flex items-center justify-center gap-2 px-4 py-4 border-2 border-dashed border-lightBorderV1 rounded-lg hover:border-mainTextHoverV1 hover:bg-green-50/50 transition-all duration-200 group">
+                <div className="flex items-center justify-center w-12 h-12 flex-shrink-0 rounded-full bg-green-100 group-hover:bg-green-200 transition-colors duration-200">
                   {isUploadingAvatar ? (
-                    <IconLoader2 className="h-5 w-5 text-orange-600 animate-spin" />
+                    <IconLoader2 className="h-5 w-5 text-green-600 animate-spin" />
                   ) : (
-                    <IconUpload className="h-5 w-5 text-orange-600" />
+                    <IconUpload className="h-5 w-5 text-green-600" />
                   )}
                 </div>
                 <div className="text-center">

@@ -1,8 +1,7 @@
 
-
 import { motion } from "framer-motion";
 import Image from "react";
-import { useGetUserProfile } from "@/hooks/useUser";
+import { useProfile } from "@/hooks/useAuth";
 
 interface DashboardHeaderProps {
 	title: string;
@@ -16,7 +15,7 @@ const item = {
 };
 
 export default function DashboardHeader({ title, description, username: propUsername }: DashboardHeaderProps) {
-	const { data: userProfile } = useGetUserProfile();
+	const { data: userProfile } = useProfile();
 	const username = propUsername || userProfile?.data?.name || "User";
 
 	return (
@@ -24,25 +23,23 @@ export default function DashboardHeader({ title, description, username: propUser
 			variants={item}
 			initial="hidden"
 			animate="show"
-			className="relative bg-gradient-to-r from-orange-50 to-orange-100 border border-orange-200 rounded-lg p-4 py-8 min-h-[100px] overflow-visible"
+			className="relative bg-gradient-to-r from-green-50 to-green-100 border border-green-200 rounded-lg p-4 py-8 min-h-[100px] overflow-visible"
 		>
 			{/* Background Image */}
-			<Image
+			<img
 				src="/images/circle-scatter-haikei.svg"
 				alt="Background pattern"
-				fill
 				className="absolute inset-0 object-cover opacity-20 z-0"
 			/>
 
 			{/* Robot Image */}
-			<Image
+			<img
 				src="/images/robot1.webp"
 				alt="Robot"
 				width={1000}
 				height={1000}
 				draggable={false}
 				loading="eager"
-				quality={100}
 				className="absolute bottom-0 right-0 h-[200px] w-auto object-contain z-10"
 			/>
 			
@@ -53,7 +50,7 @@ export default function DashboardHeader({ title, description, username: propUser
 						{title}
 					</h1>
 					<p className="text-gray-800">
-						Welcome, Admin <span className="font-semibold text-orange-600">{username}</span> - System Overview & Analytics
+						Welcome, Admin <span className="font-semibold text-green-600">{username}</span> - System Overview & Analytics
 					</p>
 				</div>
 			</div>

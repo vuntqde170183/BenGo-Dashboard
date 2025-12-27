@@ -22,12 +22,6 @@ export default defineConfig({
         secure: false,
         rewrite: (path: string) => path,
       },
-      "/auth": {
-        target: "https://example-be.onrender.com",
-        changeOrigin: true,
-        secure: false,
-        rewrite: (path: string) => path,
-      },
     },
   },
   build: {

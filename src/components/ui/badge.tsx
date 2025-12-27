@@ -15,7 +15,7 @@ const badgeVariants = cva(
         destructive:
           "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80 text-nowrap",
         outline: "text-foreground border h-[30px] px-3 !border-white/50 bg-transparent text-[#343A40] font-semibold !rounded-none rounded-full text-nowrap",
-        orange: "bg-orange-500 hover:bg-orange-600 text-white border-2 border-orange-100 text-nowrap flex items-center gap-1",
+        orange: "bg-green-500 hover:bg-green-600 text-white border-2 border-green-100 text-nowrap flex items-center gap-1",
         red: "bg-red-500 hover:bg-red-600 text-white border-2 border-red-100 text-nowrap flex items-center gap-1",
         amber: "bg-amber-500 hover:bg-amber-600 text-white border-2 border-amber-100 text-nowrap flex items-center gap-1",
         yellow: "bg-yellow-500 hover:bg-yellow-600 text-white border-2 border-yellow-100 text-nowrap flex items-center gap-1",
