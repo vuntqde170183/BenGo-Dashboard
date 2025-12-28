@@ -39,7 +39,7 @@ export function OrdersTable({
 }: OrdersTableProps) {
   if (orders.length === 0) {
     return (
-      <div className="text-center py-12 text-gray-500">
+      <div className="text-center py-12 text-neutral-200">
         {isSearching ? "No orders match your search" : "No orders found"}
       </div>
     );
@@ -74,14 +74,18 @@ export function OrdersTable({
             <TableCell>
               <div>
                 <p className="font-medium">{order.customerId?.name || "N/A"}</p>
-                <p className="text-sm text-gray-500">{order.customerId?.phone}</p>
+                <p className="text-sm text-neutral-200">
+                  {order.customerId?.phone}
+                </p>
               </div>
             </TableCell>
             <TableCell>
               {order.driverId ? (
                 <div>
                   <p className="font-medium">{order.driverId?.name}</p>
-                  <p className="text-sm text-gray-500">{order.driverId?.phone}</p>
+                  <p className="text-sm text-neutral-200">
+                    {order.driverId?.phone}
+                  </p>
                 </div>
               ) : (
                 <span className="text-gray-400">Unassigned</span>
@@ -110,7 +114,7 @@ export function OrdersTable({
             <TableCell className="font-semibold">
               {formatCurrency(order.totalPrice || 0)}
             </TableCell>
-            <TableCell className="text-sm text-gray-500">
+            <TableCell className="text-sm text-neutral-200">
               {formatDate(order.createdAt)}
             </TableCell>
             <TableCell className="text-right">

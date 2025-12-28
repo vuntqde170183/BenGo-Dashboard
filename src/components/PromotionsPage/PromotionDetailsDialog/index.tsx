@@ -48,7 +48,10 @@ export function PromotionDetailsDialog({
     formState: { errors },
   } = useForm();
 
-  const discountType = watch("discountType", promotion?.discountType || "PERCENTAGE");
+  const discountType = watch(
+    "discountType",
+    promotion?.discountType || "PERCENTAGE"
+  );
 
   useEffect(() => {
     if (promotion) {
@@ -60,8 +63,12 @@ export function PromotionDetailsDialog({
         discountValue: promotion.discountValue,
         minOrderValue: promotion.minOrderValue,
         maxDiscountAmount: promotion.maxDiscountAmount,
-        startDate: promotion.startDate ? new Date(promotion.startDate).toISOString().slice(0, 16) : "",
-        endDate: promotion.endDate ? new Date(promotion.endDate).toISOString().slice(0, 16) : "",
+        startDate: promotion.startDate
+          ? new Date(promotion.startDate).toISOString().slice(0, 16)
+          : "",
+        endDate: promotion.endDate
+          ? new Date(promotion.endDate).toISOString().slice(0, 16)
+          : "",
         usageLimit: promotion.usageLimit,
       });
       setImagePreview(promotion.imageUrl || "");
@@ -83,7 +90,7 @@ export function PromotionDetailsDialog({
     // Upload
     const formData = new FormData();
     formData.append("image", file);
-    
+
     uploadImage(formData, {
       onSuccess: (response: any) => {
         setImageUrl(response.data.url);
@@ -97,7 +104,9 @@ export function PromotionDetailsDialog({
       imageUrl: imageUrl || undefined,
       discountValue: parseFloat(data.discountValue),
       minOrderValue: parseFloat(data.minOrderValue || 0),
-      maxDiscountAmount: data.maxDiscountAmount ? parseFloat(data.maxDiscountAmount) : undefined,
+      maxDiscountAmount: data.maxDiscountAmount
+        ? parseFloat(data.maxDiscountAmount)
+        : undefined,
       usageLimit: data.usageLimit ? parseInt(data.usageLimit) : undefined,
     };
 
@@ -133,7 +142,9 @@ export function PromotionDetailsDialog({
                 className="uppercase"
               />
               {errors.code && (
-                <p className="text-sm text-red-500 mt-1">{errors.code.message as string}</p>
+                <p className="text-sm text-red-500 mt-1">
+                  {errors.code.message as string}
+                </p>
               )}
             </div>
             <div>
@@ -146,7 +157,9 @@ export function PromotionDetailsDialog({
                 {...register("title", { required: "Title is required" })}
               />
               {errors.title && (
-                <p className="text-sm text-red-500 mt-1">{errors.title.message as string}</p>
+                <p className="text-sm text-red-500 mt-1">
+                  {errors.title.message as string}
+                </p>
               )}
             </div>
           </div>
@@ -225,7 +238,7 @@ export function PromotionDetailsDialog({
                 placeholder="Optional"
                 {...register("maxDiscountAmount")}
               />
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-neutral-200 mt-1">
                 Leave empty for no limit
               </p>
             </div>
@@ -240,7 +253,9 @@ export function PromotionDetailsDialog({
               <Input
                 id="startDate"
                 type="datetime-local"
-                {...register("startDate", { required: "Start date is required" })}
+                {...register("startDate", {
+                  required: "Start date is required",
+                })}
               />
               {errors.startDate && (
                 <p className="text-sm text-red-500 mt-1">
@@ -270,7 +285,11 @@ export function PromotionDetailsDialog({
             <div>
               <Label>Current Usage</Label>
               <p className="text-sm text-gray-600 mt-2">
-                Used: <span className="font-semibold">{promotion?.usedCount || 0}</span> times
+                Used:{" "}
+                <span className="font-semibold">
+                  {promotion?.usedCount || 0}
+                </span>{" "}
+                times
               </p>
             </div>
             <div>
@@ -281,7 +300,7 @@ export function PromotionDetailsDialog({
                 placeholder="Leave empty for unlimited"
                 {...register("usageLimit")}
               />
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-neutral-200 mt-1">
                 Total number of times this code can be used
               </p>
             </div>
@@ -317,7 +336,7 @@ export function PromotionDetailsDialog({
                   className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded cursor-pointer hover:bg-gray-50"
                 >
                   <Upload className="w-8 h-8 text-gray-400" />
-                  <p className="text-sm text-gray-500 mt-2">
+                  <p className="text-sm text-neutral-200 mt-2">
                     Click to upload image
                   </p>
                   <input
@@ -345,7 +364,7 @@ export function PromotionDetailsDialog({
             <Button
               type="submit"
               disabled={isPending || isUploading}
-              className="bg-mainTextHoverV1 hover:bg-primary/90 text-white"
+              className="bg-mainTextHoverV1 hover:bg-primary/90 text-neutral-200"
             >
               {isPending ? "Updating..." : "Update Promotion"}
             </Button>

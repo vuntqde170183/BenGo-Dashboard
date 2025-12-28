@@ -137,7 +137,7 @@ export default function LoginPage() {
                 <h2 className="text-3xl font-bold bg-gradient-to-r from-teal-600 to-emerald-600 bg-clip-text text-transparent uppercase">
                   Admin Portal
                 </h2>
-                <p className="text-gray-500 text-sm">
+                <p className="text-neutral-200 text-sm">
                   Sign in to access the BenGo admin dashboard
                 </p>
               </div>
@@ -153,7 +153,7 @@ export default function LoginPage() {
                 <div className="space-y-2">
                   <Label
                     htmlFor="email"
-                    className="text-xs text-gray-500 uppercase tracking-wide"
+                    className="text-xs text-neutral-200 uppercase tracking-wide"
                   >
                     Admin Email
                   </Label>
@@ -174,7 +174,7 @@ export default function LoginPage() {
                 <div className="space-y-2">
                   <Label
                     htmlFor="password"
-                    className="text-xs text-gray-500 uppercase tracking-wide"
+                    className="text-xs text-neutral-200 uppercase tracking-wide"
                   >
                     Password
                   </Label>
@@ -236,7 +236,7 @@ export default function LoginPage() {
 
                 {/* Security Notice */}
                 <div className="text-center pt-4 border-t border-gray-200">
-                  <div className="text-xs flex items-center justify-center gap-2 text-gray-500">
+                  <div className="text-xs flex items-center justify-center gap-2 text-neutral-200">
                     <Lock1 size="16" color="#7F8788" />
                     <span>
                       Secure admin access only · Contact support if you need

@@ -34,10 +34,10 @@ export default function RoleBasedRedirect() {
 
   if (isLoadingProfile || !profile) {
     return (
-      <div className="min-h-screen bg-mainDarkBackgroundV1 flex items-center justify-center">
+      <div className="min-h-screen bg-darkCardV1 flex items-center justify-center">
         <div className="text-center">
           <LoadingSpinner />
-          <p className="text-white mt-4">Loading your dashboard...</p>
+          <p className="text-neutral-200 mt-4">Loading your dashboard...</p>
         </div>
       </div>
     );

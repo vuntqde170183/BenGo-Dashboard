@@ -50,7 +50,6 @@ const config: Config = {
 				mainTextV1: "#4A5F73",
 				secondaryTextV1: "#687D92",
 				mainTextHoverV1: "#41C651",
-				mainDarkBackgroundV1: "#001314",
 				mainSuccessV1: "#41C651",
 				mainSuccessHoverV1: "#2D8B38",
 				mainWarningV1: "#F0934E",
@@ -61,7 +60,9 @@ const config: Config = {
 				mainInfoHoverV1: "#2D8B38",
 				mainCardV1: "#FFFFFF",
 				lightBorderV1: "#E5E5E5",
-				darkBorderV1: "#3D444D",
+				darkBorderV1: "#233738",
+				darkBackgroundV1: "#001314",
+				darkCardV1: "#051A1D",
 				foreground: "hsl(var(--foreground))",
 				card: {
 					DEFAULT: "hsl(var(--card))",

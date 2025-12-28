@@ -1,25 +1,29 @@
-
-
-import React from 'react';
-import { Button } from './button';
-import { RippleEffect } from './ripple-effect';
+import React from "react";
+import { Button } from "./button";
+import { RippleEffect } from "./ripple-effect";
 
 export const RippleDemo: React.FC = () => {
   return (
     <div className="p-8 space-y-4 bg-gray-50 rounded-lg">
-      <h2 className="text-2xl font-semibold text-gray-800 mb-4">Ripple Effect Demo</h2>
-      
+      <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+        Ripple Effect Demo
+      </h2>
+
       {/* Button with Ripple */}
       <div className="space-y-4">
-        <h3 className="text-lg font-semibold text-gray-800">Buttons with Ripple Effect</h3>
+        <h3 className="text-lg font-semibold text-gray-800">
+          Buttons with Ripple Effect
+        </h3>
         <div className="flex gap-4 flex-wrap">
-          <Button ripple>
-            Primary Button
-          </Button>
+          <Button ripple>Primary Button</Button>
           <Button variant="outline" ripple rippleColor="rgba(96, 74, 227, 0.3)">
             Outline Button
           </Button>
-          <Button variant="destructive" ripple rippleColor="rgba(239, 68, 68, 0.3)">
+          <Button
+            variant="destructive"
+            ripple
+            rippleColor="rgba(239, 68, 68, 0.3)"
+          >
             Destructive Button
           </Button>
         </div>
@@ -27,7 +31,9 @@ export const RippleDemo: React.FC = () => {
 
       {/* Custom Ripple Cards */}
       <div className="space-y-4">
-        <h3 className="text-lg font-semibold text-gray-800">Custom Ripple Cards</h3>
+        <h3 className="text-lg font-semibold text-gray-800">
+          Custom Ripple Cards
+        </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <RippleEffect
             rippleColor="rgba(59, 130, 246, 0.3)"
@@ -69,16 +75,18 @@ export const RippleDemo: React.FC = () => {
 
       {/* Navigation-like Items */}
       <div className="space-y-4">
-        <h3 className="text-lg font-semibold text-gray-800">Navigation Items</h3>
+        <h3 className="text-lg font-semibold text-gray-800">
+          Navigation Items
+        </h3>
         <div className="bg-gray-800 rounded-lg p-4 space-y-2">
-          {['Dashboard', 'Users', 'Settings', 'Reports'].map((item) => (
+          {["Dashboard", "Users", "Settings", "Reports"].map((item) => (
             <RippleEffect
               key={item}
               rippleColor="rgba(68, 215, 182, 0.3)"
               duration={500}
               className="block"
             >
-              <div className="flex items-center p-3 text-white hover:bg-gray-700 rounded-lg cursor-pointer transition-colors">
+              <div className="flex items-center p-3 text-neutral-200 hover:bg-gray-700 rounded-lg cursor-pointer transition-colors">
                 <div className="w-6 h-6 bg-gray-600 rounded mr-3"></div>
                 <span>{item}</span>
               </div>
@@ -88,9 +96,4 @@ export const RippleDemo: React.FC = () => {
       </div>
     </div>
   );
-}; 
-
-
-
-
-
+};

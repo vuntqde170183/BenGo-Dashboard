@@ -94,7 +94,7 @@ export default function PromotionsPage() {
             </Tabs>
             <Button
               onClick={() => setIsCreateDialogOpen(true)}
-              className="bg-mainTextHoverV1 hover:bg-primary/90 text-white"
+              className="bg-mainTextHoverV1 hover:bg-primary/90 text-neutral-200"
             >
               <IconPlus className="h-4 w-4 mr-2" />
               Create Promotion
@@ -115,7 +115,7 @@ export default function PromotionsPage() {
               ))}
             </div>
           ) : displayPromotions.length === 0 ? (
-            <div className="text-center py-12 text-gray-500">
+            <div className="text-center py-12 text-neutral-200">
               No promotions found
             </div>
           ) : (
@@ -126,7 +126,7 @@ export default function PromotionsPage() {
                     <div className="flex justify-between items-start">
                       <div className="flex-1">
                         <CardTitle className="text-lg">{promo.title}</CardTitle>
-                        <p className="text-sm text-gray-500 mt-1 font-mono">
+                        <p className="text-sm text-neutral-200 mt-1 font-mono">
                           Code: {promo.code}
                         </p>
                       </div>
@@ -149,7 +149,7 @@ export default function PromotionsPage() {
 
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
-                        <span className="text-gray-500">Discount:</span>
+                        <span className="text-neutral-200">Discount:</span>
                         <span className="font-medium">
                           {promo.discountType === "PERCENTAGE"
                             ? `${promo.discountValue}%`
@@ -157,19 +157,19 @@ export default function PromotionsPage() {
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-500">Min Order:</span>
+                        <span className="text-neutral-200">Min Order:</span>
                         <span className="font-medium">
                           {formatCurrency(promo.minOrderValue || 0)}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-500">Usage:</span>
+                        <span className="text-neutral-200">Usage:</span>
                         <span className="font-medium">
                           {promo.usedCount || 0} / {promo.usageLimit || "∞"}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-500">Valid Until:</span>
+                        <span className="text-neutral-200">Valid Until:</span>
                         <span className="font-medium">
                           {formatDate(promo.endDate)}
                         </span>

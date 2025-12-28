@@ -93,7 +93,7 @@ export default function PricingPage() {
                         {...register(`${config.vehicleType}.basePrice`)}
                         className="mt-1"
                       />
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-xs text-neutral-200 mt-1">
                         Starting fare for this vehicle type
                       </p>
                     </div>
@@ -108,7 +108,7 @@ export default function PricingPage() {
                         {...register(`${config.vehicleType}.perKm`)}
                         className="mt-1"
                       />
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-xs text-neutral-200 mt-1">
                         Cost per kilometer traveled
                       </p>
                     </div>
@@ -121,10 +121,12 @@ export default function PricingPage() {
                         type="number"
                         step="0.1"
                         defaultValue={config.peakHourMultiplier}
-                        {...register(`${config.vehicleType}.peakHourMultiplier`)}
+                        {...register(
+                          `${config.vehicleType}.peakHourMultiplier`
+                        )}
                         className="mt-1"
                       />
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-xs text-neutral-200 mt-1">
                         Surge pricing multiplier (e.g., 1.5 = 50% increase)
                       </p>
                     </div>
@@ -135,17 +137,13 @@ export default function PricingPage() {
           </div>
 
           <div className="flex justify-end gap-3">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => refetch()}
-            >
+            <Button type="button" variant="outline" onClick={() => refetch()}>
               Reset
             </Button>
             <Button
               type="submit"
               disabled={isPending}
-              className="bg-mainTextHoverV1 hover:bg-primary/90 text-white"
+              className="bg-mainTextHoverV1 hover:bg-primary/90 text-neutral-200"
             >
               <Save className="w-4 h-4 mr-2" />
               {isPending ? "Saving..." : "Save Changes"}

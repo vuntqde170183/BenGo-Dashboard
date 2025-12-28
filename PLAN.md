@@ -148,7 +148,7 @@
 
 **Route:** `/dashboard`
 
-**Layout:** Grid-based responsive layout (Tailwind: `grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6`)
+**Layout:** Grid-based responsive layout (Tailwind: `grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4`)
 
 ---
 
@@ -287,7 +287,7 @@
 
 **Spacing:**
 
-- Use consistent Tailwind spacing scale (4px base: p-4, gap-6, etc.)
+- Use consistent Tailwind spacing scale (4px base: p-4, gap-4, etc.)
 
 **Shadows:**
 

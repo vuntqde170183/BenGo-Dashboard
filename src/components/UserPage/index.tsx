@@ -7,11 +7,17 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
+} from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { UserTable } from "@/components/UserPage/UserTable";
 import { UserCreateDialog } from "@/components/UserPage/UserCreateDialog";
 import { UserDetailsDialog } from "@/components/UserPage/UserDetailsDialog";
@@ -32,12 +38,16 @@ export default function UserPage() {
   const [pageSize] = useState(10);
 
   const roleParam = roleFilter && roleFilter !== "all" ? roleFilter : undefined;
-  
-  const { data: usersData, isLoading, refetch } = useAdminUsers({
+
+  const {
+    data: usersData,
+    isLoading,
+    refetch,
+  } = useAdminUsers({
     search: searchQuery,
     role: roleParam,
     page: currentPage,
-    limit: pageSize
+    limit: pageSize,
   });
   const { mutate: deleteUserMutation, isPending: isDeleting } = useDeleteUser();
 
@@ -137,7 +147,7 @@ export default function UserPage() {
               </Select>
               <Button
                 onClick={() => setIsCreateDialogOpen(true)}
-                className="bg-mainTextHoverV1 hover:bg-primary/90 text-white"
+                className="bg-mainTextHoverV1 hover:bg-primary/90 text-neutral-200"
               >
                 <IconPlus className="h-4 w-4" />
                 Add User
@@ -214,9 +224,4 @@ export default function UserPage() {
       )}
     </div>
   );
-} 
-
-
-
-
-
+}

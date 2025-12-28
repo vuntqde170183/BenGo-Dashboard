@@ -48,10 +48,7 @@ export default function DashboardLayout({
   };
 
   return (
-    <div
-      className="min-h-screen bg-mainDarkBackgroundV1"
-      suppressHydrationWarning
-    >
+    <div className="min-h-screen bg-darkBackgroundV1" suppressHydrationWarning>
       {/* Header - Fixed at top */}
       <CommonHeader />
 
@@ -60,14 +57,14 @@ export default function DashboardLayout({
         {/* Sidebar */}
         <div
           className={cn(
-            "bg-mainDarkBackgroundV1 transition-all duration-300 flex-shrink-0",
+            "bg-darkCardV1 transition-all duration-300 flex-shrink-0",
             isOpen
               ? "w-[250px]"
               : "w-0 md:w-16 overflow-hidden flex justify-center"
           )}
         >
-          <div className="flex flex-col h-full bg-mainDarkBackgroundV1">
-            <nav className="flex-1 overflow-y-auto py-4 bg-mainDarkBackgroundV1">
+          <div className="flex flex-col h-full bg-darkBackgroundV1">
+            <nav className="flex-1 overflow-y-auto py-4 bg-darkBackgroundV1">
               <ul className={cn("", isOpen ? "px-2" : "px-1")}>
                 {dashboardMenuItems.map((menu) => (
                   <li key={menu.id}>
@@ -87,8 +84,8 @@ export default function DashboardLayout({
                               className={cn(
                                 "flex items-center rounded-lg p-[10px] h-[46px] text-[13px] font-semibold transition-colors",
                                 isMenuActive(menu)
-                                  ? "bg-[#29323A] text-white"
-                                  : "text-white/70 hover:bg-[#29323A]",
+                                  ? "bg-[#29323A] text-neutral-200"
+                                  : "text-neutral-200/70 hover:bg-[#29323A]",
                                 !isOpen && "!justify-center w-[46px]"
                               )}
                             >
@@ -103,8 +100,8 @@ export default function DashboardLayout({
                                   size={0.8}
                                   className={cn(
                                     isMenuActive(menu)
-                                      ? "!text-white flex-shrink-0"
-                                      : "!text-white/70 flex-shrink-0"
+                                      ? "!text-neutral-200 flex-shrink-0"
+                                      : "!text-neutral-200/70 flex-shrink-0"
                                   )}
                                 />
                               </div>
@@ -123,8 +120,8 @@ export default function DashboardLayout({
                             className={cn(
                               "flex items-center  rounded-lg p-[10px] h-[46px] text-[13px] font-semibold transition-colors cursor-pointer",
                               isMenuActive(menu)
-                                ? "bg-[#29323A] text-white"
-                                : "text-white/70 hover:bg-[#29323A]",
+                                ? "bg-[#29323A] text-neutral-200"
+                                : "text-neutral-200/70 hover:bg-[#29323A]",
                               !isOpen && "!justify-center w-[46px]"
                             )}
                           >
@@ -139,8 +136,8 @@ export default function DashboardLayout({
                                 size={0.8}
                                 className={cn(
                                   isMenuActive(menu)
-                                    ? "!text-white flex-shrink-0"
-                                    : "!text-white/70 flex-shrink-0"
+                                    ? "!text-neutral-200 flex-shrink-0"
+                                    : "!text-neutral-200/70 flex-shrink-0"
                                 )}
                               />
                             </div>
@@ -187,8 +184,8 @@ export default function DashboardLayout({
                                         className={cn(
                                           "flex items-center rounded-lg p-[8px] h-[38px] text-[13px] font-normal transition-colors",
                                           pathname === sub.path
-                                            ? "bg-[#29323A] text-white"
-                                            : "text-white/70 hover:bg-[#29323A]"
+                                            ? "bg-[#29323A] text-neutral-200"
+                                            : "text-neutral-200/70 hover:bg-[#29323A]"
                                         )}
                                       >
                                         <Icon
@@ -196,8 +193,8 @@ export default function DashboardLayout({
                                           size={0.7}
                                           className={cn(
                                             pathname === sub.path
-                                              ? "!text-white flex-shrink-0"
-                                              : "!text-white/70 flex-shrink-0",
+                                              ? "!text-neutral-200 flex-shrink-0"
+                                              : "!text-neutral-200/70 flex-shrink-0",
                                             "mr-3"
                                           )}
                                         />
@@ -218,7 +215,7 @@ export default function DashboardLayout({
                             animate={{ opacity: 1, x: 0 }}
                             exit={{ opacity: 0, x: -5 }}
                             transition={{ duration: 0.2 }}
-                            className="fixed ml-16 mt-[-30px] bg-[#29323A] border border-lightBorderV1 text-white text-[13px] py-1.5 px-3 rounded-md shadow-light-grey z-50 whitespace-nowrap flex items-center"
+                            className="fixed ml-16 mt-[-30px] bg-[#29323A] border border-lightBorderV1 text-neutral-200 text-[13px] py-1.5 px-3 rounded-md shadow-light-grey z-50 whitespace-nowrap flex items-center"
                           >
                             <span className="w-1.5 h-1.5 rounded-full bg-mainActiveV1 mr-1.5"></span>
                             <span className="font-semibold">{menu.name}</span>
@@ -234,9 +231,7 @@ export default function DashboardLayout({
         </div>
 
         {/* Main content - automatically takes remaining width */}
-        <main className="flex-1 overflow-auto bg-mainDarkBackgroundV1 p-4">
-          {children}
-        </main>
+        <main className="flex-1 overflow-auto p-4">{children}</main>
       </div>
     </div>
   );

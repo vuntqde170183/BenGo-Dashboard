@@ -33,7 +33,10 @@ export function OrderDetailsDialog({
           <DialogTitle className="flex items-center justify-between">
             <span>Order #{order?._id?.slice(-8)}</span>
             {order && (
-              <Badge variant={getStatusVariant(order.status)} className="text-lg px-4 py-2">
+              <Badge
+                variant={getStatusVariant(order.status)}
+                className="text-lg px-4 py-2"
+              >
                 {order.status}
               </Badge>
             )}
@@ -47,7 +50,9 @@ export function OrderDetailsDialog({
             <Skeleton className="h-40 w-full" />
           </div>
         ) : !order ? (
-          <div className="text-center py-8 text-gray-500">Order not found</div>
+          <div className="text-center py-8 text-neutral-200">
+            Order not found
+          </div>
         ) : (
           <div className="space-y-6">
             {/* Map Placeholder */}
@@ -57,12 +62,14 @@ export function OrderDetailsDialog({
               </CardHeader>
               <CardContent>
                 <div className="h-64 bg-gray-100 rounded flex items-center justify-center">
-                  <p className="text-gray-500">Map Integration Coming Soon</p>
+                  <p className="text-neutral-200">
+                    Map Integration Coming Soon
+                  </p>
                 </div>
               </CardContent>
             </Card>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               {/* Customer Info */}
               <Card>
                 <CardHeader>
@@ -72,11 +79,15 @@ export function OrderDetailsDialog({
                   <div className="flex items-center gap-3">
                     <Avatar className="w-12 h-12">
                       <AvatarImage src={order.customerId?.avatar} />
-                      <AvatarFallback>{order.customerId?.name?.[0]}</AvatarFallback>
+                      <AvatarFallback>
+                        {order.customerId?.name?.[0]}
+                      </AvatarFallback>
                     </Avatar>
                     <div>
                       <p className="font-medium">{order.customerId?.name}</p>
-                      <p className="text-sm text-gray-500">{order.customerId?.phone}</p>
+                      <p className="text-sm text-neutral-200">
+                        {order.customerId?.phone}
+                      </p>
                     </div>
                   </div>
                 </CardContent>
@@ -92,15 +103,19 @@ export function OrderDetailsDialog({
                     <div className="flex items-center gap-3">
                       <Avatar className="w-12 h-12">
                         <AvatarImage src={order.driverId?.avatar} />
-                        <AvatarFallback>{order.driverId?.name?.[0]}</AvatarFallback>
+                        <AvatarFallback>
+                          {order.driverId?.name?.[0]}
+                        </AvatarFallback>
                       </Avatar>
                       <div>
                         <p className="font-medium">{order.driverId?.name}</p>
-                        <p className="text-sm text-gray-500">{order.driverId?.phone}</p>
+                        <p className="text-sm text-neutral-200">
+                          {order.driverId?.phone}
+                        </p>
                       </div>
                     </div>
                   ) : (
-                    <p className="text-gray-500">No driver assigned yet</p>
+                    <p className="text-neutral-200">No driver assigned yet</p>
                   )}
                 </CardContent>
               </Card>
@@ -116,8 +131,10 @@ export function OrderDetailsDialog({
                   <MapPin className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
                   <div>
                     <p className="font-medium">Pickup Location</p>
-                    <p className="text-sm text-gray-600">{order.pickup?.address}</p>
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p className="text-sm text-gray-600">
+                      {order.pickup?.address}
+                    </p>
+                    <p className="text-xs text-neutral-200 mt-1">
                       {order.pickup?.lat}, {order.pickup?.lng}
                     </p>
                   </div>
@@ -127,8 +144,10 @@ export function OrderDetailsDialog({
                   <MapPin className="w-5 h-5 text-red-600 mt-1 flex-shrink-0" />
                   <div>
                     <p className="font-medium">Dropoff Location</p>
-                    <p className="text-sm text-gray-600">{order.dropoff?.address}</p>
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p className="text-sm text-gray-600">
+                      {order.dropoff?.address}
+                    </p>
+                    <p className="text-xs text-neutral-200 mt-1">
                       {order.dropoff?.lat}, {order.dropoff?.lng}
                     </p>
                   </div>
@@ -159,7 +178,11 @@ export function OrderDetailsDialog({
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-gray-600">Payment Status:</span>
-                  <Badge variant={order.paymentStatus === "PAID" ? "default" : "secondary"}>
+                  <Badge
+                    variant={
+                      order.paymentStatus === "PAID" ? "default" : "secondary"
+                    }
+                  >
                     {order.paymentStatus}
                   </Badge>
                 </div>
@@ -168,7 +191,9 @@ export function OrderDetailsDialog({
                     <Calendar className="w-4 h-4" />
                     <span>Created At:</span>
                   </div>
-                  <span className="font-medium">{formatDate(order.createdAt)}</span>
+                  <span className="font-medium">
+                    {formatDate(order.createdAt)}
+                  </span>
                 </div>
                 <Separator />
                 <div className="flex items-center justify-between text-lg font-bold">

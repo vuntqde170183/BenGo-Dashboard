@@ -1,10 +1,25 @@
-
-
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { IUser } from "@/interface/response/user";
-import { Activity, CheckCircle2, MapPin, GraduationCap, Briefcase, Award, BookOpen, Calendar, User as UserIcon } from "lucide-react";
+import {
+  Activity,
+  CheckCircle2,
+  MapPin,
+  GraduationCap,
+  Briefcase,
+  Award,
+  BookOpen,
+  Calendar,
+  User as UserIcon,
+} from "lucide-react";
 import { formatDate, formatDateOnly } from "@/utils/dateFormat";
 
 interface UserTableProps {
@@ -79,11 +94,11 @@ interface UserTableProps {
 export const UserTable = ({ user }: UserTableProps) => {
   const getRoleBadge = (role: string) => {
     switch (role.toLowerCase()) {
-      case 'admin':
+      case "admin":
         return <Badge variant="cyan">Admin</Badge>;
-      case 'student':
+      case "student":
         return <Badge variant="indigo">Student</Badge>;
-      case 'coordinator':
+      case "coordinator":
         return <Badge variant="blue">Coordinator</Badge>;
       default:
         return <Badge variant="outline">{role}</Badge>;
@@ -103,24 +118,31 @@ export const UserTable = ({ user }: UserTableProps) => {
 
   const renderTableRow = (label: string, value: React.ReactNode) => (
     <TableRow className="transition-colors">
-      <TableCell className="font-semibold text-gray-800 w-1/3">{label}</TableCell>
+      <TableCell className="font-semibold text-gray-800 w-1/3">
+        {label}
+      </TableCell>
       <TableCell className="text-gray-800">{value}</TableCell>
     </TableRow>
   );
 
   const formatAddress = () => {
-    if (!user.address) return <span className="text-gray-400">Not provided</span>;
+    if (!user.address)
+      return <span className="text-gray-400">Not provided</span>;
     const { street, ward, district, city, zipCode } = user.address;
     const parts = [street, ward, district, city].filter(Boolean);
     return (
       <div className="space-y-1">
         {parts.length > 0 && (
           <div className="flex items-start gap-2">
-            <MapPin className="h-4 w-4 mt-0.5 text-gray-500 flex-shrink-0" />
+            <MapPin className="h-4 w-4 mt-0.5 text-neutral-200 flex-shrink-0" />
             <span>{parts.join(", ")}</span>
           </div>
         )}
-        {zipCode && <div className="text-sm text-gray-500 ml-6">Zip Code: {zipCode}</div>}
+        {zipCode && (
+          <div className="text-sm text-neutral-200 ml-6">
+            Zip Code: {zipCode}
+          </div>
+        )}
       </div>
     );
   };
@@ -132,7 +154,9 @@ export const UserTable = ({ user }: UserTableProps) => {
         <CardHeader className="!border-b !border-b-[#ccc]">
           <div className="flex items-center gap-2">
             <Activity className="h-5 w-5 text-gray-700" />
-            <span className="font-semibold text-gray-800">Basic Information</span>
+            <span className="font-semibold text-gray-800">
+              Basic Information
+            </span>
           </div>
         </CardHeader>
         <CardContent className="space-y-4 pt-4">
@@ -147,7 +171,9 @@ export const UserTable = ({ user }: UserTableProps) => {
                 />
               ) : (
                 <img
-                  src={`/images/${user.gender ? user.gender : "male"}-${user.role}.webp`}
+                  src={`/images/${user.gender ? user.gender : "male"}-${
+                    user.role
+                  }.webp`}
                   alt={"default-avatar"}
                   className="w-full h-full object-cover flex-shrink-0"
                 />
@@ -170,8 +196,12 @@ export const UserTable = ({ user }: UserTableProps) => {
             <Table>
               <TableHeader>
                 <TableRow className="bg-[#F56C1420]">
-                  <TableHead className="font-semibold text-gray-800 w-1/3">Field</TableHead>
-                  <TableHead className="font-semibold text-gray-800">Value</TableHead>
+                  <TableHead className="font-semibold text-gray-800 w-1/3">
+                    Field
+                  </TableHead>
+                  <TableHead className="font-semibold text-gray-800">
+                    Value
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -197,7 +227,9 @@ export const UserTable = ({ user }: UserTableProps) => {
                 {renderTableRow("Email", user.email)}
                 {renderTableRow(
                   "Phone Number",
-                  user.phoneNumber || <span className="text-gray-400">Not provided</span>
+                  user.phoneNumber || (
+                    <span className="text-gray-400">Not provided</span>
+                  )
                 )}
               </TableBody>
             </Table>
@@ -211,7 +243,9 @@ export const UserTable = ({ user }: UserTableProps) => {
           <CardHeader className="!border-b !border-b-[#ccc]">
             <div className="flex items-center gap-2">
               <MapPin className="h-5 w-5 text-gray-700" />
-              <span className="font-semibold text-gray-800">Personal Information</span>
+              <span className="font-semibold text-gray-800">
+                Personal Information
+              </span>
             </div>
           </CardHeader>
           <CardContent className="pt-4">
@@ -219,8 +253,12 @@ export const UserTable = ({ user }: UserTableProps) => {
               <Table>
                 <TableHeader>
                   <TableRow className="bg-[#F56C1420]">
-                    <TableHead className="font-semibold text-gray-800 w-1/3">Field</TableHead>
-                    <TableHead className="font-semibold text-gray-800">Value</TableHead>
+                    <TableHead className="font-semibold text-gray-800 w-1/3">
+                      Field
+                    </TableHead>
+                    <TableHead className="font-semibold text-gray-800">
+                      Value
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -228,7 +266,7 @@ export const UserTable = ({ user }: UserTableProps) => {
                     renderTableRow(
                       "Date of Birth",
                       <div className="flex items-center gap-2">
-                        <Calendar className="h-4 w-4 text-gray-500" />
+                        <Calendar className="h-4 w-4 text-neutral-200" />
                         <span>{formatDateOnly(user.dateOfBirth)}</span>
                       </div>
                     )}
@@ -236,12 +274,11 @@ export const UserTable = ({ user }: UserTableProps) => {
                     renderTableRow(
                       "Gender",
                       <div className="flex items-center gap-2">
-                        <UserIcon className="h-4 w-4 text-gray-500" />
+                        <UserIcon className="h-4 w-4 text-neutral-200" />
                         <span className="capitalize">{user.gender}</span>
                       </div>
                     )}
-                  {user.address &&
-                    renderTableRow("Address", formatAddress())}
+                  {user.address && renderTableRow("Address", formatAddress())}
                 </TableBody>
               </Table>
             </div>
@@ -255,7 +292,9 @@ export const UserTable = ({ user }: UserTableProps) => {
           <CardHeader className="!border-b !border-b-[#ccc]">
             <div className="flex items-center gap-2">
               <GraduationCap className="h-5 w-5 text-gray-700" />
-              <span className="font-semibold text-gray-800">Student Information</span>
+              <span className="font-semibold text-gray-800">
+                Student Information
+              </span>
             </div>
           </CardHeader>
           <CardContent className="pt-4 space-y-4">
@@ -263,32 +302,55 @@ export const UserTable = ({ user }: UserTableProps) => {
               <Table>
                 <TableHeader>
                   <TableRow className="bg-[#F56C1420]">
-                    <TableHead className="font-semibold text-gray-800 w-1/3">Field</TableHead>
-                    <TableHead className="font-semibold text-gray-800">Value</TableHead>
+                    <TableHead className="font-semibold text-gray-800 w-1/3">
+                      Field
+                    </TableHead>
+                    <TableHead className="font-semibold text-gray-800">
+                      Value
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {user.studentInfo.class &&
-                    renderTableRow("Class", <Badge variant="blue">{user.studentInfo.class}</Badge>)}
+                    renderTableRow(
+                      "Class",
+                      <Badge variant="blue">{user.studentInfo.class}</Badge>
+                    )}
                   {user.studentInfo.course &&
-                    renderTableRow("Course", <Badge variant="indigo">{user.studentInfo.course}</Badge>)}
+                    renderTableRow(
+                      "Course",
+                      <Badge variant="indigo">{user.studentInfo.course}</Badge>
+                    )}
                   {user.studentInfo.academicYear &&
-                    renderTableRow("Academic Year", user.studentInfo.academicYear)}
+                    renderTableRow(
+                      "Academic Year",
+                      user.studentInfo.academicYear
+                    )}
                   {user.studentInfo.semester &&
                     renderTableRow("Semester", user.studentInfo.semester)}
                   {user.studentInfo.gpa !== undefined &&
                     renderTableRow(
                       "GPA",
                       <div className="flex items-center gap-2">
-                        <Badge variant={user.studentInfo.gpa >= 3.0 ? "green" : "orange"}>
+                        <Badge
+                          variant={
+                            user.studentInfo.gpa >= 3.0 ? "green" : "orange"
+                          }
+                        >
                           {user.studentInfo.gpa.toFixed(2)}
                         </Badge>
                       </div>
                     )}
                   {user.studentInfo.credits !== undefined &&
-                    renderTableRow("Credits", `${user.studentInfo.credits} credits`)}
+                    renderTableRow(
+                      "Credits",
+                      `${user.studentInfo.credits} credits`
+                    )}
                   {user.studentInfo.admissionDate &&
-                    renderTableRow("Admission Date", formatDateOnly(user.studentInfo.admissionDate))}
+                    renderTableRow(
+                      "Admission Date",
+                      formatDateOnly(user.studentInfo.admissionDate)
+                    )}
                   {user.studentInfo.expectedGraduationDate &&
                     renderTableRow(
                       "Expected Graduation",
@@ -306,64 +368,72 @@ export const UserTable = ({ user }: UserTableProps) => {
             </div>
 
             {/* Scholarships */}
-            {user.studentInfo.scholarships && user.studentInfo.scholarships.length > 0 && (
-              <div className="mt-4">
-                <h4 className="text-sm font-semibold text-gray-800 mb-2 flex items-center gap-2">
-                  <Award className="h-4 w-4" />
-                  Scholarships
-                </h4>
-                <div className="space-y-2">
-                  {user.studentInfo.scholarships.map((scholarship, index) => (
-                    <div
-                      key={index}
-                      className="p-3 bg-gray-50 rounded-lg border border-gray-200"
-                    >
-                      <div className="flex items-center justify-between">
-                        <span className="font-medium text-gray-800">{scholarship.name}</span>
-                        <Badge variant="green">
-                          {new Intl.NumberFormat("vi-VN", {
-                            style: "currency",
-                            currency: "VND",
-                          }).format(scholarship.amount)}
-                        </Badge>
+            {user.studentInfo.scholarships &&
+              user.studentInfo.scholarships.length > 0 && (
+                <div className="mt-4">
+                  <h4 className="text-sm font-semibold text-gray-800 mb-2 flex items-center gap-2">
+                    <Award className="h-4 w-4" />
+                    Scholarships
+                  </h4>
+                  <div className="space-y-2">
+                    {user.studentInfo.scholarships.map((scholarship, index) => (
+                      <div
+                        key={index}
+                        className="p-3 bg-gray-50 rounded-lg border border-gray-200"
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="font-medium text-gray-800">
+                            {scholarship.name}
+                          </span>
+                          <Badge variant="green">
+                            {new Intl.NumberFormat("vi-VN", {
+                              style: "currency",
+                              currency: "VND",
+                            }).format(scholarship.amount)}
+                          </Badge>
+                        </div>
+                        <div className="text-sm text-gray-600 mt-1">
+                          {scholarship.year} - {scholarship.semester}
+                        </div>
                       </div>
-                      <div className="text-sm text-gray-600 mt-1">
-                        {scholarship.year} - {scholarship.semester}
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
             {/* Achievements */}
-            {user.studentInfo.achievements && user.studentInfo.achievements.length > 0 && (
-              <div className="mt-4">
-                <h4 className="text-sm font-semibold text-gray-800 mb-2 flex items-center gap-2">
-                  <Award className="h-4 w-4" />
-                  Achievements
-                </h4>
-                <div className="space-y-2">
-                  {user.studentInfo.achievements.map((achievement, index) => (
-                    <div
-                      key={index}
-                      className="p-3 bg-gray-50 rounded-lg border border-gray-200"
-                    >
-                      <div className="font-medium text-gray-800">{achievement.title}</div>
-                      <div className="text-sm text-gray-600 mt-1">{achievement.description}</div>
-                      <div className="flex items-center gap-2 mt-2">
-                        <Badge variant="outline" className="text-xs">
-                          {achievement.category}
-                        </Badge>
-                        <span className="text-xs text-gray-500">
-                          {formatDateOnly(achievement.date)}
-                        </span>
+            {user.studentInfo.achievements &&
+              user.studentInfo.achievements.length > 0 && (
+                <div className="mt-4">
+                  <h4 className="text-sm font-semibold text-gray-800 mb-2 flex items-center gap-2">
+                    <Award className="h-4 w-4" />
+                    Achievements
+                  </h4>
+                  <div className="space-y-2">
+                    {user.studentInfo.achievements.map((achievement, index) => (
+                      <div
+                        key={index}
+                        className="p-3 bg-gray-50 rounded-lg border border-gray-200"
+                      >
+                        <div className="font-medium text-gray-800">
+                          {achievement.title}
+                        </div>
+                        <div className="text-sm text-gray-600 mt-1">
+                          {achievement.description}
+                        </div>
+                        <div className="flex items-center gap-2 mt-2">
+                          <Badge variant="outline" className="text-xs">
+                            {achievement.category}
+                          </Badge>
+                          <span className="text-xs text-neutral-200">
+                            {formatDateOnly(achievement.date)}
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
           </CardContent>
         </Card>
       )}
@@ -374,14 +444,18 @@ export const UserTable = ({ user }: UserTableProps) => {
           <CardHeader className="!border-b !border-b-[#ccc]">
             <div className="flex items-center gap-2">
               <Briefcase className="h-5 w-5 text-gray-700" />
-              <span className="font-semibold text-gray-800">Coordinator Information</span>
+              <span className="font-semibold text-gray-800">
+                Coordinator Information
+              </span>
             </div>
           </CardHeader>
           <CardContent className="pt-4 space-y-4">
             {user.coordinatorInfo.specialization &&
               user.coordinatorInfo.specialization.length > 0 && (
                 <div>
-                  <h4 className="text-sm font-semibold text-gray-800 mb-2">Specialization</h4>
+                  <h4 className="text-sm font-semibold text-gray-800 mb-2">
+                    Specialization
+                  </h4>
                   <div className="flex flex-wrap gap-2">
                     {user.coordinatorInfo.specialization.map((spec, index) => (
                       <Badge key={index} variant="blue">
@@ -400,11 +474,13 @@ export const UserTable = ({ user }: UserTableProps) => {
                     Research Interests
                   </h4>
                   <div className="flex flex-wrap gap-2">
-                    {user.coordinatorInfo.researchInterests.map((interest, index) => (
-                      <Badge key={index} variant="purple">
-                        {interest}
-                      </Badge>
-                    ))}
+                    {user.coordinatorInfo.researchInterests.map(
+                      (interest, index) => (
+                        <Badge key={index} variant="purple">
+                          {interest}
+                        </Badge>
+                      )
+                    )}
                   </div>
                 </div>
               )}
@@ -412,7 +488,9 @@ export const UserTable = ({ user }: UserTableProps) => {
             {user.coordinatorInfo.qualifications &&
               user.coordinatorInfo.qualifications.length > 0 && (
                 <div>
-                  <h4 className="text-sm font-semibold text-gray-800 mb-2">Qualifications</h4>
+                  <h4 className="text-sm font-semibold text-gray-800 mb-2">
+                    Qualifications
+                  </h4>
                   <div className="space-y-2">
                     {user.coordinatorInfo.qualifications.map((qual, index) => (
                       <div
@@ -434,21 +512,31 @@ export const UserTable = ({ user }: UserTableProps) => {
             {user.coordinatorInfo.experience &&
               user.coordinatorInfo.experience.length > 0 && (
                 <div>
-                  <h4 className="text-sm font-semibold text-gray-800 mb-2">Experience</h4>
+                  <h4 className="text-sm font-semibold text-gray-800 mb-2">
+                    Experience
+                  </h4>
                   <div className="space-y-2">
                     {user.coordinatorInfo.experience.map((exp, index) => (
                       <div
                         key={index}
                         className="p-3 bg-gray-50 rounded-lg border border-gray-200"
                       >
-                        <div className="font-medium text-gray-800">{exp.position}</div>
-                        <div className="text-sm text-gray-600">{exp.organization}</div>
-                        <div className="text-sm text-gray-500 mt-1">
+                        <div className="font-medium text-gray-800">
+                          {exp.position}
+                        </div>
+                        <div className="text-sm text-gray-600">
+                          {exp.organization}
+                        </div>
+                        <div className="text-sm text-neutral-200 mt-1">
                           {formatDateOnly(exp.startDate)} -{" "}
-                          {exp.endDate ? formatDateOnly(exp.endDate) : "Present"}
+                          {exp.endDate
+                            ? formatDateOnly(exp.endDate)
+                            : "Present"}
                         </div>
                         {exp.description && (
-                          <div className="text-sm text-gray-600 mt-2">{exp.description}</div>
+                          <div className="text-sm text-gray-600 mt-2">
+                            {exp.description}
+                          </div>
                         )}
                       </div>
                     ))}
@@ -459,19 +547,27 @@ export const UserTable = ({ user }: UserTableProps) => {
             {user.coordinatorInfo.publications &&
               user.coordinatorInfo.publications.length > 0 && (
                 <div>
-                  <h4 className="text-sm font-semibold text-gray-800 mb-2">Publications</h4>
+                  <h4 className="text-sm font-semibold text-gray-800 mb-2">
+                    Publications
+                  </h4>
                   <div className="space-y-2">
                     {user.coordinatorInfo.publications.map((pub, index) => (
                       <div
                         key={index}
                         className="p-3 bg-gray-50 rounded-lg border border-gray-200"
                       >
-                        <div className="font-medium text-gray-800">{pub.title}</div>
-                        <div className="text-sm text-gray-600">{pub.journal}</div>
+                        <div className="font-medium text-gray-800">
+                          {pub.title}
+                        </div>
+                        <div className="text-sm text-gray-600">
+                          {pub.journal}
+                        </div>
                         <div className="flex items-center gap-2 mt-1">
-                          <span className="text-sm text-gray-500">{pub.year}</span>
+                          <span className="text-sm text-neutral-200">
+                            {pub.year}
+                          </span>
                           {pub.authors && pub.authors.length > 0 && (
-                            <span className="text-sm text-gray-500">
+                            <span className="text-sm text-neutral-200">
                               • {pub.authors.join(", ")}
                             </span>
                           )}
@@ -484,13 +580,6 @@ export const UserTable = ({ user }: UserTableProps) => {
           </CardContent>
         </Card>
       )}
-
     </div>
   );
 };
-
-
-
-
-
-
