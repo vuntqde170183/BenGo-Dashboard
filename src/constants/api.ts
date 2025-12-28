@@ -3,18 +3,10 @@ export const API_BASE_URL = import.meta.env.VITE_API_URL;
 export const API_ENDPOINTS = {
   AUTH: {
     LOGIN: '/auth/login',
-    REGISTER: '/auth/register',
-    COMPLETE_REGISTRATION: '/auth/complete-registration',
   },
   EMAIL: {
     SEND_VERIFICATION: '/email/send-verification',
     VERIFY_CODE: '/email/verify-code',
-  },
-  VERIFICATION: {
-    SEND_CODE: '/verification/send-code',
-    VERIFY_CODE: '/verification/verify-code',
-    SEND_PASSWORD_RESET: '/verification/send-password-reset',
-    RESET_PASSWORD: '/verification/reset-password',
   },
   USER: {
     GET_ALL: '/user',

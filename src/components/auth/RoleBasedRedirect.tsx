@@ -8,33 +8,27 @@ export default function RoleBasedRedirect() {
   const { profile, isLoadingProfile } = useUser();
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const storedProfile = localStorage.getItem('userProfile');
+    if (typeof window !== "undefined") {
+      const storedProfile = localStorage.getItem("userProfile");
       if (storedProfile) {
         try {
           const parsedProfile = JSON.parse(storedProfile);
           const userRole = parsedProfile?.data?.role;
-          
-          if (userRole === 'student') {
-            navigate('/student');
-          } else if (userRole === 'admin' || userRole === 'coordinator') {
-            navigate('/admin');
+
+          // Only admin role is supported
+          if (userRole === "admin") {
+            navigate("/admin");
           }
           return;
         } catch (error) {
-          console.error( error);
+          console.error(error);
         }
       }
     }
-    
+
     if (!isLoadingProfile && profile?.data) {
-      const userRole = profile.data.role;
-      
-      if (userRole === 'student') {
-        navigate('/student');
-      } else {
-        navigate('/admin');
-      }
+      // Always redirect to admin dashboard
+      navigate("/admin");
     }
   }, [profile, isLoadingProfile, navigate]);
 
@@ -50,9 +44,4 @@ export default function RoleBasedRedirect() {
   }
 
   return null;
-} 
-
-
-
-
-
+}

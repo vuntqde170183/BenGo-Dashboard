@@ -2,18 +2,18 @@ import type { MenuItem } from "@/interface/types";
 import {
 	mdiViewDashboard,
 	mdiAccountGroup,
-	mdiSchool,
-	mdiCalendarMonth,
+	mdiCarSide,
+	mdiPackageVariant,
+	mdiCurrencyUsd,
 	mdiGift,
-	mdiBell,
-	mdiRobot,
-	mdiAlphaTCircle
+	mdiTicket,
+	mdiCog
 } from "@mdi/js";
 
 export const getDashboardMenuItems = (): MenuItem[] => [
 	{
 		id: "dashboard",
-		name: "Overview",
+		name: "Dashboard",
 		path: "/admin",
 		icon: mdiViewDashboard,
 	},
@@ -24,58 +24,94 @@ export const getDashboardMenuItems = (): MenuItem[] => [
 		icon: mdiAccountGroup,
 	},
 	{
-		id: "department-management",
-		name: "Department Management",
-		path: "/admin/departments",
-		icon: mdiSchool,
+		id: "driver-management",
+		name: "Driver Management",
+		path: "/admin/drivers",
+		icon: mdiCarSide,
+		subMenu: [
+			{
+				id: "drivers-pending",
+				name: "Pending Approval",
+				path: "/admin/drivers/pending",
+				icon: mdiCarSide,
+			},
+			{
+				id: "drivers-all",
+				name: "All Drivers",
+				path: "/admin/drivers",
+				icon: mdiCarSide,
+			},
+		],
 	},
 	{
-		id: "topic-management",
-		name: "Topic Management",
-		path: "/admin/topics",
-		icon: mdiAlphaTCircle,
-	},
-]; 
-
-export const getStudentMenuItems = (): MenuItem[] => [
-	{
-		id: "student-dashboard",
-		name: "Dashboard",
-		path: "/student",
-		icon: mdiViewDashboard,
-	},
-	{
-		id: "ai-chat",
-		name: "AI Chat",
-		path: "/student/chat",
-		icon: mdiRobot,
-	},
-];
-
-export const getCoordinatorMenuItems = (department: string): MenuItem[] => [
-	{
-		id: "coordinator-dashboard",
-		name: "Dashboard",
-		path: `/coordinator/${department}`,
-		icon: mdiViewDashboard,
-	},
-	{
-		id: "coordinator-event-management",
-		name: "Event Management",
-		path: `/coordinator/${department}/events`,
-		icon: mdiCalendarMonth,
+		id: "order-management",
+		name: "Orders",
+		path: "/admin/orders",
+		icon: mdiPackageVariant,
+		subMenu: [
+			{
+				id: "orders-all",
+				name: "All Orders",
+				path: "/admin/orders",
+				icon: mdiPackageVariant,
+			},
+			{
+				id: "orders-pending",
+				name: "Pending",
+				path: "/admin/orders/pending",
+				icon: mdiPackageVariant,
+			},
+			{
+				id: "orders-active",
+				name: "Active",
+				path: "/admin/orders/active",
+				icon: mdiPackageVariant,
+			},
+			{
+				id: "orders-completed",
+				name: "Completed",
+				path: "/admin/orders/completed",
+				icon: mdiPackageVariant,
+			},
+		],
 	},
 	{
-		id: "coordinator-scholarship-management",
-		name: "Scholarship Management",
-		path: `/coordinator/${department}/scholarships`,
+		id: "financial",
+		name: "Financial",
+		path: "/admin/pricing",
+		icon: mdiCurrencyUsd,
+		subMenu: [
+			{
+				id: "pricing-config",
+				name: "Pricing Config",
+				path: "/admin/pricing",
+				icon: mdiCurrencyUsd,
+			},
+			{
+				id: "revenue-reports",
+				name: "Revenue Reports",
+				path: "/admin/reports",
+				icon: mdiCurrencyUsd,
+			},
+		],
+	},
+	{
+		id: "promotions",
+		name: "Promotions",
+		path: "/admin/promotions",
 		icon: mdiGift,
 	},
 	{
-		id: "coordinator-notification-management",
-		name: "Notification Management",
-		path: `/coordinator/${department}/notifications`,
-		icon: mdiBell,
+		id: "support-tickets",
+		name: "Support Tickets",
+		path: "/admin/tickets",
+		icon: mdiTicket,
+	},
+	{
+		id: "settings",
+		name: "Settings",
+		path: "/admin/settings",
+		icon: mdiCog,
 	},
 ]; 
 

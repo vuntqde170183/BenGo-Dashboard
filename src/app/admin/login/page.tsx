@@ -1,109 +1,113 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useNavigate, Link } from "react-router-dom"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Eye, EyeSlash, Lock1 } from 'iconsax-reactjs';
-import { useLogin } from "@/hooks/useAuth"
-import { useUser } from "@/context/useUserContext"
-import { toast } from "react-toastify"
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Eye, EyeSlash, Lock1 } from "iconsax-reactjs";
+import { useLogin } from "@/hooks/useAuth";
+import { useUser } from "@/context/useUserContext";
+import { toast } from "react-toastify";
 
 export default function LoginPage() {
-  const navigate = useNavigate()
-  const { mutateAsync: loginUser, isPending } = useLogin()
-  const { loginUser: setUserContext, fetchUserProfile } = useUser()
+  const navigate = useNavigate();
+  const { mutateAsync: loginUser, isPending } = useLogin();
+  const { loginUser: setUserContext, fetchUserProfile } = useUser();
 
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-  })
+  });
 
   const [errors, setErrors] = useState<{
-    email?: string
-    password?: string
-    general?: string
-  }>({})
+    email?: string;
+    password?: string;
+    general?: string;
+  }>({});
 
-  const [showPassword, setShowPassword] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    setFormData(prev => ({
+    const { name, value } = e.target;
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
-    }))
+      [name]: value,
+    }));
     if (errors[name as keyof typeof errors]) {
-      setErrors(prev => ({
+      setErrors((prev) => ({
         ...prev,
-        [name]: undefined
-      }))
+        [name]: undefined,
+      }));
     }
-  }
+  };
 
   const validateForm = () => {
-    const newErrors: typeof errors = {}
+    const newErrors: typeof errors = {};
     if (!formData.email) {
-      newErrors.email = "Email is required"
+      newErrors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Invalid email format"
+      newErrors.email = "Invalid email format";
     }
     if (!formData.password) {
-      newErrors.password = "Password is required"
+      newErrors.password = "Password is required";
     } else if (formData.password && formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters"
+      newErrors.password = "Password must be at least 6 characters";
     }
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleLogin = async () => {
-    if (!validateForm()) return
+    if (!validateForm()) return;
 
     try {
       const loginResponse = await loginUser({
         email: formData.email,
-        password: formData.password
-      })
+        password: formData.password,
+      });
 
-      console.log("Login response:", loginResponse) // Debug log
+      console.log("Login response:", loginResponse); // Debug log
 
-      if (loginResponse?.statusCode === 200 && loginResponse?.data?.accessToken) {
-        const token = loginResponse.data.accessToken
-        const role = loginResponse.data.user.role.toLowerCase() 
-        const userProfile = JSON.stringify(loginResponse)
+      if (
+        loginResponse?.statusCode === 200 &&
+        loginResponse?.data?.accessToken
+      ) {
+        const token = loginResponse.data.accessToken;
+        const role = loginResponse.data.user.role.toLowerCase();
+        const userProfile = JSON.stringify(loginResponse);
 
-        localStorage.setItem("token", token)
-        localStorage.setItem("accessToken", token)
-        localStorage.setItem("userProfile", userProfile)
+        localStorage.setItem("token", token);
+        localStorage.setItem("accessToken", token);
+        localStorage.setItem("userProfile", userProfile);
 
-        setUserContext(loginResponse.data.user, token)
-        
+        setUserContext(loginResponse.data.user, token);
+
         try {
-          await fetchUserProfile()
+          await fetchUserProfile();
         } catch (err) {
-          console.log("fetchUserProfile error (non-critical):", err)
+          console.log("fetchUserProfile error (non-critical):", err);
         }
 
-        toast.success(loginResponse?.message || "Login successful!")
+        toast.success(loginResponse?.message || "Login successful!");
 
-        const redirectPath = `/${role}`
-        navigate(redirectPath)
+        const redirectPath = `/${role}`;
+        navigate(redirectPath);
       } else {
-        toast.error("Login failed: Invalid response from server")
+        toast.error("Login failed: Invalid response from server");
       }
     } catch (error: any) {
-      console.error("Login error:", error)
-      const errorMessage = error?.response?.data?.message || error?.message || "Login failed"
-      toast.error(errorMessage)
+      console.error("Login error:", error);
+      const errorMessage =
+        error?.response?.data?.message || error?.message || "Login failed";
+      toast.error(errorMessage);
     }
-  }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    await handleLogin()
-  }
+    e.preventDefault();
+    await handleLogin();
+  };
 
   return (
     <div className="min-h-screen flex items-center overflow-y-hidden justify-center bg-[#001110] p-4 relative overflow-hidden w-full">
@@ -114,13 +118,14 @@ export default function LoginPage() {
       <div className="w-full max-w-5xl bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl overflow-hidden relative z-10">
         <div className="grid lg:grid-cols-2">
           {/* Left Panel - Welcome Section */}
-          <div 
-          style={{
-            backgroundImage: "url('/images/login-bg.jpg')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-          className="p-8 relative overflow-hidden">
+          <div
+            style={{
+              backgroundImage: "url('/images/login-bg.jpg')",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+            className="p-8 relative overflow-hidden"
+          >
             <div className="absolute top-20 right-0 w-64 h-64 bg-teal-400 rounded-full opacity-40 blur-2xl" />
           </div>
 
@@ -146,7 +151,10 @@ export default function LoginPage() {
                 )}
 
                 <div className="space-y-2">
-                  <Label htmlFor="email" className="text-xs text-gray-500 uppercase tracking-wide">
+                  <Label
+                    htmlFor="email"
+                    className="text-xs text-gray-500 uppercase tracking-wide"
+                  >
                     Admin Email
                   </Label>
                   <Input
@@ -164,7 +172,10 @@ export default function LoginPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="password" className="text-xs text-gray-500 uppercase tracking-wide">
+                  <Label
+                    htmlFor="password"
+                    className="text-xs text-gray-500 uppercase tracking-wide"
+                  >
                     Password
                   </Label>
                   <div className="relative">
@@ -183,35 +194,36 @@ export default function LoginPage() {
                       disabled={isPending}
                       className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
                     >
-                      {showPassword ? <EyeSlash size="20" color="currentColor" /> : <Eye size="20" color="currentColor" />}
+                      {showPassword ? (
+                        <EyeSlash size="20" color="currentColor" />
+                      ) : (
+                        <Eye size="20" color="currentColor" />
+                      )}
                     </button>
                   </div>
                   {errors.password && (
-                    <p className="text-red-500 text-xs mt-1">{errors.password}</p>
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.password}
+                    </p>
                   )}
                 </div>
 
-                {/* Remember Me & Forgot Password */}
-                <div className="flex items-center justify-between">
+                {/* Remember Me */}
+                <div className="flex items-center justify-start">
                   <label className="flex items-center gap-2 cursor-pointer group">
-                    <input 
-                      type="checkbox" 
+                    <input
+                      type="checkbox"
                       className="w-4 h-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500 cursor-pointer"
                       disabled={isPending}
                     />
-                    <span className="text-sm text-gray-600 group-hover:text-gray-900 transition-colors">Remember me</span>
+                    <span className="text-sm text-gray-600 group-hover:text-gray-900 transition-colors">
+                      Remember me
+                    </span>
                   </label>
-                  <Link to="/auth/forgot-password" className="text-sm font-medium text-secondary transition-colors hover:underline">
-                    Forgot password?
-                  </Link>
                 </div>
 
                 {/* Login Button */}
-                <Button
-                  type="submit"
-                  disabled={isPending}
-                  className="w-full"
-                >
+                <Button type="submit" disabled={isPending} className="w-full">
                   {isPending ? (
                     <div className="flex items-center justify-center gap-2">
                       <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
@@ -225,8 +237,11 @@ export default function LoginPage() {
                 {/* Security Notice */}
                 <div className="text-center pt-4 border-t border-gray-200">
                   <div className="text-xs flex items-center justify-center gap-2 text-gray-500">
-                    <Lock1 size="16" color="#7F8788"/>
-                    <span>Secure admin access only · Contact support if you need assistance</span> 
+                    <Lock1 size="16" color="#7F8788" />
+                    <span>
+                      Secure admin access only · Contact support if you need
+                      assistance
+                    </span>
                   </div>
                 </div>
               </form>
@@ -235,5 +250,5 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
