@@ -96,7 +96,7 @@ export default function UserPage() {
 
   const displayUsers = usersData?.data || [];
   return (
-    <div className="space-y-6 bg-white p-4 rounded-lg border border-lightBorderV1">
+    <div className="space-y-6 bg-darkCardV1 p-4 rounded-2xl border border-darkBorderV1">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>

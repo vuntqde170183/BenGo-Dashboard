@@ -9,7 +9,13 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -27,13 +33,23 @@ export default function PromotionsPage() {
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
   const [selectedPromotion, setSelectedPromotion] = useState<any>(null);
 
-  const activeParam = filterStatus === "ACTIVE" ? true : filterStatus === "EXPIRED" ? false : undefined;
+  const activeParam =
+    filterStatus === "ACTIVE"
+      ? true
+      : filterStatus === "EXPIRED"
+      ? false
+      : undefined;
 
-  const { data: promotionsData, isLoading, refetch } = useAdminPromotions({
+  const {
+    data: promotionsData,
+    isLoading,
+    refetch,
+  } = useAdminPromotions({
     active: activeParam,
   });
 
-  const { mutate: deletePromotionMutation, isPending: isDeleting } = useDeletePromotion();
+  const { mutate: deletePromotionMutation, isPending: isDeleting } =
+    useDeletePromotion();
 
   const handleDelete = (promotion: any) => {
     setSelectedPromotion(promotion);
@@ -65,7 +81,7 @@ export default function PromotionsPage() {
   const displayPromotions = promotionsData?.data || [];
 
   return (
-    <div className="space-y-6 bg-white p-4 rounded-lg border border-lightBorderV1">
+    <div className="space-y-6 bg-darkCardV1 p-4 rounded-2xl border border-darkBorderV1">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
@@ -121,7 +137,10 @@ export default function PromotionsPage() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {displayPromotions.map((promo: any) => (
-                <Card key={promo._id} className="hover:shadow-lg transition-shadow">
+                <Card
+                  key={promo._id}
+                  className="hover:shadow-lg transition-shadow"
+                >
                   <CardHeader>
                     <div className="flex justify-between items-start">
                       <div className="flex-1">
@@ -197,7 +216,7 @@ export default function PromotionsPage() {
                 </Card>
               ))}
             </div>
-          )
+          )}
         </div>
       </motion.div>
 

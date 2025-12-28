@@ -28,15 +28,21 @@ export default function OrdersPage() {
   const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
 
-  const statusParam = statusFilter && statusFilter !== "ALL" ? statusFilter : undefined;
+  const statusParam =
+    statusFilter && statusFilter !== "ALL" ? statusFilter : undefined;
 
-  const { data: ordersData, isLoading, refetch } = useAdminOrders({
+  const {
+    data: ordersData,
+    isLoading,
+    refetch,
+  } = useAdminOrders({
     status: statusParam,
     page: currentPage,
     limit: pageSize,
   });
 
-  const { mutate: cancelOrderMutation, isPending: isCanceling } = useCancelOrder();
+  const { mutate: cancelOrderMutation, isPending: isCanceling } =
+    useCancelOrder();
 
   const handleViewDetails = (id: string) => {
     setSelectedOrderId(id);
@@ -80,7 +86,7 @@ export default function OrdersPage() {
   const displayOrders = ordersData?.data || [];
 
   return (
-    <div className="space-y-6 bg-white p-4 rounded-lg border border-lightBorderV1">
+    <div className="space-y-6 bg-darkCardV1 p-4 rounded-2xl border border-darkBorderV1">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>

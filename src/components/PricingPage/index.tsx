@@ -33,7 +33,7 @@ export default function PricingPage() {
 
   if (isLoading) {
     return (
-      <div className="space-y-6 bg-white p-4 rounded-lg border border-lightBorderV1">
+      <div className="space-y-6 bg-darkCardV1 p-4 rounded-2xl border border-darkBorderV1">
         <Skeleton className="h-12 w-64" />
         <div className="space-y-4">
           {[1, 2, 3].map((i) => (
@@ -52,7 +52,7 @@ export default function PricingPage() {
   }
 
   return (
-    <div className="space-y-6 bg-white p-4 rounded-lg border border-lightBorderV1">
+    <div className="space-y-6 bg-darkCardV1 p-4 rounded-2xl border border-darkBorderV1">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
