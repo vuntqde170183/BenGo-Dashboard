@@ -93,7 +93,7 @@ export default function PricingPage() {
                         {...register(`${config.vehicleType}.basePrice`)}
                         className="mt-1"
                       />
-                      <p className="text-xs text-neutral-200 mt-1">
+                      <p className="text-sm text-neutral-200 mt-1">
                         Starting fare for this vehicle type
                       </p>
                     </div>
@@ -108,7 +108,7 @@ export default function PricingPage() {
                         {...register(`${config.vehicleType}.perKm`)}
                         className="mt-1"
                       />
-                      <p className="text-xs text-neutral-200 mt-1">
+                      <p className="text-sm text-neutral-200 mt-1">
                         Cost per kilometer traveled
                       </p>
                     </div>
@@ -126,7 +126,7 @@ export default function PricingPage() {
                         )}
                         className="mt-1"
                       />
-                      <p className="text-xs text-neutral-200 mt-1">
+                      <p className="text-sm text-neutral-200 mt-1">
                         Surge pricing multiplier (e.g., 1.5 = 50% increase)
                       </p>
                     </div>

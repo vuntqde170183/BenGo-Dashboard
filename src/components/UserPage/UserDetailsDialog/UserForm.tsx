@@ -157,7 +157,7 @@ export const UserForm = ({
                       ? "Đang tải ảnh..."
                       : "Tải ảnh đại diện lên"}
                   </div>
-                  <div className="text-xs text-neutral-200 mt-1">
+                  <div className="text-sm text-neutral-200 mt-1">
                     Select image (max 10MB)
                   </div>
                 </div>

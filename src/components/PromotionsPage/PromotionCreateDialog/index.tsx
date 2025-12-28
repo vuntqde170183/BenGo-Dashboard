@@ -217,7 +217,7 @@ export function PromotionCreateDialog({
                 placeholder="Optional"
                 {...register("maxDiscountAmount")}
               />
-              <p className="text-xs text-neutral-200 mt-1">
+              <p className="text-sm text-neutral-200 mt-1">
                 Leave empty for no limit
               </p>
             </div>
@@ -268,7 +268,7 @@ export function PromotionCreateDialog({
               placeholder="Leave empty for unlimited"
               {...register("usageLimit")}
             />
-            <p className="text-xs text-neutral-200 mt-1">
+            <p className="text-sm text-neutral-200 mt-1">
               How many times this code can be used in total
             </p>
           </div>

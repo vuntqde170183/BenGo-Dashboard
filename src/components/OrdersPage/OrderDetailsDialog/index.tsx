@@ -134,7 +134,7 @@ export function OrderDetailsDialog({
                     <p className="text-sm text-gray-600">
                       {order.pickup?.address}
                     </p>
-                    <p className="text-xs text-neutral-200 mt-1">
+                    <p className="text-sm text-neutral-200 mt-1">
                       {order.pickup?.lat}, {order.pickup?.lng}
                     </p>
                   </div>
@@ -147,7 +147,7 @@ export function OrderDetailsDialog({
                     <p className="text-sm text-gray-600">
                       {order.dropoff?.address}
                     </p>
-                    <p className="text-xs text-neutral-200 mt-1">
+                    <p className="text-sm text-neutral-200 mt-1">
                       {order.dropoff?.lat}, {order.dropoff?.lng}
                     </p>
                   </div>

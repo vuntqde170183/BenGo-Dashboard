@@ -82,16 +82,19 @@ export default function DashboardLayout({
                           >
                             <div
                               className={cn(
-                                "flex items-center rounded-lg p-[10px] h-[46px] text-[13px] font-semibold transition-colors",
+                                "flex items-center rounded-lg p-[10px] h-[46px] text-[13px] font-semibold transition-all duration-300 border",
                                 isMenuActive(menu)
-                                  ? "bg-[#29323A] text-neutral-200"
-                                  : "text-neutral-200/70 hover:bg-[#29323A]",
+                                  ? "bg-primary/10 text-primary border-primary/20 shadow-[0_0_15px_rgba(65,198,81,0.1)]"
+                                  : "text-neutral-200/70 border-transparent hover:bg-primary/5 hover:text-primary/80 hover:border-primary/10",
                                 !isOpen && "!justify-center w-[46px]"
                               )}
                             >
                               <div
                                 className={cn(
-                                  "!w-7 !h-7 flex-shrink-0 rounded-sm flex items-center justify-center bg-[#29323A]",
+                                  "!w-7 !h-7 flex-shrink-0 rounded-md flex items-center justify-center transition-colors",
+                                  isMenuActive(menu)
+                                    ? "bg-primary/20"
+                                    : "bg-darkBorderV1",
                                   isOpen ? "mr-2" : "mr-0"
                                 )}
                               >
@@ -100,8 +103,8 @@ export default function DashboardLayout({
                                   size={0.8}
                                   className={cn(
                                     isMenuActive(menu)
-                                      ? "!text-neutral-200 flex-shrink-0"
-                                      : "!text-neutral-200/70 flex-shrink-0"
+                                      ? "text-primary flex-shrink-0"
+                                      : "text-neutral-200/70 flex-shrink-0"
                                   )}
                                 />
                               </div>
@@ -118,16 +121,19 @@ export default function DashboardLayout({
                         >
                           <div
                             className={cn(
-                              "flex items-center  rounded-lg p-[10px] h-[46px] text-[13px] font-semibold transition-colors cursor-pointer",
+                              "flex items-center rounded-lg p-[10px] h-[46px] text-[13px] font-semibold transition-all duration-300 border",
                               isMenuActive(menu)
-                                ? "bg-[#29323A] text-neutral-200"
-                                : "text-neutral-200/70 hover:bg-[#29323A]",
+                                ? "bg-primary/10 text-primary border-primary/20 shadow-[0_0_15px_rgba(65,198,81,0.1)]"
+                                : "text-neutral-200/70 border-transparent hover:bg-primary/5 hover:text-primary/80 hover:border-primary/10",
                               !isOpen && "!justify-center w-[46px]"
                             )}
                           >
                             <div
                               className={cn(
-                                "!w-7 !h-7 flex-shrink-0 rounded-sm flex items-center justify-center bg-[#29323A] ",
+                                "!w-7 !h-7 flex-shrink-0 rounded-md flex items-center justify-center transition-colors",
+                                isMenuActive(menu)
+                                  ? "bg-primary/20"
+                                  : "bg-darkBorderV1",
                                 isOpen ? "mr-2" : "mr-0"
                               )}
                             >
@@ -136,8 +142,8 @@ export default function DashboardLayout({
                                 size={0.8}
                                 className={cn(
                                   isMenuActive(menu)
-                                    ? "!text-neutral-200 flex-shrink-0"
-                                    : "!text-neutral-200/70 flex-shrink-0"
+                                    ? "text-primary flex-shrink-0"
+                                    : "text-neutral-200/70 flex-shrink-0"
                                 )}
                               />
                             </div>
@@ -182,10 +188,10 @@ export default function DashboardLayout({
                                     >
                                       <div
                                         className={cn(
-                                          "flex items-center rounded-lg p-[8px] h-[38px] text-[13px] font-normal transition-colors",
+                                          "flex items-center rounded-lg p-[8px] h-[38px] text-[13px] font-normal transition-all duration-300 border",
                                           pathname === sub.path
-                                            ? "bg-[#29323A] text-neutral-200"
-                                            : "text-neutral-200/70 hover:bg-[#29323A]"
+                                            ? "bg-primary/10 text-primary border-primary/20"
+                                            : "text-neutral-200/70 border-transparent hover:bg-primary/5 hover:text-primary/80 hover:border-primary/10"
                                         )}
                                       >
                                         <Icon
@@ -193,8 +199,8 @@ export default function DashboardLayout({
                                           size={0.7}
                                           className={cn(
                                             pathname === sub.path
-                                              ? "!text-neutral-200 flex-shrink-0"
-                                              : "!text-neutral-200/70 flex-shrink-0",
+                                              ? "text-primary flex-shrink-0"
+                                              : "text-neutral-200/70 flex-shrink-0",
                                             "mr-3"
                                           )}
                                         />

@@ -153,7 +153,7 @@ export default function LoginPage() {
                 <div className="space-y-2">
                   <Label
                     htmlFor="email"
-                    className="text-xs text-neutral-200 uppercase tracking-wide"
+                    className="text-sm text-neutral-200 uppercase tracking-wide"
                   >
                     Admin Email
                   </Label>
@@ -167,14 +167,14 @@ export default function LoginPage() {
                     className="border-0 border-b-2 border-gray-200 rounded-none px-0 focus-visible:ring-0 focus-visible:border-[#41C651]"
                   />
                   {errors.email && (
-                    <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+                    <p className="text-red-500 text-sm mt-1">{errors.email}</p>
                   )}
                 </div>
 
                 <div className="space-y-2">
                   <Label
                     htmlFor="password"
-                    className="text-xs text-neutral-200 uppercase tracking-wide"
+                    className="text-sm text-neutral-200 uppercase tracking-wide"
                   >
                     Password
                   </Label>
@@ -202,7 +202,7 @@ export default function LoginPage() {
                     </button>
                   </div>
                   {errors.password && (
-                    <p className="text-red-500 text-xs mt-1">
+                    <p className="text-red-500 text-sm mt-1">
                       {errors.password}
                     </p>
                   )}
@@ -236,7 +236,7 @@ export default function LoginPage() {
 
                 {/* Security Notice */}
                 <div className="text-center pt-4 border-t border-gray-200">
-                  <div className="text-xs flex items-center justify-center gap-2 text-neutral-200">
+                  <div className="text-sm flex items-center justify-center gap-2 text-neutral-200">
                     <Lock1 size="16" color="#7F8788" />
                     <span>
                       Secure admin access only · Contact support if you need

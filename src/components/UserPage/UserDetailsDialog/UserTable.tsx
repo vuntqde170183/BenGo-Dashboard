@@ -422,10 +422,10 @@ export const UserTable = ({ user }: UserTableProps) => {
                           {achievement.description}
                         </div>
                         <div className="flex items-center gap-2 mt-2">
-                          <Badge variant="outline" className="text-xs">
+                          <Badge variant="outline" className="text-sm">
                             {achievement.category}
                           </Badge>
-                          <span className="text-xs text-neutral-200">
+                          <span className="text-sm text-neutral-200">
                             {formatDateOnly(achievement.date)}
                           </span>
                         </div>
