@@ -118,7 +118,7 @@ export const UserTable = ({ user }: UserTableProps) => {
 
   const renderTableRow = (label: string, value: React.ReactNode) => (
     <TableRow className="transition-colors">
-      <TableCell className="font-semibold text-gray-800 w-1/3">
+      <TableCell className="font-semibold dark:text-neutral-200 w-1/3">
         {label}
       </TableCell>
       <TableCell className="text-gray-800">{value}</TableCell>
@@ -154,7 +154,7 @@ export const UserTable = ({ user }: UserTableProps) => {
         <CardHeader className="!border-b !border-b-[#ccc]">
           <div className="flex items-center gap-2">
             <Activity className="h-5 w-5 text-gray-700" />
-            <span className="font-semibold text-gray-800">
+            <span className="font-semibold dark:text-neutral-200">
               Basic Information
             </span>
           </div>
@@ -180,7 +180,7 @@ export const UserTable = ({ user }: UserTableProps) => {
               )}
             </div>
             <div className="flex-1">
-              <h3 className="text-lg font-semibold text-gray-800">
+              <h3 className="text-lg font-semibold dark:text-neutral-200">
                 {user.fullName || user.name}
               </h3>
               <p className="text-gray-600 text-sm">@{user.name}</p>
@@ -196,10 +196,10 @@ export const UserTable = ({ user }: UserTableProps) => {
             <Table>
               <TableHeader>
                 <TableRow className="bg-[#F56C1420]">
-                  <TableHead className="font-semibold text-gray-800 w-1/3">
+                  <TableHead className="font-semibold dark:text-neutral-200 w-1/3">
                     Field
                   </TableHead>
-                  <TableHead className="font-semibold text-gray-800">
+                  <TableHead className="font-semibold dark:text-neutral-200">
                     Value
                   </TableHead>
                 </TableRow>
@@ -243,7 +243,7 @@ export const UserTable = ({ user }: UserTableProps) => {
           <CardHeader className="!border-b !border-b-[#ccc]">
             <div className="flex items-center gap-2">
               <MapPin className="h-5 w-5 text-gray-700" />
-              <span className="font-semibold text-gray-800">
+              <span className="font-semibold dark:text-neutral-200">
                 Personal Information
               </span>
             </div>
@@ -253,10 +253,10 @@ export const UserTable = ({ user }: UserTableProps) => {
               <Table>
                 <TableHeader>
                   <TableRow className="bg-[#F56C1420]">
-                    <TableHead className="font-semibold text-gray-800 w-1/3">
+                    <TableHead className="font-semibold dark:text-neutral-200 w-1/3">
                       Field
                     </TableHead>
-                    <TableHead className="font-semibold text-gray-800">
+                    <TableHead className="font-semibold dark:text-neutral-200">
                       Value
                     </TableHead>
                   </TableRow>
@@ -292,7 +292,7 @@ export const UserTable = ({ user }: UserTableProps) => {
           <CardHeader className="!border-b !border-b-[#ccc]">
             <div className="flex items-center gap-2">
               <GraduationCap className="h-5 w-5 text-gray-700" />
-              <span className="font-semibold text-gray-800">
+              <span className="font-semibold dark:text-neutral-200">
                 Student Information
               </span>
             </div>
@@ -302,10 +302,10 @@ export const UserTable = ({ user }: UserTableProps) => {
               <Table>
                 <TableHeader>
                   <TableRow className="bg-[#F56C1420]">
-                    <TableHead className="font-semibold text-gray-800 w-1/3">
+                    <TableHead className="font-semibold dark:text-neutral-200 w-1/3">
                       Field
                     </TableHead>
-                    <TableHead className="font-semibold text-gray-800">
+                    <TableHead className="font-semibold dark:text-neutral-200">
                       Value
                     </TableHead>
                   </TableRow>
@@ -371,7 +371,7 @@ export const UserTable = ({ user }: UserTableProps) => {
             {user.studentInfo.scholarships &&
               user.studentInfo.scholarships.length > 0 && (
                 <div className="mt-4">
-                  <h4 className="text-sm font-semibold text-gray-800 mb-2 flex items-center gap-2">
+                  <h4 className="text-sm font-semibold dark:text-neutral-200 mb-2 flex items-center gap-2">
                     <Award className="h-4 w-4" />
                     Scholarships
                   </h4>
@@ -382,7 +382,7 @@ export const UserTable = ({ user }: UserTableProps) => {
                         className="p-3 bg-gray-50 rounded-lg border border-gray-200"
                       >
                         <div className="flex items-center justify-between">
-                          <span className="font-medium text-gray-800">
+                          <span className="font-medium dark:text-neutral-200">
                             {scholarship.name}
                           </span>
                           <Badge variant="green">
@@ -405,7 +405,7 @@ export const UserTable = ({ user }: UserTableProps) => {
             {user.studentInfo.achievements &&
               user.studentInfo.achievements.length > 0 && (
                 <div className="mt-4">
-                  <h4 className="text-sm font-semibold text-gray-800 mb-2 flex items-center gap-2">
+                  <h4 className="text-sm font-semibold dark:text-neutral-200 mb-2 flex items-center gap-2">
                     <Award className="h-4 w-4" />
                     Achievements
                   </h4>
@@ -415,7 +415,7 @@ export const UserTable = ({ user }: UserTableProps) => {
                         key={index}
                         className="p-3 bg-gray-50 rounded-lg border border-gray-200"
                       >
-                        <div className="font-medium text-gray-800">
+                        <div className="font-medium dark:text-neutral-200">
                           {achievement.title}
                         </div>
                         <div className="text-sm text-gray-600 mt-1">
@@ -444,7 +444,7 @@ export const UserTable = ({ user }: UserTableProps) => {
           <CardHeader className="!border-b !border-b-[#ccc]">
             <div className="flex items-center gap-2">
               <Briefcase className="h-5 w-5 text-gray-700" />
-              <span className="font-semibold text-gray-800">
+              <span className="font-semibold dark:text-neutral-200">
                 Coordinator Information
               </span>
             </div>
@@ -453,7 +453,7 @@ export const UserTable = ({ user }: UserTableProps) => {
             {user.coordinatorInfo.specialization &&
               user.coordinatorInfo.specialization.length > 0 && (
                 <div>
-                  <h4 className="text-sm font-semibold text-gray-800 mb-2">
+                  <h4 className="text-sm font-semibold dark:text-neutral-200 mb-2">
                     Specialization
                   </h4>
                   <div className="flex flex-wrap gap-2">
@@ -469,7 +469,7 @@ export const UserTable = ({ user }: UserTableProps) => {
             {user.coordinatorInfo.researchInterests &&
               user.coordinatorInfo.researchInterests.length > 0 && (
                 <div>
-                  <h4 className="text-sm font-semibold text-gray-800 mb-2 flex items-center gap-2">
+                  <h4 className="text-sm font-semibold dark:text-neutral-200 mb-2 flex items-center gap-2">
                     <BookOpen className="h-4 w-4" />
                     Research Interests
                   </h4>
@@ -488,7 +488,7 @@ export const UserTable = ({ user }: UserTableProps) => {
             {user.coordinatorInfo.qualifications &&
               user.coordinatorInfo.qualifications.length > 0 && (
                 <div>
-                  <h4 className="text-sm font-semibold text-gray-800 mb-2">
+                  <h4 className="text-sm font-semibold dark:text-neutral-200 mb-2">
                     Qualifications
                   </h4>
                   <div className="space-y-2">
@@ -497,7 +497,7 @@ export const UserTable = ({ user }: UserTableProps) => {
                         key={index}
                         className="p-3 bg-gray-50 rounded-lg border border-gray-200"
                       >
-                        <div className="font-medium text-gray-800">
+                        <div className="font-medium dark:text-neutral-200">
                           {qual.degree} in {qual.field}
                         </div>
                         <div className="text-sm text-gray-600">
@@ -512,7 +512,7 @@ export const UserTable = ({ user }: UserTableProps) => {
             {user.coordinatorInfo.experience &&
               user.coordinatorInfo.experience.length > 0 && (
                 <div>
-                  <h4 className="text-sm font-semibold text-gray-800 mb-2">
+                  <h4 className="text-sm font-semibold dark:text-neutral-200 mb-2">
                     Experience
                   </h4>
                   <div className="space-y-2">
@@ -521,7 +521,7 @@ export const UserTable = ({ user }: UserTableProps) => {
                         key={index}
                         className="p-3 bg-gray-50 rounded-lg border border-gray-200"
                       >
-                        <div className="font-medium text-gray-800">
+                        <div className="font-medium dark:text-neutral-200">
                           {exp.position}
                         </div>
                         <div className="text-sm text-gray-600">
@@ -547,7 +547,7 @@ export const UserTable = ({ user }: UserTableProps) => {
             {user.coordinatorInfo.publications &&
               user.coordinatorInfo.publications.length > 0 && (
                 <div>
-                  <h4 className="text-sm font-semibold text-gray-800 mb-2">
+                  <h4 className="text-sm font-semibold dark:text-neutral-200 mb-2">
                     Publications
                   </h4>
                   <div className="space-y-2">
@@ -556,7 +556,7 @@ export const UserTable = ({ user }: UserTableProps) => {
                         key={index}
                         className="p-3 bg-gray-50 rounded-lg border border-gray-200"
                       >
-                        <div className="font-medium text-gray-800">
+                        <div className="font-medium dark:text-neutral-200">
                           {pub.title}
                         </div>
                         <div className="text-sm text-gray-600">

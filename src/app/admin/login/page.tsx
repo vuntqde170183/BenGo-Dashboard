@@ -45,14 +45,14 @@ export default function LoginPage() {
   const validateForm = () => {
     const newErrors: typeof errors = {};
     if (!formData.email) {
-      newErrors.email = "Email is required";
+      newErrors.email = "Email là bắt buộc";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Invalid email format";
+      newErrors.email = "Định dạng email không hợp lệ";
     }
     if (!formData.password) {
-      newErrors.password = "Password is required";
+      newErrors.password = "Mật khẩu là bắt buộc";
     } else if (formData.password && formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
+      newErrors.password = "Mật khẩu phải có ít nhất 6 ký tự";
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -89,17 +89,19 @@ export default function LoginPage() {
           console.log("fetchUserProfile error (non-critical):", err);
         }
 
-        toast.success(loginResponse?.message || "Login successful!");
+        toast.success(loginResponse?.message || "Đăng nhập thành công!");
 
         const redirectPath = `/${role}`;
         navigate(redirectPath);
       } else {
-        toast.error("Login failed: Invalid response from server");
+        toast.error("Đăng nhập thất bại: Phản hồi từ máy chủ không hợp lệ");
       }
     } catch (error: any) {
       console.error("Login error:", error);
       const errorMessage =
-        error?.response?.data?.message || error?.message || "Login failed";
+        error?.response?.data?.message ||
+        error?.message ||
+        "Đăng nhập thất bại";
       toast.error(errorMessage);
     }
   };
@@ -135,10 +137,10 @@ export default function LoginPage() {
               {/* Header */}
               <div className="text-center space-y-3">
                 <h2 className="text-3xl font-bold bg-gradient-to-r from-teal-600 to-emerald-600 bg-clip-text text-transparent uppercase">
-                  Admin Portal
+                  Cổng Quản Trị
                 </h2>
-                <p className="text-neutral-200 text-sm">
-                  Sign in to access the BenGo admin dashboard
+                <p className="text-neutral-600 text-sm">
+                  Đăng nhập để truy cập trang quản trị BenGo
                 </p>
               </div>
 
@@ -153,9 +155,9 @@ export default function LoginPage() {
                 <div className="space-y-2">
                   <Label
                     htmlFor="email"
-                    className="text-sm text-neutral-200 uppercase tracking-wide"
+                    className="text-sm text-neutral-600 uppercase tracking-wide"
                   >
-                    Admin Email
+                    Email
                   </Label>
                   <Input
                     id="email"
@@ -174,9 +176,9 @@ export default function LoginPage() {
                 <div className="space-y-2">
                   <Label
                     htmlFor="password"
-                    className="text-sm text-neutral-200 uppercase tracking-wide"
+                    className="text-sm text-neutral-600 uppercase tracking-wide"
                   >
-                    Password
+                    Mật khẩu
                   </Label>
                   <div className="relative">
                     <Input
@@ -217,7 +219,7 @@ export default function LoginPage() {
                       disabled={isPending}
                     />
                     <span className="text-sm text-gray-600 group-hover:text-gray-900 transition-colors">
-                      Remember me
+                      Ghi nhớ đăng nhập
                     </span>
                   </label>
                 </div>
@@ -227,20 +229,20 @@ export default function LoginPage() {
                   {isPending ? (
                     <div className="flex items-center justify-center gap-2">
                       <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                      Signing in...
+                      Đang đăng nhập...
                     </div>
                   ) : (
-                    "Sign In to Dashboard"
+                    "Đăng nhập vào trang quản trị"
                   )}
                 </Button>
 
                 {/* Security Notice */}
                 <div className="text-center pt-4 border-t border-gray-200">
-                  <div className="text-sm flex items-center justify-center gap-2 text-neutral-200">
+                  <div className="text-sm flex items-center justify-center gap-2 text-neutral-600">
                     <Lock1 size="16" color="#7F8788" />
                     <span>
-                      Secure admin access only · Contact support if you need
-                      assistance
+                      Chỉ dành cho quản trị viên · Liên hệ hỗ trợ nếu cần giúp
+                      đỡ
                     </span>
                   </div>
                 </div>

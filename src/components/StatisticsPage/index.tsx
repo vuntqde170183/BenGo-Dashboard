@@ -110,7 +110,7 @@ function MetricCard({
                   <p className="text-sm text-neutral-200 mt-1">{subtitle}</p>
                 )}
                 {trend && (
-                  <div className="flex items-center gap-1 mt-2 text-green-600 text-sm">
+                  <div className="flex items-center gap-1 mt-2 text-green-600 text-sm text-nowrap">
                     <Icon path={mdiTrendingUp} size={0.7} />
                     <span>{trend}</span>
                   </div>

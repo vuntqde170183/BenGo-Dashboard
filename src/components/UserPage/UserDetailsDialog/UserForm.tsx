@@ -152,7 +152,7 @@ export const UserForm = ({
                   )}
                 </div>
                 <div className="text-center">
-                  <div className="text-sm font-semibold text-gray-800 group-hover:text-mainTextHoverV1">
+                  <div className="text-sm font-semibold dark:text-neutral-200 group-hover:text-mainTextHoverV1">
                     {isUploadingAvatar
                       ? "Đang tải ảnh..."
                       : "Tải ảnh đại diện lên"}

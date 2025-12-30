@@ -361,11 +361,7 @@ export function PromotionDetailsDialog({
             >
               Cancel
             </Button>
-            <Button
-              type="submit"
-              disabled={isPending || isUploading}
-              className="bg-mainTextHoverV1 hover:bg-primary/90 text-neutral-200"
-            >
+            <Button type="submit" disabled={isPending || isUploading}>
               {isPending ? "Updating..." : "Update Promotion"}
             </Button>
           </div>

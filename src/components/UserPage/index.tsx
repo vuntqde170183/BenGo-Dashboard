@@ -120,22 +120,22 @@ export default function UserPage() {
                 placeholder="Search by name, email, role, department..."
                 value={searchQuery}
                 onChange={handleSearch}
-                className="pl-10 pr-10 py-2 w-full border-lightBorderV1 focus:border-mainTextHoverV1 text-gray-800"
+                className="pl-10 pr-10 py-2 w-full"
               />
-              <IconSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-800 w-5 h-5" />
+              <IconSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 dark:text-neutral-200 w-5 h-5" />
               {searchQuery && (
                 <button
                   onClick={handleClearSearch}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-800 hover:text-red-500 transition-colors"
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 dark:text-neutral-200 hover:text-red-500 transition-colors"
                   type="button"
                 >
-                  <IconX className="w-5 h-5" />
+                  <IconX className="w-5 h-5 dark:text-neutral-200" />
                 </button>
               )}
             </div>
             <div className="flex items-center gap-3">
               <Select value={roleFilter} onValueChange={handleRoleFilterChange}>
-                <SelectTrigger className="w-[180px] focus:border-mainTextHoverV1">
+                <SelectTrigger className="w-[180px]">
                   <SelectValue placeholder="Filter by role" />
                 </SelectTrigger>
                 <SelectContent>
@@ -145,17 +145,14 @@ export default function UserPage() {
                   <SelectItem value="DRIVER">Driver</SelectItem>
                 </SelectContent>
               </Select>
-              <Button
-                onClick={() => setIsCreateDialogOpen(true)}
-                className="bg-mainTextHoverV1 hover:bg-primary/90 text-neutral-200"
-              >
+              <Button onClick={() => setIsCreateDialogOpen(true)}>
                 <IconPlus className="h-4 w-4" />
                 Add User
               </Button>
             </div>
           </div>
 
-          <Card className="p-0 overflow-hidden border border-lightBorderV1">
+          <Card className="p-0 overflow-hidden border border-lightBorderV1 dark:border-darkBackgroundV1">
             {isLoading ? (
               <div className="p-4">
                 <div className="flex flex-col gap-4">

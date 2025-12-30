@@ -3,13 +3,12 @@
 @tailwind utilities;
 
 body {
-  color: #1E293B;
+  /* color: #1E293B; */
   font-family: var(--font-opensans);
   overflow-x: hidden;
 }
 
 html,
-
 .ant-table-body {
   scrollbar-width: thin !important;
 }
@@ -38,12 +37,12 @@ html,
 }
 
 .ant-switch-checked {
-  background-color: #36A492 !important;
+  background-color: #36a492 !important;
 }
 
 .ant-input-affix-wrapper {
   border-start-start-radius: 0px !important;
-  border-end-start-radius: 0px !important
+  border-end-start-radius: 0px !important;
 }
 
 @media only screen and (max-width: 1560px) {
@@ -67,24 +66,25 @@ html,
 
 .ant-table-wrapper .ant-table {
   scrollbar-color: unset !important;
-  ;
 }
 
 .ant-table-wrapper .ant-table:hover {
   cursor: pointer !important;
-  ;
 }
 
 .ant-input-outlined:focus,
 .ant-input-affix-wrapper:focus,
 .ant-input-affix-wrapper-focused {
-  border-color: #2B303810 !important;
+  border-color: #2b303810 !important;
   box-shadow: 0 0 0 1px rgba(43, 48, 56, 0.2) !important;
   outline: 0 !important;
 }
 
-.ant-input-affix-wrapper, .ant-select-selector, .ant-input,
-.ant-input-outlined, .ant-modal-content {
+.ant-input-affix-wrapper,
+.ant-select-selector,
+.ant-input,
+.ant-input-outlined,
+.ant-modal-content {
   border-radius: 4px !important;
 }
 
@@ -92,7 +92,7 @@ html,
   background: linear-gradient(#f6dd9e, #f0c24d) !important;
   border: 0.075em solid #878787 !important;
   border-radius: 0.1em !important;
-  color: #1E293B !important;
+  color: #1e293b !important;
 }
 
 .ant-menu-item-selected {
@@ -113,17 +113,17 @@ ul.ant-menu.ant-menu-sub.ant-menu-inline {
 }
 
 .ant-pagination-item:hover {
-  border-color: #44D7B6 !important;
+  border-color: #44d7b6 !important;
   color: #ffffff !important;
 }
 
 .ant-pagination-item-active {
-  background-color: #44D7B6 !important;
-  border-color: #44D7B6 !important;
+  background-color: #44d7b6 !important;
+  border-color: #44d7b6 !important;
 }
 .ant-pagination-item-active:hover {
-  background-color: #44D7B6 !important;
-  border-color: #44D7B6 !important;
+  background-color: #44d7b6 !important;
+  border-color: #44d7b6 !important;
 }
 
 .ant-pagination-item-active a {
@@ -150,11 +150,11 @@ ul.ant-menu.ant-menu-sub.ant-menu-inline {
   background-color: #131921 !important;
 }
 
-.ant-typography, 
+.ant-typography,
 .ant-table-column-title,
 .ant-table-cell,
 .ant-badge-status-text {
-  color: #1E293B !important;
+  color: #1e293b !important;
 }
 
 @layer base {
@@ -235,18 +235,17 @@ ul.ant-menu.ant-menu-sub.ant-menu-inline {
   }
   body {
     @apply bg-background text-foreground;
-    
   }
 
   .text-outline-green {
-    -webkit-text-stroke: 1px #2C8B3D; 
+    -webkit-text-stroke: 1px #2c8b3d;
     -webkit-text-fill-color: transparent;
-    text-stroke: 1px #2C8B3D;
+    text-stroke: 1px #2c8b3d;
     text-fill-color: transparent;
     color: transparent;
   }
   .text-outline-white {
-    -webkit-text-stroke: 1px #ffffff; 
+    -webkit-text-stroke: 1px #ffffff;
     -webkit-text-fill-color: transparent;
     text-stroke: 1px #ffffff;
     text-fill-color: transparent;
@@ -289,13 +288,13 @@ button[type="button"].absolute:focus {
 
 .ant-pagination-prev .anticon,
 .ant-pagination-next .anticon {
-  color: #44D7B6 !important;
+  color: #44d7b6 !important;
   height: 20px !important;
   width: 20px !important;
 }
 
 .ant-pagination-item {
-  background-color:  #F4F5F7 !important;
+  background-color: #f4f5f7 !important;
   height: 28px !important;
   width: 28px !important;
   display: flex !important;
@@ -304,13 +303,13 @@ button[type="button"].absolute:focus {
 }
 
 .ant-pagination-item:hover {
-  background-color: #44D7B6 !important;
+  background-color: #44d7b6 !important;
   color: #ffffff !important;
 }
 
 .ant-pagination-item-active {
   color: #ffffff !important;
-  background-color: #44D7B6 !important;
+  background-color: #44d7b6 !important;
 }
 
 /* Ripple Effect Animation */
@@ -331,12 +330,10 @@ button[type="button"].absolute:focus {
 
 /* Other styles */
 .hide-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 .hide-scrollbar::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera */
 }
-
-

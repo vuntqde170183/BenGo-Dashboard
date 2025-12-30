@@ -103,7 +103,7 @@ export function Pagination({
       <ul className="inline-flex items-center -space-x-px">
         <li>
           <button
-            className="px-3 py-2 ml-0 leading-tight text-gray-800 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-800"
+            className="px-3 h-10 min-w-10 flex items-center justify-center ml-0 leading-tight dark:text-neutral-200 bg-darkBorderV1 border dark:border-darkBackgroundV1 rounded-l-lg hover:bg-darkCardV1 hover:text-gray-800"
             onClick={() => onPageChange(page - 1)}
             disabled={page === 1}
           >
@@ -113,16 +113,16 @@ export function Pagination({
         {getPages().map((p, index) => (
           <li key={typeof p === "number" ? p : `ellipsis-${index}`}>
             {p === "..." ? (
-              <span className="px-3 py-2 leading-tight text-gray-800 bg-white border border-gray-300">
+              <span className="px-3 h-10 min-w-10 flex items-center justify-center leading-tight dark:text-neutral-200 bg-darkBorderV1 border dark:border-darkBackgroundV1">
                 ...
               </span>
             ) : (
               <button
                 className={cn(
-                  "px-3 py-2 leading-tight border border-gray-300",
+                  "px-3 h-10 min-w-10 flex items-center justify-center leading-tight border dark:border-darkBackgroundV1",
                   p === page
                     ? "bg-mainTextHoverV1 text-neutral-200"
-                    : "bg-white text-gray-800 hover:bg-gray-100 hover:text-gray-800"
+                    : "bg-darkBorderV1 dark:text-neutral-200 hover:bg-darkCardV1 hover:text-gray-800"
                 )}
                 onClick={() => onPageChange(p as number)}
                 aria-current={p === page ? "page" : undefined}
@@ -134,7 +134,7 @@ export function Pagination({
         ))}
         <li>
           <button
-            className="px-3 py-2 leading-tight text-gray-800 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-800"
+            className="px-3 h-10 min-w-10 flex items-center justify-center leading-tight dark:text-neutral-200 bg-darkBorderV1 border dark:border-darkBackgroundV1 rounded-r-lg hover:bg-darkCardV1 hover:text-gray-800"
             onClick={() => onPageChange(page + 1)}
             disabled={page === totalPages}
           >

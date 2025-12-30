@@ -221,7 +221,7 @@ export default function DashboardLayout({
                             animate={{ opacity: 1, x: 0 }}
                             exit={{ opacity: 0, x: -5 }}
                             transition={{ duration: 0.2 }}
-                            className="fixed ml-16 mt-[-30px] bg-[#29323A] border border-lightBorderV1 text-neutral-200 text-[13px] py-1.5 px-3 rounded-md shadow-light-grey z-50 whitespace-nowrap flex items-center"
+                            className="fixed ml-16 mt-[-30px] dark:bg-darkBorderV1 border border-lightBorderV1 text-neutral-200 text-[13px] py-1.5 px-3 rounded-md shadow-light-grey z-50 whitespace-nowrap flex items-center"
                           >
                             <span className="w-1.5 h-1.5 rounded-full bg-mainActiveV1 mr-1.5"></span>
                             <span className="font-semibold">{menu.name}</span>

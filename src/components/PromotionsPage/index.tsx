@@ -108,10 +108,7 @@ export default function PromotionsPage() {
                 <TabsTrigger value="EXPIRED">Expired</TabsTrigger>
               </TabsList>
             </Tabs>
-            <Button
-              onClick={() => setIsCreateDialogOpen(true)}
-              className="bg-mainTextHoverV1 hover:bg-primary/90 text-neutral-200"
-            >
+            <Button onClick={() => setIsCreateDialogOpen(true)}>
               <IconPlus className="h-4 w-4 mr-2" />
               Create Promotion
             </Button>
