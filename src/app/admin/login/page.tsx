@@ -135,7 +135,7 @@ export default function LoginPage() {
               {/* Header */}
               <div className="text-center space-y-3">
                 <h2 className="text-3xl font-bold bg-gradient-to-r from-teal-600 to-emerald-600 bg-clip-text text-transparent uppercase">
-                  Cổng Quản Trị
+                  Admin Dashboard
                 </h2>
                 <p className="text-neutral-600 text-sm">
                   Đăng nhập để truy cập trang quản trị BenGo
@@ -150,7 +150,7 @@ export default function LoginPage() {
                   </div>
                 )}
 
-                <div className="space-y-2">
+                <div>
                   <Label
                     htmlFor="email"
                     className="text-sm text-neutral-600 uppercase tracking-wide"
@@ -164,14 +164,14 @@ export default function LoginPage() {
                     value={formData.email}
                     onChange={handleInputChange}
                     disabled={isPending}
-                    className="border-0 border-b-2 border-gray-200 rounded-none px-0 focus-visible:ring-0 focus-visible:border-[#41C651]"
+                    className="border-0 border-b-2 border-gray-200 !bg-white rounded-none px-0 focus-visible:ring-0 focus-visible:border-[#41C651] !text-gray-800 placeholder:text-gray-600"
                   />
                   {errors.email && (
                     <p className="text-red-500 text-sm mt-1">{errors.email}</p>
                   )}
                 </div>
 
-                <div className="space-y-2">
+                <div>
                   <Label
                     htmlFor="password"
                     className="text-sm text-neutral-600 uppercase tracking-wide"
@@ -186,7 +186,7 @@ export default function LoginPage() {
                       value={formData.password}
                       onChange={handleInputChange}
                       disabled={isPending}
-                      className="border-0 border-b-2 border-gray-200 rounded-none px-0 pr-10 focus-visible:ring-0 focus-visible:border-primary"
+                      className="border-0 border-b-2 border-gray-200 !bg-white rounded-none px-0 pr-10 focus-visible:ring-0 focus-visible:border-primary !text-gray-800 placeholder:text-gray-600"
                     />
                     <button
                       type="button"
