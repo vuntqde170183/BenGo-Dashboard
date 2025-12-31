@@ -247,28 +247,28 @@ export default function StatisticsPage() {
       {/* Metric Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <MetricCard
-          icon={<Icon path={mdiAccountGroup} size={1} />}
+          icon={<Icon path={mdiAccountGroup} size={0.8} />}
           title="Total Users"
           value={overview?.users || 0}
           trend="+12% from last month"
           href="/admin/users"
         />
         <MetricCard
-          icon={<Icon path={mdiPackageVariant} size={1} />}
+          icon={<Icon path={mdiPackageVariant} size={0.8} />}
           title="Active Orders"
           value={overview?.activeOrders || 0}
           subtitle={`${overview?.orders || 0} total orders`}
           href="/admin/orders"
         />
         <MetricCard
-          icon={<Icon path={mdiCarSide} size={1} />}
+          icon={<Icon path={mdiCarSide} size={0.8} />}
           title="Drivers"
           value={overview?.drivers || 0}
           subtitle="Total registered"
           href="/admin/drivers"
         />
         <MetricCard
-          icon={<Icon path={mdiCurrencyUsd} size={1} />}
+          icon={<Icon path={mdiCurrencyUsd} size={0.8} />}
           title="Revenue"
           value={formatCurrency(overview?.revenue || 0)}
           subtitle="Total earnings"

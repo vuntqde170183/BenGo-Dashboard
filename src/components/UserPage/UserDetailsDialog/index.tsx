@@ -157,7 +157,7 @@ export const UserDetailsDialog = ({
       >
         <DialogHeader>
           <DialogTitle>
-            <Icon path={mdiClipboardAccount} size={1} />
+            <Icon path={mdiClipboardAccount} size={0.8} />
             {isEditing
               ? "Cập nhật người dùng: " + userData?.data?.name
               : "Chi tiết người dùng"}

@@ -9,7 +9,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
 import { useCreateUser } from "@/hooks/useAdmin";
 import { useUploadFile } from "@/hooks/useUpload";
 import { ICreateUserBody, IUploadResponse } from "@/interface/auth";
@@ -22,6 +21,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { mdiPlusBox } from "@mdi/js";
+import Icon from "@mdi/react";
 
 interface UserCreateDialogProps {
   isOpen: boolean;
@@ -38,12 +39,9 @@ export const UserCreateDialog = ({
     name: "",
     email: "",
     password: "",
-    studentId: "",
-    fullName: "",
-    phoneNumber: "",
+    phone: "",
     avatar: "",
-    role: "student",
-    department: "none",
+    role: "CUSTOMER", // DefaultRole
     active: true,
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -61,15 +59,18 @@ export const UserCreateDialog = ({
     }
   };
 
-  const handleSelectChange = (name: string, value: string) => {
-    setFormData({ ...formData, [name]: value });
+  const handleClear = (name: string) => {
+    setFormData({ ...formData, [name]: "" });
     if (errors[name]) {
       setErrors({ ...errors, [name]: "" });
     }
   };
 
-  const handleSwitchChange = (name: string, checked: boolean) => {
-    setFormData({ ...formData, [name]: checked });
+  const handleSelectChange = (name: string, value: string) => {
+    setFormData({ ...formData, [name]: value });
+    if (errors[name]) {
+      setErrors({ ...errors, [name]: "" });
+    }
   };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -117,30 +118,26 @@ export const UserCreateDialog = ({
     const newErrors: Record<string, string> = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = "Username is required";
-    }
-
-    if (!formData.fullName.trim()) {
-      newErrors.fullName = "Full name is required";
+      newErrors.name = "Tên hiển thị là bắt buộc";
     }
 
     if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
+      newErrors.email = "Email là bắt buộc";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Email is not valid";
+      newErrors.email = "Email không hợp lệ";
     }
 
     if (!formData.password.trim()) {
-      newErrors.password = "Password is required";
+      newErrors.password = "Mật khẩu là bắt buộc";
     } else if (formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
+      newErrors.password = "Mật khẩu phải có ít nhất 6 ký tự";
     }
 
     if (
-      formData.phoneNumber &&
-      !/^(0|\+84)[2|3|4|5|7|8|9][0-9]{8}$/.test(formData.phoneNumber)
+      formData.phone &&
+      !/^(0|\+84)[3|5|7|8|9][0-9]{8}$/.test(formData.phone)
     ) {
-      newErrors.phoneNumber = "Phone number is not valid";
+      newErrors.phone = "Số điện thoại không hợp lệ";
     }
 
     setErrors(newErrors);
@@ -156,19 +153,18 @@ export const UserCreateDialog = ({
 
     const submitData = {
       ...formData,
-      department: formData.department === "none" ? "" : formData.department,
+      department: undefined, // Ensure department is removed if existing in interface optional
     };
 
     createUserMutation(submitData, {
       onSuccess: (_response: any) => {
-        toast.success("Create user successfully!");
+        toast.success("Tạo người dùng thành công!");
         handleClose();
         onSuccess?.();
       },
       onError: (error: any) => {
         toast.error(
-          error?.response?.data?.message ||
-            "There was an error creating the user!"
+          error?.response?.data?.message || "Có lỗi xảy ra khi tạo người dùng!"
         );
       },
     });
@@ -179,12 +175,9 @@ export const UserCreateDialog = ({
       name: "",
       email: "",
       password: "",
-      studentId: "",
-      fullName: "",
-      phoneNumber: "",
+      phone: "",
       avatar: "",
-      role: "student",
-      department: "none",
+      role: "CUSTOMER",
       active: true,
     });
     setErrors({});
@@ -195,11 +188,12 @@ export const UserCreateDialog = ({
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent
         size="medium"
-        className="max-h-[90vh] overflow-y-auto bg-white"
+        className="max-h-[90vh] overflow-y-auto bg-white dark:bg-darkCardV1"
       >
         <DialogHeader>
           <DialogTitle className="dark:text-neutral-200">
-            Add New User
+            <Icon path={mdiPlusBox} size={0.8} />
+            Thêm người dùng mới
           </DialogTitle>
         </DialogHeader>
 
@@ -216,7 +210,7 @@ export const UserCreateDialog = ({
                 {isUploadingAvatar && (
                   <div className="flex items-center gap-2 text-sm text-green-600">
                     <IconLoader2 className="h-4 w-4 animate-spin" />
-                    <span>Uploading avatar...</span>
+                    <span>Đang tải ảnh...</span>
                   </div>
                 )}
               </div>
@@ -236,8 +230,8 @@ export const UserCreateDialog = ({
                       isUploadingAvatar ? "opacity-50 cursor-not-allowed" : ""
                     }`}
                   >
-                    <div className="flex items-center justify-center gap-2 px-4 py-4 border-2 border-dashed border-lightBorderV1 rounded-lg hover:border-mainTextHoverV1 hover:bg-green-50/50 transition-all duration-200 group">
-                      <div className="flex items-center justify-center w-12 h-12 flex-shrink-0 rounded-full bg-green-100 group-hover:bg-green-200 transition-colors duration-200">
+                    <div className="flex items-center justify-center gap-2 px-4 py-4 border-2 border-dashed border-lightBorderV1 rounded-lg hover:border-mainTextHoverV1 hover:bg-darkBorderV1 transition-all duration-200 group">
+                      <div className="p-3 rounded-full bg-darkBorderV1 text-neutral-500">
                         {isUploadingAvatar ? (
                           <IconLoader2 className="h-5 w-5 text-green-600 animate-spin" />
                         ) : (
@@ -247,11 +241,11 @@ export const UserCreateDialog = ({
                       <div className="text-center">
                         <div className="text-sm font-semibold dark:text-neutral-200 group-hover:text-mainTextHoverV1">
                           {isUploadingAvatar
-                            ? "Uploading avatar..."
-                            : "Upload avatar"}
+                            ? "Đang tải ảnh..."
+                            : "Tải ảnh đại diện lên"}
                         </div>
                         <div className="text-sm text-neutral-200 mt-1">
-                          Select image (max 10MB)
+                          Chọn ảnh (tối đa 10MB)
                         </div>
                       </div>
                     </div>
@@ -287,19 +281,20 @@ export const UserCreateDialog = ({
 
             <div className="space-y-2">
               <Label htmlFor="role" className="dark:text-neutral-200">
-                Role
+                Vai trò
               </Label>
               <Select
                 value={formData.role}
                 onValueChange={(value) => handleSelectChange("role", value)}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Select role" />
+                  <SelectValue placeholder="Chọn vai trò" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="student">Student</SelectItem>
-                  <SelectItem value="coordinator">Coordinator</SelectItem>
-                  <SelectItem value="admin">Admin</SelectItem>
+                  <SelectItem value="ADMIN">Admin</SelectItem>
+                  <SelectItem value="DISPATCHER">Điều phối viên</SelectItem>
+                  <SelectItem value="CUSTOMER">Khách hàng</SelectItem>
+                  <SelectItem value="DRIVER">Tài xế</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -307,39 +302,21 @@ export const UserCreateDialog = ({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="name" className="dark:text-neutral-200">
-                  Username <span className="text-red-500">*</span>
+                  Tên hiển thị <span className="text-red-500">*</span>
                 </Label>
                 <Input
                   id="name"
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  placeholder="Enter username"
+                  onClear={() => handleClear("name")}
+                  placeholder="Nhập tên hiển thị"
                   className={`${
                     errors.name ? "border-red-500" : "border-lightBorderV1"
                   } focus:border-mainTextHoverV1`}
                 />
                 {errors.name && (
                   <p className="text-red-500 text-sm">{errors.name}</p>
-                )}
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="fullName" className="dark:text-neutral-200">
-                  Full Name <span className="text-red-500">*</span>
-                </Label>
-                <Input
-                  id="fullName"
-                  name="fullName"
-                  value={formData.fullName}
-                  onChange={handleChange}
-                  placeholder="Enter full name"
-                  className={`${
-                    errors.fullName ? "border-red-500" : "border-lightBorderV1"
-                  } focus:border-mainTextHoverV1`}
-                />
-                {errors.fullName && (
-                  <p className="text-red-500 text-sm">{errors.fullName}</p>
                 )}
               </div>
 
@@ -353,7 +330,8 @@ export const UserCreateDialog = ({
                   type="email"
                   value={formData.email}
                   onChange={handleChange}
-                  placeholder="Enter email"
+                  onClear={() => handleClear("email")}
+                  placeholder="Nhập email"
                   className={`${
                     errors.email ? "border-red-500" : "border-lightBorderV1"
                   } focus:border-mainTextHoverV1`}
@@ -364,8 +342,28 @@ export const UserCreateDialog = ({
               </div>
 
               <div className="space-y-2">
+                <Label htmlFor="phone" className="dark:text-neutral-200">
+                  Số điện thoại
+                </Label>
+                <Input
+                  id="phone"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  onClear={() => handleClear("phone")}
+                  placeholder="Nhập số điện thoại"
+                  className={`${
+                    errors.phone ? "border-red-500" : "border-lightBorderV1"
+                  } focus:border-mainTextHoverV1`}
+                />
+                {errors.phone && (
+                  <p className="text-red-500 text-sm">{errors.phone}</p>
+                )}
+              </div>
+
+              <div className="space-y-2">
                 <Label htmlFor="password" className="dark:text-neutral-200">
-                  Password <span className="text-red-500">*</span>
+                  Mật khẩu <span className="text-red-500">*</span>
                 </Label>
                 <Input
                   id="password"
@@ -373,7 +371,8 @@ export const UserCreateDialog = ({
                   type="password"
                   value={formData.password}
                   onChange={handleChange}
-                  placeholder="Enter password"
+                  onClear={() => handleClear("password")}
+                  placeholder="Nhập mật khẩu"
                   className={`${
                     errors.password ? "border-red-500" : "border-lightBorderV1"
                   } focus:border-mainTextHoverV1`}
@@ -382,83 +381,6 @@ export const UserCreateDialog = ({
                   <p className="text-red-500 text-sm">{errors.password}</p>
                 )}
               </div>
-
-              {formData.role === "student" && (
-                <div className="space-y-2">
-                  <Label htmlFor="studentId" className="dark:text-neutral-200">
-                    Student ID
-                  </Label>
-                  <div className="flex items-center gap-2">
-                    <Input
-                      id="studentId"
-                      name="studentId"
-                      value={formData.studentId}
-                      onChange={handleChange}
-                      placeholder="Enter student ID"
-                      className="border-lightBorderV1 focus:border-mainTextHoverV1"
-                    />
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="lg"
-                      onClick={() => {
-                        // Generate 5 random digits
-                        const randomDigits = Math.floor(Math.random() * 100000)
-                          .toString()
-                          .padStart(5, "0");
-                        const generatedId = `200${randomDigits}`;
-                        setFormData((prev) => ({
-                          ...prev,
-                          studentId: generatedId,
-                        }));
-                      }}
-                      className="whitespace-nowrap"
-                    >
-                      Generate ID
-                    </Button>
-                  </div>
-                </div>
-              )}
-
-              {(formData.role === "student" ||
-                formData.role === "coordinator") && (
-                <div className="space-y-2">
-                  <Label
-                    htmlFor="phoneNumber"
-                    className="dark:text-neutral-200"
-                  >
-                    Phone Number
-                  </Label>
-                  <Input
-                    id="phoneNumber"
-                    name="phoneNumber"
-                    value={formData.phoneNumber}
-                    onChange={handleChange}
-                    placeholder="Enter phone number"
-                    className={`${
-                      errors.phoneNumber
-                        ? "border-red-500"
-                        : "border-lightBorderV1"
-                    } focus:border-mainTextHoverV1`}
-                  />
-                  {errors.phoneNumber && (
-                    <p className="text-red-500 text-sm">{errors.phoneNumber}</p>
-                  )}
-                </div>
-              )}
-            </div>
-
-            <div className="flex items-center justify-between space-x-2">
-              <Label htmlFor="active" className="dark:text-neutral-200">
-                Active
-              </Label>
-              <Switch
-                id="active"
-                checked={formData.active}
-                onCheckedChange={(checked) =>
-                  handleSwitchChange("active", checked)
-                }
-              />
             </div>
 
             <div className="flex gap-2 pt-4 justify-end">
@@ -468,18 +390,18 @@ export const UserCreateDialog = ({
                 onClick={handleClose}
                 disabled={isPending}
               >
-                Cancel
+                Hủy
               </Button>
               <Button type="submit" disabled={isPending}>
                 {isPending ? (
                   <>
                     <IconLoader2 className="h-4 w-4 animate-spin" />
-                    Creating...
+                    Đang tạo...
                   </>
                 ) : (
                   <>
                     <IconPlus className="h-4 w-4" />
-                    Create User
+                    Tạo người dùng
                   </>
                 )}
               </Button>

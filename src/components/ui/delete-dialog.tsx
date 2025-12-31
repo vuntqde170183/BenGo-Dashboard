@@ -7,6 +7,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { mdiDeleteForever } from "@mdi/js";
+import Icon from "@mdi/react";
 import { IconLoader2, IconTrash, IconAlertTriangle } from "@tabler/icons-react";
 import { toast } from "react-toastify";
 
@@ -48,8 +50,11 @@ export const DeleteDialog = ({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
-        <DialogHeader className="!border-b-[#ccc] px-4">
-          <DialogTitle className="dark:text-neutral-200">{title}</DialogTitle>
+        <DialogHeader>
+          <DialogTitle>
+            <Icon path={mdiDeleteForever} size={0.8} />
+            {title}
+          </DialogTitle>
         </DialogHeader>
 
         {description && (
