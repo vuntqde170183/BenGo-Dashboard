@@ -1,4 +1,5 @@
 export type UserRole = 'CUSTOMER' | 'DRIVER' | 'ADMIN' | 'DISPATCHER';
+export type DriverStatus = 'PENDING' | 'APPROVED' | 'LOCKED' | 'REJECTED';
 
 export interface IDepartment {
   _id: string;
@@ -80,3 +81,26 @@ export interface IUploadResponse {
     size?: number;
   };
 }
+
+// Driver interfaces
+export interface IDriver {
+  _id: string;
+  userId: {
+    id?: string;
+    _id?: string;
+    name: string;
+    email: string;
+    phone?: string;
+    rating?: number;
+    avatar?: string;
+  };
+  plateNumber: string;
+  vehicleType: string;
+  status: DriverStatus;
+  isOnline: boolean;
+  rejectionReason?: string;
+  adminNote?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+

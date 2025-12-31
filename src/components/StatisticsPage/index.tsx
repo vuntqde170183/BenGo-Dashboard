@@ -446,11 +446,11 @@ export default function StatisticsPage() {
                     <span className="font-semibold">{activity.user}</span>{" "}
                     {activity.action}
                   </p>
-                  <p className="text-sm text-neutral-500 mt-0.5">
+                  <p className="text-sm text-neutral-400 mt-0.5">
                     {activity.time}
                   </p>
                 </div>
-                <div className="p-2 rounded bg-darkCardV1 text-neutral-500">
+                <div className="p-2 rounded bg-darkCardV1 text-neutral-400">
                   <Icon path={mdiAccountCircleOutline} size={0.8} />
                 </div>
               </div>

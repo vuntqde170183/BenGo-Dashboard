@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { adminUserApi } from "@/api/admin-users";
-import { adminDriverApi } from "@/api/admin-drivers";
+import { adminDriverApi, UpdateDriverStatusDto } from "@/api/admin-drivers";
 import { adminOrderApi } from "@/api/admin-orders";
 import { adminPricingApi } from "@/api/admin-pricing";
 import { adminPromotionApi } from "@/api/admin-promotions";
@@ -88,24 +88,17 @@ export const useDriverDetails = (id: string) => {
   });
 };
 
-export const useApproveDriver = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (data: { driverId: string; action: 'APPROVE' | 'REJECT' }) => adminDriverApi.approveDriver(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["admin", "drivers"] });
-      toast.success("Driver approval processed");
-    },
-  });
-};
-
 export const useUpdateDriverStatus = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, status }: { id: string; status: string }) => adminDriverApi.updateDriverStatus(id, { status }),
+    mutationFn: (data: UpdateDriverStatusDto) => 
+      adminDriverApi.updateDriverStatus(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin", "drivers"] });
-      toast.success("Driver status updated");
+      toast.success("Cập nhật trạng thái tài xế thành công");
+    },
+    onError: () => {
+      toast.error("Cập nhật trạng thái tài xế thất bại");
     },
   });
 };

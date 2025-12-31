@@ -7,11 +7,21 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
-import { IconTrash, IconMenu3 } from "@tabler/icons-react";
 import { Star, Car as CarIcon } from "lucide-react";
-import { getStatusVariant } from "@/lib/formatters";
+import { getStatusBadge } from "@/lib/badge-helpers";
+import Icon from "@mdi/react";
+import {
+  mdiMotorbike,
+  mdiTableEye,
+  mdiTrashCanOutline,
+  mdiTruck,
+  mdiVanPassenger,
+  mdiLockOutline,
+  mdiCheckCircleOutline,
+  mdiCloseCircleOutline,
+  mdiLockOpenVariantOutline,
+} from "@mdi/js";
 
 interface IDriver {
   _id: string;
@@ -28,6 +38,8 @@ interface IDriver {
   vehicleType: string;
   status: string;
   isOnline: boolean;
+  adminNote?: string;
+  rejectionReason?: string;
 }
 
 interface DriverTableProps {
@@ -35,6 +47,10 @@ interface DriverTableProps {
   isSearching: boolean;
   onEdit: (id: string) => void;
   onDelete: (id: string) => void;
+  onApprove?: (id: string) => void;
+  onReject?: (id: string) => void;
+  onLock?: (id: string) => void;
+  onUnlock?: (id: string) => void;
   currentPage?: number;
   pageSize?: number;
 }
@@ -44,9 +60,26 @@ export const DriverTable = ({
   isSearching,
   onEdit,
   onDelete,
+  onApprove,
+  onReject,
+  onLock,
+  onUnlock,
   currentPage = 1,
   pageSize = 10,
 }: DriverTableProps) => {
+  const getVehicleIcon = (type: string) => {
+    switch (type) {
+      case "BIKE":
+        return <Icon path={mdiMotorbike} size={0.9} />;
+      case "TRUCK":
+        return <Icon path={mdiTruck} size={0.9} />;
+      case "VAN":
+        return <Icon path={mdiVanPassenger} size={0.9} />;
+      default:
+        return <CarIcon className="w-4 h-4" />;
+    }
+  };
+
   return (
     <div className="w-full overflow-auto border border-darkBackgroundV1 rounded-md">
       <Table>
@@ -54,12 +87,11 @@ export const DriverTable = ({
           <TableRow>
             <TableHead className="w-[60px]">STT</TableHead>
             <TableHead>Thông tin tài xế</TableHead>
-            <TableHead className="w-[180px]">Email</TableHead>
+            <TableHead>Email</TableHead>
             <TableHead>Biển số xe</TableHead>
             <TableHead>Loại xe</TableHead>
             <TableHead>Đánh giá</TableHead>
             <TableHead>Trạng thái</TableHead>
-            <TableHead>Trực tuyến</TableHead>
             <TableHead>Thao tác</TableHead>
           </TableRow>
         </TableHeader>
@@ -79,26 +111,28 @@ export const DriverTable = ({
               return (
                 <TableRow key={driverId}>
                   <TableCell>{rowNumber}</TableCell>
-                  <TableCell className="flex items-center gap-2">
-                    <div className="w-12 h-12 flex-shrink-0 rounded-full bg-darkBorderV1 flex items-center justify-center overflow-hidden">
-                      <img
-                        src={
-                          driver.userId?.avatar ||
-                          `https://api.dicebear.com/7.x/avataaars/svg?seed=${driver.userId?.name}`
-                        }
-                        alt="avatar"
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div>
-                      <p className="font-semibold dark:text-neutral-200">
-                        {driver.userId?.name}
-                      </p>
-                      {driver.userId?.phone && (
-                        <p className="text-sm text-neutral-400">
-                          {driver.userId.phone}
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <div className="w-12 h-12 flex-shrink-0 rounded-full bg-darkBorderV1 flex items-center justify-center overflow-hidden">
+                        <img
+                          src={
+                            driver.userId?.avatar ||
+                            `https://api.dicebear.com/7.x/avataaars/svg?seed=${driver.userId?.name}`
+                          }
+                          alt="avatar"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div>
+                        <p className="font-semibold dark:text-neutral-200 text-nowrap">
+                          {driver.userId?.name}
                         </p>
-                      )}
+                        {driver.userId?.phone && (
+                          <p className="text-sm text-neutral-400">
+                            {driver.userId.phone}
+                          </p>
+                        )}
+                      </div>
                     </div>
                   </TableCell>
                   <TableCell className="w-[180px]">
@@ -109,7 +143,7 @@ export const DriverTable = ({
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-1">
-                      <CarIcon className="w-4 h-4" />
+                      {getVehicleIcon(driver.vehicleType)}
                       <span>{driver.vehicleType}</span>
                     </div>
                   </TableCell>
@@ -121,38 +155,140 @@ export const DriverTable = ({
                         : "5.0"}
                     </div>
                   </TableCell>
-                  <TableCell>
-                    <Badge variant={getStatusVariant(driver.status)}>
-                      {driver.status}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    <Badge variant={driver.isOnline ? "default" : "secondary"}>
-                      {driver.isOnline ? "Trực tuyến" : "Ngoại tuyến"}
-                    </Badge>
-                  </TableCell>
+                  <TableCell>{getStatusBadge(driver.status)}</TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end space-x-2">
-                      <motion.div
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        <Button size="icon" onClick={() => onEdit(driverId)}>
-                          <IconMenu3 className="h-5 w-5" />
-                        </Button>
-                      </motion.div>
-                      <motion.div
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        <Button
-                          className="bg-red-500 hover:bg-red-600"
-                          size="icon"
-                          onClick={() => onDelete(driverId)}
+                      {/* APPROVED: Show Lock */}
+                      {driver.status === "APPROVED" && (
+                        <motion.div
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
                         >
-                          <IconTrash className="h-5 w-5" />
-                        </Button>
-                      </motion.div>
+                          <Button
+                            className="bg-orange-500 hover:bg-orange-600"
+                            size="icon"
+                            onClick={() => onLock && onLock(driverId)}
+                            title="Khóa tài khoản"
+                          >
+                            <Icon path={mdiLockOutline} size={0.8} />
+                          </Button>
+                        </motion.div>
+                      )}
+
+                      {/* PENDING: Show Approve and Reject */}
+                      {driver.status === "PENDING" && (
+                        <>
+                          <motion.div
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                          >
+                            <Button
+                              className="bg-green-500 hover:bg-green-600"
+                              size="icon"
+                              onClick={() => onApprove && onApprove(driverId)}
+                              title="Duyệt"
+                            >
+                              <Icon path={mdiCheckCircleOutline} size={0.8} />
+                            </Button>
+                          </motion.div>
+                          <motion.div
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                          >
+                            <Button
+                              className="bg-red-500 hover:bg-red-600"
+                              size="icon"
+                              onClick={() => onReject && onReject(driverId)}
+                              title="Từ chối"
+                            >
+                              <Icon path={mdiCloseCircleOutline} size={0.8} />
+                            </Button>
+                          </motion.div>
+                        </>
+                      )}
+
+                      {/* LOCKED: Show Unlock and Edit/View */}
+                      {driver.status === "LOCKED" && (
+                        <>
+                          <motion.div
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                          >
+                            <Button
+                              className="bg-blue-500 hover:bg-blue-600"
+                              size="icon"
+                              onClick={() => onUnlock && onUnlock(driverId)}
+                              title="Mở khóa"
+                            >
+                              <Icon
+                                path={mdiLockOpenVariantOutline}
+                                size={0.8}
+                              />
+                            </Button>
+                          </motion.div>
+                          <motion.div
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                          >
+                            <Button
+                              size="icon"
+                              onClick={() => onEdit(driverId)}
+                              title="Chi tiết"
+                            >
+                              <Icon path={mdiTableEye} size={0.8} />
+                            </Button>
+                          </motion.div>
+                        </>
+                      )}
+
+                      {/* REJECTED: Show Edit/View */}
+                      {driver.status === "REJECTED" && (
+                        <motion.div
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                        >
+                          <Button
+                            size="icon"
+                            onClick={() => onEdit(driverId)}
+                            title="Chi tiết"
+                          >
+                            <Icon path={mdiTableEye} size={0.8} />
+                          </Button>
+                        </motion.div>
+                      )}
+
+                      {/* Fallback for other statuses or missing status */}
+                      {!["APPROVED", "PENDING", "LOCKED", "REJECTED"].includes(
+                        driver.status
+                      ) && (
+                        <>
+                          <motion.div
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                          >
+                            <Button
+                              size="icon"
+                              onClick={() => onEdit(driverId)}
+                              title="Chi tiết"
+                            >
+                              <Icon path={mdiTableEye} size={0.8} />
+                            </Button>
+                          </motion.div>
+                          <motion.div
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                          >
+                            <Button
+                              className="bg-red-500 hover:bg-red-600"
+                              size="icon"
+                              onClick={() => onDelete(driverId)}
+                              title="Xóa"
+                            >
+                              <Icon path={mdiTrashCanOutline} size={0.8} />
+                            </Button>
+                          </motion.div>
+                        </>
+                      )}
                     </div>
                   </TableCell>
                 </TableRow>

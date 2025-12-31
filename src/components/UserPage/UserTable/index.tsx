@@ -8,11 +8,12 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { IconTrash, IconMenu3 } from "@tabler/icons-react";
 import { getRoleBadge } from "@/lib/badge-helpers";
 import { Star } from "lucide-react";
 
 import { IUser } from "@/interface/auth";
+import { mdiTableEye, mdiTrashCanOutline } from "@mdi/js";
+import Icon from "@mdi/react";
 
 interface UserTableProps {
   users: IUser[];
@@ -104,7 +105,7 @@ export const UserTable = ({
                         whileTap={{ scale: 0.95 }}
                       >
                         <Button size="icon" onClick={() => onEdit(user.id)}>
-                          <IconMenu3 className="h-5 w-5" />
+                          <Icon path={mdiTableEye} size={0.8} />
                         </Button>
                       </motion.div>
                       <motion.div
@@ -116,7 +117,7 @@ export const UserTable = ({
                           size="icon"
                           onClick={() => onDelete(user.id)}
                         >
-                          <IconTrash className="h-5 w-5" />
+                          <Icon path={mdiTrashCanOutline} size={0.8} />
                         </Button>
                       </motion.div>
                     </div>

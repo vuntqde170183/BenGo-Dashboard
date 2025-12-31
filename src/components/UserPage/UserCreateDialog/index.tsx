@@ -231,7 +231,7 @@ export const UserCreateDialog = ({
                     }`}
                   >
                     <div className="flex items-center justify-center gap-2 px-4 py-4 border-2 border-dashed border-lightBorderV1 rounded-lg hover:border-mainTextHoverV1 hover:bg-darkBorderV1 transition-all duration-200 group">
-                      <div className="p-3 rounded-full bg-darkBorderV1 text-neutral-500">
+                      <div className="p-3 rounded-full bg-darkBorderV1 text-neutral-400">
                         {isUploadingAvatar ? (
                           <IconLoader2 className="h-5 w-5 text-green-600 animate-spin" />
                         ) : (

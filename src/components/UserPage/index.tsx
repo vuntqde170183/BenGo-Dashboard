@@ -96,7 +96,7 @@ export default function UserPage() {
     setCurrentPage(page);
   };
 
-  const displayUsers = usersData?.data?.data || [];
+  const displayUsers = usersData?.data || [];
   return (
     <div className="space-y-6 bg-darkCardV1 p-4 rounded-2xl border border-darkBorderV1">
       <Breadcrumb>
@@ -173,14 +173,15 @@ export default function UserPage() {
               />
             )}
           </Card>
-          {(usersData?.data?.meta?.total ?? 0) > pageSize && (
+          {(usersData?.pagination?.total ?? 0) > pageSize && (
             <Pagination
               page={currentPage}
               pageSize={pageSize}
-              total={usersData?.data?.meta?.total ?? 0}
-              totalPages={Math.ceil(
-                (usersData?.data?.meta?.total ?? 0) / pageSize
-              )}
+              total={usersData?.pagination?.total ?? 0}
+              totalPages={
+                usersData?.pagination?.total_pages ||
+                Math.ceil((usersData?.pagination?.total ?? 0) / pageSize)
+              }
               onPageChange={handlePageChange}
             />
           )}

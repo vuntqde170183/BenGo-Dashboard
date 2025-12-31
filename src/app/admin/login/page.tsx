@@ -67,8 +67,6 @@ export default function LoginPage() {
         password: formData.password,
       });
 
-      console.log("Login response:", loginResponse); // Debug log
-
       if (
         loginResponse?.statusCode === 200 &&
         loginResponse?.data?.accessToken

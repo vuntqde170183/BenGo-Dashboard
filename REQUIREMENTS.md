@@ -1,6 +1,21 @@
 Administration (Quản trị)
-● Quản lý người dùng / Quản lý người dùng
-● Driver approval / Duyệt tài xế
+
+1. Quản lý người dùng:
+
+- Danh sách người dùng
+- Thêm người dùng
+- Xóa người dùng
+- Cập nhật người dùng
+- Xem thông tin người dùng
+- Tìm kiếm, lọc theo role
+
+2. Quản lý tài xế:
+
+- Danh sách tài xế
+- Duyệt tài xế
+- Tìm kiếm, lọc theo trạng thái ('APPROVED', 'PENDING', 'LOCKED', 'REJECTED')
+- Xem được lý do Driver bị locked, rejected
+
 ● Order management / Quản lý đơn hàng
 ● Pricing configuration / Cấu hình giá
 ● Promotion management / Quản lý khuyến mãi

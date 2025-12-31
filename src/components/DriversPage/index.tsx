@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
-import { useAdminDrivers, useDeleteDriver } from "@/hooks/useAdmin";
+import {
+  useAdminDrivers,
+  useDeleteDriver,
+  useUpdateDriverStatus,
+} from "@/hooks/useAdmin";
+import { ViewReasonDialog, UpdateStatusDialog } from "./DriverStatusDialogs";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -18,24 +23,26 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { DriverTable } from "@/components/DriversPage/DriverTable";
-import { DriverDetailsDialog } from "@/components/DriversPage/DriverDetailsDialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Pagination } from "@/components/ui/pagination";
 import { motion } from "framer-motion";
 import { IconSearch } from "@tabler/icons-react";
-import { DeleteDialog } from "@/components/ui/delete-dialog";
 
 export default function DriversPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("APPROVED");
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
-  const [selectedDriverId, setSelectedDriverId] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(10);
+  const [selectedDriver, setSelectedDriver] = useState<any>(null);
+  const [viewDialogOpen, setViewDialogOpen] = useState(false);
+  const [updateDialogOpen, setUpdateDialogOpen] = useState(false);
+  const [targetStatus, setTargetStatus] = useState<
+    "APPROVED" | "PENDING" | "LOCKED" | "REJECTED"
+  >("APPROVED");
+  const { mutate: updateStatus, isPending: isUpdating } =
+    useUpdateDriverStatus();
 
-  const statusParam =
-    statusFilter && statusFilter !== "all" ? statusFilter : undefined;
+  const statusParam = statusFilter;
 
   const {
     data: driversData,
@@ -47,8 +54,6 @@ export default function DriversPage() {
     page: currentPage,
     limit: pageSize,
   });
-  const { mutate: deleteDriverMutation, isPending: isDeleting } =
-    useDeleteDriver();
 
   useEffect(() => {
     setCurrentPage(1);
@@ -62,38 +67,67 @@ export default function DriversPage() {
     setSearchQuery("");
   };
 
-  const handleStatusFilterChange = (value: string) => {
-    setStatusFilter(value);
+  const handleStatusUpdate = async (
+    inputReason: string,
+    inputNote?: string
+  ) => {
+    if (!selectedDriver) return;
+
+    const payload: any = {
+      driverId: selectedDriver._id,
+      status: targetStatus,
+    };
+
+    if (targetStatus === "LOCKED") {
+      payload.reason = inputReason;
+      payload.note = inputNote;
+    } else if (targetStatus === "REJECTED") {
+      payload.reason = inputReason;
+      payload.note = inputNote; // Optional for rejected if needed, or omit
+    }
+
+    updateStatus(payload, {
+      onSuccess: () => {
+        setUpdateDialogOpen(false);
+        setSelectedDriver(null);
+      },
+    });
+  };
+
+  const openUpdateDialog = (
+    id: string,
+    status: "APPROVED" | "PENDING" | "LOCKED" | "REJECTED"
+  ) => {
+    const driver = displayDrivers.find((d: any) => d._id === id);
+    if (driver) {
+      setSelectedDriver(driver);
+      setTargetStatus(status);
+      setUpdateDialogOpen(true);
+    }
   };
 
   const handleEdit = (id: string) => {
-    setSelectedDriverId(id);
-    setIsDetailsDialogOpen(true);
+    const driver = displayDrivers.find((d: any) => d._id === id);
+    if (driver) {
+      if (driver.status === "LOCKED" || driver.status === "REJECTED") {
+        setSelectedDriver(driver);
+        setViewDialogOpen(true);
+      } else {
+        // Handle normal edit navigation if needed
+        console.log("Navigate to edit", id);
+      }
+    }
   };
 
-  const handleDelete = (id: string) => {
-    setSelectedDriverId(id);
-    setIsDeleteDialogOpen(true);
-  };
-
-  const confirmDelete = async () => {
-    if (!selectedDriverId) {
-      return Promise.resolve();
-    }
-
-    try {
-      deleteDriverMutation(selectedDriverId);
-      return Promise.resolve();
-    } catch (error) {
-      throw error;
-    }
+  const handleStatusFilterChange = (value: string) => {
+    setStatusFilter(value);
   };
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
-  const displayDrivers = driversData?.data?.data || [];
+  const displayDrivers = driversData?.data || [];
 
   return (
     <div className="space-y-6 bg-darkCardV1 p-4 rounded-2xl border border-darkBorderV1">
@@ -134,7 +168,6 @@ export default function DriversPage() {
                   <SelectValue placeholder="Lọc theo trạng thái" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">Tất cả trạng thái</SelectItem>
                   <SelectItem value="APPROVED">Đã duyệt</SelectItem>
                   <SelectItem value="PENDING">Chờ duyệt</SelectItem>
                   <SelectItem value="LOCKED">Đã khóa</SelectItem>
@@ -162,54 +195,83 @@ export default function DriversPage() {
             ) : (
               <DriverTable
                 drivers={displayDrivers}
-                isSearching={false}
-                onEdit={handleEdit}
-                onDelete={handleDelete}
+                isSearching={!!searchQuery}
                 currentPage={currentPage}
                 pageSize={pageSize}
+                onEdit={handleEdit}
+                onDelete={(id) => console.log("Delete driver", id)}
+                onApprove={(id) => openUpdateDialog(id, "APPROVED")}
+                onReject={(id) => openUpdateDialog(id, "REJECTED")}
+                onLock={(id) => openUpdateDialog(id, "LOCKED")}
+                onUnlock={(id) => openUpdateDialog(id, "APPROVED")}
               />
             )}
           </Card>
-          {(driversData?.data?.meta?.total ?? 0) > pageSize && (
+          {(driversData?.pagination?.total ?? 0) > pageSize && (
             <Pagination
               page={currentPage}
               pageSize={pageSize}
-              total={driversData?.data?.meta?.total ?? 0}
-              totalPages={Math.ceil(
-                (driversData?.data?.meta?.total ?? 0) / pageSize
-              )}
+              total={driversData?.pagination?.total ?? 0}
+              totalPages={
+                driversData?.pagination?.total_pages ||
+                Math.ceil((driversData?.pagination?.total ?? 0) / pageSize)
+              }
               onPageChange={handlePageChange}
             />
           )}
         </div>
       </motion.div>
-      <DeleteDialog
-        isOpen={isDeleteDialogOpen}
-        isDeleting={isDeleting}
-        onClose={() => setIsDeleteDialogOpen(false)}
-        onConfirm={confirmDelete}
-        title={`Xóa tài xế: ${
-          displayDrivers.find((d: any) => d._id === selectedDriverId)?.userId
-            ?.name || ""
-        }`}
-        description="Bạn có chắc chắn muốn xóa tài xế này không? Hành động này không thể hoàn tác."
-        confirmText="Xóa tài xế"
-        successMessage="Xóa tài xế thành công!"
-        errorMessage="Xóa tài xế thất bại."
-        warningMessage="Hành động này sẽ xóa vĩnh viễn tài xế và các dữ liệu liên quan."
+
+      <ViewReasonDialog
+        isOpen={viewDialogOpen}
+        onClose={() => setViewDialogOpen(false)}
+        adminNote={selectedDriver?.adminNote}
+        rejectionReason={selectedDriver?.rejectionReason}
       />
 
-      {selectedDriverId && (
-        <DriverDetailsDialog
-          isOpen={isDetailsDialogOpen}
-          onClose={() => {
-            setIsDetailsDialogOpen(false);
-            setSelectedDriverId(null);
-          }}
-          driverId={selectedDriverId}
-          onSuccess={() => refetch()}
-        />
-      )}
+      <UpdateStatusDialog
+        isOpen={updateDialogOpen}
+        onClose={() => setUpdateDialogOpen(false)}
+        onConfirm={handleStatusUpdate}
+        isLoading={isUpdating}
+        title={
+          targetStatus === "APPROVED"
+            ? "Duyệt tài khoản"
+            : targetStatus === "REJECTED"
+            ? "Từ chối tài khoản"
+            : targetStatus === "LOCKED"
+            ? "Khóa tài khoản"
+            : "Cập nhật trạng thái"
+        }
+        description={
+          targetStatus === "APPROVED"
+            ? "Bạn có chắc chắn muốn duyệt tài xế này? Tài xế sẽ có thể hoạt động ngay sau khi duyệt."
+            : targetStatus === "REJECTED"
+            ? "Vui lòng nhập lý do từ chối tài xế. Hành động này không thể hoàn tác."
+            : targetStatus === "LOCKED"
+            ? "Vui lòng nhập lý do khóa tài khoản. Tài xế sẽ không thể nhận chuyến."
+            : "Xác nhận thay đổi trạng thái?"
+        }
+        isReasonRequired={
+          targetStatus === "LOCKED" || targetStatus === "REJECTED"
+        }
+        confirmText={
+          targetStatus === "APPROVED"
+            ? "Duyệt ngay"
+            : targetStatus === "REJECTED"
+            ? "Từ chối"
+            : targetStatus === "LOCKED"
+            ? "Khóa ngay"
+            : "Xác nhận"
+        }
+        confirmButtonVariant={
+          targetStatus === "APPROVED"
+            ? "default"
+            : targetStatus === "REJECTED" || targetStatus === "LOCKED"
+            ? "destructive"
+            : "default"
+        }
+      />
     </div>
   );
 }
