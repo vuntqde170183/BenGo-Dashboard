@@ -12,9 +12,11 @@ Administration (Quản trị)
 2. Quản lý tài xế:
 
 - Danh sách tài xế
-- Duyệt tài xế
 - Tìm kiếm, lọc theo trạng thái ('APPROVED', 'PENDING', 'LOCKED', 'REJECTED')
-- Xem được lý do Driver bị locked, rejected
+- Khóa tài xế (Chuyển từ APPROVED sang LOCKED)
+- Mở tài xế (Chuyển từ LOCKED sang APPROVED), xem lý do và ghi chú (từ Admin) khóa tài xế
+- Duyệt/từ chối duyệt Tài xế (Chuyển từ PENDING sang APPROVED hoặc REJECTED)
+- Xem lý do và ghi chú (từ Admin) xóa tài xế
 
 ● Order management / Quản lý đơn hàng
 ● Pricing configuration / Cấu hình giá
