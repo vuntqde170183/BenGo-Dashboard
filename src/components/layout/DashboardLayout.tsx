@@ -65,7 +65,7 @@ export default function DashboardLayout({
         >
           <div className="flex flex-col h-full bg-darkBackgroundV1">
             <nav className="flex-1 overflow-y-auto py-4 bg-darkBackgroundV1">
-              <ul className={cn("", isOpen ? "px-2" : "px-1")}>
+              <ul className={cn("", isOpen ? "pr-0 pl-2" : "px-1")}>
                 {dashboardMenuItems.map((menu) => (
                   <li key={menu.id}>
                     <div

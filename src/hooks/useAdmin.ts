@@ -80,6 +80,14 @@ export const useAdminDrivers = (params: any) => {
   });
 };
 
+export const useDriverDetails = (id: string) => {
+  return useQuery({
+    queryKey: ["admin", "drivers", id],
+    queryFn: () => adminDriverApi.getDriverDetails(id),
+    enabled: !!id,
+  });
+};
+
 export const useApproveDriver = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -87,6 +95,28 @@ export const useApproveDriver = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin", "drivers"] });
       toast.success("Driver approval processed");
+    },
+  });
+};
+
+export const useUpdateDriverStatus = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, status }: { id: string; status: string }) => adminDriverApi.updateDriverStatus(id, { status }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "drivers"] });
+      toast.success("Driver status updated");
+    },
+  });
+};
+
+export const useDeleteDriver = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => adminDriverApi.deleteDriver(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "drivers"] });
+      toast.success("Driver deleted successfully");
     },
   });
 };

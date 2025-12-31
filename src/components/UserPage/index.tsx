@@ -24,7 +24,7 @@ import { UserDetailsDialog } from "@/components/UserPage/UserDetailsDialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Pagination } from "@/components/ui/pagination";
 import { motion } from "framer-motion";
-import { IconSearch, IconPlus } from "@tabler/icons-react";
+import { IconSearch } from "@tabler/icons-react";
 import { DeleteDialog } from "@/components/ui/delete-dialog";
 import Icon from "@mdi/react";
 import { mdiAccountPlusOutline } from "@mdi/js";
@@ -119,7 +119,7 @@ export default function UserPage() {
           <div className="flex items-center justify-between gap-4 w-full md:w-auto">
             <div className="relative w-full md:w-96">
               <Input
-                placeholder="Tìm kiếm theo tên, email..."
+                placeholder="Tìm kiếm theo tên, email, sđt..."
                 value={searchQuery}
                 onChange={handleSearch}
                 onClear={handleClearSearch}

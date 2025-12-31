@@ -17,17 +17,9 @@ export default function AdminLayout({
         children
       ) : (
         <ProtectedRoute>
-          <DashboardLayout>
-            {children}
-          </DashboardLayout>
+          <DashboardLayout>{children}</DashboardLayout>
         </ProtectedRoute>
       )}
     </div>
   );
 }
-
-
-
-
-
-

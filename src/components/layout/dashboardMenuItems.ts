@@ -28,20 +28,6 @@ export const getDashboardMenuItems = (): MenuItem[] => [
 		name: "Quản lý tài xế",
 		path: "/admin/drivers",
 		icon: mdiCarSide,
-		subMenu: [
-			{
-				id: "drivers-pending",
-				name: "Pending Approval",
-				path: "/admin/drivers/pending",
-				icon: mdiCarSide,
-			},
-			{
-				id: "drivers-all",
-				name: "All Drivers",
-				path: "/admin/drivers",
-				icon: mdiCarSide,
-			},
-		],
 	},
 	{
 		id: "order-management",

@@ -33,6 +33,9 @@ const AdminDashboard = lazy(() =>
 const AdminUsers = lazy(() =>
   import("@/app/admin/users/page").then((m) => ({ default: m.default }))
 );
+const AdminDrivers = lazy(() =>
+  import("@/app/admin/drivers/page").then((m) => ({ default: m.default }))
+);
 
 // Wrapper component for Suspense
 const SuspenseWrapper = ({ children }: { children: React.ReactNode }) => (
@@ -88,6 +91,14 @@ export const router = createBrowserRouter([
             element: (
               <SuspenseWrapper>
                 <AdminUsers />
+              </SuspenseWrapper>
+            ),
+          },
+          {
+            path: "drivers",
+            element: (
+              <SuspenseWrapper>
+                <AdminDrivers />
               </SuspenseWrapper>
             ),
           },
