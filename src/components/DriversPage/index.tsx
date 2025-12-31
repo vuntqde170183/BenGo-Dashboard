@@ -1,9 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  useAdminDrivers,
-  useDeleteDriver,
-  useUpdateDriverStatus,
-} from "@/hooks/useAdmin";
+import { useAdminDrivers, useUpdateDriverStatus } from "@/hooks/useAdmin";
 import { ViewReasonDialog, UpdateStatusDialog } from "./DriverStatusDialogs";
 import {
   Breadcrumb,
@@ -44,11 +40,7 @@ export default function DriversPage() {
 
   const statusParam = statusFilter;
 
-  const {
-    data: driversData,
-    isLoading,
-    refetch,
-  } = useAdminDrivers({
+  const { data: driversData, isLoading } = useAdminDrivers({
     search: searchQuery,
     status: statusParam,
     page: currentPage,

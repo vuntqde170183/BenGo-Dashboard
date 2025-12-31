@@ -4,7 +4,7 @@ import { useMenuSidebar } from "@/stores/useMenuSidebar";
 import { mdiBellOutline, mdiLoading, mdiLogout } from "@mdi/js";
 import { Icon } from "@mdi/react";
 import type React from "react";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import { useUser } from "@/context/useUserContext";
 import { HamburgerMenu } from "iconsax-reactjs";
 

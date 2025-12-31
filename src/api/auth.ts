@@ -1,5 +1,5 @@
 import { sendGet, sendPost, sendPut } from "./axios";
-import { IAuthResponse, IProfileResponse } from "@/interface/auth";
+import { IProfileResponse } from "@/interface/auth";
 
 export const authApi = {
   login: (data: any) => sendPost("/auth/login", data),

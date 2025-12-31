@@ -1,4 +1,3 @@
-import { IUser, UserRole } from "./auth";
 
 export type DriverStatus = 'PENDING_APPROVAL' | 'APPROVED' | 'LOCKED';
 export type VehicleType = 'BIKE' | 'VAN' | 'TRUCK';

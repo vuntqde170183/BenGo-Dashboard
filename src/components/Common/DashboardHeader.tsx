@@ -1,10 +1,8 @@
 import { motion } from "framer-motion";
-import Image from "react";
 import { useProfile } from "@/hooks/useAuth";
 
 interface DashboardHeaderProps {
   title: string;
-  description: string;
   username?: string;
 }
 
@@ -15,7 +13,6 @@ const item = {
 
 export default function DashboardHeader({
   title,
-  description,
   username: propUsername,
 }: DashboardHeaderProps) {
   const { data: userProfile } = useProfile();

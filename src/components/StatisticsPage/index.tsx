@@ -11,7 +11,6 @@ import {
   mdiChartLine,
   mdiShieldCheck,
   mdiHistory,
-  mdiBellOutline,
   mdiAccountCircleOutline,
 } from "@mdi/js";
 import { formatCurrency } from "@/lib/formatters";
@@ -24,7 +23,6 @@ import {
   Area,
   XAxis,
   YAxis,
-  CartesianGrid,
   Tooltip,
   ResponsiveContainer,
 } from "recharts";

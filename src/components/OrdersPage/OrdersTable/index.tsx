@@ -1,5 +1,3 @@
-import { useState } from "react";
-import { useAdminOrders, useCancelOrder } from "@/hooks/useAdmin";
 import {
   Table,
   TableBody,
@@ -25,8 +23,6 @@ interface OrdersTableProps {
   isSearching: boolean;
   onViewDetails: (id: string) => void;
   onCancel: (id: string) => void;
-  currentPage: number;
-  pageSize: number;
 }
 
 export function OrdersTable({
@@ -34,8 +30,6 @@ export function OrdersTable({
   isSearching,
   onViewDetails,
   onCancel,
-  currentPage,
-  pageSize,
 }: OrdersTableProps) {
   if (orders.length === 0) {
     return (

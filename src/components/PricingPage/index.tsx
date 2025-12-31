@@ -15,7 +15,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { motion } from "framer-motion";
 import { Car, Save } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { toast } from "react-toastify";
 
 export default function PricingPage() {
   const { data: pricingConfig, isLoading, refetch } = usePricing();

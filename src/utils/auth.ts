@@ -48,7 +48,7 @@ export const isValidProfileResponse = (profileData: any): boolean => {
  * @returns {boolean} - Authentication status
  */
 export const checkAuthAndRedirect = (
-  redirectFn: (path: string) => void, 
+  _redirectFn: (path: string) => void, 
   profileData?: any
 ): boolean => {
   if (profileData && !isValidProfileResponse(profileData)) {
