@@ -4,7 +4,7 @@ import { createContext, useContext, useEffect, useState, useMemo } from "react";
 import { clearToken, setTokenToLocalStorage } from "@/utils/tokenStorage";
 import { IProfileResponse } from "@/interface/auth";
 import { QueryClient } from "@tanstack/react-query";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const queryClient = new QueryClient();
 

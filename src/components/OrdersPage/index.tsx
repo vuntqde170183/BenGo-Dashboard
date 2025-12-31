@@ -156,8 +156,6 @@ export default function OrdersPage() {
                 isSearching={false}
                 onViewDetails={handleViewDetails}
                 onCancel={handleCancel}
-                currentPage={currentPage}
-                pageSize={pageSize}
               />
             )}
           </Card>
