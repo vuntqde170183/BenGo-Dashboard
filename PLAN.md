@@ -11,8 +11,8 @@
 │ 🚚 BenGo Admin             │  ← Logo + Title (Clickable -> Dashboard)
 ├─────────────────────────────┤
 │ 📊 Dashboard               │  ← Active state: Blue bg, White text
-│ 👥 User Management         │
-│ 🚗 Driver Management       │
+│ 👥 Quản lý người dùng         │
+│ 🚗 Quản lý tài xế       │
 │   ├─ Pending Approval      │  ← Sub-menu (indented)
 │   └─ All Drivers           │
 │ 📦 Orders                  │
@@ -36,7 +36,7 @@
    - Route: `/dashboard`
    - Description: Overview & key metrics
 
-2. **User Management** (Icon: 👥 Users)
+2. **Quản lý người dùng** (Icon: 👥 Users)
 
    - Route: `/users`
    - Description: View all users with filters
@@ -45,7 +45,7 @@
      - Search by name, phone, email
      - Actions: View, Edit, Block/Unblock, Delete
 
-3. **Driver Management** (Icon: 🚗 Car)
+3. **Quản lý tài xế** (Icon: 🚗 Car)
 
    - **Pending Approval** → `/drivers/pending` (Badge with count)
      - Quick approve/reject actions
@@ -114,7 +114,7 @@
 
 2. **Page Title/Breadcrumb** (Left, after toggle)
 
-   - Dynamic text showing current page (e.g., "Dashboard", "User Management > All Users")
+   - Dynamic text showing current page (e.g., "Dashboard", "Quản lý người dùng > All Users")
    - Style: Font bold, 18px
 
 3. **Global Search Bar** (Center)
@@ -310,11 +310,11 @@
 
 ### 6.5. Additional Pages (Quick Reference)
 
-1. **User Management Page** (`/users`)
+1. **Quản lý người dùng Page** (`/users`)
 
    - Data Table with filters (Role, Status, Search)
    - Actions: View, Block, Delete
-   - Modal: User Details (Edit form)
+   - Modal: Chi tiết người dùng (Edit form)
 
 2. **Driver Approval Page** (`/drivers/pending`)
 

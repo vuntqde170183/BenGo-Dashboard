@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,18 +8,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
-// import { useGetAllDepartments } from "@/hooks/useDepartment"; // TODO: Backend API doesn't exist yet
-import { useUploadFile } from "@/hooks/useUpload";
-import { IUpdateUserBody, IUploadResponse } from "@/interface/auth";
-import { toast } from "react-toastify";
-import {
-  IconLoader2,
-  IconEdit,
-  IconX,
-  IconUpload,
-  IconCheck,
-} from "@tabler/icons-react";
+import { IUpdateUserBody } from "@/interface/auth";
+import { IconLoader2, IconCheck } from "@tabler/icons-react";
 
 interface UserFormProps {
   formData: IUpdateUserBody;
@@ -41,17 +30,20 @@ export const UserForm = ({
   onSubmit,
   onCancel,
 }: UserFormProps) => {
-  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
-  // const { data: departmentsData, isLoading: isLoadingDepartments } = useGetAllDepartments(); // TODO: Backend API doesn't exist yet
-  const { mutate: uploadFileMutation } = useUploadFile();
-  const departments: any[] = []; // departmentsData?.data || [];
-  const isLoadingDepartments = false;
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     const newFormData = { ...formData, [name]: value };
     onFormDataChange(newFormData);
 
+    if (errors[name]) {
+      const newErrors = { ...errors, [name]: "" };
+      onErrorsChange(newErrors);
+    }
+  };
+
+  const handleClear = (name: string) => {
+    const newFormData = { ...formData, [name]: "" };
+    onFormDataChange(newFormData);
     if (errors[name]) {
       const newErrors = { ...errors, [name]: "" };
       onErrorsChange(newErrors);
@@ -67,147 +59,24 @@ export const UserForm = ({
     }
   };
 
-  const handleSwitchChange = (name: string, checked: boolean) => {
-    const newFormData = { ...formData, [name]: checked };
-    onFormDataChange(newFormData);
-  };
-
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const isValidType = file.type.startsWith("image/");
-    const isValidSize = file.size <= 10 * 1024 * 1024; // 10MB limit
-
-    if (!isValidType) {
-      toast.error(`File ${file.name} is not a valid image`);
-      return;
-    }
-    if (!isValidSize) {
-      toast.error(`File ${file.name} is too large (maximum 10MB)`);
-      return;
-    }
-
-    setIsUploadingAvatar(true);
-
-    uploadFileMutation(
-      { file },
-      {
-        onSuccess: (response: IUploadResponse) => {
-          if (response?.status) {
-            const imageUrl = response?.data?.url;
-            const newFormData = { ...formData, avatar: imageUrl };
-            onFormDataChange(newFormData);
-            toast.success(response?.message);
-          } else {
-            toast.error(response?.message);
-          }
-          setIsUploadingAvatar(false);
-        },
-        onError: (error: any) => {
-          toast.error(error?.response?.data?.message);
-          setIsUploadingAvatar(false);
-        },
-      }
-    );
-
-    e.target.value = "";
-  };
-
   return (
     <div className="space-y-4">
-      {/* Avatar Upload */}
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <Label className="text-gray-800">Avatar</Label>
-          {isUploadingAvatar && (
-            <div className="flex items-center gap-2 text-sm text-green-600">
-              <IconLoader2 className="h-4 w-4 animate-spin" />
-              <span>Uploading avatar...</span>
-            </div>
-          )}
-        </div>
-        <div className="space-y-4">
-          <div>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageUpload}
-              className="hidden"
-              id="avatar-upload"
-              disabled={isUploadingAvatar}
-            />
-            <Label
-              htmlFor="avatar-upload"
-              className={`cursor-pointer ${
-                isUploadingAvatar ? "opacity-50 cursor-not-allowed" : ""
-              }`}
-            >
-              <div className="flex items-center justify-center gap-2 px-4 py-4 border-2 border-dashed border-lightBorderV1 rounded-lg hover:border-mainTextHoverV1 hover:bg-green-50/50 transition-all duration-200 group">
-                <div className="flex items-center justify-center w-12 h-12 flex-shrink-0 rounded-full bg-green-100 group-hover:bg-green-200 transition-colors duration-200">
-                  {isUploadingAvatar ? (
-                    <IconLoader2 className="h-5 w-5 text-green-600 animate-spin" />
-                  ) : (
-                    <IconUpload className="h-5 w-5 text-green-600" />
-                  )}
-                </div>
-                <div className="text-center">
-                  <div className="text-sm font-semibold dark:text-neutral-200 group-hover:text-mainTextHoverV1">
-                    {isUploadingAvatar
-                      ? "Đang tải ảnh..."
-                      : "Tải ảnh đại diện lên"}
-                  </div>
-                  <div className="text-sm text-neutral-200 mt-1">
-                    Select image (max 10MB)
-                  </div>
-                </div>
-              </div>
-            </Label>
-          </div>
-
-          {/* Avatar Preview */}
-          {formData.avatar && (
-            <div className="flex justify-center">
-              <div className="relative group">
-                <div className="w-40 h-40 rounded-md border border-lightBorderV1 overflow-hidden">
-                  <img
-                    src={formData.avatar}
-                    alt="Ảnh đại diện"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <button
-                  type="button"
-                  onClick={() => {
-                    const newFormData = { ...formData, avatar: "" };
-                    onFormDataChange(newFormData);
-                  }}
-                  className="absolute -top-1 -right-1 p-1 bg-red-500 text-neutral-200 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                  disabled={isUploadingAvatar}
-                >
-                  <IconX className="h-3 w-3" />
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-
       <div className="space-y-2">
-        <Label htmlFor="role" className="text-gray-800">
-          Role
+        <Label htmlFor="role" className="dark:text-neutral-200">
+          Vai trò
         </Label>
         <Select
           value={formData.role}
           onValueChange={(value) => handleSelectChange("role", value)}
         >
           <SelectTrigger>
-            <SelectValue placeholder="Select role" />
+            <SelectValue placeholder="Chọn vai trò" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="student">Student</SelectItem>
-            <SelectItem value="coordinator">Coordinator</SelectItem>
-            <SelectItem value="admin">Admin</SelectItem>
+            <SelectItem value="ADMIN">Admin</SelectItem>
+            <SelectItem value="DISPATCHER">Điều phối viên</SelectItem>
+            <SelectItem value="CUSTOMER">Khách hàng</SelectItem>
+            <SelectItem value="DRIVER">Tài xế</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -215,15 +84,16 @@ export const UserForm = ({
       {/* Form Fields */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor="name" className="text-gray-800">
-            Username <span className="text-red-500">*</span>
+          <Label htmlFor="name" className="dark:text-neutral-200">
+            Tên hiển thị <span className="text-red-500">*</span>
           </Label>
           <Input
             id="name"
             name="name"
             value={formData.name}
             onChange={handleChange}
-            placeholder="Enter username"
+            onClear={() => handleClear("name")}
+            placeholder="Nhập tên hiển thị"
             className={`${
               errors.name ? "border-red-500" : "border-lightBorderV1"
             } focus:border-mainTextHoverV1`}
@@ -232,26 +102,7 @@ export const UserForm = ({
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="fullName" className="text-gray-800">
-            Full Name <span className="text-red-500">*</span>
-          </Label>
-          <Input
-            id="fullName"
-            name="fullName"
-            value={formData.fullName}
-            onChange={handleChange}
-            placeholder="Enter full name"
-            className={`${
-              errors.fullName ? "border-red-500" : "border-lightBorderV1"
-            } focus:border-mainTextHoverV1`}
-          />
-          {errors.fullName && (
-            <p className="text-red-500 text-sm">{errors.fullName}</p>
-          )}
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="email" className="text-gray-800">
+          <Label htmlFor="email" className="dark:text-neutral-200">
             Email <span className="text-red-500">*</span>
           </Label>
           <Input
@@ -260,6 +111,7 @@ export const UserForm = ({
             type="email"
             value={formData.email}
             onChange={handleChange}
+            onClear={() => handleClear("email")}
             placeholder="Nhập email"
             className={`${
               errors.email ? "border-red-500" : "border-lightBorderV1"
@@ -271,8 +123,28 @@ export const UserForm = ({
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="password" className="text-gray-800">
-            New Password (leave blank if not changing)
+          <Label htmlFor="phone" className="dark:text-neutral-200">
+            Số điện thoại
+          </Label>
+          <Input
+            id="phone"
+            name="phone"
+            value={formData.phone}
+            onChange={handleChange}
+            onClear={() => handleClear("phone")}
+            placeholder="Nhập số điện thoại"
+            className={`${
+              errors.phone ? "border-red-500" : "border-lightBorderV1"
+            } focus:border-mainTextHoverV1`}
+          />
+          {errors.phone && (
+            <p className="text-red-500 text-sm">{errors.phone}</p>
+          )}
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="password" className="dark:text-neutral-200">
+            Mật khẩu mới (để trống nếu không thay đổi)
           </Label>
           <Input
             id="password"
@@ -280,7 +152,8 @@ export const UserForm = ({
             type="password"
             value={formData.password}
             onChange={handleChange}
-            placeholder="Enter new password"
+            onClear={() => handleClear("password")}
+            placeholder="Nhập mật khẩu mới"
             className={`${
               errors.password ? "border-red-500" : "border-lightBorderV1"
             } focus:border-mainTextHoverV1`}
@@ -289,119 +162,22 @@ export const UserForm = ({
             <p className="text-red-500 text-sm">{errors.password}</p>
           )}
         </div>
-
-        {formData.role === "student" && (
-          <div className="space-y-2">
-            <Label htmlFor="studentId" className="text-gray-800">
-              Student ID
-            </Label>
-            <div className="flex items-center gap-2">
-              <Input
-                id="studentId"
-                name="studentId"
-                value={formData.studentId}
-                onChange={handleChange}
-                placeholder="Enter student ID"
-                className="border-lightBorderV1 focus:border-mainTextHoverV1"
-              />
-              <Button
-                type="button"
-                variant="outline"
-                size="lg"
-                onClick={() => {
-                  // Generate 5 random digits
-                  const randomDigits = Math.floor(Math.random() * 100000)
-                    .toString()
-                    .padStart(5, "0");
-                  const generatedId = `200${randomDigits}`;
-                  const newFormData = { ...formData, studentId: generatedId };
-                  onFormDataChange(newFormData);
-                }}
-                className="whitespace-nowrap"
-              >
-                Generate ID
-              </Button>
-            </div>
-          </div>
-        )}
-
-        {(formData.role === "student" || formData.role === "coordinator") && (
-          <div className="space-y-2">
-            <Label htmlFor="phoneNumber" className="text-gray-800">
-              Phone Number
-            </Label>
-            <Input
-              id="phoneNumber"
-              name="phoneNumber"
-              value={formData.phoneNumber}
-              onChange={handleChange}
-              placeholder="Enter phone number"
-              className={`${
-                errors.phoneNumber ? "border-red-500" : "border-lightBorderV1"
-              } focus:border-mainTextHoverV1`}
-            />
-            {errors.phoneNumber && (
-              <p className="text-red-500 text-sm">{errors.phoneNumber}</p>
-            )}
-          </div>
-        )}
-
-        {(formData.role === "student" || formData.role === "coordinator") && (
-          <div className="space-y-2">
-            <Label htmlFor="department" className="text-gray-800">
-              Department
-            </Label>
-            <Select
-              value={formData.department || undefined}
-              onValueChange={(value) =>
-                handleSelectChange("department", value || "")
-              }
-              disabled={isLoadingDepartments}
-            >
-              <SelectTrigger>
-                <SelectValue
-                  placeholder={
-                    isLoadingDepartments ? "Đang tải..." : "Chọn khoa"
-                  }
-                />
-              </SelectTrigger>
-              <SelectContent>
-                {departments.map((department) => (
-                  <SelectItem key={department._id} value={department._id}>
-                    {department.name} ({department.code})
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        )}
-      </div>
-
-      <div className="flex items-center justify-between space-x-2">
-        <Label htmlFor="active" className="text-gray-800">
-          Active
-        </Label>
-        <Switch
-          id="active"
-          checked={formData.active}
-          onCheckedChange={(checked) => handleSwitchChange("active", checked)}
-        />
       </div>
 
       <div className="flex gap-2 justify-end pt-4">
         <Button variant="outline" onClick={onCancel} disabled={isUpdating}>
-          Cancel
+          Hủy
         </Button>
         <Button onClick={onSubmit} disabled={isUpdating}>
           {isUpdating ? (
             <>
               <IconLoader2 className="h-4 w-4 animate-spin" />
-              Updating...
+              Đang cập nhật...
             </>
           ) : (
             <>
               <IconCheck className="h-4 w-4" />
-              Save changes
+              Lưu thay đổi
             </>
           )}
         </Button>

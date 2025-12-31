@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Table,
   TableBody,
@@ -8,12 +7,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { IUser } from "@/interface/auth";
 import { motion } from "framer-motion";
 import { IconTrash, IconMenu3 } from "@tabler/icons-react";
-import { Activity } from "lucide-react";
 import { getRoleBadge } from "@/lib/badge-helpers";
+import { Star } from "lucide-react";
+
+import { IUser } from "@/interface/auth";
+
 interface UserTableProps {
   users: IUser[];
   isSearching: boolean;
@@ -31,117 +31,79 @@ export const UserTable = ({
   currentPage = 1,
   pageSize = 10,
 }: UserTableProps) => {
-  const [hoveredRow, setHoveredRow] = useState<string | null>(null);
-
-  const getStatusBadge = (active: boolean) => {
-    return active ? (
-      <Badge variant="green">
-        <Activity className="h-3 w-3" />
-        Active
-      </Badge>
-    ) : (
-      <Badge variant="red">Inactive</Badge>
-    );
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(amount);
   };
 
   return (
-    <div className="w-full overflow-auto">
+    <div className="w-full overflow-auto border border-darkBackgroundV1 rounded-md">
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[60px]">No.</TableHead>
-            <TableHead>User Information</TableHead>
+            <TableHead className="w-[60px]">STT</TableHead>
+            <TableHead>Thông tin người dùng</TableHead>
             <TableHead className="w-[180px]">Email</TableHead>
-            <TableHead>Student ID</TableHead>
-            <TableHead>Department</TableHead>
-            <TableHead>Role</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Action</TableHead>
+            <TableHead>Vai trò</TableHead>
+            <TableHead>Đánh giá</TableHead>
+            <TableHead>Số dư ví</TableHead>
+            <TableHead>Thao tác</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {users.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={8}>
-                {isSearching ? "No user found" : "No user found"}
+              <TableCell colSpan={7}>
+                {isSearching
+                  ? "Không tìm thấy người dùng"
+                  : "Danh sách người dùng trống"}
               </TableCell>
             </TableRow>
           ) : (
             users.map((user, index) => {
               const rowNumber = (currentPage - 1) * pageSize + index + 1;
               return (
-                <TableRow
-                  key={user._id}
-                  onMouseEnter={() => setHoveredRow(user._id)}
-                  onMouseLeave={() => setHoveredRow(null)}
-                >
+                <TableRow key={user.id}>
                   <TableCell>{rowNumber}</TableCell>
                   <TableCell className="flex items-center gap-2">
                     <div className="w-12 h-12 flex-shrink-0 rounded-full bg-darkBorderV1 flex items-center justify-center overflow-hidden">
-                      {user.avatar ? (
-                        <img
-                          src={user.avatar}
-                          alt={user.fullName || user.name}
-                          className="w-full h-full object-cover flex-shrink-0"
-                        />
-                      ) : (
-                        <img
-                          src={`/images/${user.gender ? user.gender : "male"}-${
-                            user.role
-                          }.webp`}
-                          alt={"default-avatar"}
-                          className="w-full h-full object-cover flex-shrink-0"
-                        />
-                      )}
+                      <img
+                        src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user.name}`}
+                        alt="avatar"
+                        className="w-full h-full object-cover"
+                      />
                     </div>
                     <div>
                       <p className="font-semibold dark:text-neutral-200">
-                        {user.fullName || user.name}
+                        {user.name}
                       </p>
-                      {user.phoneNumber && (
-                        <p className="text-sm dark:text-neutral-200">
-                          {user.phoneNumber}
-                        </p>
+                      {user.phone && (
+                        <p className="text-sm text-neutral-400">{user.phone}</p>
                       )}
                     </div>
                   </TableCell>
                   <TableCell className="w-[180px]">{user.email}</TableCell>
+                  <TableCell>{getRoleBadge(user.role)}</TableCell>
                   <TableCell>
-                    {user.studentId ? (
-                      <Badge variant="orange">{user.studentId}</Badge>
-                    ) : (
-                      ""
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center">
-                      {user.department ? (
-                        <div className="flex flex-col gap-1">
-                          <span className="text-sm font-semibold dark:text-neutral-200 text-nowrap">
-                            {user.department.name}
-                          </span>
-                          <span className="text-sm font-semibold dark:text-neutral-200 text-nowrap">
-                            Code: {user.department.code}
-                          </span>
-                        </div>
-                      ) : (
-                        ""
-                      )}
+                    <div className="flex items-center gap-1 dark:text-neutral-200 font-medium">
+                      <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+                      {user.rating}
                     </div>
                   </TableCell>
-                  <TableCell>{getRoleBadge(user.role)}</TableCell>
-                  <TableCell>{getStatusBadge(user.active ?? false)}</TableCell>
+                  <TableCell>
+                    <span className="font-medium text-green-500">
+                      {formatCurrency(user.walletBalance)}
+                    </span>
+                  </TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end space-x-2">
                       <motion.div
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                       >
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          onClick={() => onEdit(user._id)}
-                        >
+                        <Button size="icon" onClick={() => onEdit(user.id)}>
                           <IconMenu3 className="h-5 w-5" />
                         </Button>
                       </motion.div>
@@ -150,9 +112,9 @@ export const UserTable = ({
                         whileTap={{ scale: 0.95 }}
                       >
                         <Button
-                          variant="outline"
+                          className="bg-red-500 hover:bg-red-600"
                           size="icon"
-                          onClick={() => onDelete(user._id)}
+                          onClick={() => onDelete(user.id)}
                         >
                           <IconTrash className="h-5 w-5" />
                         </Button>

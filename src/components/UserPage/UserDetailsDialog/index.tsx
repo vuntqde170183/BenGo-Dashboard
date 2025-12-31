@@ -1,5 +1,3 @@
-
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useGetUserById, useUpdateUser } from "@/hooks/useAdmin";
@@ -15,6 +13,8 @@ import {
 } from "@/components/ui/dialog";
 import { UserTable } from "./UserTable";
 import { UserForm } from "./UserForm";
+import Icon from "@mdi/react";
+import { mdiClipboardAccount } from "@mdi/js";
 
 interface UserDetailsDialogProps {
   isOpen: boolean;
@@ -23,37 +23,33 @@ interface UserDetailsDialogProps {
   onSuccess?: () => void;
 }
 
-export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDetailsDialogProps) => {
+export const UserDetailsDialog = ({
+  isOpen,
+  onClose,
+  userId,
+  onSuccess,
+}: UserDetailsDialogProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState<IUpdateUserBody>({
     name: "",
     email: "",
+    phone: "",
     password: "",
-    studentId: "",
-    fullName: "",
-    phoneNumber: "",
-    avatar: "",
-    role: "student",
-    department: "",
-    active: true,
+    role: "CUSTOMER", // DefaultRole
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const { data: userData, isLoading: isLoadingUser } = useGetUserById(userId);
   const { mutate: updateUserMutation, isPending: isUpdating } = useUpdateUser();
+
   useEffect(() => {
     if (userData?.data) {
       const user = userData.data;
       setFormData({
         name: user.name,
         email: user.email,
-        password: "",
-        studentId: user.studentId || "",
-        fullName: user.fullName || "",
-        phoneNumber: user.phoneNumber || "",
-        avatar: user.avatar || "",
+        phone: user.phone || "",
         role: user.role,
-        department: user.department?._id || "",
-        active: user.active,
+        password: "",
       });
     }
   }, [userData]);
@@ -70,25 +66,24 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
     const newErrors: Record<string, string> = {};
 
     if (!formData.name?.trim()) {
-      newErrors.name = "Login name is required";
-    }
-
-    if (!formData.fullName?.trim()) {
-      newErrors.fullName = "Full name is required";
+      newErrors.name = "Tên hiển thị là bắt buộc";
     }
 
     if (!formData.email?.trim()) {
-      newErrors.email = "Email is required";
+      newErrors.email = "Email là bắt buộc";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Email is not valid";
+      newErrors.email = "Email không hợp lệ";
+    }
+
+    if (
+      formData.phone &&
+      !/^(0|\+84)[3|5|7|8|9][0-9]{8}$/.test(formData.phone)
+    ) {
+      newErrors.phone = "Số điện thoại không hợp lệ";
     }
 
     if (formData.password && formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
-    }
-
-    if (formData.phoneNumber && !/^(0|\+84)[2|3|4|5|7|8|9][0-9]{8}$/.test(formData.phoneNumber)) {
-      newErrors.phoneNumber = "Phone number is not valid";
+      newErrors.password = "Mật khẩu phải có ít nhất 6 ký tự";
     }
 
     setErrors(newErrors);
@@ -103,13 +98,8 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
     const updateData: IUpdateUserBody = {
       name: formData.name,
       email: formData.email,
-      studentId: formData.studentId,
-      fullName: formData.fullName,
-      phoneNumber: formData.phoneNumber,
-      avatar: formData.avatar,
+      phone: formData.phone,
       role: formData.role,
-      department: formData.department,
-      active: formData.active,
     };
 
     if (formData.password?.trim()) {
@@ -120,12 +110,15 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
       { id: userId, data: updateData },
       {
         onSuccess: (_response: any) => {
-          toast.success("Update user successfully!");
+          toast.success("Cập nhật người dùng thành công!");
           setIsEditing(false);
           onSuccess?.();
         },
         onError: (error: any) => {
-          toast.error(error?.response?.data?.message || "An error occurred while updating user!");
+          toast.error(
+            error?.response?.data?.message ||
+              "Có lỗi xảy ra khi cập nhật người dùng!"
+          );
         },
       }
     );
@@ -149,38 +142,36 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
       setFormData({
         name: user.name,
         email: user.email,
-        password: "",
-        studentId: user.studentId || "",
-        fullName: user.fullName || "",
-        phoneNumber: user.phoneNumber || "",
-        avatar: user.avatar || "",
+        phone: user.phone || "",
         role: user.role,
-        department: user.department?._id || "",
-        active: user.active,
+        password: "",
       });
     }
   };
-
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent
         size="medium"
-        className="max-h-[90vh] h-[90vh] overflow-y-auto bg-white flex flex-col">
+        className="max-h-[90vh] h-[90vh] overflow-y-auto flex flex-col"
+      >
         <DialogHeader>
-          <DialogTitle className="text-gray-800">
-            {isEditing ? "Edit user: " + userData?.data?.fullName : "User Details"}
+          <DialogTitle>
+            <Icon path={mdiClipboardAccount} size={1} />
+            {isEditing
+              ? "Cập nhật người dùng: " + userData?.data?.name
+              : "Chi tiết người dùng"}
           </DialogTitle>
         </DialogHeader>
 
         {isLoadingUser ? (
           <div className="space-y-4">
-              {[...Array(6)].map((_, index) => (
-                <div key={index} className="space-y-2">
-                  <Skeleton className="h-4 w-20" />
-                  <Skeleton className="h-10 w-full" />
-                </div>
-              ))}
+            {[...Array(6)].map((_, index) => (
+              <div key={index} className="space-y-2">
+                <Skeleton className="h-4 w-20" />
+                <Skeleton className="h-10 w-full" />
+              </div>
+            ))}
           </div>
         ) : (
           <div className="space-y-4">
@@ -193,29 +184,24 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
                 onErrorsChange={handleErrorsChange}
                 onSubmit={handleSubmit}
                 onCancel={handleCancelEdit}
-                        />
-                      ) : (
+              />
+            ) : (
               <>
                 {userData?.data && <UserTable user={userData.data} />}
                 <div className="flex gap-2 justify-end pt-4">
                   <Button variant="outline" onClick={handleClose}>
-                    Close
+                    Đóng
                   </Button>
                   <Button onClick={handleEdit}>
                     <IconEdit className="h-4 w-4" />
-                    Edit user
+                    Chỉnh sửa
                   </Button>
                 </div>
-                </>
-              )}
+              </>
+            )}
           </div>
         )}
       </DialogContent>
     </Dialog>
   );
-}; 
-
-
-
-
-
+};

@@ -70,8 +70,8 @@ export default function CommonHeader() {
           <Button variant="ghost" size="icon">
             <Icon path={mdiBellOutline} size={0.8} />
           </Button>
-          <Button onClick={logoutUser}>
-            Logout
+          <Button onClick={logoutUser} className="bg-red-500 hover:bg-red-600">
+            Đăng xuất
             <Icon path={mdiLogout} size={0.8} />
           </Button>
         </div>

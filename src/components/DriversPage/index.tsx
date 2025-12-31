@@ -22,7 +22,7 @@ export default function DriversPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold">Driver Management</h1>
+        <h1 className="text-3xl font-bold">Quản lý tài xế</h1>
         <p className="text-neutral-200 mt-1">
           Manage all drivers in the system
         </p>

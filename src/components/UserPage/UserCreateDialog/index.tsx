@@ -198,7 +198,9 @@ export const UserCreateDialog = ({
         className="max-h-[90vh] overflow-y-auto bg-white"
       >
         <DialogHeader>
-          <DialogTitle className="text-gray-800">Add New User</DialogTitle>
+          <DialogTitle className="dark:text-neutral-200">
+            Add New User
+          </DialogTitle>
         </DialogHeader>
 
         <motion.div
@@ -210,7 +212,7 @@ export const UserCreateDialog = ({
             {/* Avatar Upload */}
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <Label className="text-gray-800">Avatar</Label>
+                <Label className="dark:text-neutral-200">Avatar</Label>
                 {isUploadingAvatar && (
                   <div className="flex items-center gap-2 text-sm text-green-600">
                     <IconLoader2 className="h-4 w-4 animate-spin" />
@@ -284,7 +286,7 @@ export const UserCreateDialog = ({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="role" className="text-gray-800">
+              <Label htmlFor="role" className="dark:text-neutral-200">
                 Role
               </Label>
               <Select
@@ -304,7 +306,7 @@ export const UserCreateDialog = ({
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="name" className="text-gray-800">
+                <Label htmlFor="name" className="dark:text-neutral-200">
                   Username <span className="text-red-500">*</span>
                 </Label>
                 <Input
@@ -323,7 +325,7 @@ export const UserCreateDialog = ({
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="fullName" className="text-gray-800">
+                <Label htmlFor="fullName" className="dark:text-neutral-200">
                   Full Name <span className="text-red-500">*</span>
                 </Label>
                 <Input
@@ -342,7 +344,7 @@ export const UserCreateDialog = ({
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-gray-800">
+                <Label htmlFor="email" className="dark:text-neutral-200">
                   Email <span className="text-red-500">*</span>
                 </Label>
                 <Input
@@ -362,7 +364,7 @@ export const UserCreateDialog = ({
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password" className="text-gray-800">
+                <Label htmlFor="password" className="dark:text-neutral-200">
                   Password <span className="text-red-500">*</span>
                 </Label>
                 <Input
@@ -383,7 +385,7 @@ export const UserCreateDialog = ({
 
               {formData.role === "student" && (
                 <div className="space-y-2">
-                  <Label htmlFor="studentId" className="text-gray-800">
+                  <Label htmlFor="studentId" className="dark:text-neutral-200">
                     Student ID
                   </Label>
                   <div className="flex items-center gap-2">
@@ -421,7 +423,10 @@ export const UserCreateDialog = ({
               {(formData.role === "student" ||
                 formData.role === "coordinator") && (
                 <div className="space-y-2">
-                  <Label htmlFor="phoneNumber" className="text-gray-800">
+                  <Label
+                    htmlFor="phoneNumber"
+                    className="dark:text-neutral-200"
+                  >
                     Phone Number
                   </Label>
                   <Input
@@ -444,7 +449,7 @@ export const UserCreateDialog = ({
             </div>
 
             <div className="flex items-center justify-between space-x-2">
-              <Label htmlFor="active" className="text-gray-800">
+              <Label htmlFor="active" className="dark:text-neutral-200">
                 Active
               </Label>
               <Switch

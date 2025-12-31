@@ -19,13 +19,13 @@ export const getDashboardMenuItems = (): MenuItem[] => [
 	},
 	{
 		id: "user-management",
-		name: "User Management",
+		name: "Quản lý người dùng",
 		path: "/admin/users",
 		icon: mdiAccountGroup,
 	},
 	{
 		id: "driver-management",
-		name: "Driver Management",
+		name: "Quản lý tài xế",
 		path: "/admin/drivers",
 		icon: mdiCarSide,
 		subMenu: [

@@ -7,18 +7,17 @@ export interface IDepartment {
 }
 
 export interface IUser {
-  _id: string;
-  id?: string; // Some endpoints use id, others use _id
+  id: string;
+  _id?: string;
   phone: string;
-  email?: string;
+  email: string;
   name: string;
   role: UserRole;
+  rating: number;
+  walletBalance: number;
   avatar?: string | null;
-  walletBalance?: number;
-  rating?: number;
   createdAt?: string;
   updatedAt?: string;
-  // Additional fields for admin user management
   studentId?: string;
   fullName?: string;
   phoneNumber?: string;
@@ -42,14 +41,15 @@ export interface IProfileResponse {
   data: IUser;
 }
 
-// Request interfaces for user management
+// Request interfaces for Quản lý người dùng
 export interface ICreateUserBody {
   name: string;
   email: string;
   password: string;
+  phone?: string;
   studentId?: string;
   fullName?: string;
-  phoneNumber?: string;
+  phoneNumber?: string; // Legacy
   avatar?: string;
   role: string;
   department?: string;
@@ -60,9 +60,10 @@ export interface IUpdateUserBody {
   name?: string;
   email?: string;
   password?: string;
+  phone?: string;
   studentId?: string;
   fullName?: string;
-  phoneNumber?: string;
+  phoneNumber?: string; // Legacy
   avatar?: string;
   role?: string;
   department?: string;

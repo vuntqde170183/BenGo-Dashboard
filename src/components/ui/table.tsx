@@ -12,7 +12,7 @@ const Table = React.forwardRef<
   return (
     <div
       ref={dragScrollRef}
-      className="w-full overflow-auto border border-darkBackgroundV1 rounded-md"
+      className="w-full overflow-auto border border-darkBackgroundV1 rounded-2xl"
     >
       <table
         ref={ref}
@@ -33,7 +33,7 @@ const TableHeader = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <thead
     ref={ref}
-    className={cn("[&_tr]:border-b [&_tr]:bg-darkBorderV1", className)}
+    className={cn("[&_tr]:border-b [&_tr]:bg-darkBackgroundV1", className)}
     {...props}
   />
 ));

@@ -1,5 +1,5 @@
 Administration (Quản trị)
-● User management / Quản lý người dùng
+● Quản lý người dùng / Quản lý người dùng
 ● Driver approval / Duyệt tài xế
 ● Order management / Quản lý đơn hàng
 ● Pricing configuration / Cấu hình giá

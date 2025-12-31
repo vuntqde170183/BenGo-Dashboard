@@ -24,8 +24,10 @@ import { UserDetailsDialog } from "@/components/UserPage/UserDetailsDialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Pagination } from "@/components/ui/pagination";
 import { motion } from "framer-motion";
-import { IconSearch, IconPlus, IconX } from "@tabler/icons-react";
+import { IconSearch, IconPlus } from "@tabler/icons-react";
 import { DeleteDialog } from "@/components/ui/delete-dialog";
+import Icon from "@mdi/react";
+import { mdiAccountPlusOutline } from "@mdi/js";
 
 export default function UserPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -94,7 +96,7 @@ export default function UserPage() {
     setCurrentPage(page);
   };
 
-  const displayUsers = usersData?.data || [];
+  const displayUsers = usersData?.data?.data || [];
   return (
     <div className="space-y-6 bg-darkCardV1 p-4 rounded-2xl border border-darkBorderV1">
       <Breadcrumb>
@@ -104,7 +106,7 @@ export default function UserPage() {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>User Management</BreadcrumbPage>
+            <BreadcrumbPage>Quản lý người dùng</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
@@ -117,37 +119,30 @@ export default function UserPage() {
           <div className="flex items-center justify-between gap-4 w-full md:w-auto">
             <div className="relative w-full md:w-96">
               <Input
-                placeholder="Search by name, email, role, department..."
+                placeholder="Tìm kiếm theo tên, email..."
                 value={searchQuery}
                 onChange={handleSearch}
+                onClear={handleClearSearch}
                 className="pl-10 pr-10 py-2 w-full"
               />
               <IconSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 dark:text-neutral-200 w-5 h-5" />
-              {searchQuery && (
-                <button
-                  onClick={handleClearSearch}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 dark:text-neutral-200 hover:text-red-500 transition-colors"
-                  type="button"
-                >
-                  <IconX className="w-5 h-5 dark:text-neutral-200" />
-                </button>
-              )}
             </div>
             <div className="flex items-center gap-3">
               <Select value={roleFilter} onValueChange={handleRoleFilterChange}>
                 <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Filter by role" />
+                  <SelectValue placeholder="Lọc theo vai trò" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Roles</SelectItem>
+                  <SelectItem value="all">Tất cả vai trò</SelectItem>
                   <SelectItem value="ADMIN">Admin</SelectItem>
-                  <SelectItem value="CUSTOMER">Customer</SelectItem>
-                  <SelectItem value="DRIVER">Driver</SelectItem>
+                  <SelectItem value="DISPATCHER">Điều phối viên</SelectItem>
+                  <SelectItem value="CUSTOMER">Khách hàng</SelectItem>
+                  <SelectItem value="DRIVER">Tài xế</SelectItem>
                 </SelectContent>
               </Select>
               <Button onClick={() => setIsCreateDialogOpen(true)}>
-                <IconPlus className="h-4 w-4" />
-                Add User
+                Thêm người dùng
+                <Icon path={mdiAccountPlusOutline} size={0.8} />
               </Button>
             </div>
           </div>
@@ -178,12 +173,14 @@ export default function UserPage() {
               />
             )}
           </Card>
-          {usersData?.meta?.total && usersData.meta.total > pageSize && (
+          {(usersData?.data?.meta?.total ?? 0) > pageSize && (
             <Pagination
               page={currentPage}
               pageSize={pageSize}
-              total={usersData.meta.total}
-              totalPages={Math.ceil(usersData.meta.total / pageSize)}
+              total={usersData?.data?.meta?.total ?? 0}
+              totalPages={Math.ceil(
+                (usersData?.data?.meta?.total ?? 0) / pageSize
+              )}
               onPageChange={handlePageChange}
             />
           )}
@@ -194,12 +191,16 @@ export default function UserPage() {
         isDeleting={isDeleting}
         onClose={() => setIsDeleteDialogOpen(false)}
         onConfirm={confirmDelete}
-        title="Delete User"
-        description="Are you sure you want to delete this user? This action cannot be undone."
-        confirmText="Delete User"
-        successMessage="User deleted successfully!"
-        errorMessage="Failed to delete user."
-        warningMessage="This will permanently remove the user and all associated data."
+        title={`Xóa người dùng: ${
+          displayUsers.find(
+            (u: any) => u.id === selectedUserId || u._id === selectedUserId
+          )?.name || ""
+        }`}
+        description="Bạn có chắc chắn muốn xóa người dùng này không? Hành động này không thể hoàn tác."
+        confirmText="Xóa người dùng"
+        successMessage="Xóa người dùng thành công!"
+        errorMessage="Xóa người dùng thất bại."
+        warningMessage="Hành động này sẽ xóa vĩnh viễn người dùng và các dữ liệu liên quan."
       />
 
       <UserCreateDialog

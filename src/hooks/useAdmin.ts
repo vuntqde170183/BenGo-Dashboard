@@ -8,7 +8,7 @@ import { adminTicketApi } from "@/api/admin-tickets";
 import { adminReportApi } from "@/api/admin-reports";
 import { toast } from "react-toastify";
 
-// User Management
+// Quản lý người dùng
 export const useAdminUsers = (params: any) => {
   return useQuery({
     queryKey: ["admin", "users", params],
@@ -72,7 +72,7 @@ export const useUpdateUser = () => {
 export const useGetUserById = useUserDetails;
 
 
-// Driver Management
+// Quản lý tài xế
 export const useAdminDrivers = (params: any) => {
   return useQuery({
     queryKey: ["admin", "drivers", params],

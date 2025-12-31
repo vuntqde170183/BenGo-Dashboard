@@ -1,5 +1,3 @@
-
-
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -51,16 +49,16 @@ export const DeleteDialog = ({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader className="!border-b-[#ccc] px-4">
-          <DialogTitle className="text-gray-800">{title}</DialogTitle>
+          <DialogTitle className="dark:text-neutral-200">{title}</DialogTitle>
         </DialogHeader>
 
-        {warningMessage && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+        {description && (
+          <div className="bg-red-100 border border-red-200 rounded-lg p-4">
             <div className="flex items-start gap-2">
               <IconAlertTriangle className="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" />
               <div className="text-sm text-red-800">
                 <p className="font-semibold mb-1">Warning:</p>
-                <p>{warningMessage}</p>
+                <p>{description}</p>
               </div>
             </div>
           </div>
@@ -97,9 +95,4 @@ export const DeleteDialog = ({
       </DialogContent>
     </Dialog>
   );
-}; 
-
-
-
-
-
+};

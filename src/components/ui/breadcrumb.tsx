@@ -34,7 +34,7 @@ const BreadcrumbItem = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <li
     ref={ref}
-    className={cn("inline-flex items-center gap-1.5 text-base", className)}
+    className={cn("inline-flex items-center gap-1.5 text-sm", className)}
     {...props}
   />
 ));
