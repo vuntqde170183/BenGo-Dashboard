@@ -83,6 +83,22 @@ export const UserForm = ({
     }
   };
 
+  const handleNumericChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    const numericValue = value.replace(/\D/g, "");
+    onFormDataChange({ ...formData, [name]: numericValue });
+
+    if (errors[name]) {
+      const newErrors = { ...errors, [name]: "" };
+      onErrorsChange(newErrors);
+    }
+  };
+
+  const handleBankInfoNumericChange = (field: string, value: string) => {
+    const numericValue = value.replace(/\D/g, "");
+    handleBankInfoChange(field, numericValue);
+  };
+
   const handleClear = (name: string) => {
     const newFormData = { ...formData, [name]: "" };
     onFormDataChange(newFormData);
@@ -192,9 +208,10 @@ export const UserForm = ({
                   id="phone"
                   name="phone"
                   value={formData.phone}
-                  onChange={handleChange}
+                  onChange={handleNumericChange}
                   onClear={() => handleClear("phone")}
                   placeholder="Nhập số điện thoại"
+                  inputMode="numeric"
                   className={errors.phone ? "border-red-500" : ""}
                 />
                 {errors.phone && (
@@ -489,8 +506,9 @@ export const UserForm = ({
                     id="identityNumber"
                     name="identityNumber"
                     value={formData.identityNumber}
-                    onChange={handleChange}
+                    onChange={handleNumericChange}
                     placeholder="Nhập số CCCD/CMND"
+                    inputMode="numeric"
                     className="max-w-md"
                   />
                 </div>
@@ -626,7 +644,10 @@ export const UserForm = ({
                     <Input
                       value={formData.bankInfo?.accountNumber || ""}
                       onChange={(e) =>
-                        handleBankInfoChange("accountNumber", e.target.value)
+                        handleBankInfoNumericChange(
+                          "accountNumber",
+                          e.target.value
+                        )
                       }
                       placeholder="Nhập số tài khoản"
                     />
