@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAdminDrivers, useUpdateDriverStatus } from "@/hooks/useAdmin";
 import { ViewReasonDialog, UpdateStatusDialog } from "./DriverStatusDialogs";
+import { DriverDetailsDialog } from "./DriverDetailsDialog";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -11,6 +12,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -22,7 +24,8 @@ import { DriverTable } from "@/components/DriversPage/DriverTable";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Pagination } from "@/components/ui/pagination";
 import { motion } from "framer-motion";
-import { IconSearch } from "@tabler/icons-react";
+import { IconSearch, IconPlus } from "@tabler/icons-react";
+import { DriverCreateDialog } from "./DriverCreateDialog";
 
 export default function DriversPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -32,6 +35,9 @@ export default function DriversPage() {
   const [selectedDriver, setSelectedDriver] = useState<any>(null);
   const [viewDialogOpen, setViewDialogOpen] = useState(false);
   const [updateDialogOpen, setUpdateDialogOpen] = useState(false);
+  const [createDialogOpen, setCreateDialogOpen] = useState(false);
+  const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
+  const [selectedDriverId, setSelectedDriverId] = useState<string>("");
   const [targetStatus, setTargetStatus] = useState<
     "APPROVED" | "PENDING" | "LOCKED" | "REJECTED"
   >("APPROVED");
@@ -105,8 +111,9 @@ export default function DriversPage() {
         setSelectedDriver(driver);
         setViewDialogOpen(true);
       } else {
-        // Handle normal edit navigation if needed
-        console.log("Navigate to edit", id);
+        // Open details dialog for viewing/editing
+        setSelectedDriverId(driver.userId?._id || driver.userId?.id || id);
+        setDetailsDialogOpen(true);
       }
     }
   };
@@ -166,6 +173,10 @@ export default function DriversPage() {
                   <SelectItem value="REJECTED">Từ chối</SelectItem>
                 </SelectContent>
               </Select>
+              <Button onClick={() => setCreateDialogOpen(true)}>
+                <IconPlus className="h-4 w-4" />
+                Thêm tài xế
+              </Button>
             </div>
           </div>
 
@@ -264,6 +275,28 @@ export default function DriversPage() {
             : "default"
         }
       />
+
+      <DriverCreateDialog
+        isOpen={createDialogOpen}
+        onClose={() => setCreateDialogOpen(false)}
+        onSuccess={() => {
+          setCreateDialogOpen(false);
+        }}
+      />
+
+      {selectedDriverId && (
+        <DriverDetailsDialog
+          isOpen={detailsDialogOpen}
+          onClose={() => {
+            setDetailsDialogOpen(false);
+            setSelectedDriverId("");
+          }}
+          driverId={selectedDriverId}
+          onSuccess={() => {
+            // Refetch drivers data will happen automatically via react-query
+          }}
+        />
+      )}
     </div>
   );
 }

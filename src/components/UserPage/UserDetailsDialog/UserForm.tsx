@@ -118,8 +118,7 @@ export const UserForm = ({
 
   const handleImageUpload = async (
     e: React.ChangeEvent<HTMLInputElement>,
-    field: keyof IUpdateUserBody,
-    isMultiple: boolean = false
+    field: keyof IUpdateUserBody
   ) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -135,15 +134,7 @@ export const UserForm = ({
           response?.data?.statusCode === 200
         ) {
           const imageUrl = response?.data?.data?.url;
-          if (isMultiple) {
-            const currentImages = (formData[field] as string[]) || [];
-            onFormDataChange({
-              ...formData,
-              [field]: [...currentImages, imageUrl],
-            });
-          } else {
-            onFormDataChange({ ...formData, [field]: imageUrl });
-          }
+          onFormDataChange({ ...formData, [field]: imageUrl });
           toast.success("Tải ảnh lên thành công!");
         } else {
           toast.error("Tải ảnh lên thất bại!");
@@ -156,12 +147,6 @@ export const UserForm = ({
       },
     });
     e.target.value = "";
-  };
-
-  const removeImage = (field: keyof IUpdateUserBody, index: number) => {
-    const currentImages = (formData[field] as string[]) || [];
-    const newImages = currentImages.filter((_, i) => i !== index);
-    onFormDataChange({ ...formData, [field]: newImages });
   };
 
   const role = formData.role;
@@ -389,50 +374,44 @@ export const UserForm = ({
                     <Label className="dark:text-neutral-200">
                       Ảnh bằng lái
                     </Label>
-                    <div>
-                      {formData.licenseImages?.map((url, idx) => (
-                        <div
-                          key={idx}
-                          className="relative aspect-video rounded-lg overflow-hidden border border-darkBorderV1 bg-darkBackgroundV2 group"
+                    {formData.licenseImage ? (
+                      <div className="relative aspect-video rounded-lg overflow-hidden border border-darkBorderV1 bg-darkBackgroundV2 group">
+                        <img
+                          src={formData.licenseImage}
+                          alt="license"
+                          className="w-full h-full object-cover"
+                        />
+                        <button
+                          type="button"
+                          onClick={() =>
+                            onFormDataChange({ ...formData, licenseImage: "" })
+                          }
+                          className="absolute top-1 right-1 p-2 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
                         >
-                          <img
-                            src={url}
-                            alt={`license-${idx}`}
-                            className="w-full h-full object-cover"
-                          />
-                          <button
-                            type="button"
-                            onClick={() => removeImage("licenseImages", idx)}
-                            className="absolute top-1 right-1 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                          >
-                            <IconTrash className="h-3 w-3" />
-                          </button>
-                        </div>
-                      ))}
-                      {(formData.licenseImages?.length || 0) < 2 && (
-                        <label className="aspect-video flex flex-col items-center justify-center border-2 border-dashed border-darkBorderV1 rounded-lg cursor-pointer hover:bg-darkBackgroundV2 transition-colors">
-                          {isUploading === "licenseImages" ? (
-                            <IconLoader2 className="h-6 w-6 animate-spin text-neutral-400" />
-                          ) : (
-                            <>
-                              <IconPlus className="h-6 w-6 text-neutral-400" />
-                              <span className="text-sm text-neutral-400">
-                                Tải ảnh bằng lái
-                              </span>
-                            </>
-                          )}
-                          <input
-                            type="file"
-                            className="hidden"
-                            accept="image/*"
-                            onChange={(e) =>
-                              handleImageUpload(e, "licenseImages", true)
-                            }
-                            disabled={!!isUploading}
-                          />
-                        </label>
-                      )}
-                    </div>
+                          <IconTrash className="h-4 w-4" />
+                        </button>
+                      </div>
+                    ) : (
+                      <label className="aspect-video flex flex-col items-center justify-center border-2 border-dashed border-darkBorderV1 rounded-lg cursor-pointer hover:bg-darkBackgroundV2 transition-colors">
+                        {isUploading === "licenseImage" ? (
+                          <IconLoader2 className="h-6 w-6 animate-spin text-neutral-400" />
+                        ) : (
+                          <>
+                            <IconPlus className="h-6 w-6 text-neutral-400" />
+                            <span className="text-sm text-neutral-400">
+                              Tải ảnh bằng lái
+                            </span>
+                          </>
+                        )}
+                        <input
+                          type="file"
+                          className="hidden"
+                          accept="image/*"
+                          onChange={(e) => handleImageUpload(e, "licenseImage")}
+                          disabled={!!isUploading}
+                        />
+                      </label>
+                    )}
                   </div>
 
                   {/* Ảnh đăng ký xe (Cà vẹt) */}
@@ -440,57 +419,49 @@ export const UserForm = ({
                     <Label className="dark:text-neutral-200">
                       Ảnh đăng ký xe
                     </Label>
-                    <div>
-                      {formData.vehicleRegistrationImages?.map((url, idx) => (
-                        <div
-                          key={idx}
-                          className="relative aspect-video rounded-lg overflow-hidden border border-darkBorderV1 bg-darkBackgroundV2 group"
+                    {formData.vehicleRegistrationImage ? (
+                      <div className="relative aspect-video rounded-lg overflow-hidden border border-darkBorderV1 bg-darkBackgroundV2 group">
+                        <img
+                          src={formData.vehicleRegistrationImage}
+                          alt="registration"
+                          className="w-full h-full object-cover"
+                        />
+                        <button
+                          type="button"
+                          onClick={() =>
+                            onFormDataChange({
+                              ...formData,
+                              vehicleRegistrationImage: "",
+                            })
+                          }
+                          className="absolute top-1 right-1 p-2 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
                         >
-                          <img
-                            src={url}
-                            alt={`registration-${idx}`}
-                            className="w-full h-full object-cover"
-                          />
-                          <button
-                            type="button"
-                            onClick={() =>
-                              removeImage("vehicleRegistrationImages", idx)
-                            }
-                            className="absolute top-1 right-1 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                          >
-                            <IconTrash className="h-3 w-3" />
-                          </button>
-                        </div>
-                      ))}
-                      {(formData.vehicleRegistrationImages?.length || 0) <
-                        2 && (
-                        <label className="aspect-video flex flex-col items-center justify-center border-2 border-dashed border-darkBorderV1 rounded-lg cursor-pointer hover:bg-darkBackgroundV2 transition-colors">
-                          {isUploading === "vehicleRegistrationImages" ? (
-                            <IconLoader2 className="h-6 w-6 animate-spin text-neutral-400" />
-                          ) : (
-                            <>
-                              <IconPlus className="h-6 w-6 text-neutral-400" />
-                              <span className="text-sm text-neutral-400">
-                                Tải ảnh đăng ký xe
-                              </span>
-                            </>
-                          )}
-                          <input
-                            type="file"
-                            className="hidden"
-                            accept="image/*"
-                            onChange={(e) =>
-                              handleImageUpload(
-                                e,
-                                "vehicleRegistrationImages",
-                                true
-                              )
-                            }
-                            disabled={!!isUploading}
-                          />
-                        </label>
-                      )}
-                    </div>
+                          <IconTrash className="h-4 w-4" />
+                        </button>
+                      </div>
+                    ) : (
+                      <label className="aspect-video flex flex-col items-center justify-center border-2 border-dashed border-darkBorderV1 rounded-lg cursor-pointer hover:bg-darkBackgroundV2 transition-colors">
+                        {isUploading === "vehicleRegistrationImage" ? (
+                          <IconLoader2 className="h-6 w-6 animate-spin text-neutral-400" />
+                        ) : (
+                          <>
+                            <IconPlus className="h-6 w-6 text-neutral-400" />
+                            <span className="text-sm text-neutral-400">
+                              Tải ảnh đăng ký xe
+                            </span>
+                          </>
+                        )}
+                        <input
+                          type="file"
+                          className="hidden"
+                          accept="image/*"
+                          onChange={(e) =>
+                            handleImageUpload(e, "vehicleRegistrationImage")
+                          }
+                          disabled={!!isUploading}
+                        />
+                      </label>
+                    )}
                   </div>
                 </div>
               </AccordionContent>
@@ -543,9 +514,9 @@ export const UserForm = ({
                               identityFrontImage: "",
                             })
                           }
-                          className="absolute top-1 right-1 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                          className="absolute top-1 right-1 p-2 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
                         >
-                          <IconTrash className="h-3 w-3" />
+                          <IconTrash className="h-4 w-4" />
                         </button>
                       </div>
                     ) : (
@@ -591,9 +562,9 @@ export const UserForm = ({
                               identityBackImage: "",
                             })
                           }
-                          className="absolute top-1 right-1 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                          className="absolute top-1 right-1 p-2 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
                         >
-                          <IconTrash className="h-3 w-3" />
+                          <IconTrash className="h-4 w-4" />
                         </button>
                       </div>
                     ) : (

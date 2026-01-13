@@ -40,11 +40,11 @@ export const UserCreateDialog = ({
     rating: 5,
     vehicleType: "BIKE",
     plateNumber: "",
-    licenseImages: [],
+    licenseImage: "",
     identityNumber: "",
     identityFrontImage: "",
     identityBackImage: "",
-    vehicleRegistrationImages: [],
+    vehicleRegistrationImage: "",
     drivingLicenseNumber: "",
     bankInfo: {
       bankName: "",
@@ -157,16 +157,18 @@ export const UserCreateDialog = ({
     };
 
     if (formData.role === "DRIVER") {
-      submitData.vehicleType = formData.vehicleType;
-      submitData.plateNumber = formData.plateNumber;
-      submitData.rating = formData.rating;
-      submitData.licenseImages = formData.licenseImages;
-      submitData.identityNumber = formData.identityNumber;
-      submitData.identityFrontImage = formData.identityFrontImage;
-      submitData.identityBackImage = formData.identityBackImage;
-      submitData.vehicleRegistrationImages = formData.vehicleRegistrationImages;
-      submitData.drivingLicenseNumber = formData.drivingLicenseNumber;
-      submitData.bankInfo = formData.bankInfo;
+      submitData.driverProfile = {
+        vehicleType: formData.vehicleType,
+        plateNumber: formData.plateNumber,
+        rating: formData.rating,
+        licenseImage: formData.licenseImage,
+        identityNumber: formData.identityNumber,
+        identityFrontImage: formData.identityFrontImage,
+        identityBackImage: formData.identityBackImage,
+        vehicleRegistrationImage: formData.vehicleRegistrationImage,
+        drivingLicenseNumber: formData.drivingLicenseNumber,
+        bankInfo: formData.bankInfo,
+      };
     }
 
     createUserMutation(submitData, {
@@ -198,11 +200,11 @@ export const UserCreateDialog = ({
       rating: 5,
       vehicleType: "BIKE",
       plateNumber: "",
-      licenseImages: [],
+      licenseImage: "",
       identityNumber: "",
       identityFrontImage: "",
       identityBackImage: "",
-      vehicleRegistrationImages: [],
+      vehicleRegistrationImage: "",
       drivingLicenseNumber: "",
       bankInfo: {
         bankName: "",

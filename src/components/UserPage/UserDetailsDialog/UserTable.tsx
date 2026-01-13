@@ -19,6 +19,8 @@ export const UserTable = ({ user }: UserTableProps) => {
     </TableRow>
   );
 
+  const profile = user.role === "DRIVER" ? user.driverProfile : {};
+
   return (
     <div className="space-y-6 max-h-[70vh] overflow-y-auto pr-2 custom-scrollbar">
       {/* Basic Information */}
@@ -71,7 +73,9 @@ export const UserTable = ({ user }: UserTableProps) => {
                 renderTableRow(
                   "Đánh giá",
                   <div className="flex items-center gap-1">
-                    <span className="font-medium">{user.rating || 5}</span>
+                    <span className="font-medium">
+                      {profile?.rating || user.rating || 5}
+                    </span>
                     <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
                   </div>
                 )}
@@ -99,15 +103,25 @@ export const UserTable = ({ user }: UserTableProps) => {
             <CardContent className="pt-4">
               <Table>
                 <TableBody>
-                  {renderTableRow("Loại xe", user.vehicleType)}
-                  {renderTableRow("Biển số xe", user.plateNumber)}
+                  {renderTableRow(
+                    "Loại xe",
+                    profile?.vehicleType || user.vehicleType
+                  )}
+                  {renderTableRow(
+                    "Biển số xe",
+                    profile?.plateNumber || user.plateNumber
+                  )}
                   {renderTableRow(
                     "Số CCCD",
-                    user.identityNumber || "Chưa cập nhật"
+                    profile?.identityNumber ||
+                      user.identityNumber ||
+                      "Chưa cập nhật"
                   )}
                   {renderTableRow(
                     "Số bằng lái",
-                    user.drivingLicenseNumber || "Chưa cập nhật"
+                    profile?.drivingLicenseNumber ||
+                      user.drivingLicenseNumber ||
+                      "Chưa cập nhật"
                   )}
                 </TableBody>
               </Table>
@@ -120,13 +134,17 @@ export const UserTable = ({ user }: UserTableProps) => {
                   </h4>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <span className="text-[10px] uppercase font-bold text-neutral-500">
+                      <span className="text-xs uppercase font-bold text-neutral-400">
                         Mặt trước
                       </span>
                       <div className="aspect-video rounded-lg overflow-hidden border border-darkBorderV1">
-                        {user.identityFrontImage ? (
+                        {profile?.identityFrontImage ||
+                        user.identityFrontImage ? (
                           <img
-                            src={user.identityFrontImage}
+                            src={
+                              profile?.identityFrontImage ||
+                              user.identityFrontImage
+                            }
                             alt="CCCD Front"
                             className="w-full h-full object-cover"
                           />
@@ -138,13 +156,17 @@ export const UserTable = ({ user }: UserTableProps) => {
                       </div>
                     </div>
                     <div className="space-y-2">
-                      <span className="text-[10px] uppercase font-bold text-neutral-500">
+                      <span className="text-xs uppercase font-bold text-neutral-400">
                         Mặt sau
                       </span>
                       <div className="aspect-video rounded-lg overflow-hidden border border-darkBorderV1">
-                        {user.identityBackImage ? (
+                        {profile?.identityBackImage ||
+                        user.identityBackImage ? (
                           <img
-                            src={user.identityBackImage}
+                            src={
+                              profile?.identityBackImage ||
+                              user.identityBackImage
+                            }
                             alt="CCCD Back"
                             className="w-full h-full object-cover"
                           />
@@ -160,55 +182,49 @@ export const UserTable = ({ user }: UserTableProps) => {
 
                 <div>
                   <h4 className="text-sm font-semibold mb-3 dark:text-neutral-200 flex items-center gap-2">
-                    <ShieldCheck className="h-4 w-4" /> Ảnh bằng lái
+                    <ShieldCheck className="h-4 w-4" /> Giấy tờ xe
                   </h4>
                   <div className="grid grid-cols-2 gap-4">
-                    {user.licenseImages?.length > 0 ? (
-                      user.licenseImages.map((url: string, idx: number) => (
-                        <div
-                          key={idx}
-                          className="aspect-video rounded-lg overflow-hidden border border-darkBorderV1"
-                        >
+                    <div className="space-y-2">
+                      <span className="text-xs uppercase font-bold text-neutral-400">
+                        Ảnh bằng lái
+                      </span>
+                      <div className="aspect-video rounded-lg overflow-hidden border border-darkBorderV1">
+                        {profile?.licenseImage || user.licenseImage ? (
                           <img
-                            src={url}
+                            src={profile?.licenseImage || user.licenseImage}
                             alt="License"
                             className="w-full h-full object-cover"
                           />
-                        </div>
-                      ))
-                    ) : (
-                      <p className="text-sm text-neutral-500 italic">
-                        Chưa có ảnh bằng lái
-                      </p>
-                    )}
-                  </div>
-                </div>
-
-                <div>
-                  <h4 className="text-sm font-semibold mb-3 dark:text-neutral-200 flex items-center gap-2">
-                    <ShieldCheck className="h-4 w-4" /> Ảnh đăng ký xe (Cà vẹt)
-                  </h4>
-                  <div className="grid grid-cols-2 gap-4">
-                    {user.vehicleRegistrationImages?.length > 0 ? (
-                      user.vehicleRegistrationImages.map(
-                        (url: string, idx: number) => (
-                          <div
-                            key={idx}
-                            className="aspect-video rounded-lg overflow-hidden border border-darkBorderV1"
-                          >
-                            <img
-                              src={url}
-                              alt="Registration"
-                              className="w-full h-full object-cover"
-                            />
+                        ) : (
+                          <div className="w-full h-full bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center text-neutral-400 italic text-xs">
+                            Chưa cập nhật
                           </div>
-                        )
-                      )
-                    ) : (
-                      <p className="text-sm text-neutral-500 italic">
-                        Chưa có ảnh đăng ký xe
-                      </p>
-                    )}
+                        )}
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <span className="text-xs uppercase font-bold text-neutral-400">
+                        Ảnh đăng ký xe (Cà vẹt)
+                      </span>
+                      <div className="aspect-video rounded-lg overflow-hidden border border-darkBorderV1">
+                        {profile?.vehicleRegistrationImage ||
+                        user.vehicleRegistrationImage ? (
+                          <img
+                            src={
+                              profile?.vehicleRegistrationImage ||
+                              user.vehicleRegistrationImage
+                            }
+                            alt="Registration"
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center text-neutral-400 italic text-xs">
+                            Chưa cập nhật
+                          </div>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -230,15 +246,21 @@ export const UserTable = ({ user }: UserTableProps) => {
                 <TableBody>
                   {renderTableRow(
                     "Ngân hàng",
-                    user.bankInfo?.bankName || "Chưa cập nhật"
+                    profile?.bankInfo?.bankName ||
+                      user.bankInfo?.bankName ||
+                      "Chưa cập nhật"
                   )}
                   {renderTableRow(
                     "Số tài khoản",
-                    user.bankInfo?.accountNumber || "Chưa cập nhật"
+                    profile?.bankInfo?.accountNumber ||
+                      user.bankInfo?.accountNumber ||
+                      "Chưa cập nhật"
                   )}
                   {renderTableRow(
                     "Chủ tài khoản",
-                    user.bankInfo?.accountHolder || "Chưa cập nhật"
+                    profile?.bankInfo?.accountHolder ||
+                      user.bankInfo?.accountHolder ||
+                      "Chưa cập nhật"
                   )}
                 </TableBody>
               </Table>

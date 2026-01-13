@@ -15,7 +15,7 @@ export interface IDriver {
   };
   vehicleType: VehicleType;
   plateNumber: string;
-  licenseImages: string[];
+  licenseImage: string;
   isOnline: boolean;
   location: {
     type: 'Point';

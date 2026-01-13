@@ -11,34 +11,34 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { UserTable } from "./UserTable";
-import { UserForm } from "./UserForm";
+import { UserTable } from "../../UserPage/UserDetailsDialog/UserTable";
+import { UserForm } from "../../UserPage/UserDetailsDialog/UserForm";
 import Icon from "@mdi/react";
 import { mdiClipboardAccount } from "@mdi/js";
 
-interface UserDetailsDialogProps {
+interface DriverDetailsDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  userId: string;
+  driverId: string;
   onSuccess?: () => void;
 }
 
-export const UserDetailsDialog = ({
+export const DriverDetailsDialog = ({
   isOpen,
   onClose,
-  userId,
+  driverId,
   onSuccess,
-}: UserDetailsDialogProps) => {
+}: DriverDetailsDialogProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState<IUpdateUserBody>({
     name: "",
     email: "",
     phone: "",
     password: "",
-    role: "CUSTOMER", // DefaultRole
+    role: "DRIVER",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const { data: userData, isLoading: isLoadingUser } = useGetUserById(userId);
+  const { data: userData, isLoading: isLoadingUser } = useGetUserById(driverId);
   const { mutate: updateUserMutation, isPending: isUpdating } = useUpdateUser();
 
   useEffect(() => {
@@ -108,13 +108,11 @@ export const UserDetailsDialog = ({
       newErrors.password = "Mật khẩu phải có ít nhất 6 ký tự";
     }
 
-    if (formData.role === "DRIVER") {
-      if (!formData.vehicleType) {
-        newErrors.vehicleType = "Loại xe là bắt buộc";
-      }
-      if (!formData.plateNumber?.trim()) {
-        newErrors.plateNumber = "Biển số xe là bắt buộc";
-      }
+    if (!formData.vehicleType) {
+      newErrors.vehicleType = "Loại xe là bắt buộc";
+    }
+    if (!formData.plateNumber?.trim()) {
+      newErrors.plateNumber = "Biển số xe là bắt buộc";
     }
 
     setErrors(newErrors);
@@ -138,26 +136,24 @@ export const UserDetailsDialog = ({
       updateData.password = formData.password;
     }
 
-    if (formData.role === "DRIVER") {
-      updateData.driverProfile = {
-        vehicleType: formData.vehicleType,
-        plateNumber: formData.plateNumber,
-        rating: formData.rating,
-        licenseImage: formData.licenseImage,
-        identityNumber: formData.identityNumber,
-        identityFrontImage: formData.identityFrontImage,
-        identityBackImage: formData.identityBackImage,
-        vehicleRegistrationImage: formData.vehicleRegistrationImage,
-        drivingLicenseNumber: formData.drivingLicenseNumber,
-        bankInfo: formData.bankInfo,
-      };
-    }
+    updateData.driverProfile = {
+      vehicleType: formData.vehicleType,
+      plateNumber: formData.plateNumber,
+      rating: formData.rating,
+      licenseImage: formData.licenseImage,
+      identityNumber: formData.identityNumber,
+      identityFrontImage: formData.identityFrontImage,
+      identityBackImage: formData.identityBackImage,
+      vehicleRegistrationImage: formData.vehicleRegistrationImage,
+      drivingLicenseNumber: formData.drivingLicenseNumber,
+      bankInfo: formData.bankInfo,
+    };
 
     updateUserMutation(
-      { id: userId, data: updateData },
+      { id: driverId, data: updateData },
       {
         onSuccess: (_response: any) => {
-          toast.success("Cập nhật người dùng thành công!");
+          toast.success("Cập nhật tài xế thành công!");
           setIsEditing(false);
           onSuccess?.();
         },
@@ -165,7 +161,7 @@ export const UserDetailsDialog = ({
           const errorMsg =
             error?.response?.data?.message ||
             error?.message ||
-            "Có lỗi xảy ra khi cập nhật người dùng!";
+            "Có lỗi xảy ra khi cập nhật tài xế!";
           toast.error(errorMsg);
         },
       }
@@ -228,8 +224,8 @@ export const UserDetailsDialog = ({
           <DialogTitle>
             <Icon path={mdiClipboardAccount} size={0.8} />
             {isEditing
-              ? "Cập nhật người dùng: " + userData?.data?.name
-              : "Chi tiết người dùng"}
+              ? "Cập nhật tài xế: " + userData?.data?.name
+              : "Chi tiết tài xế"}
           </DialogTitle>
         </DialogHeader>
 

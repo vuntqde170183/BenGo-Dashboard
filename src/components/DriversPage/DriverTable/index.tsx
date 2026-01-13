@@ -162,6 +162,22 @@ export const DriverTable = ({
                   <TableCell>{getStatusBadge(driver.status)}</TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end space-x-2">
+                      <motion.div
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <Button
+                          size="icon"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onEdit(driverId);
+                          }}
+                          title="Chi tiết"
+                        >
+                          <Icon path={mdiTableEye} size={0.8} />
+                        </Button>
+                      </motion.div>
+
                       {/* APPROVED: Show Lock */}
                       {driver.status === "APPROVED" && (
                         <motion.div
@@ -220,102 +236,46 @@ export const DriverTable = ({
                         </>
                       )}
 
-                      {/* LOCKED: Show Unlock and Edit/View */}
+                      {/* LOCKED: Show Unlock */}
                       {driver.status === "LOCKED" && (
-                        <>
-                          <motion.div
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                          >
-                            <Button
-                              className="bg-blue-500 hover:bg-blue-600"
-                              size="icon"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                onUnlock && onUnlock(driverId);
-                              }}
-                              title="Mở khóa"
-                            >
-                              <Icon
-                                path={mdiLockOpenVariantOutline}
-                                size={0.8}
-                              />
-                            </Button>
-                          </motion.div>
-                          <motion.div
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                          >
-                            <Button
-                              size="icon"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                onEdit(driverId);
-                              }}
-                              title="Chi tiết"
-                            >
-                              <Icon path={mdiTableEye} size={0.8} />
-                            </Button>
-                          </motion.div>
-                        </>
-                      )}
-
-                      {/* REJECTED: Show Edit/View */}
-                      {driver.status === "REJECTED" && (
                         <motion.div
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                         >
                           <Button
+                            className="bg-blue-500 hover:bg-blue-600"
                             size="icon"
                             onClick={(e) => {
                               e.stopPropagation();
-                              onEdit(driverId);
+                              onUnlock && onUnlock(driverId);
                             }}
-                            title="Chi tiết"
+                            title="Mở khóa"
                           >
-                            <Icon path={mdiTableEye} size={0.8} />
+                            <Icon path={mdiLockOpenVariantOutline} size={0.8} />
                           </Button>
                         </motion.div>
                       )}
 
-                      {/* Fallback for other statuses or missing status */}
+                      {/* Other actions like delete if needed */}
                       {!["APPROVED", "PENDING", "LOCKED", "REJECTED"].includes(
                         driver.status
                       ) && (
-                        <>
-                          <motion.div
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
+                        <motion.div
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                        >
+                          <Button
+                            className="bg-red-500 hover:bg-red-600"
+                            size="icon"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onDelete(driverId);
+                            }}
+                            title="Xóa"
                           >
-                            <Button
-                              size="icon"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                onEdit(driverId);
-                              }}
-                              title="Chi tiết"
-                            >
-                              <Icon path={mdiTableEye} size={0.8} />
-                            </Button>
-                          </motion.div>
-                          <motion.div
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                          >
-                            <Button
-                              className="bg-red-500 hover:bg-red-600"
-                              size="icon"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                onDelete(driverId);
-                              }}
-                              title="Xóa"
-                            >
-                              <Icon path={mdiTrashCanOutline} size={0.8} />
-                            </Button>
-                          </motion.div>
-                        </>
+                            <Icon path={mdiTrashCanOutline} size={0.8} />
+                          </Button>
+                        </motion.div>
                       )}
                     </div>
                   </TableCell>

@@ -60,11 +60,11 @@ export interface ICreateUserBody {
   // Driver specific
   vehicleType?: VehicleType | string;
   plateNumber?: string;
-  licenseImages?: string[];
+  licenseImage?: string;
   identityNumber?: string;
   identityFrontImage?: string;
   identityBackImage?: string;
-  vehicleRegistrationImages?: string[];
+  vehicleRegistrationImage?: string;
   drivingLicenseNumber?: string;
   bankInfo?: {
     bankName: string;
@@ -92,11 +92,11 @@ export interface IUpdateUserBody {
   // Driver specific
   vehicleType?: VehicleType | string;
   plateNumber?: string;
-  licenseImages?: string[];
+  licenseImage?: string;
   identityNumber?: string;
   identityFrontImage?: string;
   identityBackImage?: string;
-  vehicleRegistrationImages?: string[];
+  vehicleRegistrationImage?: string;
   drivingLicenseNumber?: string;
   bankInfo?: {
     bankName: string;
