@@ -66,12 +66,19 @@ export const UserTable = ({
             users.map((user, index) => {
               const rowNumber = (currentPage - 1) * pageSize + index + 1;
               return (
-                <TableRow key={user.id}>
+                <TableRow
+                  key={user.id}
+                  className="cursor-pointer hover:bg-slate-50/50 dark:hover:bg-darkBorderV1/50 transition-colors"
+                  onClick={() => onEdit(user.id)}
+                >
                   <TableCell>{rowNumber}</TableCell>
                   <TableCell className="flex items-center gap-2">
                     <div className="w-12 h-12 flex-shrink-0 rounded-full bg-darkBorderV1 flex items-center justify-center overflow-hidden">
                       <img
-                        src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user.name}`}
+                        src={
+                          user.avatar ||
+                          `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.name}`
+                        }
                         alt="avatar"
                         className="w-full h-full object-cover"
                       />
@@ -104,7 +111,13 @@ export const UserTable = ({
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                       >
-                        <Button size="icon" onClick={() => onEdit(user.id)}>
+                        <Button
+                          size="icon"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onEdit(user.id);
+                          }}
+                        >
                           <Icon path={mdiTableEye} size={0.8} />
                         </Button>
                       </motion.div>
@@ -115,7 +128,10 @@ export const UserTable = ({
                         <Button
                           className="bg-red-500 hover:bg-red-600"
                           size="icon"
-                          onClick={() => onDelete(user.id)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onDelete(user.id);
+                          }}
                         >
                           <Icon path={mdiTrashCanOutline} size={0.8} />
                         </Button>

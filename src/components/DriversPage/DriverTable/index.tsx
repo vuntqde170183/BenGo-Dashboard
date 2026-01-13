@@ -109,7 +109,11 @@ export const DriverTable = ({
               const rowNumber = (currentPage - 1) * pageSize + index + 1;
               const driverId = driver._id;
               return (
-                <TableRow key={driverId}>
+                <TableRow
+                  key={driverId}
+                  className="cursor-pointer hover:bg-slate-50/50 dark:hover:bg-darkBorderV1/50 transition-colors"
+                  onClick={() => onEdit(driverId)}
+                >
                   <TableCell>{rowNumber}</TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2">
@@ -167,7 +171,10 @@ export const DriverTable = ({
                           <Button
                             className="bg-orange-500 hover:bg-orange-600"
                             size="icon"
-                            onClick={() => onLock && onLock(driverId)}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onLock && onLock(driverId);
+                            }}
                             title="Khóa tài khoản"
                           >
                             <Icon path={mdiLockOutline} size={0.8} />
@@ -185,7 +192,10 @@ export const DriverTable = ({
                             <Button
                               className="bg-green-500 hover:bg-green-600"
                               size="icon"
-                              onClick={() => onApprove && onApprove(driverId)}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                onApprove && onApprove(driverId);
+                              }}
                               title="Duyệt"
                             >
                               <Icon path={mdiCheckCircleOutline} size={0.8} />
@@ -198,7 +208,10 @@ export const DriverTable = ({
                             <Button
                               className="bg-red-500 hover:bg-red-600"
                               size="icon"
-                              onClick={() => onReject && onReject(driverId)}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                onReject && onReject(driverId);
+                              }}
                               title="Từ chối"
                             >
                               <Icon path={mdiCloseCircleOutline} size={0.8} />
@@ -217,7 +230,10 @@ export const DriverTable = ({
                             <Button
                               className="bg-blue-500 hover:bg-blue-600"
                               size="icon"
-                              onClick={() => onUnlock && onUnlock(driverId)}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                onUnlock && onUnlock(driverId);
+                              }}
                               title="Mở khóa"
                             >
                               <Icon
@@ -232,7 +248,10 @@ export const DriverTable = ({
                           >
                             <Button
                               size="icon"
-                              onClick={() => onEdit(driverId)}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                onEdit(driverId);
+                              }}
                               title="Chi tiết"
                             >
                               <Icon path={mdiTableEye} size={0.8} />
@@ -249,7 +268,10 @@ export const DriverTable = ({
                         >
                           <Button
                             size="icon"
-                            onClick={() => onEdit(driverId)}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onEdit(driverId);
+                            }}
                             title="Chi tiết"
                           >
                             <Icon path={mdiTableEye} size={0.8} />
@@ -268,7 +290,10 @@ export const DriverTable = ({
                           >
                             <Button
                               size="icon"
-                              onClick={() => onEdit(driverId)}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                onEdit(driverId);
+                              }}
                               title="Chi tiết"
                             >
                               <Icon path={mdiTableEye} size={0.8} />
@@ -281,7 +306,10 @@ export const DriverTable = ({
                             <Button
                               className="bg-red-500 hover:bg-red-600"
                               size="icon"
-                              onClick={() => onDelete(driverId)}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                onDelete(driverId);
+                              }}
                               title="Xóa"
                             >
                               <Icon path={mdiTrashCanOutline} size={0.8} />

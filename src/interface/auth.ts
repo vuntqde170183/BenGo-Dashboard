@@ -42,19 +42,39 @@ export interface IProfileResponse {
   data: IUser;
 }
 
+export type VehicleType = 'BIKE' | 'VAN' | 'TRUCK';
+
 // Request interfaces for Quản lý người dùng
 export interface ICreateUserBody {
   name: string;
-  email: string;
-  password: string;
-  phone?: string;
+  email?: string;
+  password?: string;
+  phone: string;
+  avatar?: string;
+  role: UserRole | string;
+  active?: boolean;
+  // Customer specific
+  walletBalance?: number;
+  rating?: number;
+  fcmToken?: string;
+  // Driver specific
+  vehicleType?: VehicleType | string;
+  plateNumber?: string;
+  licenseImages?: string[];
+  identityNumber?: string;
+  identityFrontImage?: string;
+  identityBackImage?: string;
+  vehicleRegistrationImages?: string[];
+  drivingLicenseNumber?: string;
+  bankInfo?: {
+    bankName: string;
+    accountNumber: string;
+    accountHolder: string;
+  };
+  // Legacy or other
   studentId?: string;
   fullName?: string;
-  phoneNumber?: string; // Legacy
-  avatar?: string;
-  role: string;
   department?: string;
-  active: boolean;
 }
 
 export interface IUpdateUserBody {
@@ -62,23 +82,48 @@ export interface IUpdateUserBody {
   email?: string;
   password?: string;
   phone?: string;
+  avatar?: string;
+  role?: UserRole | string;
+  active?: boolean;
+  // Customer specific
+  walletBalance?: number;
+  rating?: number;
+  fcmToken?: string;
+  // Driver specific
+  vehicleType?: VehicleType | string;
+  plateNumber?: string;
+  licenseImages?: string[];
+  identityNumber?: string;
+  identityFrontImage?: string;
+  identityBackImage?: string;
+  vehicleRegistrationImages?: string[];
+  drivingLicenseNumber?: string;
+  bankInfo?: {
+    bankName: string;
+    accountNumber: string;
+    accountHolder: string;
+  };
+  // Legacy or other
   studentId?: string;
   fullName?: string;
-  phoneNumber?: string; // Legacy
-  avatar?: string;
-  role?: string;
   department?: string;
-  active?: boolean;
 }
 
 // Upload response interface
 export interface IUploadResponse {
-  status: boolean;
+  statusCode: number;
   message: string;
   data: {
-    url: string;
-    filename?: string;
-    size?: number;
+    statusCode: number;
+    message: string;
+    data: {
+      public_id: string;
+      url: string;
+      width?: number;
+      height?: number;
+      format?: string;
+      bytes?: number;
+    };
   };
 }
 

@@ -50,6 +50,22 @@ export const UserDetailsDialog = ({
         phone: user.phone || "",
         role: user.role,
         password: "",
+        active: user.active ?? true,
+        walletBalance: user.walletBalance || 0,
+        rating: user.rating || 5,
+        vehicleType: user.vehicleType || "BIKE",
+        plateNumber: user.plateNumber || "",
+        licenseImages: user.licenseImages || [],
+        identityNumber: user.identityNumber || "",
+        identityFrontImage: user.identityFrontImage || "",
+        identityBackImage: user.identityBackImage || "",
+        vehicleRegistrationImages: user.vehicleRegistrationImages || [],
+        drivingLicenseNumber: user.drivingLicenseNumber || "",
+        bankInfo: user.bankInfo || {
+          bankName: "",
+          accountNumber: "",
+          accountHolder: "",
+        },
       });
     }
   }, [userData]);
@@ -66,24 +82,30 @@ export const UserDetailsDialog = ({
     const newErrors: Record<string, string> = {};
 
     if (!formData.name?.trim()) {
-      newErrors.name = "Tên hiển thị là bắt buộc";
+      newErrors.name = "Họ tên là bắt buộc";
     }
 
-    if (!formData.email?.trim()) {
-      newErrors.email = "Email là bắt buộc";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Email không hợp lệ";
-    }
-
-    if (
-      formData.phone &&
-      !/^(0|\+84)[3|5|7|8|9][0-9]{8}$/.test(formData.phone)
-    ) {
+    if (!formData.phone?.trim()) {
+      newErrors.phone = "Số điện thoại là bắt buộc";
+    } else if (!/^(0|\+84)[3|5|7|8|9][0-9]{8}$/.test(formData.phone)) {
       newErrors.phone = "Số điện thoại không hợp lệ";
+    }
+
+    if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = "Email không hợp lệ";
     }
 
     if (formData.password && formData.password.length < 6) {
       newErrors.password = "Mật khẩu phải có ít nhất 6 ký tự";
+    }
+
+    if (formData.role === "DRIVER") {
+      if (!formData.vehicleType) {
+        newErrors.vehicleType = "Loại xe là bắt buộc";
+      }
+      if (!formData.plateNumber?.trim()) {
+        newErrors.plateNumber = "Biển số xe là bắt buộc";
+      }
     }
 
     setErrors(newErrors);
@@ -95,15 +117,29 @@ export const UserDetailsDialog = ({
       return;
     }
 
-    const updateData: IUpdateUserBody = {
+    const updateData: any = {
       name: formData.name,
-      email: formData.email,
+      email: formData.email || undefined,
       phone: formData.phone,
       role: formData.role,
+      walletBalance: formData.walletBalance,
     };
 
     if (formData.password?.trim()) {
       updateData.password = formData.password;
+    }
+
+    if (formData.role === "DRIVER") {
+      updateData.vehicleType = formData.vehicleType;
+      updateData.plateNumber = formData.plateNumber;
+      updateData.rating = formData.rating;
+      updateData.licenseImages = formData.licenseImages;
+      updateData.identityNumber = formData.identityNumber;
+      updateData.identityFrontImage = formData.identityFrontImage;
+      updateData.identityBackImage = formData.identityBackImage;
+      updateData.vehicleRegistrationImages = formData.vehicleRegistrationImages;
+      updateData.drivingLicenseNumber = formData.drivingLicenseNumber;
+      updateData.bankInfo = formData.bankInfo;
     }
 
     updateUserMutation(
@@ -115,10 +151,11 @@ export const UserDetailsDialog = ({
           onSuccess?.();
         },
         onError: (error: any) => {
-          toast.error(
+          const errorMsg =
             error?.response?.data?.message ||
-              "Có lỗi xảy ra khi cập nhật người dùng!"
-          );
+            error?.message ||
+            "Có lỗi xảy ra khi cập nhật người dùng!";
+          toast.error(errorMsg);
         },
       }
     );
@@ -145,16 +182,28 @@ export const UserDetailsDialog = ({
         phone: user.phone || "",
         role: user.role,
         password: "",
+        walletBalance: user.walletBalance || 0,
+        rating: user.rating || 5,
+        vehicleType: user.vehicleType || "BIKE",
+        plateNumber: user.plateNumber || "",
+        licenseImages: user.licenseImages || [],
+        identityNumber: user.identityNumber || "",
+        identityFrontImage: user.identityFrontImage || "",
+        identityBackImage: user.identityBackImage || "",
+        vehicleRegistrationImages: user.vehicleRegistrationImages || [],
+        drivingLicenseNumber: user.drivingLicenseNumber || "",
+        bankInfo: user.bankInfo || {
+          bankName: "",
+          accountNumber: "",
+          accountHolder: "",
+        },
       });
     }
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent
-        size="medium"
-        className="max-h-[90vh] h-[90vh] overflow-y-auto flex flex-col"
-      >
+      <DialogContent size="medium">
         <DialogHeader>
           <DialogTitle>
             <Icon path={mdiClipboardAccount} size={0.8} />
@@ -188,7 +237,7 @@ export const UserDetailsDialog = ({
             ) : (
               <>
                 {userData?.data && <UserTable user={userData.data} />}
-                <div className="flex gap-2 justify-end pt-4">
+                <div className="flex gap-2 justify-end">
                   <Button variant="outline" onClick={handleClose}>
                     Đóng
                   </Button>

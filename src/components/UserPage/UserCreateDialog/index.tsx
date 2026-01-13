@@ -1,19 +1,10 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { useCreateUser } from "@/hooks/useAdmin";
 import { useUploadFile } from "@/hooks/useUpload";
-import { ICreateUserBody, IUploadResponse } from "@/interface/auth";
+import { ICreateUserBody, IUploadResponse, UserRole } from "@/interface/auth";
 import { toast } from "react-toastify";
-import { IconLoader2, IconX, IconUpload, IconPlus } from "@tabler/icons-react";
+import { IconLoader2, IconX, IconUpload } from "@tabler/icons-react";
 import { motion } from "framer-motion";
 import {
   Dialog,
@@ -23,6 +14,8 @@ import {
 } from "@/components/ui/dialog";
 import { mdiPlusBox } from "@mdi/js";
 import Icon from "@mdi/react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { UserForm } from "../UserDetailsDialog/UserForm";
 
 interface UserCreateDialogProps {
   isOpen: boolean;
@@ -41,8 +34,23 @@ export const UserCreateDialog = ({
     password: "",
     phone: "",
     avatar: "",
-    role: "CUSTOMER", // DefaultRole
+    role: "CUSTOMER",
     active: true,
+    walletBalance: 0,
+    rating: 5,
+    vehicleType: "BIKE",
+    plateNumber: "",
+    licenseImages: [],
+    identityNumber: "",
+    identityFrontImage: "",
+    identityBackImage: "",
+    vehicleRegistrationImages: [],
+    drivingLicenseNumber: "",
+    bankInfo: {
+      bankName: "",
+      accountNumber: "",
+      accountHolder: "",
+    },
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
@@ -50,67 +58,49 @@ export const UserCreateDialog = ({
   const { mutate: createUserMutation, isPending } = useCreateUser();
   const { mutate: uploadFileMutation } = useUploadFile();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-
-    if (errors[name]) {
-      setErrors({ ...errors, [name]: "" });
-    }
+  const handleFormDataChange = (newFormData: any) => {
+    setFormData(newFormData);
   };
 
-  const handleClear = (name: string) => {
-    setFormData({ ...formData, [name]: "" });
-    if (errors[name]) {
-      setErrors({ ...errors, [name]: "" });
-    }
+  const handleErrorsChange = (newErrors: Record<string, string>) => {
+    setErrors(newErrors);
   };
 
-  const handleSelectChange = (name: string, value: string) => {
-    setFormData({ ...formData, [name]: value });
-    if (errors[name]) {
-      setErrors({ ...errors, [name]: "" });
-    }
+  const handleTabChange = (value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      role: value as UserRole,
+    }));
+    setErrors({});
   };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const isValidType = file.type.startsWith("image/");
-    const isValidSize = file.size <= 10 * 1024 * 1024; // 10MB limit
-
-    if (!isValidType) {
-      toast.error(`File ${file.name} is not a valid image`);
-      return;
-    }
-    if (!isValidSize) {
-      toast.error(`File ${file.name} is too large (maximum 10MB)`);
-      return;
-    }
-
     setIsUploadingAvatar(true);
-
     const formDataToUpload = new FormData();
     formDataToUpload.append("file", file);
 
     uploadFileMutation(formDataToUpload, {
       onSuccess: (response: IUploadResponse) => {
-        if (response?.status) {
-          const imageUrl = response?.data?.url;
+        if (
+          response?.statusCode === 200 ||
+          response?.data?.statusCode === 200
+        ) {
+          const imageUrl = response?.data?.data?.url;
           setFormData((prev) => ({ ...prev, avatar: imageUrl }));
-          toast.success(response?.message);
+          toast.success("Tải ảnh đại diện thành công!");
         } else {
-          toast.error(response?.message);
+          toast.error("Tải ảnh đại diện thất bại!");
         }
         setIsUploadingAvatar(false);
       },
-      onError: (error: any) => {
-        toast.error(error?.response?.data?.message);
+      onError: () => {
+        toast.error("Tải ảnh đại diện thất bại!");
         setIsUploadingAvatar(false);
       },
     });
-
     e.target.value = "";
   };
 
@@ -118,54 +108,79 @@ export const UserCreateDialog = ({
     const newErrors: Record<string, string> = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = "Tên hiển thị là bắt buộc";
+      newErrors.name = "Họ tên là bắt buộc";
     }
 
-    if (!formData.email.trim()) {
-      newErrors.email = "Email là bắt buộc";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Email không hợp lệ";
+    if (!formData.phone.trim()) {
+      newErrors.phone = "Số điện thoại là bắt buộc";
+    } else if (!/^(0|\+84)[3|5|7|8|9][0-9]{8}$/.test(formData.phone)) {
+      newErrors.phone = "Số điện thoại không hợp lệ";
     }
 
-    if (!formData.password.trim()) {
+    if (!formData.password?.trim()) {
       newErrors.password = "Mật khẩu là bắt buộc";
     } else if (formData.password.length < 6) {
       newErrors.password = "Mật khẩu phải có ít nhất 6 ký tự";
     }
 
-    if (
-      formData.phone &&
-      !/^(0|\+84)[3|5|7|8|9][0-9]{8}$/.test(formData.phone)
-    ) {
-      newErrors.phone = "Số điện thoại không hợp lệ";
+    if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = "Email không hợp lệ";
+    }
+
+    if (formData.role === "DRIVER") {
+      if (!formData.vehicleType) {
+        newErrors.vehicleType = "Loại xe là bắt buộc";
+      }
+      if (!formData.plateNumber?.trim()) {
+        newErrors.plateNumber = "Biển số xe là bắt buộc";
+      }
     }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const handleSubmit = () => {
     if (!validateForm()) {
       return;
     }
 
-    const submitData = {
-      ...formData,
-      department: undefined, // Ensure department is removed if existing in interface optional
+    // Clean data based on role
+    const submitData: any = {
+      name: formData.name,
+      phone: formData.phone,
+      password: formData.password,
+      role: formData.role,
+      email: formData.email || undefined,
+      avatar: formData.avatar || undefined,
+      walletBalance: formData.walletBalance,
     };
 
+    if (formData.role === "DRIVER") {
+      submitData.vehicleType = formData.vehicleType;
+      submitData.plateNumber = formData.plateNumber;
+      submitData.rating = formData.rating;
+      submitData.licenseImages = formData.licenseImages;
+      submitData.identityNumber = formData.identityNumber;
+      submitData.identityFrontImage = formData.identityFrontImage;
+      submitData.identityBackImage = formData.identityBackImage;
+      submitData.vehicleRegistrationImages = formData.vehicleRegistrationImages;
+      submitData.drivingLicenseNumber = formData.drivingLicenseNumber;
+      submitData.bankInfo = formData.bankInfo;
+    }
+
     createUserMutation(submitData, {
-      onSuccess: (_response: any) => {
+      onSuccess: () => {
         toast.success("Tạo người dùng thành công!");
         handleClose();
         onSuccess?.();
       },
       onError: (error: any) => {
-        toast.error(
-          error?.response?.data?.message || "Có lỗi xảy ra khi tạo người dùng!"
-        );
+        const errorMsg =
+          error?.response?.data?.message ||
+          error?.message ||
+          "Có lỗi xảy ra khi tạo người dùng!";
+        toast.error(errorMsg);
       },
     });
   };
@@ -179,6 +194,21 @@ export const UserCreateDialog = ({
       avatar: "",
       role: "CUSTOMER",
       active: true,
+      walletBalance: 0,
+      rating: 5,
+      vehicleType: "BIKE",
+      plateNumber: "",
+      licenseImages: [],
+      identityNumber: "",
+      identityFrontImage: "",
+      identityBackImage: "",
+      vehicleRegistrationImages: [],
+      drivingLicenseNumber: "",
+      bankInfo: {
+        bankName: "",
+        accountNumber: "",
+        accountHolder: "",
+      },
     });
     setErrors({});
     onClose();
@@ -186,10 +216,7 @@ export const UserCreateDialog = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent
-        size="medium"
-        className="max-h-[90vh] overflow-y-auto bg-white dark:bg-darkCardV1"
-      >
+      <DialogContent size="medium">
         <DialogHeader>
           <DialogTitle className="dark:text-neutral-200">
             <Icon path={mdiPlusBox} size={0.8} />
@@ -202,211 +229,121 @@ export const UserCreateDialog = ({
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
         >
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Avatar Upload */}
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <Label className="dark:text-neutral-200">Avatar</Label>
-                {isUploadingAvatar && (
-                  <div className="flex items-center gap-2 text-sm text-green-600">
-                    <IconLoader2 className="h-4 w-4 animate-spin" />
-                    <span>Đang tải ảnh...</span>
+          <Tabs
+            value={formData.role as string}
+            onValueChange={handleTabChange}
+            className="w-full"
+          >
+            <TabsList className="grid w-full grid-cols-4 mb-6">
+              <TabsTrigger value="CUSTOMER">Khách hàng</TabsTrigger>
+              <TabsTrigger value="DRIVER">Tài xế</TabsTrigger>
+              <TabsTrigger value="DISPATCHER">Điều phối viên</TabsTrigger>
+              <TabsTrigger value="ADMIN">Quản trị viên</TabsTrigger>
+            </TabsList>
+
+            <div className="space-y-6">
+              {/* Avatar Section */}
+              <div className="flex flex-col items-center gap-4">
+                <div className="relative group">
+                  <div className="w-32 h-32 rounded-full border-2 border-dashed border-lightBorderV1 dark:border-darkBorderV1 overflow-hidden flex items-center justify-center bg-slate-50 dark:bg-darkBackgroundV1">
+                    {formData.avatar ? (
+                      <img
+                        src={formData.avatar}
+                        alt="Avatar"
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="text-neutral-400 text-center p-2">
+                        {isUploadingAvatar ? (
+                          <IconLoader2 className="h-8 w-8 animate-spin mx-auto" />
+                        ) : (
+                          <>
+                            <IconUpload className="h-8 w-8 mx-auto mb-1" />
+                            <span className="text-xs">Ảnh đại diện</span>
+                          </>
+                        )}
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-              <div className="space-y-4">
-                <div>
                   <input
                     type="file"
                     accept="image/*"
                     onChange={handleImageUpload}
                     className="hidden"
-                    id="avatar-upload"
+                    id="avatar-upload-create"
                     disabled={isUploadingAvatar}
                   />
                   <Label
-                    htmlFor="avatar-upload"
-                    className={`cursor-pointer ${
-                      isUploadingAvatar ? "opacity-50 cursor-not-allowed" : ""
-                    }`}
-                  >
-                    <div className="flex items-center justify-center gap-2 px-4 py-4 border-2 border-dashed border-lightBorderV1 rounded-lg hover:border-mainTextHoverV1 hover:bg-darkBorderV1 transition-all duration-200 group">
-                      <div className="p-3 rounded-full bg-darkBorderV1 text-neutral-400">
-                        {isUploadingAvatar ? (
-                          <IconLoader2 className="h-5 w-5 text-green-600 animate-spin" />
-                        ) : (
-                          <IconUpload className="h-5 w-5 text-green-600" />
-                        )}
-                      </div>
-                      <div className="text-center">
-                        <div className="text-sm font-semibold dark:text-neutral-200 group-hover:text-mainTextHoverV1">
-                          {isUploadingAvatar
-                            ? "Đang tải ảnh..."
-                            : "Tải ảnh đại diện lên"}
-                        </div>
-                        <div className="text-sm text-neutral-200 mt-1">
-                          Chọn ảnh (tối đa 10MB)
-                        </div>
-                      </div>
-                    </div>
-                  </Label>
+                    htmlFor="avatar-upload-create"
+                    className="absolute inset-0 cursor-pointer rounded-full"
+                  />
+                  {formData.avatar && (
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setFormData((prev) => ({ ...prev, avatar: "" }))
+                      }
+                      className="absolute -top-1 -right-1 p-1 bg-red-500 text-white rounded-full shadow-lg"
+                    >
+                      <IconX className="h-3 w-3" />
+                    </button>
+                  )}
                 </div>
-
-                {/* Avatar Preview */}
-                {formData.avatar && (
-                  <div className="flex justify-center">
-                    <div className="relative group">
-                      <div className="w-40 h-40 rounded-md border border-lightBorderV1 overflow-hidden">
-                        <img
-                          src={formData.avatar}
-                          alt="Avatar"
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setFormData((prev) => ({ ...prev, avatar: "" }))
-                        }
-                        className="absolute -top-1 -right-1 p-1 bg-red-500 text-neutral-200 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                        disabled={isUploadingAvatar}
-                      >
-                        <IconX className="h-3 w-3" />
-                      </button>
-                    </div>
-                  </div>
-                )}
+                <p className="text-sm text-neutral-400">
+                  Tải lên ảnh PNG, JPG (Max 10MB)
+                </p>
               </div>
-            </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="role" className="dark:text-neutral-200">
-                Vai trò
-              </Label>
-              <Select
-                value={formData.role}
-                onValueChange={(value) => handleSelectChange("role", value)}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Chọn vai trò" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="ADMIN">Admin</SelectItem>
-                  <SelectItem value="DISPATCHER">Điều phối viên</SelectItem>
-                  <SelectItem value="CUSTOMER">Khách hàng</SelectItem>
-                  <SelectItem value="DRIVER">Tài xế</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="name" className="dark:text-neutral-200">
-                  Tên hiển thị <span className="text-red-500">*</span>
-                </Label>
-                <Input
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  onClear={() => handleClear("name")}
-                  placeholder="Nhập tên hiển thị"
-                  className={`${
-                    errors.name ? "border-red-500" : "border-lightBorderV1"
-                  } focus:border-mainTextHoverV1`}
+              <TabsContent value="CUSTOMER">
+                <UserForm
+                  mode="create"
+                  formData={formData}
+                  errors={errors}
+                  isUpdating={isPending}
+                  onFormDataChange={handleFormDataChange}
+                  onErrorsChange={handleErrorsChange}
+                  onSubmit={handleSubmit}
+                  onCancel={handleClose}
                 />
-                {errors.name && (
-                  <p className="text-red-500 text-sm">{errors.name}</p>
-                )}
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="email" className="dark:text-neutral-200">
-                  Email <span className="text-red-500">*</span>
-                </Label>
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  onClear={() => handleClear("email")}
-                  placeholder="Nhập email"
-                  className={`${
-                    errors.email ? "border-red-500" : "border-lightBorderV1"
-                  } focus:border-mainTextHoverV1`}
+              </TabsContent>
+              <TabsContent value="DRIVER">
+                <UserForm
+                  mode="create"
+                  formData={formData}
+                  errors={errors}
+                  isUpdating={isPending}
+                  onFormDataChange={handleFormDataChange}
+                  onErrorsChange={handleErrorsChange}
+                  onSubmit={handleSubmit}
+                  onCancel={handleClose}
                 />
-                {errors.email && (
-                  <p className="text-red-500 text-sm">{errors.email}</p>
-                )}
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="phone" className="dark:text-neutral-200">
-                  Số điện thoại
-                </Label>
-                <Input
-                  id="phone"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  onClear={() => handleClear("phone")}
-                  placeholder="Nhập số điện thoại"
-                  className={`${
-                    errors.phone ? "border-red-500" : "border-lightBorderV1"
-                  } focus:border-mainTextHoverV1`}
+              </TabsContent>
+              <TabsContent value="DISPATCHER">
+                <UserForm
+                  mode="create"
+                  formData={formData}
+                  errors={errors}
+                  isUpdating={isPending}
+                  onFormDataChange={handleFormDataChange}
+                  onErrorsChange={handleErrorsChange}
+                  onSubmit={handleSubmit}
+                  onCancel={handleClose}
                 />
-                {errors.phone && (
-                  <p className="text-red-500 text-sm">{errors.phone}</p>
-                )}
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="password" className="dark:text-neutral-200">
-                  Mật khẩu <span className="text-red-500">*</span>
-                </Label>
-                <Input
-                  id="password"
-                  name="password"
-                  type="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  onClear={() => handleClear("password")}
-                  placeholder="Nhập mật khẩu"
-                  className={`${
-                    errors.password ? "border-red-500" : "border-lightBorderV1"
-                  } focus:border-mainTextHoverV1`}
+              </TabsContent>
+              <TabsContent value="ADMIN">
+                <UserForm
+                  mode="create"
+                  formData={formData}
+                  errors={errors}
+                  isUpdating={isPending}
+                  onFormDataChange={handleFormDataChange}
+                  onErrorsChange={handleErrorsChange}
+                  onSubmit={handleSubmit}
+                  onCancel={handleClose}
                 />
-                {errors.password && (
-                  <p className="text-red-500 text-sm">{errors.password}</p>
-                )}
-              </div>
+              </TabsContent>
             </div>
-
-            <div className="flex gap-2 pt-4 justify-end">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={handleClose}
-                disabled={isPending}
-              >
-                Hủy
-              </Button>
-              <Button type="submit" disabled={isPending}>
-                {isPending ? (
-                  <>
-                    <IconLoader2 className="h-4 w-4 animate-spin" />
-                    Đang tạo...
-                  </>
-                ) : (
-                  <>
-                    <IconPlus className="h-4 w-4" />
-                    Tạo người dùng
-                  </>
-                )}
-              </Button>
-            </div>
-          </form>
+          </Tabs>
         </motion.div>
       </DialogContent>
     </Dialog>

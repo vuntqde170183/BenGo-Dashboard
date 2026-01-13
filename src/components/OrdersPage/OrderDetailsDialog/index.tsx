@@ -28,7 +28,7 @@ export function OrderDetailsDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+      <DialogContent size="medium">
         <DialogHeader>
           <DialogTitle className="flex items-center justify-between">
             <span>Order #{order?._id?.slice(-8)}</span>

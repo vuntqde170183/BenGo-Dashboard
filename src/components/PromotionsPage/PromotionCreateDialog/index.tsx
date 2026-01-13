@@ -102,7 +102,7 @@ export function PromotionCreateDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent size="medium">
         <DialogHeader>
           <DialogTitle>Create New Promotion</DialogTitle>
         </DialogHeader>
