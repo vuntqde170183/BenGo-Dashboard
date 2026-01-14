@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { useAdminDrivers, useUpdateDriverStatus } from "@/hooks/useAdmin";
+import {
+  useAdminDrivers,
+  useUpdateDriverStatus,
+  useDeleteDriver,
+} from "@/hooks/useAdmin";
 import { ViewReasonDialog, UpdateStatusDialog } from "./DriverStatusDialogs";
 import { DriverDetailsDialog } from "./DriverDetailsDialog";
 import {
@@ -26,6 +30,7 @@ import { Pagination } from "@/components/ui/pagination";
 import { motion } from "framer-motion";
 import { IconSearch, IconPlus } from "@tabler/icons-react";
 import { DriverCreateDialog } from "./DriverCreateDialog";
+import { DeleteDialog } from "@/components/ui/delete-dialog";
 
 export default function DriversPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -41,8 +46,13 @@ export default function DriversPage() {
   const [targetStatus, setTargetStatus] = useState<
     "APPROVED" | "PENDING" | "LOCKED" | "REJECTED"
   >("APPROVED");
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [selectedDriverForDelete, setSelectedDriverForDelete] =
+    useState<any>(null);
   const { mutate: updateStatus, isPending: isUpdating } =
     useUpdateDriverStatus();
+  const { mutate: deleteDriverMutation, isPending: isDeleting } =
+    useDeleteDriver();
 
   const statusParam = statusFilter;
 
@@ -111,10 +121,28 @@ export default function DriversPage() {
         setSelectedDriver(driver);
         setViewDialogOpen(true);
       } else {
-        // Open details dialog for viewing/editing
         setSelectedDriverId(driver.userId?._id || driver.userId?.id || id);
         setDetailsDialogOpen(true);
       }
+    }
+  };
+
+  const handleDelete = (id: string) => {
+    const driver = displayDrivers.find((d: any) => d._id === id);
+    if (driver) {
+      setSelectedDriverForDelete(driver);
+      setIsDeleteDialogOpen(true);
+    }
+  };
+
+  const confirmDelete = async () => {
+    if (!selectedDriverForDelete) return Promise.resolve();
+
+    try {
+      deleteDriverMutation(selectedDriverForDelete._id);
+      return Promise.resolve();
+    } catch (error) {
+      throw error;
     }
   };
 
@@ -202,7 +230,7 @@ export default function DriversPage() {
                 currentPage={currentPage}
                 pageSize={pageSize}
                 onEdit={handleEdit}
-                onDelete={(id) => console.log("Delete driver", id)}
+                onDelete={handleDelete}
                 onApprove={(id) => openUpdateDialog(id, "APPROVED")}
                 onReject={(id) => openUpdateDialog(id, "REJECTED")}
                 onLock={(id) => openUpdateDialog(id, "LOCKED")}
@@ -297,6 +325,18 @@ export default function DriversPage() {
           }}
         />
       )}
+      <DeleteDialog
+        isOpen={isDeleteDialogOpen}
+        isDeleting={isDeleting}
+        onClose={() => setIsDeleteDialogOpen(false)}
+        onConfirm={confirmDelete}
+        title={`Xóa tài xế: ${selectedDriverForDelete?.userId?.name || ""}`}
+        description="Bạn có chắc chắn muốn xóa tài xế này không? Hành động này không thể hoàn tác."
+        confirmText="Xóa tài xế"
+        successMessage="Xóa tài xế thành công!"
+        errorMessage="Xóa tài xế thất bại."
+        warningMessage="Hành động này sẽ xóa vĩnh viễn tài xế và các dữ liệu liên quan."
+      />
     </div>
   );
 }

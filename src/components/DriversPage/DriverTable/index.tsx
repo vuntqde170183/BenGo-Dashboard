@@ -256,27 +256,22 @@ export const DriverTable = ({
                         </motion.div>
                       )}
 
-                      {/* Other actions like delete if needed */}
-                      {!["APPROVED", "PENDING", "LOCKED", "REJECTED"].includes(
-                        driver.status
-                      ) && (
-                        <motion.div
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
+                      <motion.div
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <Button
+                          className="bg-red-500 hover:bg-red-600"
+                          size="icon"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onDelete(driverId);
+                          }}
+                          title="Xóa"
                         >
-                          <Button
-                            className="bg-red-500 hover:bg-red-600"
-                            size="icon"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              onDelete(driverId);
-                            }}
-                            title="Xóa"
-                          >
-                            <Icon path={mdiTrashCanOutline} size={0.8} />
-                          </Button>
-                        </motion.div>
-                      )}
+                          <Icon path={mdiTrashCanOutline} size={0.8} />
+                        </Button>
+                      </motion.div>
                     </div>
                   </TableCell>
                 </TableRow>
