@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/dialog";
 import { mdiPlusBox } from "@mdi/js";
 import Icon from "@mdi/react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { UserForm } from "../UserDetailsDialog/UserForm";
 
 interface UserCreateDialogProps {
@@ -64,14 +63,6 @@ export const UserCreateDialog = ({
 
   const handleErrorsChange = (newErrors: Record<string, string>) => {
     setErrors(newErrors);
-  };
-
-  const handleTabChange = (value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      role: value as UserRole,
-    }));
-    setErrors({});
   };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -230,122 +221,70 @@ export const UserCreateDialog = ({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
+          className="space-y-6 mt-4"
         >
-          <Tabs
-            value={formData.role as string}
-            onValueChange={handleTabChange}
-            className="w-full"
-          >
-            <TabsList className="grid w-full grid-cols-4 mb-6">
-              <TabsTrigger value="CUSTOMER">Khách hàng</TabsTrigger>
-              <TabsTrigger value="DRIVER">Tài xế</TabsTrigger>
-              <TabsTrigger value="DISPATCHER">Điều phối viên</TabsTrigger>
-              <TabsTrigger value="ADMIN">Quản trị viên</TabsTrigger>
-            </TabsList>
-
-            <div className="space-y-6">
-              {/* Avatar Section */}
-              <div className="flex flex-col items-center gap-4">
-                <div className="relative group">
-                  <div className="w-32 h-32 rounded-full border-2 border-dashed border-lightBorderV1 dark:border-darkBorderV1 overflow-hidden flex items-center justify-center bg-slate-50 dark:bg-darkBackgroundV1">
-                    {formData.avatar ? (
-                      <img
-                        src={formData.avatar}
-                        alt="Avatar"
-                        className="w-full h-full object-cover"
-                      />
+          {/* Avatar Section */}
+          <div className="flex flex-col items-center gap-4">
+            <div className="relative group">
+              <div className="w-32 h-32 rounded-full border-2 border-dashed border-lightBorderV1 dark:border-darkBorderV1 overflow-hidden flex items-center justify-center bg-slate-50 dark:bg-darkBackgroundV1">
+                {formData.avatar ? (
+                  <img
+                    src={formData.avatar}
+                    alt="Avatar"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="text-neutral-400 text-center p-2">
+                    {isUploadingAvatar ? (
+                      <IconLoader2 className="h-8 w-8 animate-spin mx-auto" />
                     ) : (
-                      <div className="text-neutral-400 text-center p-2">
-                        {isUploadingAvatar ? (
-                          <IconLoader2 className="h-8 w-8 animate-spin mx-auto" />
-                        ) : (
-                          <>
-                            <IconUpload className="h-8 w-8 mx-auto mb-1" />
-                            <span className="text-xs">Ảnh đại diện</span>
-                          </>
-                        )}
-                      </div>
+                      <>
+                        <IconUpload className="h-8 w-8 mx-auto mb-1" />
+                        <span className="text-xs">Ảnh đại diện</span>
+                      </>
                     )}
                   </div>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                    className="hidden"
-                    id="avatar-upload-create"
-                    disabled={isUploadingAvatar}
-                  />
-                  <Label
-                    htmlFor="avatar-upload-create"
-                    className="absolute inset-0 cursor-pointer rounded-full"
-                  />
-                  {formData.avatar && (
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setFormData((prev) => ({ ...prev, avatar: "" }))
-                      }
-                      className="absolute -top-1 -right-1 p-1 bg-red-500 text-white rounded-full shadow-lg"
-                    >
-                      <IconX className="h-3 w-3" />
-                    </button>
-                  )}
-                </div>
-                <p className="text-sm text-neutral-400">
-                  Tải lên ảnh PNG, JPG (Max 10MB)
-                </p>
+                )}
               </div>
-
-              <TabsContent value="CUSTOMER">
-                <UserForm
-                  mode="create"
-                  formData={formData}
-                  errors={errors}
-                  isUpdating={isPending}
-                  onFormDataChange={handleFormDataChange}
-                  onErrorsChange={handleErrorsChange}
-                  onSubmit={handleSubmit}
-                  onCancel={handleClose}
-                />
-              </TabsContent>
-              <TabsContent value="DRIVER">
-                <UserForm
-                  mode="create"
-                  formData={formData}
-                  errors={errors}
-                  isUpdating={isPending}
-                  onFormDataChange={handleFormDataChange}
-                  onErrorsChange={handleErrorsChange}
-                  onSubmit={handleSubmit}
-                  onCancel={handleClose}
-                />
-              </TabsContent>
-              <TabsContent value="DISPATCHER">
-                <UserForm
-                  mode="create"
-                  formData={formData}
-                  errors={errors}
-                  isUpdating={isPending}
-                  onFormDataChange={handleFormDataChange}
-                  onErrorsChange={handleErrorsChange}
-                  onSubmit={handleSubmit}
-                  onCancel={handleClose}
-                />
-              </TabsContent>
-              <TabsContent value="ADMIN">
-                <UserForm
-                  mode="create"
-                  formData={formData}
-                  errors={errors}
-                  isUpdating={isPending}
-                  onFormDataChange={handleFormDataChange}
-                  onErrorsChange={handleErrorsChange}
-                  onSubmit={handleSubmit}
-                  onCancel={handleClose}
-                />
-              </TabsContent>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                className="hidden"
+                id="avatar-upload-create"
+                disabled={isUploadingAvatar}
+              />
+              <Label
+                htmlFor="avatar-upload-create"
+                className="absolute inset-0 cursor-pointer rounded-full"
+              />
+              {formData.avatar && (
+                <button
+                  type="button"
+                  onClick={() =>
+                    setFormData((prev) => ({ ...prev, avatar: "" }))
+                  }
+                  className="absolute -top-1 -right-1 p-1 bg-red-500 text-white rounded-full shadow-lg"
+                >
+                  <IconX className="h-3 w-3" />
+                </button>
+              )}
             </div>
-          </Tabs>
+            <p className="text-sm text-neutral-400">
+              Tải lên ảnh PNG, JPG (Max 10MB)
+            </p>
+          </div>
+
+          <UserForm
+            mode="create"
+            formData={formData}
+            errors={errors}
+            isUpdating={isPending}
+            onFormDataChange={handleFormDataChange}
+            onErrorsChange={handleErrorsChange}
+            onSubmit={handleSubmit}
+            onCancel={handleClose}
+          />
         </motion.div>
       </DialogContent>
     </Dialog>
