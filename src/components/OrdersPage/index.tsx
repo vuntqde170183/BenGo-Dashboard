@@ -60,7 +60,7 @@ export default function OrdersPage() {
     }
 
     try {
-      const reason = "Cancelled by admin";
+      const reason = "Đã hủy bởi quản trị viên";
       cancelOrderMutation(
         { id: selectedOrderId, reason },
         {
@@ -90,7 +90,7 @@ export default function OrdersPage() {
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+            <BreadcrumbLink href="/">Bảng điều khiển</BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
@@ -125,11 +125,12 @@ export default function OrdersPage() {
               )}
             </div>
             <Tabs value={statusFilter} onValueChange={setStatusFilter}>
-              <TabsList>
+              <TabsList className="flex-wrap h-auto">
                 <TabsTrigger value="ALL">Tất cả</TabsTrigger>
-                <TabsTrigger value="PENDING">Chờ xử lý</TabsTrigger>
-                <TabsTrigger value="ACCEPTED">Đang hoạt động</TabsTrigger>
-                <TabsTrigger value="DELIVERED">Hoàn thành</TabsTrigger>
+                <TabsTrigger value="PENDING">Đang chờ</TabsTrigger>
+                <TabsTrigger value="ACCEPTED">Đã chấp nhận</TabsTrigger>
+                <TabsTrigger value="PICKED_UP">Đã lấy hàng</TabsTrigger>
+                <TabsTrigger value="DELIVERED">Đã giao hàng</TabsTrigger>
                 <TabsTrigger value="CANCELLED">Đã hủy</TabsTrigger>
               </TabsList>
             </Tabs>
@@ -156,16 +157,21 @@ export default function OrdersPage() {
                 isSearching={false}
                 onViewDetails={handleViewDetails}
                 onCancel={handleCancel}
+                currentPage={currentPage}
+                pageSize={pageSize}
               />
             )}
           </Card>
 
-          {ordersData?.meta?.total && ordersData.meta.total > pageSize && (
+          {(ordersData?.pagination?.total ?? 0) > pageSize && (
             <Pagination
               page={currentPage}
               pageSize={pageSize}
-              total={ordersData.meta.total}
-              totalPages={Math.ceil(ordersData.meta.total / pageSize)}
+              total={ordersData?.pagination?.total ?? 0}
+              totalPages={
+                ordersData?.pagination?.total_pages ||
+                Math.ceil((ordersData?.pagination?.total ?? 0) / pageSize)
+              }
               onPageChange={handlePageChange}
             />
           )}

@@ -102,7 +102,7 @@ export default function UserPage() {
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+            <BreadcrumbLink href="/">Bảng điều khiển</BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
@@ -194,7 +194,7 @@ export default function UserPage() {
         onConfirm={confirmDelete}
         title={`Xóa người dùng: ${
           displayUsers.find(
-            (u: any) => u.id === selectedUserId || u._id === selectedUserId
+            (u: any) => u.id === selectedUserId || u._id === selectedUserId,
           )?.name || ""
         }`}
         description="Bạn có chắc chắn muốn xóa người dùng này không? Hành động này không thể hoàn tác."

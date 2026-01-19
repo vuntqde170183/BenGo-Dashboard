@@ -60,7 +60,7 @@ export default function DashboardLayout({
             "bg-darkCardV1 transition-all duration-300 flex-shrink-0",
             isOpen
               ? "w-[250px]"
-              : "w-0 md:w-16 overflow-hidden flex justify-center"
+              : "w-0 md:w-16 overflow-hidden flex justify-center",
           )}
         >
           <div className="flex flex-col h-full bg-darkBackgroundV1">
@@ -86,7 +86,7 @@ export default function DashboardLayout({
                                 isMenuActive(menu)
                                   ? "bg-primary/10 text-primary border-primary/20 shadow-[0_0_15px_rgba(65,198,81,0.1)]"
                                   : "text-neutral-200/70 border-transparent hover:bg-primary/5 hover:text-primary/80 hover:border-primary/10",
-                                !isOpen && "!justify-center w-[46px]"
+                                !isOpen && "!justify-center w-[46px]",
                               )}
                             >
                               <div
@@ -95,7 +95,7 @@ export default function DashboardLayout({
                                   isMenuActive(menu)
                                     ? "bg-primary/20"
                                     : "bg-darkBorderV1",
-                                  isOpen ? "mr-2" : "mr-0"
+                                  isOpen ? "mr-2" : "mr-0",
                                 )}
                               >
                                 <Icon
@@ -104,7 +104,7 @@ export default function DashboardLayout({
                                   className={cn(
                                     isMenuActive(menu)
                                       ? "text-primary flex-shrink-0"
-                                      : "text-neutral-200/70 flex-shrink-0"
+                                      : "text-neutral-200/70 flex-shrink-0",
                                   )}
                                 />
                               </div>
@@ -125,7 +125,7 @@ export default function DashboardLayout({
                               isMenuActive(menu)
                                 ? "bg-primary/10 text-primary border-primary/20 shadow-[0_0_15px_rgba(65,198,81,0.1)]"
                                 : "text-neutral-200/70 border-transparent hover:bg-primary/5 hover:text-primary/80 hover:border-primary/10",
-                              !isOpen && "!justify-center w-[46px]"
+                              !isOpen && "!justify-center w-[46px]",
                             )}
                           >
                             <div
@@ -134,7 +134,7 @@ export default function DashboardLayout({
                                 isMenuActive(menu)
                                   ? "bg-primary/20"
                                   : "bg-darkBorderV1",
-                                isOpen ? "mr-2" : "mr-0"
+                                isOpen ? "mr-2" : "mr-0",
                               )}
                             >
                               <Icon
@@ -143,7 +143,7 @@ export default function DashboardLayout({
                                 className={cn(
                                   isMenuActive(menu)
                                     ? "text-primary flex-shrink-0"
-                                    : "text-neutral-200/70 flex-shrink-0"
+                                    : "text-neutral-200/70 flex-shrink-0",
                                 )}
                               />
                             </div>
@@ -191,17 +191,17 @@ export default function DashboardLayout({
                                           "flex items-center rounded-lg p-[8px] h-[38px] text-[13px] font-normal transition-all duration-300 border",
                                           pathname === sub.path
                                             ? "bg-primary/10 text-primary border-primary/20"
-                                            : "text-neutral-200/70 border-transparent hover:bg-primary/5 hover:text-primary/80 hover:border-primary/10"
+                                            : "text-neutral-200/70 border-transparent hover:bg-primary/5 hover:text-primary/80 hover:border-primary/10",
                                         )}
                                       >
                                         <Icon
                                           path={sub.icon || ""}
-                                          size={0.7}
+                                          size={0.8}
                                           className={cn(
                                             pathname === sub.path
                                               ? "text-primary flex-shrink-0"
                                               : "text-neutral-200/70 flex-shrink-0",
-                                            "mr-3"
+                                            "mr-3",
                                           )}
                                         />
                                         <span>{sub.name}</span>

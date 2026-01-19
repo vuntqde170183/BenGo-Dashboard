@@ -30,7 +30,7 @@ export const ViewReasonDialog = ({
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Icon path={mdiInformationOutline} size={1} />
+            <Icon path={mdiInformationOutline} size={0.8} />
             Thông tin chi tiết
           </DialogTitle>
         </DialogHeader>
@@ -111,7 +111,7 @@ export const UpdateStatusDialog = ({
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Icon path={mdiAlertCircleOutline} size={1} />
+            <Icon path={mdiAlertCircleOutline} size={0.8} />
             {title}
           </DialogTitle>
         </DialogHeader>

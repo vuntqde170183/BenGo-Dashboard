@@ -77,7 +77,7 @@ export default function DriversPage() {
 
   const handleStatusUpdate = async (
     inputReason: string,
-    inputNote?: string
+    inputNote?: string,
   ) => {
     if (!selectedDriver) return;
 
@@ -104,7 +104,7 @@ export default function DriversPage() {
 
   const openUpdateDialog = (
     id: string,
-    status: "APPROVED" | "PENDING" | "LOCKED" | "REJECTED"
+    status: "APPROVED" | "PENDING" | "LOCKED" | "REJECTED",
   ) => {
     const driver = displayDrivers.find((d: any) => d._id === id);
     if (driver) {
@@ -161,7 +161,7 @@ export default function DriversPage() {
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+            <BreadcrumbLink href="/">Bảng điều khiển</BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
@@ -269,19 +269,19 @@ export default function DriversPage() {
           targetStatus === "APPROVED"
             ? "Duyệt tài khoản"
             : targetStatus === "REJECTED"
-            ? "Từ chối tài khoản"
-            : targetStatus === "LOCKED"
-            ? "Khóa tài khoản"
-            : "Cập nhật trạng thái"
+              ? "Từ chối tài khoản"
+              : targetStatus === "LOCKED"
+                ? "Khóa tài khoản"
+                : "Cập nhật trạng thái"
         }
         description={
           targetStatus === "APPROVED"
             ? "Bạn có chắc chắn muốn duyệt tài xế này? Tài xế sẽ có thể hoạt động ngay sau khi duyệt."
             : targetStatus === "REJECTED"
-            ? "Vui lòng nhập lý do từ chối tài xế. Hành động này không thể hoàn tác."
-            : targetStatus === "LOCKED"
-            ? "Vui lòng nhập lý do khóa tài khoản. Tài xế sẽ không thể nhận chuyến."
-            : "Xác nhận thay đổi trạng thái?"
+              ? "Vui lòng nhập lý do từ chối tài xế. Hành động này không thể hoàn tác."
+              : targetStatus === "LOCKED"
+                ? "Vui lòng nhập lý do khóa tài khoản. Tài xế sẽ không thể nhận chuyến."
+                : "Xác nhận thay đổi trạng thái?"
         }
         isReasonRequired={
           targetStatus === "LOCKED" || targetStatus === "REJECTED"
@@ -290,17 +290,17 @@ export default function DriversPage() {
           targetStatus === "APPROVED"
             ? "Duyệt ngay"
             : targetStatus === "REJECTED"
-            ? "Từ chối"
-            : targetStatus === "LOCKED"
-            ? "Khóa ngay"
-            : "Xác nhận"
+              ? "Từ chối"
+              : targetStatus === "LOCKED"
+                ? "Khóa ngay"
+                : "Xác nhận"
         }
         confirmButtonVariant={
           targetStatus === "APPROVED"
             ? "default"
             : targetStatus === "REJECTED" || targetStatus === "LOCKED"
-            ? "destructive"
-            : "default"
+              ? "destructive"
+              : "default"
         }
       />
 

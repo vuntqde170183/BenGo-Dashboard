@@ -13,7 +13,7 @@ import {
 export const getDashboardMenuItems = (): MenuItem[] => [
 	{
 		id: "dashboard",
-		name: "Dashboard",
+		name: "Bảng điều khiển",
 		path: "/admin",
 		icon: mdiViewDashboard,
 	},

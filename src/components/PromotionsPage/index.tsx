@@ -85,11 +85,13 @@ export default function PromotionsPage() {
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink href="/admin/dashboard">Dashboard</BreadcrumbLink>
+            <BreadcrumbLink href="/admin/dashboard">
+              Bảng điều khiển
+            </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>Promotions</BreadcrumbPage>
+            <BreadcrumbPage>Chương trình khuyến mãi</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
@@ -103,14 +105,14 @@ export default function PromotionsPage() {
           <div className="flex items-center justify-between">
             <Tabs value={filterStatus} onValueChange={setFilterStatus}>
               <TabsList>
-                <TabsTrigger value="ALL">All</TabsTrigger>
-                <TabsTrigger value="ACTIVE">Active</TabsTrigger>
-                <TabsTrigger value="EXPIRED">Expired</TabsTrigger>
+                <TabsTrigger value="ALL">Tất cả</TabsTrigger>
+                <TabsTrigger value="ACTIVE">Đang hoạt động</TabsTrigger>
+                <TabsTrigger value="EXPIRED">Hết hạn</TabsTrigger>
               </TabsList>
             </Tabs>
             <Button onClick={() => setIsCreateDialogOpen(true)}>
               <IconPlus className="h-4 w-4 mr-2" />
-              Create Promotion
+              Tạo khuyến mãi
             </Button>
           </div>
 
@@ -129,7 +131,7 @@ export default function PromotionsPage() {
             </div>
           ) : displayPromotions.length === 0 ? (
             <div className="text-center py-12 text-neutral-200">
-              No promotions found
+              Không tìm thấy chương trình khuyến mãi nào
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -143,11 +145,11 @@ export default function PromotionsPage() {
                       <div className="flex-1">
                         <CardTitle className="text-lg">{promo.title}</CardTitle>
                         <p className="text-sm text-neutral-200 mt-1 font-mono">
-                          Code: {promo.code}
+                          Mã: {promo.code}
                         </p>
                       </div>
                       <Badge variant={promo.isActive ? "default" : "secondary"}>
-                        {promo.isActive ? "Active" : "Inactive"}
+                        {promo.isActive ? "Đang hoạt động" : "Không hoạt động"}
                       </Badge>
                     </div>
                   </CardHeader>
@@ -165,7 +167,7 @@ export default function PromotionsPage() {
 
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
-                        <span className="text-neutral-200">Discount:</span>
+                        <span className="text-neutral-200">Giảm giá:</span>
                         <span className="font-medium">
                           {promo.discountType === "PERCENTAGE"
                             ? `${promo.discountValue}%`
@@ -173,19 +175,19 @@ export default function PromotionsPage() {
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-neutral-200">Min Order:</span>
+                        <span className="text-neutral-200">Đơn tối thiểu:</span>
                         <span className="font-medium">
                           {formatCurrency(promo.minOrderValue || 0)}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-neutral-200">Usage:</span>
+                        <span className="text-neutral-200">Lượt dùng:</span>
                         <span className="font-medium">
                           {promo.usedCount || 0} / {promo.usageLimit || "∞"}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-neutral-200">Valid Until:</span>
+                        <span className="text-neutral-200">Hạn dùng:</span>
                         <span className="font-medium">
                           {formatDate(promo.endDate)}
                         </span>
@@ -200,7 +202,7 @@ export default function PromotionsPage() {
                       onClick={() => handleEdit(promo)}
                     >
                       <IconEdit className="w-4 h-4 mr-1" />
-                      Edit
+                      Sửa
                     </Button>
                     <Button
                       variant="destructive"
@@ -222,12 +224,12 @@ export default function PromotionsPage() {
         isDeleting={isDeleting}
         onClose={() => setIsDeleteDialogOpen(false)}
         onConfirm={confirmDelete}
-        title="Delete Promotion"
-        description="Are you sure you want to delete this promotion?"
-        confirmText="Delete Promotion"
-        successMessage="Promotion deleted successfully!"
-        errorMessage="Failed to delete promotion."
-        warningMessage="This will permanently remove the promotion code."
+        title="Xóa khuyến mãi"
+        description="Bạn có chắc chắn muốn xóa chương trình khuyến mãi này không?"
+        confirmText="Xóa khuyến mãi"
+        successMessage="Xóa chương trình khuyến mãi thành công!"
+        errorMessage="Xóa chương trình khuyến mãi thất bại."
+        warningMessage="Hành động này sẽ xóa vĩnh viễn mã khuyến mãi này."
       />
 
       <PromotionCreateDialog
