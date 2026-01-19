@@ -34,7 +34,7 @@ export function OrdersTable({
   if (orders.length === 0) {
     return (
       <div className="text-center py-12 text-neutral-200">
-        {isSearching ? "No orders match your search" : "No orders found"}
+        {isSearching ? "Không tìm thấy đơn hàng nào" : "Chưa có đơn hàng"}
       </div>
     );
   }
@@ -43,15 +43,15 @@ export function OrdersTable({
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Order ID</TableHead>
-          <TableHead>Customer</TableHead>
-          <TableHead>Driver</TableHead>
-          <TableHead>Route</TableHead>
-          <TableHead>Vehicle</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>Price</TableHead>
-          <TableHead>Date</TableHead>
-          <TableHead className="text-right">Actions</TableHead>
+          <TableHead>Mã đơn</TableHead>
+          <TableHead>Khách hàng</TableHead>
+          <TableHead>Tài xế</TableHead>
+          <TableHead>Tuyến đường</TableHead>
+          <TableHead>Loại xe</TableHead>
+          <TableHead>Trạng thái</TableHead>
+          <TableHead>Giá tiền</TableHead>
+          <TableHead>Ngày tạo</TableHead>
+          <TableHead className="text-right">Thao tác</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -82,7 +82,7 @@ export function OrdersTable({
                   </p>
                 </div>
               ) : (
-                <span className="text-gray-400">Unassigned</span>
+                <span className="text-gray-400">Chưa có</span>
               )}
             </TableCell>
             <TableCell>
@@ -120,7 +120,7 @@ export function OrdersTable({
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   <DropdownMenuItem onClick={() => onViewDetails(order._id)}>
-                    View Details
+                    Xem chi tiết
                   </DropdownMenuItem>
                   {order.status !== "CANCELLED" &&
                     order.status !== "DELIVERED" && (
@@ -130,7 +130,7 @@ export function OrdersTable({
                           className="text-red-600"
                           onClick={() => onCancel(order._id)}
                         >
-                          Force Cancel
+                          Hủy đơn
                         </DropdownMenuItem>
                       </>
                     )}

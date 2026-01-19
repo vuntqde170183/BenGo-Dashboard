@@ -31,51 +31,25 @@ export const getDashboardMenuItems = (): MenuItem[] => [
 	},
 	{
 		id: "order-management",
-		name: "Orders",
+		name: "Quản lý đơn hàng",
 		path: "/admin/orders",
 		icon: mdiPackageVariant,
-		subMenu: [
-			{
-				id: "orders-all",
-				name: "All Orders",
-				path: "/admin/orders",
-				icon: mdiPackageVariant,
-			},
-			{
-				id: "orders-pending",
-				name: "Pending",
-				path: "/admin/orders/pending",
-				icon: mdiPackageVariant,
-			},
-			{
-				id: "orders-active",
-				name: "Active",
-				path: "/admin/orders/active",
-				icon: mdiPackageVariant,
-			},
-			{
-				id: "orders-completed",
-				name: "Completed",
-				path: "/admin/orders/completed",
-				icon: mdiPackageVariant,
-			},
-		],
 	},
 	{
 		id: "financial",
-		name: "Financial",
+		name: "Cấu hình giá",
 		path: "/admin/pricing",
 		icon: mdiCurrencyUsd,
 		subMenu: [
 			{
 				id: "pricing-config",
-				name: "Pricing Config",
+				name: "Cấu hình",
 				path: "/admin/pricing",
 				icon: mdiCurrencyUsd,
 			},
 			{
 				id: "revenue-reports",
-				name: "Revenue Reports",
+				name: "Báo cáo doanh thu",
 				path: "/admin/reports",
 				icon: mdiCurrencyUsd,
 			},
@@ -83,19 +57,19 @@ export const getDashboardMenuItems = (): MenuItem[] => [
 	},
 	{
 		id: "promotions",
-		name: "Promotions",
+		name: "Quản lý khuyến mãi",
 		path: "/admin/promotions",
 		icon: mdiGift,
 	},
 	{
 		id: "support-tickets",
-		name: "Support Tickets",
+		name: "Quản lý hỗ trợ",
 		path: "/admin/tickets",
 		icon: mdiTicket,
 	},
 	{
 		id: "settings",
-		name: "Settings",
+		name: "Cài đặt",
 		path: "/admin/settings",
 		icon: mdiCog,
 	},
