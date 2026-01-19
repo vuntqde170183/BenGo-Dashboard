@@ -67,7 +67,7 @@ export default function OrdersPage() {
           onSuccess: () => {
             refetch();
           },
-        }
+        },
       );
       return Promise.resolve();
     } catch (error) {
@@ -90,11 +90,11 @@ export default function OrdersPage() {
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink href="/admin/dashboard">Dashboard</BreadcrumbLink>
+            <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>Order Management</BreadcrumbPage>
+            <BreadcrumbPage>Quản lý đơn hàng</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
@@ -108,7 +108,7 @@ export default function OrdersPage() {
           <div className="flex items-center justify-between gap-4 w-full">
             <div className="relative w-full md:w-96">
               <Input
-                placeholder="Search by order ID, customer..."
+                placeholder="Tìm kiếm theo mã đơn, khách hàng, tài xế..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 pr-10 py-2 w-full border-lightBorderV1 focus:border-mainTextHoverV1 dark:text-neutral-200"
@@ -126,11 +126,11 @@ export default function OrdersPage() {
             </div>
             <Tabs value={statusFilter} onValueChange={setStatusFilter}>
               <TabsList>
-                <TabsTrigger value="ALL">All</TabsTrigger>
-                <TabsTrigger value="PENDING">Pending</TabsTrigger>
-                <TabsTrigger value="ACCEPTED">Active</TabsTrigger>
-                <TabsTrigger value="DELIVERED">Completed</TabsTrigger>
-                <TabsTrigger value="CANCELLED">Cancelled</TabsTrigger>
+                <TabsTrigger value="ALL">Tất cả</TabsTrigger>
+                <TabsTrigger value="PENDING">Chờ xử lý</TabsTrigger>
+                <TabsTrigger value="ACCEPTED">Đang hoạt động</TabsTrigger>
+                <TabsTrigger value="DELIVERED">Hoàn thành</TabsTrigger>
+                <TabsTrigger value="CANCELLED">Đã hủy</TabsTrigger>
               </TabsList>
             </Tabs>
           </div>
@@ -177,12 +177,12 @@ export default function OrdersPage() {
         isDeleting={isCanceling}
         onClose={() => setIsCancelDialogOpen(false)}
         onConfirm={confirmCancel}
-        title="Cancel Order"
-        description="Are you sure you want to cancel this order?"
-        confirmText="Cancel Order"
-        successMessage="Order cancelled successfully!"
-        errorMessage="Failed to cancel order."
-        warningMessage="The customer will be notified about the cancellation."
+        title="Hủy đơn hàng"
+        description="Bạn có chắc chắn muốn hủy đơn hàng này không?"
+        confirmText="Hủy đơn"
+        successMessage="Hủy đơn hàng thành công!"
+        errorMessage="Hủy đơn hàng thất bại."
+        warningMessage="Khách hàng sẽ được thông báo về việc hủy đơn."
       />
 
       {selectedOrderId && (

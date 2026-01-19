@@ -15,26 +15,29 @@ const LoadingFallback = () => (
 
 // Lazy load pages - wrapping imports to re-export default
 const HomePage = lazy(() =>
-  import("@/app/page").then((m) => ({ default: m.default }))
+  import("@/app/page").then((m) => ({ default: m.default })),
 );
 const NotFoundPage = lazy(() =>
-  import("@/app/not-found").then((m) => ({ default: m.default }))
+  import("@/app/not-found").then((m) => ({ default: m.default })),
 );
 
 // Auth pages
 const LoginPage = lazy(() =>
-  import("@/app/admin/login/page").then((m) => ({ default: m.default }))
+  import("@/app/admin/login/page").then((m) => ({ default: m.default })),
 );
 
 // Admin pages
 const AdminDashboard = lazy(() =>
-  import("@/app/admin/page").then((m) => ({ default: m.default }))
+  import("@/app/admin/page").then((m) => ({ default: m.default })),
 );
 const AdminUsers = lazy(() =>
-  import("@/app/admin/users/page").then((m) => ({ default: m.default }))
+  import("@/app/admin/users/page").then((m) => ({ default: m.default })),
 );
 const AdminDrivers = lazy(() =>
-  import("@/app/admin/drivers/page").then((m) => ({ default: m.default }))
+  import("@/app/admin/drivers/page").then((m) => ({ default: m.default })),
+);
+const AdminOrders = lazy(() =>
+  import("@/app/admin/orders/page").then((m) => ({ default: m.default })),
 );
 
 // Wrapper component for Suspense
@@ -99,6 +102,14 @@ export const router = createBrowserRouter([
             element: (
               <SuspenseWrapper>
                 <AdminDrivers />
+              </SuspenseWrapper>
+            ),
+          },
+          {
+            path: "orders",
+            element: (
+              <SuspenseWrapper>
+                <AdminOrders />
               </SuspenseWrapper>
             ),
           },

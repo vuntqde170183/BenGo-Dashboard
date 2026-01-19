@@ -271,6 +271,7 @@ export const DriverCreateDialog = ({
 
             <UserForm
               mode="create"
+              hideRoleSelect={true}
               formData={formData}
               errors={errors}
               isUpdating={isPending}

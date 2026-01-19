@@ -42,6 +42,7 @@ interface UserFormProps {
   onSubmit: () => void;
   onCancel: () => void;
   mode?: "create" | "edit";
+  hideRoleSelect?: boolean;
 }
 
 export const UserForm = ({
@@ -53,13 +54,14 @@ export const UserForm = ({
   onSubmit,
   onCancel,
   mode = "edit",
+  hideRoleSelect = false,
 }: UserFormProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const { mutate: uploadFileMutation } = useUploadFile();
   const [isUploading, setIsUploading] = useState<string | null>(null);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { name, value } = e.target;
     const newFormData = { ...formData, [name]: value };
@@ -134,7 +136,7 @@ export const UserForm = ({
 
   const handleImageUpload = async (
     e: React.ChangeEvent<HTMLInputElement>,
-    field: keyof IUpdateUserBody
+    field: keyof IUpdateUserBody,
   ) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -170,7 +172,7 @@ export const UserForm = ({
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-        {mode === "create" && (
+        {mode === "create" && !hideRoleSelect && (
           <div className="space-y-2">
             <Label htmlFor="role-select" className="text-sm font-medium">
               Vai trò người dùng
@@ -635,7 +637,7 @@ export const UserForm = ({
                     onChange={(e) =>
                       handleBankInfoNumericChange(
                         "accountNumber",
-                        e.target.value
+                        e.target.value,
                       )
                     }
                     placeholder="Nhập số tài khoản"
