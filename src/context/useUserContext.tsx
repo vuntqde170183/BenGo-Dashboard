@@ -1,7 +1,7 @@
 import type React from "react";
 import { createContext, useContext, useEffect, useState, useMemo } from "react";
 
-import { clearToken, setTokenToLocalStorage } from "@/utils/tokenStorage";
+import { clearToken, setTokenToLocalStorage } from "@/lib/tokenStorage";
 import { IProfileResponse } from "@/interface/auth";
 import { QueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
@@ -66,7 +66,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
               ...profile.data,
               ...data,
             },
-          })
+          }),
         );
       }
     }

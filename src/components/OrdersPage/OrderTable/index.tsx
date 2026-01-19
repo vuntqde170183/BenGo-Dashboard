@@ -10,7 +10,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { IOrder } from "@/interface/admin";
 import { IconEye, IconX } from "@tabler/icons-react";
-import { formatCurrency } from "@/lib/utils";
+import { formatCurrency } from "@/lib/format";
+import { getVehicleIcon } from "@/lib/vehicle-helpers";
 
 interface OrderTableProps {
   orders: IOrder[];
@@ -154,9 +155,10 @@ export const OrderTable = ({
                   </div>
                 </TableCell>
                 <TableCell>
-                  <Badge variant="outline">
-                    {getVehicleTypeLabel(order.vehicleType)}
-                  </Badge>
+                  <div className="flex items-center gap-1">
+                    {getVehicleIcon(order.vehicleType)}
+                    <span>{getVehicleTypeLabel(order.vehicleType)}</span>
+                  </div>
                 </TableCell>
                 <TableCell>{order.distanceKm.toFixed(2)} km</TableCell>
                 <TableCell className="font-semibold">

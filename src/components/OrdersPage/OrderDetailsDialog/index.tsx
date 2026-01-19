@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { MapPin, Package, DollarSign, Calendar } from "lucide-react";
-import { formatCurrency, formatDate, getStatusVariant } from "@/lib/formatters";
+import { formatCurrency, formatDate, getStatusVariant } from "@/lib/format";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface OrderDetailsDialogProps {

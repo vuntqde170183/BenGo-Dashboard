@@ -8,15 +8,13 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { Star, Car as CarIcon } from "lucide-react";
+import { Star } from "lucide-react";
 import { getStatusBadge } from "@/lib/badge-helpers";
+import { getVehicleIcon } from "@/lib/vehicle-helpers";
 import Icon from "@mdi/react";
 import {
-  mdiMotorbike,
   mdiTableEye,
   mdiTrashCanOutline,
-  mdiTruck,
-  mdiVanPassenger,
   mdiLockOutline,
   mdiCheckCircleOutline,
   mdiCloseCircleOutline,
@@ -67,19 +65,6 @@ export const DriverTable = ({
   currentPage = 1,
   pageSize = 10,
 }: DriverTableProps) => {
-  const getVehicleIcon = (type: string) => {
-    switch (type) {
-      case "BIKE":
-        return <Icon path={mdiMotorbike} size={0.9} />;
-      case "TRUCK":
-        return <Icon path={mdiTruck} size={0.9} />;
-      case "VAN":
-        return <Icon path={mdiVanPassenger} size={0.9} />;
-      default:
-        return <CarIcon className="w-4 h-4" />;
-    }
-  };
-
   return (
     <div className="w-full overflow-auto border border-darkBackgroundV1 rounded-md">
       <Table>
