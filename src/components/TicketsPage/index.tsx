@@ -20,11 +20,8 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
 import { motion } from "framer-motion";
-import {
-  formatRelativeTime,
-  getStatusVariant,
-  getPriorityVariant,
-} from "@/lib/format";
+import { formatRelativeTime, getPriorityVariant } from "@/lib/format";
+import { getStatusBadge } from "@/lib/badge-helpers";
 import { Input } from "@/components/ui/input";
 import { IconSearch, IconX } from "@tabler/icons-react";
 
@@ -47,7 +44,7 @@ export default function TicketsPage() {
   const { mutate: updateStatusMutation } = useUpdateTicketStatus();
 
   const handleResolve = (ticketId: string) => {
-    const resolution = prompt("Enter resolution notes:");
+    const resolution = prompt("Nhập ghi chú giải quyết:");
     if (resolution) {
       updateStatusMutation(
         {
@@ -78,7 +75,7 @@ export default function TicketsPage() {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>Support Tickets</BreadcrumbPage>
+            <BreadcrumbPage>Yêu cầu hỗ trợ</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
@@ -92,7 +89,7 @@ export default function TicketsPage() {
           <div className="flex items-center justify-between gap-4">
             <div className="relative w-full md:w-96">
               <Input
-                placeholder="Search tickets..."
+                placeholder="Tìm kiếm yêu cầu..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 pr-10 py-2 w-full border-lightBorderV1 focus:border-mainTextHoverV1 dark:text-neutral-200"
@@ -110,10 +107,10 @@ export default function TicketsPage() {
             </div>
             <Tabs value={statusFilter} onValueChange={setStatusFilter}>
               <TabsList>
-                <TabsTrigger value="OPEN">Open</TabsTrigger>
-                <TabsTrigger value="IN_PROGRESS">In Progress</TabsTrigger>
-                <TabsTrigger value="RESOLVED">Resolved</TabsTrigger>
-                <TabsTrigger value="CLOSED">Closed</TabsTrigger>
+                <TabsTrigger value="OPEN">Đang mở</TabsTrigger>
+                <TabsTrigger value="IN_PROGRESS">Đang xử lý</TabsTrigger>
+                <TabsTrigger value="RESOLVED">Đã giải quyết</TabsTrigger>
+                <TabsTrigger value="CLOSED">Đã đóng</TabsTrigger>
               </TabsList>
             </Tabs>
           </div>
@@ -133,7 +130,7 @@ export default function TicketsPage() {
             </div>
           ) : displayTickets.length === 0 ? (
             <div className="text-center py-12 text-neutral-200">
-              No tickets found
+              Không tìm thấy yêu cầu nào
             </div>
           ) : (
             <div className="space-y-4">
@@ -158,13 +155,11 @@ export default function TicketsPage() {
                           </Badge>
                         </div>
                         <p className="text-sm text-neutral-200">
-                          by {ticket.userId?.name || "Unknown"} •{" "}
+                          bởi {ticket.userId?.name || "Ẩn danh"} •{" "}
                           {formatRelativeTime(ticket.createdAt)}
                         </p>
                       </div>
-                      <Badge variant={getStatusVariant(ticket.status)}>
-                        {ticket.status}
-                      </Badge>
+                      {getStatusBadge(ticket.status)}
                     </div>
                   </CardHeader>
                   <CardContent>
@@ -172,14 +167,14 @@ export default function TicketsPage() {
                     <p className="text-sm text-gray-600">{ticket.content}</p>
                     {ticket.assignedTo && (
                       <p className="text-sm text-neutral-200 mt-2">
-                        Assigned to: {ticket.assignedTo}
+                        Giao cho: {ticket.assignedTo}
                       </p>
                     )}
                   </CardContent>
                   <CardFooter className="flex gap-2">
                     {!ticket.assignedTo && (
                       <Button variant="outline" size="sm">
-                        Assign
+                        Giao việc
                       </Button>
                     )}
                     {ticket.status !== "RESOLVED" &&
@@ -189,11 +184,11 @@ export default function TicketsPage() {
                           size="sm"
                           onClick={() => handleResolve(ticket._id)}
                         >
-                          Mark Resolved
+                          Đã giải quyết
                         </Button>
                       )}
                     <Button variant="ghost" size="sm">
-                      View Details
+                      Xem chi tiết
                     </Button>
                   </CardFooter>
                 </Card>

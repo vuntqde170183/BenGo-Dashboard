@@ -74,10 +74,6 @@ export const formatArea = (value: number): string => {
   return `${formatNumber(value)} m²`;
 };
 
-/**
- * Format currency in abbreviated form (K, M, B, T)
- * Used for dashboard metrics
- */
 export const formatAbbreviatedCurrency = (value: string | number) => {
   const num = typeof value === 'string' ? Number.parseFloat(value) : value;
   if (Number.isNaN(num)) return "0";
@@ -93,22 +89,6 @@ export const formatAbbreviatedCurrency = (value: string | number) => {
   } else {
     return `$${num.toFixed(2)}`;
   }
-};
-
-export const getStatusVariant = (status: string): "default" | "secondary" | "destructive" | "outline" => {
-  const variants: Record<string, any> = {
-    PENDING: 'secondary',
-    ACCEPTED: 'default',
-    PICKED_UP: 'default',
-    DELIVERED: 'outline',
-    CANCELLED: 'destructive',
-    OPEN: 'secondary',
-    IN_PROGRESS: 'default',
-    RESOLVED: 'outline',
-    APPROVED: 'outline',
-    LOCKED: 'destructive'
-  };
-  return variants[status] || 'default';
 };
 
 export const getPriorityVariant = (priority: string): "default" | "destructive" | "secondary" => {

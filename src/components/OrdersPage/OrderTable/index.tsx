@@ -12,6 +12,9 @@ import { IOrder } from "@/interface/admin";
 import { IconEye, IconX } from "@tabler/icons-react";
 import { formatCurrency } from "@/lib/format";
 import { getVehicleIcon } from "@/lib/vehicle-helpers";
+import { getOrderStatusBadge } from "@/lib/badge-helpers";
+import Icon from "@mdi/react";
+import { mdiLocationEnter, mdiLocationExit } from "@mdi/js";
 
 interface OrderTableProps {
   orders: IOrder[];
@@ -21,35 +24,6 @@ interface OrderTableProps {
   onViewDetails: (id: string) => void;
   onCancelOrder?: (id: string) => void;
 }
-
-const getStatusBadge = (status: string) => {
-  const statusMap: Record<string, { label: string; variant: any }> = {
-    PENDING: { label: "Chờ xử lý", variant: "warning" },
-    ACCEPTED: { label: "Đã nhận", variant: "info" },
-    PICKED_UP: { label: "Đã lấy hàng", variant: "default" },
-    DELIVERED: { label: "Đã giao", variant: "success" },
-    CANCELLED: { label: "Đã hủy", variant: "destructive" },
-  };
-  return statusMap[status] || { label: status, variant: "default" };
-};
-
-const getPaymentStatusBadge = (status: string) => {
-  const statusMap: Record<string, { label: string; variant: any }> = {
-    PENDING: { label: "Chờ thanh toán", variant: "warning" },
-    PAID: { label: "Đã thanh toán", variant: "success" },
-    FAILED: { label: "Thất bại", variant: "destructive" },
-  };
-  return statusMap[status] || { label: status, variant: "default" };
-};
-
-const getPaymentMethodLabel = (method: string) => {
-  const methodMap: Record<string, string> = {
-    CASH: "Tiền mặt",
-    WALLET: "Ví điện tử",
-    QR: "QR Code",
-  };
-  return methodMap[method] || method;
-};
 
 const getVehicleTypeLabel = (type: string) => {
   const typeMap: Record<string, string> = {
@@ -106,8 +80,6 @@ export const OrderTable = ({
         </TableHeader>
         <TableBody>
           {orders.map((order, index) => {
-            const orderStatus = getStatusBadge(order.status);
-            const paymentStatus = getPaymentStatusBadge(order.paymentStatus);
             const stt = (currentPage - 1) * pageSize + index + 1;
 
             return (
@@ -140,18 +112,38 @@ export const OrderTable = ({
                 </TableCell>
                 <TableCell>
                   <div
-                    className="max-w-[200px] truncate"
+                    className="max-w-[200px] truncate flex items-center gap-1"
                     title={order.pickup.address}
                   >
-                    {order.pickup.address}
+                    <Icon
+                      path={mdiLocationExit}
+                      size={0.8}
+                      className="text-green-500 flex-shrink-0"
+                    />
+                    <span>
+                      {order.pickup.address.replace(
+                        "Pickup Address",
+                        "Địa chỉ đón",
+                      )}
+                    </span>
                   </div>
                 </TableCell>
                 <TableCell>
                   <div
-                    className="max-w-[200px] truncate"
+                    className="max-w-[200px] truncate flex items-center gap-1"
                     title={order.dropoff.address}
                   >
-                    {order.dropoff.address}
+                    <Icon
+                      path={mdiLocationEnter}
+                      size={0.8}
+                      className="text-red-500 flex-shrink-0"
+                    />
+                    <span>
+                      {order.dropoff.address.replace(
+                        "Dropoff Address",
+                        "Địa chỉ trả",
+                      )}
+                    </span>
                   </div>
                 </TableCell>
                 <TableCell>
@@ -165,19 +157,11 @@ export const OrderTable = ({
                   {formatCurrency(order.totalPrice)}
                 </TableCell>
                 <TableCell>
-                  <span className="text-sm">
-                    {getPaymentMethodLabel(order.paymentMethod)}
-                  </span>
+                  {getOrderStatusBadge(order.paymentMethod)}
                 </TableCell>
+                <TableCell>{getOrderStatusBadge(order.status)}</TableCell>
                 <TableCell>
-                  <Badge variant={orderStatus.variant}>
-                    {orderStatus.label}
-                  </Badge>
-                </TableCell>
-                <TableCell>
-                  <Badge variant={paymentStatus.variant}>
-                    {paymentStatus.label}
-                  </Badge>
+                  {getOrderStatusBadge(order.paymentStatus)}
                 </TableCell>
                 <TableCell>
                   {new Date(order.createdAt).toLocaleDateString("vi-VN", {

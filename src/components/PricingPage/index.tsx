@@ -55,11 +55,13 @@ export default function PricingPage() {
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink href="/admin/dashboard">Dashboard</BreadcrumbLink>
+            <BreadcrumbLink href="/admin/dashboard">
+              Bảng điều khiển
+            </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>Pricing Configuration</BreadcrumbPage>
+            <BreadcrumbPage>Cấu hình giá</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
@@ -83,7 +85,7 @@ export default function PricingPage() {
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
                       <Label htmlFor={`${config.vehicleType}-base`}>
-                        Base Price (VND)
+                        Giá cơ bản (VNĐ)
                       </Label>
                       <Input
                         id={`${config.vehicleType}-base`}
@@ -93,12 +95,12 @@ export default function PricingPage() {
                         className="mt-1"
                       />
                       <p className="text-sm text-neutral-200 mt-1">
-                        Starting fare for this vehicle type
+                        Giá khởi điểm cho loại xe này
                       </p>
                     </div>
                     <div>
                       <Label htmlFor={`${config.vehicleType}-km`}>
-                        Price per KM (VND)
+                        Giá mỗi KM (VNĐ)
                       </Label>
                       <Input
                         id={`${config.vehicleType}-km`}
@@ -108,12 +110,12 @@ export default function PricingPage() {
                         className="mt-1"
                       />
                       <p className="text-sm text-neutral-200 mt-1">
-                        Cost per kilometer traveled
+                        Chi phí trên mỗi kilomet di chuyển
                       </p>
                     </div>
                     <div>
                       <Label htmlFor={`${config.vehicleType}-peak`}>
-                        Peak Hour Multiplier
+                        Hệ số giờ cao điểm
                       </Label>
                       <Input
                         id={`${config.vehicleType}-peak`}
@@ -121,12 +123,12 @@ export default function PricingPage() {
                         step="0.1"
                         defaultValue={config.peakHourMultiplier}
                         {...register(
-                          `${config.vehicleType}.peakHourMultiplier`
+                          `${config.vehicleType}.peakHourMultiplier`,
                         )}
                         className="mt-1"
                       />
                       <p className="text-sm text-neutral-200 mt-1">
-                        Surge pricing multiplier (e.g., 1.5 = 50% increase)
+                        Hệ số giá tăng cường (vd: 1.5 = tăng 50%)
                       </p>
                     </div>
                   </div>
@@ -137,11 +139,11 @@ export default function PricingPage() {
 
           <div className="flex justify-end gap-3">
             <Button type="button" variant="outline" onClick={() => refetch()}>
-              Reset
+              Hủy
             </Button>
             <Button type="submit" disabled={isPending}>
               <Save className="w-4 h-4 mr-2" />
-              {isPending ? "Saving..." : "Save Changes"}
+              {isPending ? "Đang lưu..." : "Lưu thay đổi"}
             </Button>
           </div>
         </form>

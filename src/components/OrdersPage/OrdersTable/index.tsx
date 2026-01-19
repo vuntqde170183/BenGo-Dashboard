@@ -8,22 +8,25 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { MapPin, MoreVertical } from "lucide-react";
-import { formatCurrency, formatDate, getStatusVariant } from "@/lib/format";
+import { motion } from "framer-motion";
+import { formatCurrency, formatDate } from "@/lib/format";
 import { getVehicleIcon } from "@/lib/vehicle-helpers";
+import { getOrderStatusBadge } from "@/lib/badge-helpers";
+import Icon from "@mdi/react";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  mdiLocationEnter,
+  mdiLocationExit,
+  mdiTableEye,
+  mdiCloseCircleOutline,
+} from "@mdi/js";
 
 interface OrdersTableProps {
   orders: any[];
   isSearching: boolean;
   onViewDetails: (id: string) => void;
   onCancel: (id: string) => void;
+  currentPage: number;
+  pageSize: number;
 }
 
 export function OrdersTable({
@@ -31,6 +34,8 @@ export function OrdersTable({
   isSearching,
   onViewDetails,
   onCancel,
+  currentPage,
+  pageSize,
 }: OrdersTableProps) {
   if (orders.length === 0) {
     return (
@@ -45,6 +50,7 @@ export function OrdersTable({
       <Table>
         <TableHeader>
           <TableRow>
+            <TableHead className="w-[60px]">STT</TableHead>
             <TableHead>Mã đơn</TableHead>
             <TableHead>Khách hàng</TableHead>
             <TableHead>Tài xế</TableHead>
@@ -57,8 +63,11 @@ export function OrdersTable({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {orders.map((order) => (
+          {orders.map((order, index) => (
             <TableRow key={order._id}>
+              <TableCell className="font-medium">
+                {(currentPage - 1) * pageSize + index + 1}
+              </TableCell>
               <TableCell>
                 <button
                   onClick={() => onViewDetails(order._id)}
@@ -91,13 +100,39 @@ export function OrdersTable({
               </TableCell>
               <TableCell>
                 <div className="text-sm max-w-xs space-y-1">
-                  <p className="flex items-center gap-1 truncate">
-                    <MapPin className="w-5 h-5 text-green-500 flex-shrink-0" />
-                    <span>{order.pickup?.address?.slice(0, 30)}...</span>
+                  <p
+                    className="flex items-center gap-1 truncate"
+                    title="Điểm đón khách"
+                  >
+                    <Icon
+                      path={mdiLocationExit}
+                      size={0.8}
+                      className="text-green-500 flex-shrink-0"
+                    />
+                    <span className="text-neutral-200 font-medium">Đón:</span>
+                    <span>
+                      {order.pickup?.address
+                        ?.replace("Pickup Address", "Địa chỉ đón")
+                        ?.slice(0, 30)}
+                      ...
+                    </span>
                   </p>
-                  <p className="flex items-center gap-1 truncate">
-                    <MapPin className="w-5 h-5 text-red-500 flex-shrink-0" />
-                    <span>{order.dropoff?.address?.slice(0, 30)}...</span>
+                  <p
+                    className="flex items-center gap-1 truncate"
+                    title="Điểm trả khách"
+                  >
+                    <Icon
+                      path={mdiLocationEnter}
+                      size={0.8}
+                      className="text-red-500 flex-shrink-0"
+                    />
+                    <span className="text-neutral-200 font-medium">Trả:</span>
+                    <span>
+                      {order.dropoff?.address
+                        ?.replace("Dropoff Address", "Địa chỉ trả")
+                        ?.slice(0, 30)}
+                      ...
+                    </span>
                   </p>
                 </div>
               </TableCell>
@@ -107,11 +142,7 @@ export function OrdersTable({
                   <span>{order.vehicleType}</span>
                 </div>
               </TableCell>
-              <TableCell>
-                <Badge variant={getStatusVariant(order.status)}>
-                  {order.status}
-                </Badge>
-              </TableCell>
+              <TableCell>{getOrderStatusBadge(order.status)}</TableCell>
               <TableCell className="font-semibold">
                 {formatCurrency(order.totalPrice || 0)}
               </TableCell>
@@ -119,30 +150,43 @@ export function OrdersTable({
                 {formatDate(order.createdAt)}
               </TableCell>
               <TableCell className="text-right">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm">
-                      <MoreVertical className="w-4 h-4" />
+                <div className="flex justify-end space-x-2">
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <Button
+                      size="icon"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onViewDetails(order._id);
+                      }}
+                      title="Chi tiết"
+                    >
+                      <Icon path={mdiTableEye} size={0.8} />
                     </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => onViewDetails(order._id)}>
-                      Xem chi tiết
-                    </DropdownMenuItem>
-                    {order.status !== "CANCELLED" &&
-                      order.status !== "DELIVERED" && (
-                        <>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem
-                            className="text-red-600"
-                            onClick={() => onCancel(order._id)}
-                          >
-                            Hủy đơn
-                          </DropdownMenuItem>
-                        </>
-                      )}
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                  </motion.div>
+
+                  {order.status !== "CANCELLED" &&
+                    order.status !== "DELIVERED" && (
+                      <motion.div
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <Button
+                          className="bg-red-500 hover:bg-red-600 border-none"
+                          size="icon"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onCancel(order._id);
+                          }}
+                          title="Hủy đơn"
+                        >
+                          <Icon path={mdiCloseCircleOutline} size={0.8} />
+                        </Button>
+                      </motion.div>
+                    )}
+                </div>
               </TableCell>
             </TableRow>
           ))}

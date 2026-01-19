@@ -9,9 +9,23 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
-import { MapPin, Package, DollarSign, Calendar } from "lucide-react";
-import { formatCurrency, formatDate, getStatusVariant } from "@/lib/format";
+import {
+  Package,
+  DollarSign,
+  Calendar,
+  Map,
+  User,
+  Truck,
+  Navigation,
+  ClipboardList,
+  Image as ImageIcon,
+  MessageSquare,
+} from "lucide-react";
+import { formatCurrency, formatDate } from "@/lib/format";
+import { getOrderStatusBadge } from "@/lib/badge-helpers";
 import { Skeleton } from "@/components/ui/skeleton";
+import Icon from "@mdi/react";
+import { mdiLocationEnter, mdiLocationExit, mdiPackageVariant } from "@mdi/js";
 
 interface OrderDetailsDialogProps {
   isOpen: boolean;
@@ -24,22 +38,19 @@ export function OrderDetailsDialog({
   onClose,
   orderId,
 }: OrderDetailsDialogProps) {
-  const { data: order, isLoading } = useOrderDetails(orderId);
+  const { data: orderResponse, isLoading } = useOrderDetails(orderId);
+  const order = orderResponse?.data;
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent size="medium">
         <DialogHeader>
-          <DialogTitle className="flex items-center justify-between">
-            <span>Order #{order?._id?.slice(-8)}</span>
-            {order && (
-              <Badge
-                variant={getStatusVariant(order.status)}
-                className="text-lg px-4 py-2"
-              >
-                {order.status}
-              </Badge>
-            )}
+          <DialogTitle className="flex items-center gap-2">
+            <Icon path={mdiPackageVariant} size={0.8} />
+            <span>Đơn hàng #{order?._id?.slice(-8)}</span>
+            <div className="ml-auto">
+              {order && getOrderStatusBadge(order.status)}
+            </div>
           </DialogTitle>
         </DialogHeader>
 
@@ -51,20 +62,23 @@ export function OrderDetailsDialog({
           </div>
         ) : !order ? (
           <div className="text-center py-8 text-neutral-200">
-            Order not found
+            Không tìm thấy đơn hàng
           </div>
         ) : (
-          <div className="space-y-6">
+          <div className="space-y-6 max-h-[70vh] overflow-y-auto pr-2 custom-scrollbar">
             {/* Map Placeholder */}
             <Card>
-              <CardHeader>
-                <CardTitle>Route Map</CardTitle>
+              <CardHeader className="border-b border-b-darkBorderV1 py-3">
+                <div className="flex items-center gap-2">
+                  <Map className="h-5 w-5 text-blue-500" />
+                  <span className="font-semibold dark:text-neutral-200">
+                    Sơ đồ tuyến đường
+                  </span>
+                </div>
               </CardHeader>
-              <CardContent>
+              <CardContent className="pt-4">
                 <div className="h-64 bg-gray-100 rounded flex items-center justify-center">
-                  <p className="text-neutral-200">
-                    Map Integration Coming Soon
-                  </p>
+                  <p className="text-neutral-200">Bản đồ đang được tích hợp</p>
                 </div>
               </CardContent>
             </Card>
@@ -72,10 +86,15 @@ export function OrderDetailsDialog({
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               {/* Customer Info */}
               <Card>
-                <CardHeader>
-                  <CardTitle>Customer</CardTitle>
+                <CardHeader className="border-b border-b-darkBorderV1 py-3">
+                  <div className="flex items-center gap-2">
+                    <User className="h-5 w-5 text-green-500" />
+                    <span className="font-semibold dark:text-neutral-200">
+                      Khách hàng
+                    </span>
+                  </div>
                 </CardHeader>
-                <CardContent className="space-y-3">
+                <CardContent className="space-y-3 pt-4">
                   <div className="flex items-center gap-3">
                     <Avatar className="w-12 h-12">
                       <AvatarImage src={order.customerId?.avatar} />
@@ -88,6 +107,11 @@ export function OrderDetailsDialog({
                       <p className="text-sm text-neutral-200">
                         {order.customerId?.phone}
                       </p>
+                      {order.customerId?.email && (
+                        <p className="text-xs text-neutral-400">
+                          {order.customerId.email}
+                        </p>
+                      )}
                     </div>
                   </div>
                 </CardContent>
@@ -95,10 +119,15 @@ export function OrderDetailsDialog({
 
               {/* Driver Info */}
               <Card>
-                <CardHeader>
-                  <CardTitle>Driver</CardTitle>
+                <CardHeader className="border-b border-b-darkBorderV1 py-3">
+                  <div className="flex items-center gap-2">
+                    <Truck className="h-5 w-5 text-orange-500" />
+                    <span className="font-semibold dark:text-neutral-200">
+                      Tài xế
+                    </span>
+                  </div>
                 </CardHeader>
-                <CardContent className="space-y-3">
+                <CardContent className="space-y-3 pt-4">
                   {order.driverId ? (
                     <div className="flex items-center gap-3">
                       <Avatar className="w-12 h-12">
@@ -115,7 +144,7 @@ export function OrderDetailsDialog({
                       </div>
                     </div>
                   ) : (
-                    <p className="text-neutral-200">No driver assigned yet</p>
+                    <p className="text-neutral-200">Chưa có tài xế nhận đơn</p>
                   )}
                 </CardContent>
               </Card>
@@ -123,16 +152,28 @@ export function OrderDetailsDialog({
 
             {/* Route Details */}
             <Card>
-              <CardHeader>
-                <CardTitle>Route Details</CardTitle>
+              <CardHeader className="border-b border-b-darkBorderV1 py-3">
+                <div className="flex items-center gap-2">
+                  <Navigation className="h-5 w-5 text-purple-500" />
+                  <span className="font-semibold dark:text-neutral-200">
+                    Chi tiết tuyến đường
+                  </span>
+                </div>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-4 pt-4">
                 <div className="flex items-start gap-3">
-                  <MapPin className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
+                  <Icon
+                    path={mdiLocationExit}
+                    size={0.8}
+                    className="text-green-500 mt-1 flex-shrink-0"
+                  />
                   <div>
-                    <p className="font-medium">Pickup Location</p>
+                    <p className="font-medium">Điểm đón khách</p>
                     <p className="text-sm text-gray-600">
-                      {order.pickup?.address}
+                      {order.pickup?.address?.replace(
+                        "Pickup Address",
+                        "Địa chỉ đón",
+                      )}
                     </p>
                     <p className="text-sm text-neutral-200 mt-1">
                       {order.pickup?.lat}, {order.pickup?.lng}
@@ -141,11 +182,18 @@ export function OrderDetailsDialog({
                 </div>
                 <Separator />
                 <div className="flex items-start gap-3">
-                  <MapPin className="w-5 h-5 text-red-600 mt-1 flex-shrink-0" />
+                  <Icon
+                    path={mdiLocationEnter}
+                    size={0.8}
+                    className="text-red-500 mt-1 flex-shrink-0"
+                  />
                   <div>
-                    <p className="font-medium">Dropoff Location</p>
+                    <p className="font-medium">Điểm trả khách</p>
                     <p className="text-sm text-gray-600">
-                      {order.dropoff?.address}
+                      {order.dropoff?.address?.replace(
+                        "Dropoff Address",
+                        "Địa chỉ trả",
+                      )}
                     </p>
                     <p className="text-sm text-neutral-200 mt-1">
                       {order.dropoff?.lat}, {order.dropoff?.lng}
@@ -157,39 +205,40 @@ export function OrderDetailsDialog({
 
             {/* Order Summary */}
             <Card>
-              <CardHeader>
-                <CardTitle>Order Summary</CardTitle>
+              <CardHeader className="border-b border-b-darkBorderV1 py-3">
+                <div className="flex items-center gap-2">
+                  <ClipboardList className="h-5 w-5 text-mainActiveV1" />
+                  <span className="font-semibold dark:text-neutral-200">
+                    Tóm tắt đơn hàng
+                  </span>
+                </div>
               </CardHeader>
-              <CardContent className="space-y-3">
+              <CardContent className="space-y-3 pt-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2 text-gray-600">
                     <Package className="w-4 h-4" />
-                    <span>Vehicle Type:</span>
+                    <span>Loại xe:</span>
                   </div>
                   <Badge variant="outline">{order.vehicleType}</Badge>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-600">Distance:</span>
-                  <span className="font-medium">{order.distanceKm} km</span>
+                  <span className="text-gray-600">Khoảng cách:</span>
+                  <span className="font-medium">
+                    {order.distanceKm?.toFixed(2)} km
+                  </span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-600">Payment Method:</span>
-                  <span className="font-medium">{order.paymentMethod}</span>
+                  <span className="text-gray-600">Phương thức thanh toán:</span>
+                  {getOrderStatusBadge(order.paymentMethod)}
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-600">Payment Status:</span>
-                  <Badge
-                    variant={
-                      order.paymentStatus === "PAID" ? "default" : "secondary"
-                    }
-                  >
-                    {order.paymentStatus}
-                  </Badge>
+                  <span className="text-gray-600">Trạng thái thanh toán:</span>
+                  {getOrderStatusBadge(order.paymentStatus)}
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2 text-gray-600">
                     <Calendar className="w-4 h-4" />
-                    <span>Created At:</span>
+                    <span>Ngày tạo:</span>
                   </div>
                   <span className="font-medium">
                     {formatDate(order.createdAt)}
@@ -199,7 +248,7 @@ export function OrderDetailsDialog({
                 <div className="flex items-center justify-between text-lg font-bold">
                   <div className="flex items-center gap-2">
                     <DollarSign className="w-5 h-5" />
-                    <span>Total:</span>
+                    <span>Tổng cộng:</span>
                   </div>
                   <span>{formatCurrency(order.totalPrice)}</span>
                 </div>
@@ -209,10 +258,15 @@ export function OrderDetailsDialog({
             {/* Goods Images */}
             {order.goodsImages && order.goodsImages.length > 0 && (
               <Card>
-                <CardHeader>
-                  <CardTitle>Goods Images</CardTitle>
+                <CardHeader className="border-b border-b-darkBorderV1 py-3">
+                  <div className="flex items-center gap-2">
+                    <ImageIcon className="h-5 w-5 text-indigo-500" />
+                    <span className="font-semibold dark:text-neutral-200">
+                      Hình ảnh hàng hóa
+                    </span>
+                  </div>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="pt-4">
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     {order.goodsImages.map((img: string, idx: number) => (
                       <img
@@ -230,10 +284,15 @@ export function OrderDetailsDialog({
             {/* Notes */}
             {order.note && (
               <Card>
-                <CardHeader>
-                  <CardTitle>Notes</CardTitle>
+                <CardHeader className="border-b border-b-darkBorderV1 py-3">
+                  <div className="flex items-center gap-2">
+                    <MessageSquare className="h-5 w-5 text-amber-500" />
+                    <span className="font-semibold dark:text-neutral-200">
+                      Ghi chú
+                    </span>
+                  </div>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="pt-4">
                   <p className="text-gray-600">{order.note}</p>
                 </CardContent>
               </Card>

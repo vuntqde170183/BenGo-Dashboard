@@ -5,11 +5,11 @@ import { Car as CarIcon } from "lucide-react";
 export const getVehicleIcon = (type: string) => {
   switch (type) {
     case "BIKE":
-      return <Icon path={mdiMotorbike} size={0.9} />;
+      return <Icon path={mdiMotorbike} size={0.8} />;
     case "TRUCK":
-      return <Icon path={mdiTruck} size={0.9} />;
+      return <Icon path={mdiTruck} size={0.8} />;
     case "VAN":
-      return <Icon path={mdiVanPassenger} size={0.9} />;
+      return <Icon path={mdiVanPassenger} size={0.8} />;
     default:
       return <CarIcon className="w-4 h-4" />;
   }

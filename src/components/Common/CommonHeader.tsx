@@ -44,7 +44,7 @@ export default function CommonHeader() {
             <div className="relative w-[440px] flex justify-between items-center rounded-md bg-darkBorderV1">
               <Input
                 ref={inputRef}
-                placeholder="Search..."
+                placeholder="Tìm kiếm..."
                 className="w-[90%] pr-10 border-none focus:!outline-none focus:!ring-0 focus:!border-none !bg-transparent text-neutral-200 placeholder:text-neutral-200"
                 value={searchTerm}
                 onChange={handleSearchChange}

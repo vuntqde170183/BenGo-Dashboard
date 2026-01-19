@@ -42,32 +42,32 @@ const recentActivities = [
   {
     id: 1,
     user: "John Doe",
-    action: "completed a ride",
-    time: "2 mins ago",
+    action: "đã hoàn thành chuyến đi",
+    time: "2 phút trước",
     icon: mdiCarSide,
     color: "text-blue-400",
   },
   {
     id: 2,
     user: "Alice Smith",
-    action: "registered as a driver",
-    time: "15 mins ago",
+    action: "đã đăng ký làm tài xế",
+    time: "15 phút trước",
     icon: mdiAccountGroup,
     color: "text-green-400",
   },
   {
     id: 3,
-    user: "System",
-    action: "payout processed",
-    time: "1 hour ago",
+    user: "Hệ thống",
+    action: "thanh toán đã được xử lý",
+    time: "1 giờ trước",
     icon: mdiCurrencyUsd,
     color: "text-purple-400",
   },
   {
     id: 4,
-    user: "Tech Support",
-    action: "resolved ticket #1204",
-    time: "2 hours ago",
+    user: "Hỗ trợ kỹ thuật",
+    action: "đã xử lý yêu cầu #1204",
+    time: "2 giờ trước",
     icon: mdiTicket,
     color: "text-orange-400",
   },
@@ -109,7 +109,7 @@ function MetricCard({
                 )}
                 {trend && (
                   <div className="flex items-center gap-1 mt-2 text-green-600 text-sm text-nowrap">
-                    <Icon path={mdiTrendingUp} size={0.7} />
+                    <Icon path={mdiTrendingUp} size={0.8} />
                     <span>{trend}</span>
                   </div>
                 )}
@@ -226,9 +226,11 @@ export default function StatisticsPage() {
     <div className="space-y-6 bg-darkCardV1 p-4 rounded-2xl border border-darkBorderV1">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-neutral-200">Dashboard</h1>
+          <h1 className="text-3xl font-bold text-neutral-200">
+            Bảng điều khiển
+          </h1>
           <p className="text-neutral-400 mt-1">
-            Welcome back, here's what's happening today.
+            Chào mừng quay trở lại, đây là những gì đang diễn ra hôm nay.
           </p>
         </div>
         <div className="flex gap-2">
@@ -237,7 +239,7 @@ export default function StatisticsPage() {
             className="flex items-center gap-2 py-2 px-4 bg-darkCardV1 border-darkBorderV1"
           >
             <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-            Live Updates
+            Cập nhật trực tiếp
           </Badge>
         </div>
       </div>
@@ -246,30 +248,30 @@ export default function StatisticsPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <MetricCard
           icon={<Icon path={mdiAccountGroup} size={0.8} />}
-          title="Total Users"
+          title="Tổng người dùng"
           value={overview?.users || 0}
-          trend="+12% from last month"
+          trend="+12% so với tháng trước"
           href="/admin/users"
         />
         <MetricCard
           icon={<Icon path={mdiPackageVariant} size={0.8} />}
-          title="Active Orders"
+          title="Đơn hàng đang hoạt động"
           value={overview?.activeOrders || 0}
-          subtitle={`${overview?.orders || 0} total orders`}
+          subtitle={`Tổng số ${overview?.orders || 0} đơn hàng`}
           href="/admin/orders"
         />
         <MetricCard
           icon={<Icon path={mdiCarSide} size={0.8} />}
-          title="Drivers"
+          title="Tài xế"
           value={overview?.drivers || 0}
-          subtitle="Total registered"
+          subtitle="Tổng số đã đăng ký"
           href="/admin/drivers"
         />
         <MetricCard
           icon={<Icon path={mdiCurrencyUsd} size={0.8} />}
-          title="Revenue"
+          title="Doanh thu"
           value={formatCurrency(overview?.revenue || 0)}
-          subtitle="Total earnings"
+          subtitle="Tổng thu nhập"
           href="/admin/pricing"
         />
       </div>
@@ -282,9 +284,11 @@ export default function StatisticsPage() {
             <CardTitle className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <Icon path={mdiChartLine} size={0.8} />
-                <span className="text-lg text-neutral-200">Revenue Growth</span>
+                <span className="text-lg text-neutral-200">
+                  Tăng trưởng doanh thu
+                </span>
               </div>
-              <Badge variant="ghost">Weekly</Badge>
+              <Badge variant="ghost">Hàng tuần</Badge>
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -338,15 +342,15 @@ export default function StatisticsPage() {
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <Icon path={mdiChartLine} size={0.8} />
-              <span className="text-lg">Quick Stats</span>
+              <span className="text-lg">Thống kê nhanh</span>
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               <div className="flex justify-between items-center">
                 <span className="text-neutral-400 flex items-center gap-2">
-                  <Icon path={mdiTicket} size={0.7} />
-                  Pending Tickets
+                  <Icon path={mdiTicket} size={0.8} />
+                  Yêu cầu đang chờ
                 </span>
                 <span className="font-semibold text-base">
                   {overview?.pendingTickets || 0}
@@ -354,8 +358,8 @@ export default function StatisticsPage() {
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-neutral-400 flex items-center gap-2">
-                  <Icon path={mdiPackageVariant} size={0.7} />
-                  Active Orders
+                  <Icon path={mdiPackageVariant} size={0.8} />
+                  Đơn hàng đang hoạt động
                 </span>
                 <span className="font-semibold text-base">
                   {overview?.activeOrders || 0}
@@ -363,8 +367,8 @@ export default function StatisticsPage() {
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-neutral-400 flex items-center gap-2">
-                  <Icon path={mdiPackageVariant} size={0.7} />
-                  Total Orders
+                  <Icon path={mdiPackageVariant} size={0.8} />
+                  Tổng đơn hàng
                 </span>
                 <span className="font-semibold text-base">
                   {overview?.orders || 0}
@@ -379,31 +383,31 @@ export default function StatisticsPage() {
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <Icon path={mdiShieldCheck} size={0.8} />
-              <span className="text-lg">System Status</span>
+              <span className="text-lg">Trạng thái hệ thống</span>
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <span className="text-neutral-400 flex items-center gap-2">
-                  <Icon path={mdiShieldCheck} size={0.7} />
-                  System Health
+                  <Icon path={mdiShieldCheck} size={0.8} />
+                  Sức khỏe hệ thống
                 </span>
-                <Badge variant="ghost">Operational</Badge>
+                <Badge variant="ghost">Hoạt động tốt</Badge>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-neutral-400 flex items-center gap-2">
-                  <Icon path={mdiChartLine} size={0.7} />
-                  API Status
+                  <Icon path={mdiChartLine} size={0.8} />
+                  Trạng thái API
                 </span>
-                <Badge variant="ghost">Online</Badge>
+                <Badge variant="ghost">Trực tuyến</Badge>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-neutral-400 flex items-center gap-2">
-                  <Icon path={mdiTrendingUp} size={0.7} />
-                  Last Updated
+                  <Icon path={mdiTrendingUp} size={0.8} />
+                  Cập nhật lần cuối
                 </span>
-                <span className="text-sm text-neutral-200">Just now</span>
+                <span className="text-sm text-neutral-200">Vừa xong</span>
               </div>
             </div>
           </CardContent>
@@ -416,13 +420,15 @@ export default function StatisticsPage() {
           <CardTitle className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <Icon path={mdiHistory} size={0.8} />
-              <span className="text-lg text-neutral-200">Recent Activity</span>
+              <span className="text-lg text-neutral-200">
+                Hoạt động gần đây
+              </span>
             </div>
             <Link
               to="/admin/logs"
               className="text-sm text-primary hover:underline flex items-center gap-1"
             >
-              View all
+              Xem tất cả
               <Icon path={mdiTrendingUp} size={0.6} className="rotate-45" />
             </Link>
           </CardTitle>
