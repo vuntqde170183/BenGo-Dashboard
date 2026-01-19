@@ -24,7 +24,7 @@ import {
   formatRelativeTime,
   getStatusVariant,
   getPriorityVariant,
-} from "@/lib/formatters";
+} from "@/lib/format";
 import { Input } from "@/components/ui/input";
 import { IconSearch, IconX } from "@tabler/icons-react";
 
@@ -58,7 +58,7 @@ export default function TicketsPage() {
           onSuccess: () => {
             refetch();
           },
-        }
+        },
       );
     }
   };
@@ -151,7 +151,7 @@ export default function TicketsPage() {
                           </CardTitle>
                           <Badge
                             variant={getPriorityVariant(
-                              ticket.priority || "LOW"
+                              ticket.priority || "LOW",
                             )}
                           >
                             {ticket.priority || "LOW"}

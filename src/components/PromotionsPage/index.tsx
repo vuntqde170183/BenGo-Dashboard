@@ -21,7 +21,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
 import { motion } from "framer-motion";
 import { IconPlus, IconTrash, IconEdit } from "@tabler/icons-react";
-import { formatCurrency, formatDate } from "@/lib/formatters";
+import { formatCurrency, formatDate } from "@/lib/format";
 import { DeleteDialog } from "@/components/ui/delete-dialog";
 import { PromotionCreateDialog } from "@/components/PromotionsPage/PromotionCreateDialog";
 import { PromotionDetailsDialog } from "@/components/PromotionsPage/PromotionDetailsDialog";
@@ -37,8 +37,8 @@ export default function PromotionsPage() {
     filterStatus === "ACTIVE"
       ? true
       : filterStatus === "EXPIRED"
-      ? false
-      : undefined;
+        ? false
+        : undefined;
 
   const {
     data: promotionsData,

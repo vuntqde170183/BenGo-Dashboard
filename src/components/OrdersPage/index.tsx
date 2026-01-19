@@ -135,7 +135,7 @@ export default function OrdersPage() {
             </Tabs>
           </div>
 
-          <Card className="p-0 overflow-hidden border border-lightBorderV1">
+          <Card className="p-0 overflow-hidden border border-lightBorderV1 dark:border-darkBackgroundV1">
             {isLoading ? (
               <div className="p-4">
                 <div className="flex flex-col gap-4">

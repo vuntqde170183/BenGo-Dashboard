@@ -13,7 +13,7 @@ import {
   mdiHistory,
   mdiAccountCircleOutline,
 } from "@mdi/js";
-import { formatCurrency } from "@/lib/formatters";
+import { formatCurrency } from "@/lib/format";
 import { Link } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
 import { motion } from "framer-motion";

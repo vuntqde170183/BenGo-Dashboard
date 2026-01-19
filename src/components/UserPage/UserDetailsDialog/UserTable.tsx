@@ -1,9 +1,8 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { Activity, Star, Truck, Landmark, ShieldCheck } from "lucide-react";
-import { formatDate } from "@/utils/dateFormat";
+import { formatDate, formatCurrency } from "@/lib/format";
 import { getRoleBadge } from "@/lib/badge-helpers";
-import { formatCurrency } from "@/utils/currencyFormat";
 
 interface UserTableProps {
   user: any; // Using any to access extended fields not in IUser yet
@@ -67,7 +66,7 @@ export const UserTable = ({ user }: UserTableProps) => {
                 "Số dư ví",
                 <span className="font-medium text-green-600">
                   {formatCurrency(user.walletBalance || 0)}
-                </span>
+                </span>,
               )}
               {user.role === "DRIVER" &&
                 renderTableRow(
@@ -77,11 +76,11 @@ export const UserTable = ({ user }: UserTableProps) => {
                       {profile?.rating || user.rating || 5}
                     </span>
                     <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
-                  </div>
+                  </div>,
                 )}
               {renderTableRow(
                 "Ngày tham gia",
-                formatDate(user.createdAt || "")
+                formatDate(user.createdAt || ""),
               )}
             </TableBody>
           </Table>
@@ -105,23 +104,23 @@ export const UserTable = ({ user }: UserTableProps) => {
                 <TableBody>
                   {renderTableRow(
                     "Loại xe",
-                    profile?.vehicleType || user.vehicleType
+                    profile?.vehicleType || user.vehicleType,
                   )}
                   {renderTableRow(
                     "Biển số xe",
-                    profile?.plateNumber || user.plateNumber
+                    profile?.plateNumber || user.plateNumber,
                   )}
                   {renderTableRow(
                     "Số CCCD",
                     profile?.identityNumber ||
                       user.identityNumber ||
-                      "Chưa cập nhật"
+                      "Chưa cập nhật",
                   )}
                   {renderTableRow(
                     "Số bằng lái",
                     profile?.drivingLicenseNumber ||
                       user.drivingLicenseNumber ||
-                      "Chưa cập nhật"
+                      "Chưa cập nhật",
                   )}
                 </TableBody>
               </Table>
@@ -248,19 +247,19 @@ export const UserTable = ({ user }: UserTableProps) => {
                     "Ngân hàng",
                     profile?.bankInfo?.bankName ||
                       user.bankInfo?.bankName ||
-                      "Chưa cập nhật"
+                      "Chưa cập nhật",
                   )}
                   {renderTableRow(
                     "Số tài khoản",
                     profile?.bankInfo?.accountNumber ||
                       user.bankInfo?.accountNumber ||
-                      "Chưa cập nhật"
+                      "Chưa cập nhật",
                   )}
                   {renderTableRow(
                     "Chủ tài khoản",
                     profile?.bankInfo?.accountHolder ||
                       user.bankInfo?.accountHolder ||
-                      "Chưa cập nhật"
+                      "Chưa cập nhật",
                   )}
                 </TableBody>
               </Table>
