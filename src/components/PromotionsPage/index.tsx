@@ -14,7 +14,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Pagination } from "@/components/ui/pagination";
 import { motion } from "framer-motion";
-import { IconPlus, IconSearch, IconX } from "@tabler/icons-react";
+import { IconGift, IconPlus, IconSearch, IconX } from "@tabler/icons-react";
 import { Input } from "@/components/ui/input";
 import { DeleteDialog } from "@/components/ui/delete-dialog";
 import { PromotionCreateDialog } from "@/components/PromotionsPage/PromotionCreateDialog";
@@ -145,8 +145,8 @@ export default function PromotionsPage() {
                 onClick={() => setIsCreateDialogOpen(true)}
                 className="whitespace-nowrap"
               >
-                <IconPlus className="h-4 w-4 mr-2" />
-                Thêm mới
+                Thêm khuyến mãi
+                <IconGift className="h-4 w-4" />
               </Button>
             </div>
           </div>

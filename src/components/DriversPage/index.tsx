@@ -28,7 +28,7 @@ import { DriverTable } from "@/components/DriversPage/DriverTable";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Pagination } from "@/components/ui/pagination";
 import { motion } from "framer-motion";
-import { IconSearch, IconPlus } from "@tabler/icons-react";
+import { IconSearch, IconUserPlus } from "@tabler/icons-react";
 import { DriverCreateDialog } from "./DriverCreateDialog";
 import { DeleteDialog } from "@/components/ui/delete-dialog";
 
@@ -202,8 +202,8 @@ export default function DriversPage() {
                 </SelectContent>
               </Select>
               <Button onClick={() => setCreateDialogOpen(true)}>
-                <IconPlus className="h-4 w-4" />
                 Thêm tài xế
+                <IconUserPlus className="h-4 w-4" />
               </Button>
             </div>
           </div>

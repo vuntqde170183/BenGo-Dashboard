@@ -8,7 +8,12 @@ import {
 } from "@/components/ui/dialog";
 import { mdiDeleteForever } from "@mdi/js";
 import Icon from "@mdi/react";
-import { IconLoader2, IconTrash, IconAlertTriangle } from "@tabler/icons-react";
+import {
+  IconLoader2,
+  IconTrash,
+  IconAlertTriangle,
+  IconX,
+} from "@tabler/icons-react";
 import { toast } from "react-toastify";
 
 interface DeleteDialogProps {
@@ -74,7 +79,8 @@ export const DeleteDialog = ({
             disabled={isDeleting}
             className="flex-1 !bg-transparent"
           >
-            Cancel
+            <IconX className="h-4 w-4" />
+            Hủy
           </Button>
           <Button
             variant="destructive"
@@ -85,7 +91,7 @@ export const DeleteDialog = ({
             {isDeleting ? (
               <>
                 <IconLoader2 className="h-4 w-4 animate-spin" />
-                Deleting...
+                Đang xóa...
               </>
             ) : (
               <>

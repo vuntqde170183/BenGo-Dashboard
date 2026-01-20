@@ -164,7 +164,7 @@ export default function TicketsPage() {
                   </CardHeader>
                   <CardContent>
                     <h3 className="font-semibold mb-2">{ticket.subject}</h3>
-                    <p className="text-sm text-gray-600">{ticket.content}</p>
+                    <p className="text-sm text-neutral-400">{ticket.content}</p>
                     {ticket.assignedTo && (
                       <p className="text-sm text-neutral-200 mt-2">
                         Giao cho: {ticket.assignedTo}
