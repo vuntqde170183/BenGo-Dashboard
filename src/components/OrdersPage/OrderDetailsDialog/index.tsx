@@ -45,8 +45,7 @@ import {
   mdiCreditCardCheck,
   mdiCreditCardOff,
 } from "@mdi/js";
-import { useEffect, useState, useMemo } from "react";
-import axios from "axios";
+import { useEffect, useState } from "react";
 import { getVehicleIcon } from "@/lib/vehicle-helpers";
 import { cn } from "@/lib/utils";
 
@@ -106,9 +105,6 @@ export function OrderDetailsDialog({
   const { mutate: updateStatus, isPending: isUpdating } =
     useUpdateOrderStatus();
 
-  const [routeGeometry, setRouteGeometry] = useState<string>("");
-  const [isRouteLoading, setIsRouteLoading] = useState(false);
-
   const [confirmConfig, setConfirmConfig] = useState<{
     isOpen: boolean;
     title: string;
@@ -152,51 +148,6 @@ export function OrderDetailsDialog({
       },
     });
   };
-
-  useEffect(() => {
-    const fetchRoute = async () => {
-      if (!order?.pickup || !order?.dropoff || !isOpen) return;
-
-      setIsRouteLoading(true);
-      try {
-        const apiKey = import.meta.env.VITE_PUBLIC_GEOAPIFY_API_KEY;
-        const pickup = `${order.pickup.lat},${order.pickup.lng}`;
-        const dropoff = `${order.dropoff.lat},${order.dropoff.lng}`;
-
-        const response = await axios.get(
-          `https://api.geoapify.com/v1/routing?waypoints=${pickup}|${dropoff}&mode=drive&apiKey=${apiKey}`,
-        );
-
-        if (response.data.features?.[0]?.geometry?.coordinates?.[0]) {
-          const coords = response.data.features[0].geometry.coordinates[0];
-          const pathString = coords
-            .map((pair: number[]) => `${pair[0]},${pair[1]}`)
-            .join(",");
-
-          setRouteGeometry(pathString);
-        }
-      } catch (error) {
-        console.error("Lỗi khi lấy lộ trình:", error);
-      } finally {
-        setIsRouteLoading(false);
-      }
-    };
-
-    fetchRoute();
-  }, [order?.pickup, order?.dropoff, isOpen]);
-
-  const mapUrl = useMemo(() => {
-    if (!order?.pickup || !order?.dropoff) return "";
-    const apiKey = import.meta.env.VITE_PUBLIC_GEOAPIFY_API_KEY;
-    const pickup = `${order.pickup.lng},${order.pickup.lat}`;
-    const dropoff = `${order.dropoff.lng},${order.dropoff.lat}`;
-
-    const polyline = routeGeometry
-      ? `&geometry=polyline:${routeGeometry};linecolor:%233b82f6;linewidth:4;lineopacity:0.8`
-      : "";
-
-    return `https://maps.geoapify.com/v1/staticmap?style=osm-bright-smooth&width=800&height=400&marker=lonlat:${pickup};color:%234ade80;size:medium;text:A|lonlat:${dropoff};color:%23f87171;size:medium;text:B${polyline}&apiKey=${apiKey}`;
-  }, [order?.pickup, order?.dropoff, routeGeometry]);
 
   const openInGoogleMaps = () => {
     if (!order?.pickup || !order?.dropoff) return;
@@ -366,31 +317,38 @@ export function OrderDetailsDialog({
               </div>
             </div>
 
-            {/* Map & Route Section */}
+            {/* Interactive Google Map Section */}
             <Card className="overflow-hidden border-darkBorderV1 bg-darkBackgroundV1/30">
               <CardContent className="p-0 relative">
-                <div className="h-80 w-full bg-darkBackgroundV1/50 relative overflow-hidden group">
-                  {(isLoading || isRouteLoading) && (
+                <div className="h-80 w-full bg-darkBackgroundV1/50 relative">
+                  {isLoading && (
                     <div className="absolute inset-0 z-10 flex items-center justify-center bg-darkCardV1/40 backdrop-blur-sm">
                       <div className="flex flex-col items-center gap-2">
                         <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
                         <span className="text-xs text-primary font-medium">
-                          Đang tính toán lộ trình...
+                          Đang tải bản đồ...
                         </span>
                       </div>
                     </div>
                   )}
-                  <img
-                    src={mapUrl}
-                    alt="Route Map"
-                    className={`w-full h-full object-cover transition-all duration-700 ${isRouteLoading ? "opacity-50 blur-sm" : "opacity-90"} group-hover:opacity-100 group-hover:scale-[1.02]`}
-                  />
+                  {order?.pickup && order?.dropoff && (
+                    <iframe
+                      width="100%"
+                      height="100%"
+                      style={{ border: 0 }}
+                      loading="lazy"
+                      allowFullScreen
+                      referrerPolicy="no-referrer-when-downgrade"
+                      src={`https://www.google.com/maps/embed/v1/directions?key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}&origin=${order.pickup.lat},${order.pickup.lng}&destination=${order.dropoff.lat},${order.dropoff.lng}&mode=driving&maptype=roadmap`}
+                      className="opacity-95 hover:opacity-100 transition-opacity"
+                    ></iframe>
+                  )}
                   <button
                     onClick={openInGoogleMaps}
-                    className="absolute bottom-4 right-4 bg-white text-black hover:bg-neutral-200 px-4 py-2 rounded-full text-xs font-bold shadow-2xl transition-all flex items-center gap-2 group/btn active:scale-95"
+                    className="absolute bottom-4 right-4 bg-white text-black hover:bg-neutral-200 px-4 py-2 rounded-full text-xs font-bold shadow-2xl transition-all flex items-center gap-2 group/btn active:scale-95 z-20"
                   >
                     <IconRoute size={14} />
-                    <span>Xem lộ trình thực tế</span>
+                    <span>Xem trên Google Maps</span>
                   </button>
                 </div>
 
