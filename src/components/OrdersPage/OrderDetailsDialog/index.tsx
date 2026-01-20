@@ -5,27 +5,29 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import {
-  Package,
-  DollarSign,
-  Calendar,
-  Map,
-  User,
-  Truck,
-  Navigation,
-  ClipboardList,
-  Image as ImageIcon,
-  MessageSquare,
-} from "lucide-react";
+  IconPackage,
+  IconCurrencyDollar,
+  IconUserSquareRounded,
+  IconTruck,
+  IconRoute,
+  IconClipboardList,
+  IconPhoto,
+  IconMessage,
+  IconPhone,
+  IconMail,
+} from "@tabler/icons-react";
 import { formatCurrency, formatDate } from "@/lib/format";
 import { getOrderStatusBadge } from "@/lib/badge-helpers";
 import { Skeleton } from "@/components/ui/skeleton";
 import Icon from "@mdi/react";
 import { mdiLocationEnter, mdiLocationExit, mdiPackageVariant } from "@mdi/js";
+import { useEffect, useState, useMemo } from "react";
+import axios from "axios";
 
 interface OrderDetailsDialogProps {
   isOpen: boolean;
@@ -41,259 +43,395 @@ export function OrderDetailsDialog({
   const { data: orderResponse, isLoading } = useOrderDetails(orderId);
   const order = orderResponse?.data;
 
+  const [routeGeometry, setRouteGeometry] = useState<string>("");
+  const [isRouteLoading, setIsRouteLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchRoute = async () => {
+      if (!order?.pickup || !order?.dropoff || !isOpen) return;
+
+      setIsRouteLoading(true);
+      try {
+        const apiKey = import.meta.env.VITE_PUBLIC_GEOAPIFY_API_KEY;
+        const pickup = `${order.pickup.lat},${order.pickup.lng}`;
+        const dropoff = `${order.dropoff.lat},${order.dropoff.lng}`;
+
+        const response = await axios.get(
+          `https://api.geoapify.com/v1/routing?waypoints=${pickup}|${dropoff}&mode=drive&apiKey=${apiKey}`,
+        );
+
+        if (response.data.features?.[0]?.geometry?.coordinates?.[0]) {
+          // Geoapify trả về [lng, lat], ta cần chuyển sang string cho Static Map: lon,lat|lon,lat...
+          const coords = response.data.features[0].geometry.coordinates[0];
+          const pathString = coords
+            .map((pair: number[]) => `${pair[0]},${pair[1]}`)
+            .join(",");
+
+          setRouteGeometry(pathString);
+        }
+      } catch (error) {
+        console.error("Lỗi khi lấy lộ trình:", error);
+      } finally {
+        setIsRouteLoading(false);
+      }
+    };
+
+    fetchRoute();
+  }, [order?.pickup, order?.dropoff, isOpen]);
+
+  const mapUrl = useMemo(() => {
+    if (!order?.pickup || !order?.dropoff) return "";
+    const apiKey = import.meta.env.VITE_PUBLIC_GEOAPIFY_API_KEY;
+    const pickup = `${order.pickup.lng},${order.pickup.lat}`;
+    const dropoff = `${order.dropoff.lng},${order.dropoff.lat}`;
+
+    // Nếu có lộ trình thực (Route), dùng nó. Nếu không (hoặc đang load), dùng đường thẳng tạm thời
+    const polyline = routeGeometry
+      ? `polyline:${routeGeometry};linecolor:%233b82f6;linewidth:4;lineopacity:0.8`
+      : `polyline:${pickup},${dropoff};linecolor:%233b82f6;linewidth:2;lineopacity:0.5`;
+
+    return `https://maps.geoapify.com/v1/staticmap?style=osm-bright-smooth&width=800&height=400&marker=lonlat:${pickup};color:%234ade80;size:medium;text:A|lonlat:${dropoff};color:%23f87171;size:medium;text:B&geometry=${polyline}&apiKey=${apiKey}`;
+  }, [order?.pickup, order?.dropoff, routeGeometry]);
+
+  const openInGoogleMaps = () => {
+    if (!order?.pickup || !order?.dropoff) return;
+    const origin = `${order.pickup.lat},${order.pickup.lng}`;
+    const destination = `${order.dropoff.lat},${order.dropoff.lng}`;
+    window.open(
+      `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}`,
+      "_blank",
+    );
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent size="medium">
+      <DialogContent
+        size="medium"
+        className="bg-darkCardV1 border-darkBorderV1 max-h-[95vh]"
+      >
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Icon path={mdiPackageVariant} size={0.8} />
-            <span>Đơn hàng #{order?._id?.slice(-8)}</span>
-            <div className="ml-auto">
-              {order && getOrderStatusBadge(order.status)}
+          <DialogTitle className="flex items-center justify-between w-full text-primary">
+            <div className="flex items-center gap-2">
+              <Icon path={mdiPackageVariant} size={0.8} />
+              <span>Chi tiết đơn hàng #{order?._id?.slice(-8)}</span>
             </div>
+            {order && (
+              <div className="flex gap-2">
+                {getOrderStatusBadge(order.status)}
+              </div>
+            )}
           </DialogTitle>
         </DialogHeader>
 
         {isLoading ? (
           <div className="space-y-4 p-4">
-            <Skeleton className="h-40 w-full" />
-            <Skeleton className="h-40 w-full" />
-            <Skeleton className="h-40 w-full" />
+            <Skeleton className="h-[300px] w-full rounded-xl" />
+            <div className="grid grid-cols-2 gap-4">
+              <Skeleton className="h-40 w-full rounded-xl" />
+              <Skeleton className="h-40 w-full rounded-xl" />
+            </div>
           </div>
         ) : !order ? (
-          <div className="text-center py-8 text-neutral-200">
-            Không tìm thấy đơn hàng
+          <div className="text-center py-20 text-neutral-400 flex flex-col items-center gap-3">
+            <IconPackage className="w-12 h-12 opacity-20" />
+            <p>Không tìm thấy thông tin chi tiết đơn hàng</p>
           </div>
         ) : (
-          <div className="space-y-6 max-h-[70vh] overflow-y-auto pr-2 custom-scrollbar">
-            {/* Map Placeholder */}
-            <Card>
-              <CardHeader className="border-b border-b-darkBorderV1 py-3">
-                <div className="flex items-center gap-2">
-                  <Map className="h-5 w-5 text-blue-500" />
-                  <span className="font-semibold dark:text-neutral-200">
-                    Sơ đồ tuyến đường
-                  </span>
+          <div className="space-y-6 overflow-y-auto pr-2 custom-scrollbar pb-6">
+            {/* Map & Route Section */}
+            <Card className="overflow-hidden border-darkBorderV1 bg-darkBackgroundV1/30">
+              <CardContent className="p-0 relative">
+                <div className="h-80 w-full bg-darkBackgroundV1/50 relative overflow-hidden group">
+                  {(isLoading || isRouteLoading) && (
+                    <div className="absolute inset-0 z-10 flex items-center justify-center bg-darkCardV1/40 backdrop-blur-sm">
+                      <div className="flex flex-col items-center gap-2">
+                        <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                        <span className="text-xs text-primary font-medium">
+                          Đang tính toán lộ trình...
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                  <img
+                    src={mapUrl}
+                    alt="Route Map"
+                    className={`w-full h-full object-cover transition-all duration-700 ${isRouteLoading ? "opacity-50 blur-sm" : "opacity-90"} group-hover:opacity-100 group-hover:scale-[1.02]`}
+                  />
+                  {/* Google Maps Link Button */}
+                  <button
+                    onClick={openInGoogleMaps}
+                    className="absolute bottom-4 right-4 bg-white text-black hover:bg-neutral-200 px-4 py-2 rounded-full text-xs font-bold shadow-2xl transition-all flex items-center gap-2 group/btn active:scale-95"
+                  >
+                    <IconRoute
+                      size={14}
+                      className="group-hover/btn:animate-pulse"
+                    />
+                    <span>Xem lộ trình thực tế</span>
+                  </button>
                 </div>
-              </CardHeader>
-              <CardContent className="pt-4">
-                <div className="h-64 bg-gray-100 rounded flex items-center justify-center">
-                  <p className="text-neutral-200">Bản đồ đang được tích hợp</p>
+
+                <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-6 bg-darkCardV1/40">
+                  <div className="flex items-start gap-3">
+                    <div className="p-2.5 rounded-xl bg-green-500/10 text-green-500 mt-1 shadow-inner">
+                      <Icon path={mdiLocationExit} size={0.8} />
+                    </div>
+                    <div>
+                      <p className="text-xs uppercase font-bold text-neutral-400 tracking-wider mb-1">
+                        Địa chỉ đón (A)
+                      </p>
+                      <p className="font-semibold text-sm text-white leading-relaxed">
+                        {order.pickup?.address}
+                      </p>
+                      <p className="text-xs text-neutral-400 mt-1 font-mono">
+                        {order.pickup?.lat?.toFixed(6)},{" "}
+                        {order.pickup?.lng?.toFixed(6)}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="p-2.5 rounded-xl bg-red-500/10 text-red-500 mt-1 shadow-inner">
+                      <Icon path={mdiLocationEnter} size={0.8} />
+                    </div>
+                    <div>
+                      <p className="text-xs uppercase font-bold text-neutral-400 tracking-wider mb-1">
+                        Địa chỉ trả (B)
+                      </p>
+                      <p className="font-semibold text-sm text-white leading-relaxed">
+                        {order.dropoff?.address}
+                      </p>
+                      <p className="text-xs text-neutral-400 mt-1 font-mono">
+                        {order.dropoff?.lat?.toFixed(6)},{" "}
+                        {order.dropoff?.lng?.toFixed(6)}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </CardContent>
             </Card>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-              {/* Customer Info */}
-              <Card>
-                <CardHeader className="border-b border-b-darkBorderV1 py-3">
-                  <div className="flex items-center gap-2">
-                    <User className="h-5 w-5 text-green-500" />
-                    <span className="font-semibold dark:text-neutral-200">
-                      Khách hàng
-                    </span>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-3 pt-4">
-                  <div className="flex items-center gap-3">
-                    <Avatar className="w-12 h-12">
-                      <AvatarImage src={order.customerId?.avatar} />
-                      <AvatarFallback>
-                        {order.customerId?.name?.[0]}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <p className="font-medium">{order.customerId?.name}</p>
-                      <p className="text-sm text-neutral-200">
-                        {order.customerId?.phone}
-                      </p>
-                      {order.customerId?.email && (
-                        <p className="text-xs text-neutral-400">
-                          {order.customerId.email}
-                        </p>
-                      )}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Stakeholders Info */}
+              <div className="space-y-6">
+                {/* Customer Info */}
+                <Card className="border-darkBorderV1 bg-darkBackgroundV1/20 overflow-hidden">
+                  <CardHeader className="border-b border-b-darkBorderV1 py-3">
+                    <div className="flex items-center gap-2">
+                      <IconUserSquareRounded className="h-5 w-5 text-primary" />
+                      <span className="font-semibold text-primary uppercase tracking-tight">
+                        Khách hàng
+                      </span>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Driver Info */}
-              <Card>
-                <CardHeader className="border-b border-b-darkBorderV1 py-3">
-                  <div className="flex items-center gap-2">
-                    <Truck className="h-5 w-5 text-orange-500" />
-                    <span className="font-semibold dark:text-neutral-200">
-                      Tài xế
-                    </span>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-3 pt-4">
-                  {order.driverId ? (
-                    <div className="flex items-center gap-3">
-                      <Avatar className="w-12 h-12">
-                        <AvatarImage src={order.driverId?.avatar} />
-                        <AvatarFallback>
-                          {order.driverId?.name?.[0]}
+                  </CardHeader>
+                  <CardContent className="pt-4 px-4 pb-4">
+                    <div className="flex items-center gap-4">
+                      <Avatar className="w-10 h-10 ring-2 ring-primary/20 ring-offset-2 ring-offset-darkBackgroundV1">
+                        <AvatarImage src={order.customerId?.avatar} />
+                        <AvatarFallback className="bg-primary/10 text-primary font-bold">
+                          {order.customerId?.name?.[0]}
                         </AvatarFallback>
                       </Avatar>
-                      <div>
-                        <p className="font-medium">{order.driverId?.name}</p>
-                        <p className="text-sm text-neutral-200">
-                          {order.driverId?.phone}
+                      <div className="space-y-2">
+                        <p className="font-bold text-lg text-white leading-none">
+                          {order.customerId?.name}
+                        </p>
+                        <div className="flex items-center gap-3 pt-1">
+                          <div className="flex items-center gap-1.5 text-neutral-400 group">
+                            <IconPhone
+                              size={16}
+                              className="group-hover:text-primary transition-colors"
+                            />
+                            <span className="text-xs">
+                              {order.customerId?.phone}
+                            </span>
+                          </div>
+                          {order.customerId?.email && (
+                            <div className="flex items-center gap-1.5 text-neutral-400 group">
+                              <IconMail
+                                size={16}
+                                className="group-hover:text-primary transition-colors"
+                              />
+                              <span className="text-xs truncate max-w-[200px]">
+                                {order.customerId.email}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Driver Info */}
+                <Card className="border-darkBorderV1 bg-darkBackgroundV1/20 overflow-hidden">
+                  <CardHeader className="border-b border-b-darkBorderV1 py-3">
+                    <div className="flex items-center gap-2">
+                      <IconTruck className="h-5 w-5 text-primary" />
+                      <span className="font-semibold text-primary uppercase tracking-tight">
+                        Tài xế
+                      </span>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="pt-4 px-4 pb-4">
+                    {order.driverId ? (
+                      <div className="flex items-center gap-4">
+                        <Avatar className="w-14 h-14 ring-2 ring-primary/20 ring-offset-2 ring-offset-darkBackgroundV1">
+                          <AvatarImage src={order.driverId?.avatar} />
+                          <AvatarFallback className="bg-primary/10 text-primary font-bold">
+                            {order.driverId?.name?.[0]}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="space-y-1">
+                          <p className="font-bold text-lg text-white leading-none">
+                            {order.driverId?.name}
+                          </p>
+                          <div className="flex items-center gap-1.5 text-neutral-400 pt-1 group">
+                            <IconPhone
+                              size={12}
+                              className="group-hover:text-primary transition-colors"
+                            />
+                            <span className="text-xs">
+                              {order.driverId?.phone}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="flex flex-col items-center py-4 text-center">
+                        <div className="w-10 h-10 rounded-full bg-neutral-500/5 flex items-center justify-center mb-2">
+                          <IconTruck className="h-5 w-5 text-neutral-400" />
+                        </div>
+                        <p className="text-sm text-neutral-400">
+                          Chưa có tài xế nhận đơn
+                        </p>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Order Summary & Goods */}
+              <div className="space-y-6">
+                <Card className="border-darkBorderV1 bg-darkBackgroundV1/20 overflow-hidden">
+                  <CardHeader className="border-b border-b-darkBorderV1 py-3">
+                    <div className="flex items-center gap-2">
+                      <IconClipboardList className="h-5 w-5 text-primary" />
+                      <span className="font-semibold text-primary uppercase tracking-tight">
+                        Tóm tắt đơn hàng
+                      </span>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="p-4 space-y-4">
+                    <div className="grid grid-cols-2 gap-y-4">
+                      <div className="space-y-1">
+                        <p className="text-xs text-neutral-400 uppercase font-bold tracking-wider">
+                          Loại xe
+                        </p>
+                        <Badge
+                          variant="outline"
+                          className="text-white border-darkBorderV1 rounded-md bg-white/5"
+                        >
+                          {order.vehicleType}
+                        </Badge>
+                      </div>
+                      <div className="space-y-1">
+                        <p className="text-xs text-neutral-400 uppercase font-bold tracking-wider">
+                          Khoảng cách
+                        </p>
+                        <p className="text-sm font-medium text-white">
+                          {order.distanceKm?.toFixed(2)} km
+                        </p>
+                      </div>
+                      <div className="space-y-1">
+                        <p className="text-xs text-neutral-400 uppercase font-bold tracking-wider">
+                          Thanh toán
+                        </p>
+                        <div className="flex flex-col gap-1">
+                          {getOrderStatusBadge(order.paymentMethod)}
+                          <div className="mt-1">
+                            {getOrderStatusBadge(order.paymentStatus)}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="space-y-1">
+                        <p className="text-xs text-neutral-400 uppercase font-bold tracking-wider">
+                          Ngày tạo
+                        </p>
+                        <p className="text-sm font-medium text-white">
+                          {formatDate(order.createdAt)}
                         </p>
                       </div>
                     </div>
-                  ) : (
-                    <p className="text-neutral-200">Chưa có tài xế nhận đơn</p>
-                  )}
-                </CardContent>
-              </Card>
+
+                    <Separator className="bg-darkBorderV1" />
+
+                    <div className="flex items-center justify-between pt-1">
+                      <div className="flex items-center gap-2">
+                        <div className="p-2 rounded bg-primary/10 text-primary">
+                          <IconCurrencyDollar size={18} />
+                        </div>
+                        <span className="font-bold text-neutral-400">
+                          Tổng cộng
+                        </span>
+                      </div>
+                      <span className="text-2xl font-black text-primary">
+                        {formatCurrency(order.totalPrice)}
+                      </span>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Goods Images */}
+                {order.goodsImages && order.goodsImages.length > 0 && (
+                  <Card className="border-darkBorderV1 bg-darkBackgroundV1/20 overflow-hidden">
+                    <CardHeader className="border-b border-b-darkBorderV1 py-3">
+                      <div className="flex items-center gap-2">
+                        <IconPhoto className="h-5 w-5 text-primary" />
+                        <span className="font-semibold text-primary uppercase tracking-tight">
+                          Hình ảnh hàng hóa
+                        </span>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="p-4">
+                      <div className="grid grid-cols-3 gap-2">
+                        {order.goodsImages.map((img: string, idx: number) => (
+                          <div
+                            key={idx}
+                            className="aspect-square rounded-lg overflow-hidden border border-darkBorderV1 bg-black group relative cursor-zoom-in"
+                          >
+                            <img
+                              src={img}
+                              alt={`Goods ${idx + 1}`}
+                              className="w-full h-full object-cover transition-transform group-hover:scale-110"
+                            />
+                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                              <span className="text-xs text-white font-bold bg-darkCardV1/80 px-2 py-1 rounded">
+                                Xem
+                              </span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
+              </div>
             </div>
-
-            {/* Route Details */}
-            <Card>
-              <CardHeader className="border-b border-b-darkBorderV1 py-3">
-                <div className="flex items-center gap-2">
-                  <Navigation className="h-5 w-5 text-purple-500" />
-                  <span className="font-semibold dark:text-neutral-200">
-                    Chi tiết tuyến đường
-                  </span>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-4 pt-4">
-                <div className="flex items-start gap-3">
-                  <Icon
-                    path={mdiLocationExit}
-                    size={0.8}
-                    className="text-green-500 mt-1 flex-shrink-0"
-                  />
-                  <div>
-                    <p className="font-medium">Điểm đón khách</p>
-                    <p className="text-sm text-gray-600">
-                      {order.pickup?.address?.replace(
-                        "Pickup Address",
-                        "Địa chỉ đón",
-                      )}
-                    </p>
-                    <p className="text-sm text-neutral-200 mt-1">
-                      {order.pickup?.lat}, {order.pickup?.lng}
-                    </p>
-                  </div>
-                </div>
-                <Separator />
-                <div className="flex items-start gap-3">
-                  <Icon
-                    path={mdiLocationEnter}
-                    size={0.8}
-                    className="text-red-500 mt-1 flex-shrink-0"
-                  />
-                  <div>
-                    <p className="font-medium">Điểm trả khách</p>
-                    <p className="text-sm text-gray-600">
-                      {order.dropoff?.address?.replace(
-                        "Dropoff Address",
-                        "Địa chỉ trả",
-                      )}
-                    </p>
-                    <p className="text-sm text-neutral-200 mt-1">
-                      {order.dropoff?.lat}, {order.dropoff?.lng}
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Order Summary */}
-            <Card>
-              <CardHeader className="border-b border-b-darkBorderV1 py-3">
-                <div className="flex items-center gap-2">
-                  <ClipboardList className="h-5 w-5 text-mainActiveV1" />
-                  <span className="font-semibold dark:text-neutral-200">
-                    Tóm tắt đơn hàng
-                  </span>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-3 pt-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2 text-gray-600">
-                    <Package className="w-4 h-4" />
-                    <span>Loại xe:</span>
-                  </div>
-                  <Badge variant="outline">{order.vehicleType}</Badge>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-600">Khoảng cách:</span>
-                  <span className="font-medium">
-                    {order.distanceKm?.toFixed(2)} km
-                  </span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-600">Phương thức thanh toán:</span>
-                  {getOrderStatusBadge(order.paymentMethod)}
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-600">Trạng thái thanh toán:</span>
-                  {getOrderStatusBadge(order.paymentStatus)}
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2 text-gray-600">
-                    <Calendar className="w-4 h-4" />
-                    <span>Ngày tạo:</span>
-                  </div>
-                  <span className="font-medium">
-                    {formatDate(order.createdAt)}
-                  </span>
-                </div>
-                <Separator />
-                <div className="flex items-center justify-between text-lg font-bold">
-                  <div className="flex items-center gap-2">
-                    <DollarSign className="w-5 h-5" />
-                    <span>Tổng cộng:</span>
-                  </div>
-                  <span>{formatCurrency(order.totalPrice)}</span>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Goods Images */}
-            {order.goodsImages && order.goodsImages.length > 0 && (
-              <Card>
-                <CardHeader className="border-b border-b-darkBorderV1 py-3">
-                  <div className="flex items-center gap-2">
-                    <ImageIcon className="h-5 w-5 text-indigo-500" />
-                    <span className="font-semibold dark:text-neutral-200">
-                      Hình ảnh hàng hóa
-                    </span>
-                  </div>
-                </CardHeader>
-                <CardContent className="pt-4">
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    {order.goodsImages.map((img: string, idx: number) => (
-                      <img
-                        key={idx}
-                        src={img}
-                        alt={`Goods ${idx + 1}`}
-                        className="w-full h-32 object-cover rounded border"
-                      />
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            )}
 
             {/* Notes */}
             {order.note && (
-              <Card>
+              <Card className="border-darkBorderV1 bg-darkBackgroundV1/20 overflow-hidden">
                 <CardHeader className="border-b border-b-darkBorderV1 py-3">
                   <div className="flex items-center gap-2">
-                    <MessageSquare className="h-5 w-5 text-amber-500" />
-                    <span className="font-semibold dark:text-neutral-200">
-                      Ghi chú
+                    <IconMessage className="h-5 w-5 text-primary" />
+                    <span className="font-semibold text-primary uppercase tracking-tight">
+                      Ghi chú từ khách hàng
                     </span>
                   </div>
                 </CardHeader>
-                <CardContent className="pt-4">
-                  <p className="text-gray-600">{order.note}</p>
+                <CardContent className="p-4">
+                  <div className="bg-darkBackgroundV1 px-4 py-3 rounded-lg border border-darkBorderV1/50 italic text-neutral-400 text-sm">
+                    "{order.note}"
+                  </div>
                 </CardContent>
               </Card>
             )}

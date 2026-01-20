@@ -1,6 +1,12 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
-import { Activity, Star, Truck, Landmark, ShieldCheck } from "lucide-react";
+import {
+  IconActivity,
+  IconStar,
+  IconTruck,
+  IconBuildingBank,
+  IconShieldCheck,
+} from "@tabler/icons-react";
 import { formatDate, formatCurrency } from "@/lib/format";
 import { getRoleBadge } from "@/lib/badge-helpers";
 
@@ -10,11 +16,11 @@ interface UserTableProps {
 
 export const UserTable = ({ user }: UserTableProps) => {
   const renderTableRow = (label: string, value: React.ReactNode) => (
-    <TableRow className="transition-colors">
-      <TableCell className="font-semibold dark:text-neutral-200 w-1/3">
+    <TableRow className="transition-colors border-b-darkBorderV1">
+      <TableCell className="text-neutral-400 w-1/3 border-none">
         {label}
       </TableCell>
-      <TableCell className="dark:text-neutral-200">{value}</TableCell>
+      <TableCell className="text-white border-none">{value}</TableCell>
     </TableRow>
   );
 
@@ -26,10 +32,8 @@ export const UserTable = ({ user }: UserTableProps) => {
       <Card>
         <CardHeader className="border-b border-b-darkBorderV1 py-3">
           <div className="flex items-center gap-2">
-            <Activity className="h-5 w-5 text-blue-500" />
-            <span className="font-semibold dark:text-neutral-200">
-              Thông tin cơ bản
-            </span>
+            <IconActivity className="h-5 w-5 text-primary" />
+            <span className="font-semibold text-primary">Thông tin cơ bản</span>
           </div>
         </CardHeader>
         <CardContent className="space-y-4 pt-4">
@@ -46,9 +50,7 @@ export const UserTable = ({ user }: UserTableProps) => {
               />
             </div>
             <div className="flex-1">
-              <h3 className="text-lg font-semibold dark:text-neutral-200">
-                {user.name}
-              </h3>
+              <h3 className="text-lg font-semibold text-white">{user.name}</h3>
               <p className="text-sm text-neutral-400">
                 {user.email || "Chưa cập nhật email"}
               </p>
@@ -64,7 +66,7 @@ export const UserTable = ({ user }: UserTableProps) => {
               {renderTableRow("Số điện thoại", user.phone)}
               {renderTableRow(
                 "Số dư ví",
-                <span className="font-medium text-green-600">
+                <span className="font-medium text-white">
                   {formatCurrency(user.walletBalance || 0)}
                 </span>,
               )}
@@ -75,7 +77,7 @@ export const UserTable = ({ user }: UserTableProps) => {
                     <span className="font-medium">
                       {profile?.rating || user.rating || 5}
                     </span>
-                    <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+                    <IconStar className="w-4 h-4 text-primary fill-primary" />
                   </div>,
                 )}
               {renderTableRow(
@@ -89,12 +91,11 @@ export const UserTable = ({ user }: UserTableProps) => {
 
       {user.role === "DRIVER" && (
         <>
-          {/* Thông tin tài xế & Xe */}
           <Card>
             <CardHeader className="border-b border-b-darkBorderV1 py-3">
               <div className="flex items-center gap-2">
-                <Truck className="h-5 w-5 text-orange-500" />
-                <span className="font-semibold dark:text-neutral-200">
+                <IconTruck className="h-5 w-5 text-primary" />
+                <span className="font-semibold text-primary">
                   Thông tin tài xế & Xe
                 </span>
               </div>
@@ -128,8 +129,9 @@ export const UserTable = ({ user }: UserTableProps) => {
               {/* Document Images */}
               <div className="mt-6 space-y-6">
                 <div>
-                  <h4 className="text-sm font-semibold mb-3 dark:text-neutral-200 flex items-center gap-2">
-                    <ShieldCheck className="h-4 w-4" /> Ảnh CCCD
+                  <h4 className="text-sm font-semibold mb-3 text-primary flex items-center gap-2">
+                    <IconShieldCheck className="h-4 w-4 text-primary" /> Ảnh
+                    CCCD
                   </h4>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
@@ -180,8 +182,9 @@ export const UserTable = ({ user }: UserTableProps) => {
                 </div>
 
                 <div>
-                  <h4 className="text-sm font-semibold mb-3 dark:text-neutral-200 flex items-center gap-2">
-                    <ShieldCheck className="h-4 w-4" /> Giấy tờ xe
+                  <h4 className="text-sm font-semibold mb-3 text-primary flex items-center gap-2">
+                    <IconShieldCheck className="h-4 w-4 text-primary" /> Giấy tờ
+                    xe
                   </h4>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
@@ -234,8 +237,8 @@ export const UserTable = ({ user }: UserTableProps) => {
           <Card>
             <CardHeader className="border-b border-b-darkBorderV1 py-3">
               <div className="flex items-center gap-2">
-                <Landmark className="h-5 w-5 text-green-500" />
-                <span className="font-semibold dark:text-neutral-200">
+                <IconBuildingBank className="h-5 w-5 text-primary" />
+                <span className="font-semibold text-primary">
                   Thông tin ngân hàng
                 </span>
               </div>

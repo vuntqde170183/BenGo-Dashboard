@@ -1,0 +1,26 @@
+1. Các Cardtitle sử dụng text-primary và màu icon cũng là primary
+2. Màu chữ khác primary chỉ sử dụng 2 màu là text-white, text-neutral-400
+3. Các DialogHeader đều phải styling như sau:
+<Dialog open={isOpen} onOpenChange={handleClose}>
+      <DialogContent size="medium">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2 text-primary">
+            <Icon path={mdiClipboardAccount} size={0.8} />
+            <span>
+              {isEditing
+                ? "Cập nhật tài xế: " + userData?.data?.name
+                : "Chi tiết tài xế"}
+            </span>
+          </DialogTitle>
+        </DialogHeader>
+
+4. Các CardHeader đều phải styling như sau:
+ <CardHeader className="border-b border-b-darkBorderV1 py-3">
+              <div className="flex items-center gap-2">
+                <Truck className="h-5 w-5 text-primary" />
+                <span className="font-semibold text-primary">
+                  Thông tin tài xế & Xe
+                </span>
+              </div>
+            </CardHeader>
+

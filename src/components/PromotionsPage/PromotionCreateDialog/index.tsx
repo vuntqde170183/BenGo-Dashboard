@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/select";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { Upload } from "lucide-react";
+import { IconUpload } from "@tabler/icons-react";
 
 interface PromotionCreateDialogProps {
   isOpen: boolean;
@@ -302,7 +302,7 @@ export function PromotionCreateDialog({
                   htmlFor="image"
                   className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded cursor-pointer hover:bg-gray-50"
                 >
-                  <Upload className="w-8 h-8 text-gray-400" />
+                  <IconUpload className="w-8 h-8 text-gray-400" />
                   <p className="text-sm text-neutral-200 mt-2">
                     Click to upload image
                   </p>

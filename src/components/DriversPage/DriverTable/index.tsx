@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { Star } from "lucide-react";
+import { IconStar } from "@tabler/icons-react";
 import { getStatusBadge } from "@/lib/badge-helpers";
 import { getVehicleIcon } from "@/lib/vehicle-helpers";
 import Icon from "@mdi/react";
@@ -138,7 +138,7 @@ export const DriverTable = ({
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-1 dark:text-neutral-200 font-medium">
-                      <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+                      <IconStar className="w-4 h-4 text-yellow-500 fill-yellow-500" />
                       {driver.userId?.rating
                         ? driver.userId.rating.toFixed(1)
                         : "5.0"}

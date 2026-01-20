@@ -168,7 +168,7 @@ export const UserDetailsDialog = ({
             "Có lỗi xảy ra khi cập nhật người dùng!";
           toast.error(errorMsg);
         },
-      }
+      },
     );
   };
 
@@ -225,11 +225,13 @@ export const UserDetailsDialog = ({
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent size="medium">
         <DialogHeader>
-          <DialogTitle>
+          <DialogTitle className="flex items-center gap-2 text-primary">
             <Icon path={mdiClipboardAccount} size={0.8} />
-            {isEditing
-              ? "Cập nhật người dùng: " + userData?.data?.name
-              : "Chi tiết người dùng"}
+            <span>
+              {isEditing
+                ? "Cập nhật người dùng: " + userData?.data?.name
+                : "Chi tiết người dùng"}
+            </span>
           </DialogTitle>
         </DialogHeader>
 

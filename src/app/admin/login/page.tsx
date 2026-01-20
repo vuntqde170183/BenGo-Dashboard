@@ -137,7 +137,7 @@ export default function LoginPage() {
                 <h2 className="text-3xl font-bold bg-gradient-to-r from-teal-600 to-emerald-600 bg-clip-text text-transparent uppercase">
                   Admin Dashboard
                 </h2>
-                <p className="text-neutral-600 text-sm">
+                <p className="text-neutral-400 text-sm">
                   Đăng nhập để truy cập trang quản trị BenGo
                 </p>
               </div>
@@ -153,7 +153,7 @@ export default function LoginPage() {
                 <div>
                   <Label
                     htmlFor="email"
-                    className="text-sm text-neutral-600 uppercase tracking-wide"
+                    className="text-sm text-neutral-400 uppercase tracking-wide"
                   >
                     Email
                   </Label>
@@ -174,7 +174,7 @@ export default function LoginPage() {
                 <div>
                   <Label
                     htmlFor="password"
-                    className="text-sm text-neutral-600 uppercase tracking-wide"
+                    className="text-sm text-neutral-400 uppercase tracking-wide"
                   >
                     Mật khẩu
                   </Label>
@@ -236,7 +236,7 @@ export default function LoginPage() {
 
                 {/* Security Notice */}
                 <div className="text-center pt-4 border-t border-gray-200">
-                  <div className="text-sm flex items-center justify-center gap-2 text-neutral-600">
+                  <div className="text-sm flex items-center justify-center gap-2 text-neutral-400">
                     <Lock1 size="16" color="#7F8788" />
                     <span>
                       Chỉ dành cho quản trị viên · Liên hệ hỗ trợ nếu cần giúp
