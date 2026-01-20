@@ -7,13 +7,13 @@ import {
 	mdiCurrencyUsd,
 	mdiGift,
 	mdiTicket,
-	mdiCog
+	mdiViewQuilt
 } from "@mdi/js";
 
 export const getDashboardMenuItems = (): MenuItem[] => [
 	{
 		id: "dashboard",
-		name: "Bảng điều khiển",
+		name: "Báo cáo và thống kê",
 		path: "/admin",
 		icon: mdiViewDashboard,
 	},
@@ -49,19 +49,14 @@ export const getDashboardMenuItems = (): MenuItem[] => [
 	},
 	{
 		id: "support-tickets",
-		name: "Quản lý hỗ trợ",
+		name: "Quản lý Ticket",
 		path: "/admin/tickets",
 		icon: mdiTicket,
 	},
 	{
-		id: "settings",
-		name: "Cài đặt",
-		path: "/admin/settings",
-		icon: mdiCog,
+		id: "content-management",
+		name: "Quản lý nội dung",
+		path: "/admin/content",
+		icon: mdiViewQuilt,
 	},
-]; 
-
-
-
-
-
+];

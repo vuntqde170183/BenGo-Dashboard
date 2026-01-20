@@ -7,6 +7,7 @@ import { adminPromotionApi } from "@/api/admin-promotions";
 import { adminTicketApi } from "@/api/admin-tickets";
 import { adminReportApi } from "@/api/admin-reports";
 import { toast } from "react-toastify";
+import { TReportPeriod, TReportType } from "@/interface/admin";
 
 // Quản lý người dùng
 export const useAdminUsers = (params: any) => {
@@ -262,10 +263,10 @@ export const useDashboardOverview = () => {
   });
 };
 
-export const useAdminReports = (type: string) => {
+export const useAdminReports = (type: TReportType, period?: TReportPeriod) => {
   return useQuery({
-    queryKey: ["admin", "reports", type],
-    queryFn: () => adminReportApi.getReports(type),
+    queryKey: ["admin", "reports", type, period],
+    queryFn: () => adminReportApi.getReports(type, period),
     enabled: !!type,
   });
 };

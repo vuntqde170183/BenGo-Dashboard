@@ -82,7 +82,7 @@ export default function DashboardLayout({
                           >
                             <div
                               className={cn(
-                                "flex items-center rounded-lg p-[10px] h-[46px] text-[13px] font-semibold transition-all duration-300 border",
+                                "flex items-center rounded-lg p-[10px] h-[46px] text-[13px] font-medium transition-all duration-300 border",
                                 isMenuActive(menu)
                                   ? "bg-primary/10 text-primary border-primary/20 shadow-[0_0_15px_rgba(65,198,81,0.1)]"
                                   : "text-neutral-200/70 border-transparent hover:bg-primary/5 hover:text-primary/80 hover:border-primary/10",
@@ -123,7 +123,7 @@ export default function DashboardLayout({
                         >
                           <div
                             className={cn(
-                              "flex items-center rounded-lg p-[10px] h-[46px] text-[13px] font-semibold transition-all duration-300 border",
+                              "flex items-center rounded-lg p-[10px] h-[46px] text-[13px] font-medium transition-all duration-300 border",
                               isMenuActive(menu)
                                 ? "bg-primary/10 text-primary border-primary/20 shadow-[0_0_15px_rgba(65,198,81,0.1)]"
                                 : "text-neutral-200/70 border-transparent hover:bg-primary/5 hover:text-primary/80 hover:border-primary/10",
@@ -226,7 +226,7 @@ export default function DashboardLayout({
                             className="fixed ml-16 mt-[-30px] dark:bg-darkBorderV1 border border-lightBorderV1 text-neutral-200 text-[13px] py-1.5 px-3 rounded-md shadow-light-grey z-50 whitespace-nowrap flex items-center"
                           >
                             <span className="w-1.5 h-1.5 rounded-full bg-mainActiveV1 mr-1.5"></span>
-                            <span className="font-semibold">{menu.name}</span>
+                            <span className="font-medium">{menu.name}</span>
                           </motion.div>
                         </AnimatePresence>
                       )}
