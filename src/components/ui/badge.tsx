@@ -12,7 +12,7 @@ const badgeVariants = cva(
         secondary:
           "border-darkBorderV1 bg-secondary text-secondary-foreground hover:bg-secondary/80 text-neutral-200 text-nowrap",
         destructive:
-          "border-darkBorderV1 bg-destructive text-destructive-foreground hover:bg-destructive/80 text-nowrap",
+          "border-red-600 bg-destructive text-destructive-foreground hover:bg-destructive/80 text-nowrap",
         outline:
           "text-foreground border h-[30px] px-3 !border-white/50 bg-darkBorderV1 text-[#343A40] font-semibold !rounded-none rounded-full text-nowrap",
         orange:

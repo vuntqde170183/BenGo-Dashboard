@@ -9,44 +9,51 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Pagination } from "@/components/ui/pagination";
 import { motion } from "framer-motion";
-import { IconPlus, IconTrash, IconEdit } from "@tabler/icons-react";
-import { formatCurrency, formatDate } from "@/lib/format";
+import { IconPlus, IconSearch, IconX } from "@tabler/icons-react";
+import { Input } from "@/components/ui/input";
 import { DeleteDialog } from "@/components/ui/delete-dialog";
 import { PromotionCreateDialog } from "@/components/PromotionsPage/PromotionCreateDialog";
 import { PromotionDetailsDialog } from "@/components/PromotionsPage/PromotionDetailsDialog";
+import { PromotionCard } from "@/components/PromotionsPage/PromotionCard";
 
 export default function PromotionsPage() {
   const [filterStatus, setFilterStatus] = useState<string>("ALL");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize] = useState(9);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
   const [selectedPromotion, setSelectedPromotion] = useState<any>(null);
-
-  const activeParam =
-    filterStatus === "ACTIVE"
-      ? true
-      : filterStatus === "EXPIRED"
-        ? false
-        : undefined;
 
   const {
     data: promotionsData,
     isLoading,
     refetch,
   } = useAdminPromotions({
-    active: activeParam,
+    status: filterStatus === "ALL" ? undefined : filterStatus,
+    search: searchQuery || undefined,
+    page: currentPage,
+    limit: pageSize,
   });
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const handleClearSearch = () => {
+    setSearchQuery("");
+  };
+
+  const handleStatusChange = (status: string) => {
+    setFilterStatus(status);
+    setCurrentPage(1); // Reset to page 1 when filter changes
+  };
 
   const { mutate: deletePromotionMutation, isPending: isDeleting } =
     useDeletePromotion();
@@ -102,18 +109,46 @@ export default function PromotionsPage() {
         transition={{ duration: 0.3 }}
       >
         <div className="flex flex-col gap-4">
-          <div className="flex items-center justify-between">
-            <Tabs value={filterStatus} onValueChange={setFilterStatus}>
-              <TabsList>
-                <TabsTrigger value="ALL">Tất cả</TabsTrigger>
-                <TabsTrigger value="ACTIVE">Đang hoạt động</TabsTrigger>
-                <TabsTrigger value="EXPIRED">Hết hạn</TabsTrigger>
-              </TabsList>
-            </Tabs>
-            <Button onClick={() => setIsCreateDialogOpen(true)}>
-              <IconPlus className="h-4 w-4 mr-2" />
-              Tạo khuyến mãi
-            </Button>
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="relative w-full md:w-80">
+              <Input
+                placeholder="Tìm kiếm mã hoặc tiêu đề..."
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setCurrentPage(1);
+                }}
+                className="pl-10 pr-10 py-2 w-full border-darkBorderV1 focus:border-primary/50 bg-darkBackgroundV1/50 transition-all"
+              />
+              <IconSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-400 w-4 h-4" />
+              {searchQuery && (
+                <button
+                  onClick={handleClearSearch}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-neutral-400 hover:text-red-500 transition-colors"
+                  type="button"
+                >
+                  <IconX className="w-4 h-4" />
+                </button>
+              )}
+            </div>
+            <div className="flex items-center gap-4 w-full md:w-auto overflow-x-auto pb-2 md:pb-0">
+              <Tabs value={filterStatus} onValueChange={handleStatusChange}>
+                <TabsList>
+                  <TabsTrigger value="ALL">Tất cả</TabsTrigger>
+                  <TabsTrigger value="ACTIVE">Đang hoạt động</TabsTrigger>
+                  <TabsTrigger value="INACTIVE">
+                    Hết hạn hoặc hết lượt
+                  </TabsTrigger>
+                </TabsList>
+              </Tabs>
+              <Button
+                onClick={() => setIsCreateDialogOpen(true)}
+                className="whitespace-nowrap"
+              >
+                <IconPlus className="h-4 w-4 mr-2" />
+                Thêm mới
+              </Button>
+            </div>
           </div>
 
           {isLoading ? (
@@ -136,84 +171,28 @@ export default function PromotionsPage() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {displayPromotions.map((promo: any) => (
-                <Card
+                <PromotionCard
                   key={promo._id}
-                  className="hover:shadow-lg transition-shadow"
-                >
-                  <CardHeader>
-                    <div className="flex justify-between items-start">
-                      <div className="flex-1">
-                        <CardTitle className="text-lg">{promo.title}</CardTitle>
-                        <p className="text-sm text-neutral-200 mt-1 font-mono">
-                          Mã: {promo.code}
-                        </p>
-                      </div>
-                      <Badge variant={promo.isActive ? "default" : "secondary"}>
-                        {promo.isActive ? "Đang hoạt động" : "Không hoạt động"}
-                      </Badge>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    {promo.imageUrl && (
-                      <img
-                        src={promo.imageUrl}
-                        alt={promo.title}
-                        className="w-full h-32 object-cover rounded"
-                      />
-                    )}
-                    <p className="text-sm text-gray-600 line-clamp-2">
-                      {promo.description}
-                    </p>
-
-                    <div className="space-y-2 text-sm">
-                      <div className="flex justify-between">
-                        <span className="text-neutral-200">Giảm giá:</span>
-                        <span className="font-medium">
-                          {promo.discountType === "PERCENTAGE"
-                            ? `${promo.discountValue}%`
-                            : formatCurrency(promo.discountValue)}
-                        </span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-neutral-200">Đơn tối thiểu:</span>
-                        <span className="font-medium">
-                          {formatCurrency(promo.minOrderValue || 0)}
-                        </span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-neutral-200">Lượt dùng:</span>
-                        <span className="font-medium">
-                          {promo.usedCount || 0} / {promo.usageLimit || "∞"}
-                        </span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-neutral-200">Hạn dùng:</span>
-                        <span className="font-medium">
-                          {formatDate(promo.endDate)}
-                        </span>
-                      </div>
-                    </div>
-                  </CardContent>
-                  <CardFooter className="flex gap-2">
-                    <Button
-                      variant="outline"
-                      className="flex-1"
-                      size="sm"
-                      onClick={() => handleEdit(promo)}
-                    >
-                      <IconEdit className="w-4 h-4 mr-1" />
-                      Sửa
-                    </Button>
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      onClick={() => handleDelete(promo)}
-                    >
-                      <IconTrash className="w-4 h-4" />
-                    </Button>
-                  </CardFooter>
-                </Card>
+                  promo={promo}
+                  onEdit={handleEdit}
+                  onDelete={handleDelete}
+                />
               ))}
+            </div>
+          )}
+
+          {(promotionsData?.pagination?.total ?? 0) > pageSize && (
+            <div className="pt-4 border-t border-darkBorderV1">
+              <Pagination
+                page={currentPage}
+                pageSize={pageSize}
+                total={promotionsData?.pagination?.total ?? 0}
+                totalPages={
+                  promotionsData?.pagination?.total_pages ||
+                  Math.ceil((promotionsData?.pagination?.total ?? 0) / pageSize)
+                }
+                onPageChange={handlePageChange}
+              />
             </div>
           )}
         </div>
