@@ -21,6 +21,7 @@ import { useEffect } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { mdiGiftOpenOutline } from "@mdi/js";
 import Icon from "@mdi/react";
+import { IconEdit, IconX } from "@tabler/icons-react";
 
 interface PromotionDetailsDialogProps {
   isOpen: boolean;
@@ -334,10 +335,12 @@ export function PromotionDetailsDialog({
               onClick={onClose}
               disabled={isPending}
             >
-              Hủy
+              <IconX className="w-4 h-4" />
+              Đóng
             </Button>
             <Button type="submit" disabled={isPending}>
-              {isPending ? "Đang cập nhật..." : "Cập nhật khuyến mãi"}
+              <IconEdit className="w-4 h-4" />
+              {isPending ? "Đang cập nhật..." : "Cập nhật"}
             </Button>
           </div>
         </form>

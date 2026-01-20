@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { motion } from "framer-motion";
-import { IconDeviceFloppy, IconPencilDollar } from "@tabler/icons-react";
+import { IconDeviceFloppy, IconPencilDollar, IconX } from "@tabler/icons-react";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { getVehicleIcon } from "@/lib/vehicle-helpers";
@@ -198,7 +198,7 @@ export default function PricingPage() {
 
                     <div className="flex flex-col gap-2 pt-2">
                       <Button type="submit" disabled={isPending}>
-                        <IconDeviceFloppy className="w-4 h-4 mr-2" />
+                        <IconDeviceFloppy className="w-4 h-4" />
                         {isPending ? "Đang lưu..." : "Lưu thay đổi"}
                       </Button>
                       <Button
@@ -207,7 +207,8 @@ export default function PricingPage() {
                         onClick={handleCancel}
                         disabled={isPending}
                       >
-                        Hủy
+                        <IconX className="w-4 h-4" />
+                        Hủy chỉnh sửa
                       </Button>
                     </div>
                   </form>

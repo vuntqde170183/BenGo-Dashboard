@@ -102,7 +102,7 @@ function MetricCard({
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div className="flex-1">
-                <p className="text-sm font-medium text-gray-600">{title}</p>
+                <p className="text-sm font-medium text-neutral-400">{title}</p>
                 <h3 className="text-2xl font-bold mt-2">{value}</h3>
                 {subtitle && (
                   <p className="text-sm text-neutral-200 mt-1">{subtitle}</p>

@@ -109,8 +109,8 @@ export function PromotionCard({ promo, onEdit, onDelete }: PromotionCardProps) {
           className="flex-1"
           onClick={() => onEdit(promo)}
         >
-          <IconEdit className="w-4 h-4 mr-1" />
-          Sửa
+          <IconEdit className="w-4 h-4" />
+          Cập nhật khuyến mãi
         </Button>
         <Button
           variant="destructive"

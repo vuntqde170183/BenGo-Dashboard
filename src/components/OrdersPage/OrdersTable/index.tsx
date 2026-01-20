@@ -98,7 +98,7 @@ export function OrdersTable({
                     </p>
                   </div>
                 ) : (
-                  <span className="text-gray-400">Chưa có</span>
+                  <span className="text-neutral-400">Chưa có</span>
                 )}
               </TableCell>
               <TableCell>

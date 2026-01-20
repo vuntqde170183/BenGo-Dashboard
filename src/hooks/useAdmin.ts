@@ -141,6 +141,20 @@ export const useCancelOrder = () => {
   });
 };
 
+export const useUpdateOrderStatus = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string; data: { status?: string; paymentStatus?: string } }) => adminOrderApi.updateOrderStatus(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "orders"] });
+      toast.success("Trạng thái đơn hàng đã được cập nhật");
+    },
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.message || "Cập nhật trạng thái thất bại");
+    }
+  });
+};
+
 // Pricing Config
 export const usePricing = () => {
   return useQuery({

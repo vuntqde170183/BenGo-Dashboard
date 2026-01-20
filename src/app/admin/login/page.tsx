@@ -164,7 +164,7 @@ export default function LoginPage() {
                     value={formData.email}
                     onChange={handleInputChange}
                     disabled={isPending}
-                    className="border-0 border-b-2 border-gray-200 !bg-white rounded-none px-0 focus-visible:ring-0 focus-visible:border-[#41C651] !text-gray-800 placeholder:text-gray-600"
+                    className="border-0 border-b-2 border-gray-200 !bg-white rounded-none px-0 focus-visible:ring-0 focus-visible:border-[#41C651] !text-gray-800 placeholder:text-neutral-400"
                   />
                   {errors.email && (
                     <p className="text-red-500 text-sm mt-1">{errors.email}</p>
@@ -186,13 +186,13 @@ export default function LoginPage() {
                       value={formData.password}
                       onChange={handleInputChange}
                       disabled={isPending}
-                      className="border-0 border-b-2 border-gray-200 !bg-white rounded-none px-0 pr-10 focus-visible:ring-0 focus-visible:border-primary !text-gray-800 placeholder:text-gray-600"
+                      className="border-0 border-b-2 border-gray-200 !bg-white rounded-none px-0 pr-10 focus-visible:ring-0 focus-visible:border-primary !text-gray-800 placeholder:text-neutral-400"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
                       disabled={isPending}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-400"
                     >
                       {showPassword ? (
                         <EyeSlash size="20" color="currentColor" />
@@ -216,7 +216,7 @@ export default function LoginPage() {
                       className="w-4 h-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500 cursor-pointer"
                       disabled={isPending}
                     />
-                    <span className="text-sm text-gray-600 group-hover:text-gray-900 transition-colors">
+                    <span className="text-sm text-neutral-400 group-hover:text-gray-900 transition-colors">
                       Ghi nhớ đăng nhập
                     </span>
                   </label>

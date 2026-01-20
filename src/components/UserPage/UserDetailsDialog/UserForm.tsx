@@ -22,6 +22,7 @@ import {
   IconTruck,
   IconId,
   IconBuildingBank,
+  IconUserPlus,
 } from "@tabler/icons-react";
 import { useState } from "react";
 import { useUploadFile } from "@/hooks/useUpload";
@@ -661,7 +662,7 @@ export const UserForm = ({
             </>
           ) : (
             <>
-              <IconCheck className="h-4 w-4" />
+              <IconUserPlus className="h-4 w-4" />
               {mode === "create" ? "Tạo người dùng" : "Lưu thay đổi"}
             </>
           )}

@@ -24,7 +24,7 @@ import { UserDetailsDialog } from "@/components/UserPage/UserDetailsDialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Pagination } from "@/components/ui/pagination";
 import { motion } from "framer-motion";
-import { IconSearch } from "@tabler/icons-react";
+import { IconSearch, IconUserPlus } from "@tabler/icons-react";
 import { DeleteDialog } from "@/components/ui/delete-dialog";
 import Icon from "@mdi/react";
 import { mdiAccountPlusOutline } from "@mdi/js";
@@ -142,7 +142,7 @@ export default function UserPage() {
               </Select>
               <Button onClick={() => setIsCreateDialogOpen(true)}>
                 Thêm người dùng
-                <Icon path={mdiAccountPlusOutline} size={0.8} />
+                <IconUserPlus className="h-4 w-4" />
               </Button>
             </div>
           </div>

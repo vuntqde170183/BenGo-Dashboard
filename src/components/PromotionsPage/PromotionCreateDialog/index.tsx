@@ -1,5 +1,4 @@
 import { useCreatePromotion } from "@/hooks/useAdmin";
-import { useUploadImage } from "@/hooks/useUpload";
 import {
   Dialog,
   DialogContent,
@@ -17,9 +16,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useForm } from "react-hook-form";
-import { useState } from "react";
-import { IconUpload } from "@tabler/icons-react";
+import { useForm, Controller } from "react-hook-form";
+import { Checkbox } from "@/components/ui/checkbox";
+import { mdiGiftOutline } from "@mdi/js";
+import Icon from "@mdi/react";
+import { IconPlus, IconX } from "@tabler/icons-react";
 
 interface PromotionCreateDialogProps {
   isOpen: boolean;
@@ -27,15 +28,19 @@ interface PromotionCreateDialogProps {
   onSuccess: () => void;
 }
 
+const VEHICLE_TYPES = [
+  { id: "MOTORCYCLE", label: "Xe máy" },
+  { id: "CAR", label: "Ô tô" },
+  { id: "VAN", label: "Xe tải nhỏ (Van)" },
+  { id: "TRUCK", label: "Xe tải" },
+];
+
 export function PromotionCreateDialog({
   isOpen,
   onClose,
   onSuccess,
 }: PromotionCreateDialogProps) {
   const { mutate: createPromotion, isPending } = useCreatePromotion();
-  const { mutate: uploadImage, isPending: isUploading } = useUploadImage();
-  const [imagePreview, setImagePreview] = useState<string>("");
-  const [imageUrl, setImageUrl] = useState<string>("");
 
   const {
     register,
@@ -43,50 +48,31 @@ export function PromotionCreateDialog({
     reset,
     setValue,
     watch,
+    control,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      discountType: "PERCENTAGE",
+      applicableVehicles: ["MOTORCYCLE", "CAR", "VAN", "TRUCK"],
+    },
+  });
 
-  const discountType = watch("discountType", "PERCENTAGE");
-
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    // Preview
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setImagePreview(reader.result as string);
-    };
-    reader.readAsDataURL(file);
-
-    // Upload
-    const formData = new FormData();
-    formData.append("image", file);
-
-    uploadImage(formData, {
-      onSuccess: (response: any) => {
-        setImageUrl(response.data.url);
-      },
-    });
-  };
+  const discountType = watch("discountType");
 
   const onSubmit = (data: any) => {
     const promotionData = {
       ...data,
-      imageUrl: imageUrl || undefined,
       discountValue: parseFloat(data.discountValue),
       minOrderValue: parseFloat(data.minOrderValue || 0),
       maxDiscountAmount: data.maxDiscountAmount
         ? parseFloat(data.maxDiscountAmount)
-        : undefined,
+        : null,
       usageLimit: data.usageLimit ? parseInt(data.usageLimit) : undefined,
     };
 
     createPromotion(promotionData, {
       onSuccess: () => {
         reset();
-        setImagePreview("");
-        setImageUrl("");
         onSuccess();
         onClose();
       },
@@ -95,29 +81,30 @@ export function PromotionCreateDialog({
 
   const handleClose = () => {
     reset();
-    setImagePreview("");
-    setImageUrl("");
     onClose();
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent size="medium">
+      <DialogContent size="medium" className="max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Create New Promotion</DialogTitle>
+          <DialogTitle className="flex items-center gap-2 text-primary">
+            <Icon path={mdiGiftOutline} size={0.8} />
+            Tạo khuyến mãi mới
+          </DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 pt-4">
           {/* Code & Title */}
           <div className="grid grid-cols-2 gap-4">
             <div>
               <Label htmlFor="code">
-                Promotion Code <span className="text-red-500">*</span>
+                Mã khuyến mãi <span className="text-red-500">*</span>
               </Label>
               <Input
                 id="code"
-                placeholder="SUMMER2024"
-                {...register("code", { required: "Code is required" })}
+                placeholder="KHUYENMAI2024"
+                {...register("code", { required: "Vui lòng nhập mã" })}
                 className="uppercase"
               />
               {errors.code && (
@@ -128,12 +115,12 @@ export function PromotionCreateDialog({
             </div>
             <div>
               <Label htmlFor="title">
-                Title <span className="text-red-500">*</span>
+                Tiêu đề <span className="text-red-500">*</span>
               </Label>
               <Input
                 id="title"
-                placeholder="Summer Sale"
-                {...register("title", { required: "Title is required" })}
+                placeholder="Ví dụ: Giảm giá hè"
+                {...register("title", { required: "Vui lòng nhập tiêu đề" })}
               />
               {errors.title && (
                 <p className="text-sm text-red-500 mt-1">
@@ -145,10 +132,10 @@ export function PromotionCreateDialog({
 
           {/* Description */}
           <div>
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="description">Mô tả</Label>
             <Textarea
               id="description"
-              placeholder="Describe your promotion..."
+              placeholder="Mô tả chi tiết về chương trình khuyến mãi..."
               {...register("description")}
               rows={3}
             />
@@ -158,24 +145,26 @@ export function PromotionCreateDialog({
           <div className="grid grid-cols-2 gap-4">
             <div>
               <Label htmlFor="discountType">
-                Discount Type <span className="text-red-500">*</span>
+                Loại giảm giá <span className="text-red-500">*</span>
               </Label>
               <Select
                 onValueChange={(value) => setValue("discountType", value)}
                 defaultValue="PERCENTAGE"
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Select type" />
+                  <SelectValue placeholder="Chọn loại" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="PERCENTAGE">Percentage (%)</SelectItem>
-                  <SelectItem value="FIXED">Fixed Amount (VND)</SelectItem>
+                  <SelectItem value="PERCENTAGE">Phần trăm (%)</SelectItem>
+                  <SelectItem value="FIXED_AMOUNT">
+                    Số tiền cố định (VNĐ)
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div>
               <Label htmlFor="discountValue">
-                Discount Value <span className="text-red-500">*</span>
+                Giá trị giảm giá <span className="text-red-500">*</span>
               </Label>
               <Input
                 id="discountValue"
@@ -184,8 +173,8 @@ export function PromotionCreateDialog({
                 max={discountType === "PERCENTAGE" ? "100" : undefined}
                 placeholder={discountType === "PERCENTAGE" ? "10" : "50000"}
                 {...register("discountValue", {
-                  required: "Discount value is required",
-                  min: { value: 0, message: "Must be positive" },
+                  required: "Vui lòng nhập giá trị giảm giá",
+                  min: { value: 0, message: "Phải là số dương" },
                 })}
               />
               {errors.discountValue && (
@@ -199,7 +188,7 @@ export function PromotionCreateDialog({
           {/* Min Order & Max Discount */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="minOrderValue">Minimum Order Value (VND)</Label>
+              <Label htmlFor="minOrderValue">Giá trị đơn tối thiểu (VNĐ)</Label>
               <Input
                 id="minOrderValue"
                 type="number"
@@ -209,16 +198,16 @@ export function PromotionCreateDialog({
               />
             </div>
             <div>
-              <Label htmlFor="maxDiscountAmount">Max Discount Cap (VND)</Label>
+              <Label htmlFor="maxDiscountAmount">Mức giảm tối đa (VNĐ)</Label>
               <Input
                 id="maxDiscountAmount"
                 type="number"
                 step="1000"
-                placeholder="Optional"
+                placeholder="Không bắt buộc"
                 {...register("maxDiscountAmount")}
               />
-              <p className="text-sm text-neutral-200 mt-1">
-                Leave empty for no limit
+              <p className="text-sm text-neutral-400 mt-1">
+                Để trống nếu không giới hạn
               </p>
             </div>
           </div>
@@ -227,13 +216,13 @@ export function PromotionCreateDialog({
           <div className="grid grid-cols-2 gap-4">
             <div>
               <Label htmlFor="startDate">
-                Start Date <span className="text-red-500">*</span>
+                Ngày bắt đầu <span className="text-red-500">*</span>
               </Label>
               <Input
                 id="startDate"
                 type="datetime-local"
                 {...register("startDate", {
-                  required: "Start date is required",
+                  required: "Vui lòng chọn ngày bắt đầu",
                 })}
               />
               {errors.startDate && (
@@ -244,12 +233,14 @@ export function PromotionCreateDialog({
             </div>
             <div>
               <Label htmlFor="endDate">
-                End Date <span className="text-red-500">*</span>
+                Ngày kết thúc <span className="text-red-500">*</span>
               </Label>
               <Input
                 id="endDate"
                 type="datetime-local"
-                {...register("endDate", { required: "End date is required" })}
+                {...register("endDate", {
+                  required: "Vui lòng chọn ngày kết thúc",
+                })}
               />
               {errors.endDate && (
                 <p className="text-sm text-red-500 mt-1">
@@ -259,77 +250,67 @@ export function PromotionCreateDialog({
             </div>
           </div>
 
-          {/* Usage Limit */}
+          {/* Applicable Vehicles */}
           <div>
-            <Label htmlFor="usageLimit">Usage Limit (Total Uses)</Label>
-            <Input
-              id="usageLimit"
-              type="number"
-              placeholder="Leave empty for unlimited"
-              {...register("usageLimit")}
-            />
-            <p className="text-sm text-neutral-200 mt-1">
-              How many times this code can be used in total
-            </p>
+            <Label className="mb-2 block">Loại xe áp dụng</Label>
+            <div className="grid grid-cols-2 gap-2 p-3 rounded-lg border border-darkBorderV1 bg-darkBackgroundV1/30">
+              {VEHICLE_TYPES.map((type) => (
+                <div key={type.id} className="flex items-center space-x-2">
+                  <Controller
+                    name="applicableVehicles"
+                    control={control}
+                    render={({ field }) => (
+                      <Checkbox
+                        id={`create-vehicle-${type.id}`}
+                        checked={field.value?.includes(type.id)}
+                        onCheckedChange={(checked) => {
+                          const current = field.value || [];
+                          const updated = checked
+                            ? [...current, type.id]
+                            : current.filter((v: string) => v !== type.id);
+                          field.onChange(updated);
+                        }}
+                      />
+                    )}
+                  />
+                  <Label
+                    htmlFor={`create-vehicle-${type.id}`}
+                    className="text-sm font-normal cursor-pointer text-neutral-200"
+                  >
+                    {type.label}
+                  </Label>
+                </div>
+              ))}
+            </div>
           </div>
 
-          {/* Image Upload */}
+          {/* Usage Limit */}
           <div>
-            <Label htmlFor="image">Promotion Image</Label>
-            <div className="mt-2">
-              {imagePreview ? (
-                <div className="relative">
-                  <img
-                    src={imagePreview}
-                    alt="Preview"
-                    className="w-full h-48 object-cover rounded border"
-                  />
-                  <Button
-                    type="button"
-                    variant="destructive"
-                    size="sm"
-                    className="absolute top-2 right-2"
-                    onClick={() => {
-                      setImagePreview("");
-                      setImageUrl("");
-                    }}
-                  >
-                    Remove
-                  </Button>
-                </div>
-              ) : (
-                <label
-                  htmlFor="image"
-                  className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded cursor-pointer hover:bg-gray-50"
-                >
-                  <IconUpload className="w-8 h-8 text-gray-400" />
-                  <p className="text-sm text-neutral-200 mt-2">
-                    Click to upload image
-                  </p>
-                  <input
-                    id="image"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                    className="hidden"
-                  />
-                </label>
-              )}
+            <div className="space-y-2">
+              <Label htmlFor="usageLimit">Giới hạn lượt dùng (Tổng cộng)</Label>
+              <Input
+                id="usageLimit"
+                type="number"
+                placeholder="Để trống nếu không giới hạn"
+                {...register("usageLimit")}
+              />
             </div>
           </div>
 
           {/* Actions */}
-          <div className="flex justify-end gap-3 pt-4">
+          <div className="flex justify-end gap-3 pt-6 border-t border-darkBorderV1">
             <Button
               type="button"
               variant="outline"
               onClick={handleClose}
-              disabled={isPending || isUploading}
+              disabled={isPending}
             >
-              Cancel
+              <IconX className="w-4 h-4" />
+              Đóng
             </Button>
-            <Button type="submit" disabled={isPending || isUploading}>
-              {isPending ? "Creating..." : "Create Promotion"}
+            <Button type="submit" disabled={isPending}>
+              <IconPlus className="w-4 h-4" />
+              {isPending ? "Đang tạo..." : "Tạo khuyến mãi"}
             </Button>
           </div>
         </form>

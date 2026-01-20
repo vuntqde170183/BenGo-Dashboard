@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useGetUserById, useUpdateUser } from "@/hooks/useAdmin";
 import { IUpdateUserBody } from "@/interface/auth";
 import { toast } from "react-toastify";
-import { IconEdit } from "@tabler/icons-react";
+import { IconX, IconEdit } from "@tabler/icons-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Dialog,
@@ -261,6 +261,7 @@ export const UserDetailsDialog = ({
                 {userData?.data && <UserTable user={userData.data} />}
                 <div className="flex gap-2 justify-end">
                   <Button variant="outline" onClick={handleClose}>
+                    <IconX className="h-4 w-4" />
                     Đóng
                   </Button>
                   <Button onClick={handleEdit}>
