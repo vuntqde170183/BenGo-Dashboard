@@ -39,6 +39,9 @@ const AdminDrivers = lazy(() =>
 const AdminOrders = lazy(() =>
   import("@/app/admin/orders/page").then((m) => ({ default: m.default })),
 );
+const AdminPricing = lazy(() =>
+  import("@/app/admin/pricing/page").then((m) => ({ default: m.default })),
+);
 
 // Wrapper component for Suspense
 const SuspenseWrapper = ({ children }: { children: React.ReactNode }) => (
@@ -110,6 +113,14 @@ export const router = createBrowserRouter([
             element: (
               <SuspenseWrapper>
                 <AdminOrders />
+              </SuspenseWrapper>
+            ),
+          },
+          {
+            path: "pricing",
+            element: (
+              <SuspenseWrapper>
+                <AdminPricing />
               </SuspenseWrapper>
             ),
           },

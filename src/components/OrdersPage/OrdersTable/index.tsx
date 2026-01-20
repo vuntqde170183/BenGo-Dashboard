@@ -6,7 +6,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { formatCurrency, formatDate } from "@/lib/format";
@@ -64,7 +63,11 @@ export function OrdersTable({
         </TableHeader>
         <TableBody>
           {orders.map((order, index) => (
-            <TableRow key={order._id}>
+            <TableRow
+              key={order._id}
+              className="cursor-pointer hover:bg-slate-50/50 dark:hover:bg-darkBorderV1/50 transition-colors"
+              onClick={() => onViewDetails(order._id)}
+            >
               <TableCell className="font-medium">
                 {(currentPage - 1) * pageSize + index + 1}
               </TableCell>
@@ -81,7 +84,7 @@ export function OrdersTable({
                   <p className="font-medium">
                     {order.customerId?.name || "N/A"}
                   </p>
-                  <p className="text-sm text-neutral-200">
+                  <p className="text-sm text-neutral-400">
                     {order.customerId?.phone}
                   </p>
                 </div>
