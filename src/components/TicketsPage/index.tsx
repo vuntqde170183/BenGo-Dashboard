@@ -67,7 +67,7 @@ export default function TicketsPage() {
   const displayTickets = ticketsData?.data || [];
 
   return (
-    <div className="space-y-6 bg-darkCardV1 p-4 rounded-2xl border border-darkBorderV1">
+    <div className="space-y-4 bg-darkCardV1 p-4 rounded-2xl border border-darkBorderV1">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>

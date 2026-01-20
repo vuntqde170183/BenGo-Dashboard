@@ -170,7 +170,7 @@ export const UserForm = ({
   const role = formData.role;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
         {mode === "create" && !hideRoleSelect && (
           <div className="space-y-2">
@@ -320,7 +320,7 @@ export const UserForm = ({
                 </span>
               </div>
             </AccordionTrigger>
-            <AccordionContent className="pt-4 space-y-6">
+            <AccordionContent className="pt-4 space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="vehicleType" className="text-neutral-400">
@@ -481,7 +481,7 @@ export const UserForm = ({
                 </span>
               </div>
             </AccordionTrigger>
-            <AccordionContent className="pt-4 space-y-6">
+            <AccordionContent className="pt-4 space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="identityNumber" className="text-neutral-400">
                   Số CCCD/CMND

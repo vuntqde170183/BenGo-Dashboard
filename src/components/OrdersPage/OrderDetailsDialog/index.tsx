@@ -28,13 +28,21 @@ import Icon from "@mdi/react";
 import { mdiLocationEnter, mdiLocationExit, mdiPackageVariant } from "@mdi/js";
 import { useEffect, useState, useMemo } from "react";
 import axios from "axios";
+import { getVehicleIcon } from "@/lib/vehicle-helpers";
 
 interface OrderDetailsDialogProps {
   isOpen: boolean;
   onClose: () => void;
   orderId: string;
 }
-
+const getVehicleTypeLabel = (type: string) => {
+  const typeMap: Record<string, string> = {
+    BIKE: "Xe máy",
+    VAN: "Xe tải nhỏ",
+    TRUCK: "Xe tải",
+  };
+  return typeMap[type] || type;
+};
 export function OrderDetailsDialog({
   isOpen,
   onClose,
@@ -137,7 +145,7 @@ export function OrderDetailsDialog({
             <p>Không tìm thấy thông tin chi tiết đơn hàng</p>
           </div>
         ) : (
-          <div className="space-y-6 overflow-y-auto pr-2 custom-scrollbar pb-6">
+          <div className="space-y-4 overflow-y-auto pr-2 custom-scrollbar pb-6">
             {/* Map & Route Section */}
             <Card className="overflow-hidden border-darkBorderV1 bg-darkBackgroundV1/30">
               <CardContent className="p-0 relative">
@@ -170,16 +178,16 @@ export function OrderDetailsDialog({
                   </button>
                 </div>
 
-                <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-6 bg-darkCardV1/40">
+                <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4 bg-darkCardV1/40">
                   <div className="flex items-start gap-3">
                     <div className="p-2.5 rounded-xl bg-green-500/10 text-green-500 mt-1 shadow-inner">
                       <Icon path={mdiLocationExit} size={0.8} />
                     </div>
                     <div>
-                      <p className="text-xs uppercase font-bold text-neutral-400 tracking-wider mb-1">
+                      <p className="text-xs uppercase font-bold text-white tracking-wider mb-1">
                         Địa chỉ đón (A)
                       </p>
-                      <p className="font-semibold text-sm text-white leading-relaxed">
+                      <p className="font-semibold text-sm text-neutral-400 leading-relaxed">
                         {order.pickup?.address}
                       </p>
                       <p className="text-xs text-neutral-400 mt-1 font-mono">
@@ -193,10 +201,10 @@ export function OrderDetailsDialog({
                       <Icon path={mdiLocationEnter} size={0.8} />
                     </div>
                     <div>
-                      <p className="text-xs uppercase font-bold text-neutral-400 tracking-wider mb-1">
+                      <p className="text-xs uppercase font-bold text-white tracking-wider mb-1">
                         Địa chỉ trả (B)
                       </p>
-                      <p className="font-semibold text-sm text-white leading-relaxed">
+                      <p className="font-semibold text-sm text-neutral-400 leading-relaxed">
                         {order.dropoff?.address}
                       </p>
                       <p className="text-xs text-neutral-400 mt-1 font-mono">
@@ -209,9 +217,9 @@ export function OrderDetailsDialog({
               </CardContent>
             </Card>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Stakeholders Info */}
-              <div className="space-y-6">
+              <div className="space-y-4">
                 {/* Customer Info */}
                 <Card className="border-darkBorderV1 bg-darkBackgroundV1/20 overflow-hidden">
                   <CardHeader className="border-b border-b-darkBorderV1 py-3">
@@ -274,7 +282,7 @@ export function OrderDetailsDialog({
                   <CardContent className="pt-4 px-4 pb-4">
                     {order.driverId ? (
                       <div className="flex items-center gap-4">
-                        <Avatar className="w-14 h-14 ring-2 ring-primary/20 ring-offset-2 ring-offset-darkBackgroundV1">
+                        <Avatar className="w-10 h-10 ring-2 ring-primary/20 ring-offset-2 ring-offset-darkBackgroundV1">
                           <AvatarImage src={order.driverId?.avatar} />
                           <AvatarFallback className="bg-primary/10 text-primary font-bold">
                             {order.driverId?.name?.[0]}
@@ -310,7 +318,7 @@ export function OrderDetailsDialog({
               </div>
 
               {/* Order Summary & Goods */}
-              <div className="space-y-6">
+              <div className="space-y-4">
                 <Card className="border-darkBorderV1 bg-darkBackgroundV1/20 overflow-hidden">
                   <CardHeader className="border-b border-b-darkBorderV1 py-3">
                     <div className="flex items-center gap-2">
@@ -321,42 +329,48 @@ export function OrderDetailsDialog({
                     </div>
                   </CardHeader>
                   <CardContent className="p-4 space-y-4">
-                    <div className="grid grid-cols-2 gap-y-4">
+                    <div className="grid grid-cols-2 gap-2">
                       <div className="space-y-1">
-                        <p className="text-xs text-neutral-400 uppercase font-bold tracking-wider">
+                        <p className="text-xs text-white uppercase font-bold tracking-wider">
                           Loại xe
                         </p>
-                        <Badge
-                          variant="outline"
-                          className="text-white border-darkBorderV1 rounded-md bg-white/5"
-                        >
-                          {order.vehicleType}
-                        </Badge>
+                        <div className="flex items-center gap-1 text-neutral-400">
+                          {getVehicleIcon(order.vehicleType)}
+                          <span>{getVehicleTypeLabel(order.vehicleType)}</span>
+                        </div>
                       </div>
                       <div className="space-y-1">
-                        <p className="text-xs text-neutral-400 uppercase font-bold tracking-wider">
+                        <p className="text-xs text-white uppercase font-bold tracking-wider">
                           Khoảng cách
                         </p>
-                        <p className="text-sm font-medium text-white">
+                        <p className="text-sm font-medium text-neutral-400">
                           {order.distanceKm?.toFixed(2)} km
                         </p>
                       </div>
                       <div className="space-y-1">
-                        <p className="text-xs text-neutral-400 uppercase font-bold tracking-wider">
+                        <p className="text-xs text-white uppercase font-bold tracking-wider">
                           Thanh toán
                         </p>
-                        <div className="flex flex-col gap-1">
-                          {getOrderStatusBadge(order.paymentMethod)}
-                          <div className="mt-1">
+                        <div className="flex flex-col gap-2">
+                          <div className="flex items-center gap-1">
+                            <span className="text-sm text-neutral-400">
+                              Phương thức:
+                            </span>
+                            {getOrderStatusBadge(order.paymentMethod)}
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <span className="text-sm text-neutral-400">
+                              Trạng thái:
+                            </span>
                             {getOrderStatusBadge(order.paymentStatus)}
                           </div>
                         </div>
                       </div>
                       <div className="space-y-1">
-                        <p className="text-xs text-neutral-400 uppercase font-bold tracking-wider">
+                        <p className="text-xs text-white uppercase font-bold tracking-wider">
                           Ngày tạo
                         </p>
-                        <p className="text-sm font-medium text-white">
+                        <p className="text-sm font-medium text-neutral-400">
                           {formatDate(order.createdAt)}
                         </p>
                       </div>
@@ -373,7 +387,7 @@ export function OrderDetailsDialog({
                           Tổng cộng
                         </span>
                       </div>
-                      <span className="text-2xl font-black text-primary">
+                      <span className="text-2xl font-bold text-primary">
                         {formatCurrency(order.totalPrice)}
                       </span>
                     </div>

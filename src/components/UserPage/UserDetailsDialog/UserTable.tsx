@@ -27,7 +27,7 @@ export const UserTable = ({ user }: UserTableProps) => {
   const profile = user.role === "DRIVER" ? user.driverProfile : {};
 
   return (
-    <div className="space-y-6 max-h-[70vh] overflow-y-auto pr-2 custom-scrollbar">
+    <div className="space-y-4 max-h-[70vh] overflow-y-auto pr-2 custom-scrollbar">
       {/* Basic Information */}
       <Card>
         <CardHeader className="border-b border-b-darkBorderV1 py-3">
@@ -127,7 +127,7 @@ export const UserTable = ({ user }: UserTableProps) => {
               </Table>
 
               {/* Document Images */}
-              <div className="mt-6 space-y-6">
+              <div className="mt-6 space-y-4">
                 <div>
                   <h4 className="text-sm font-semibold mb-3 text-primary flex items-center gap-2">
                     <IconShieldCheck className="h-4 w-4 text-primary" /> Ảnh
