@@ -40,20 +40,6 @@ export const getDashboardMenuItems = (): MenuItem[] => [
 		name: "Cấu hình giá",
 		path: "/admin/pricing",
 		icon: mdiCurrencyUsd,
-		subMenu: [
-			{
-				id: "pricing-config",
-				name: "Cấu hình",
-				path: "/admin/pricing",
-				icon: mdiCurrencyUsd,
-			},
-			{
-				id: "revenue-reports",
-				name: "Báo cáo doanh thu",
-				path: "/admin/reports",
-				icon: mdiCurrencyUsd,
-			},
-		],
 	},
 	{
 		id: "promotions",

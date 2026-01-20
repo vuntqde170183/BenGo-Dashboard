@@ -152,10 +152,11 @@ export const usePricing = () => {
 export const useUpdatePricing = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data: any) => adminPricingApi.updatePricing(data),
+    mutationFn: ({ vehicleType, data }: { vehicleType: string; data: any }) =>
+      adminPricingApi.updatePricing(vehicleType, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin", "pricing"] });
-      toast.success("Pricing configuration updated");
+      toast.success("Cập nhật cấu hình giá thành công");
     },
   });
 };

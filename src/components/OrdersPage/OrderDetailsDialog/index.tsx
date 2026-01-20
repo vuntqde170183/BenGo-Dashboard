@@ -6,7 +6,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -93,12 +92,11 @@ export function OrderDetailsDialog({
     const pickup = `${order.pickup.lng},${order.pickup.lat}`;
     const dropoff = `${order.dropoff.lng},${order.dropoff.lat}`;
 
-    // Nếu có lộ trình thực (Route), dùng nó. Nếu không (hoặc đang load), dùng đường thẳng tạm thời
     const polyline = routeGeometry
-      ? `polyline:${routeGeometry};linecolor:%233b82f6;linewidth:4;lineopacity:0.8`
-      : `polyline:${pickup},${dropoff};linecolor:%233b82f6;linewidth:2;lineopacity:0.5`;
+      ? `&geometry=polyline:${routeGeometry};linecolor:%233b82f6;linewidth:4;lineopacity:0.8`
+      : "";
 
-    return `https://maps.geoapify.com/v1/staticmap?style=osm-bright-smooth&width=800&height=400&marker=lonlat:${pickup};color:%234ade80;size:medium;text:A|lonlat:${dropoff};color:%23f87171;size:medium;text:B&geometry=${polyline}&apiKey=${apiKey}`;
+    return `https://maps.geoapify.com/v1/staticmap?style=osm-bright-smooth&width=800&height=400&marker=lonlat:${pickup};color:%234ade80;size:medium;text:A|lonlat:${dropoff};color:%23f87171;size:medium;text:B${polyline}&apiKey=${apiKey}`;
   }, [order?.pickup, order?.dropoff, routeGeometry]);
 
   const openInGoogleMaps = () => {
@@ -118,7 +116,7 @@ export function OrderDetailsDialog({
         className="bg-darkCardV1 border-darkBorderV1 max-h-[95vh]"
       >
         <DialogHeader>
-          <DialogTitle className="flex items-center justify-between w-full text-primary">
+          <DialogTitle className="flex items-center justify-start w-full text-primary">
             <div className="flex items-center gap-2">
               <Icon path={mdiPackageVariant} size={0.8} />
               <span>Chi tiết đơn hàng #{order?._id?.slice(-8)}</span>
@@ -225,7 +223,7 @@ export function OrderDetailsDialog({
                   <CardHeader className="border-b border-b-darkBorderV1 py-3">
                     <div className="flex items-center gap-2">
                       <IconUserSquareRounded className="h-5 w-5 text-primary" />
-                      <span className="font-semibold text-primary uppercase tracking-tight">
+                      <span className="font-semibold text-primary">
                         Khách hàng
                       </span>
                     </div>
@@ -233,9 +231,18 @@ export function OrderDetailsDialog({
                   <CardContent className="pt-4 px-4 pb-4">
                     <div className="flex items-center gap-4">
                       <Avatar className="w-10 h-10 ring-2 ring-primary/20 ring-offset-2 ring-offset-darkBackgroundV1">
-                        <AvatarImage src={order.customerId?.avatar} />
+                        <AvatarImage
+                          src={
+                            order.customerId?.avatar ||
+                            `https://api.dicebear.com/7.x/avataaars/svg?seed=${order.customerId?.name}`
+                          }
+                        />
                         <AvatarFallback className="bg-primary/10 text-primary font-bold">
-                          {order.customerId?.name?.[0]}
+                          <img
+                            src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${order.customerId?.name}`}
+                            alt={order.customerId?.name}
+                            className="w-full h-full"
+                          />
                         </AvatarFallback>
                       </Avatar>
                       <div className="space-y-2">
@@ -274,18 +281,25 @@ export function OrderDetailsDialog({
                   <CardHeader className="border-b border-b-darkBorderV1 py-3">
                     <div className="flex items-center gap-2">
                       <IconTruck className="h-5 w-5 text-primary" />
-                      <span className="font-semibold text-primary uppercase tracking-tight">
-                        Tài xế
-                      </span>
+                      <span className="font-semibold text-primary">Tài xế</span>
                     </div>
                   </CardHeader>
                   <CardContent className="pt-4 px-4 pb-4">
                     {order.driverId ? (
                       <div className="flex items-center gap-4">
                         <Avatar className="w-10 h-10 ring-2 ring-primary/20 ring-offset-2 ring-offset-darkBackgroundV1">
-                          <AvatarImage src={order.driverId?.avatar} />
+                          <AvatarImage
+                            src={
+                              order.driverId?.avatar ||
+                              `https://api.dicebear.com/7.x/avataaars/svg?seed=${order.driverId?.name}`
+                            }
+                          />
                           <AvatarFallback className="bg-primary/10 text-primary font-bold">
-                            {order.driverId?.name?.[0]}
+                            <img
+                              src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${order.driverId?.name}`}
+                              alt={order.driverId?.name}
+                              className="w-full h-full"
+                            />
                           </AvatarFallback>
                         </Avatar>
                         <div className="space-y-1">
@@ -323,7 +337,7 @@ export function OrderDetailsDialog({
                   <CardHeader className="border-b border-b-darkBorderV1 py-3">
                     <div className="flex items-center gap-2">
                       <IconClipboardList className="h-5 w-5 text-primary" />
-                      <span className="font-semibold text-primary uppercase tracking-tight">
+                      <span className="font-semibold text-primary">
                         Tóm tắt đơn hàng
                       </span>
                     </div>
@@ -400,7 +414,7 @@ export function OrderDetailsDialog({
                     <CardHeader className="border-b border-b-darkBorderV1 py-3">
                       <div className="flex items-center gap-2">
                         <IconPhoto className="h-5 w-5 text-primary" />
-                        <span className="font-semibold text-primary uppercase tracking-tight">
+                        <span className="font-semibold text-primary">
                           Hình ảnh hàng hóa
                         </span>
                       </div>
@@ -437,7 +451,7 @@ export function OrderDetailsDialog({
                 <CardHeader className="border-b border-b-darkBorderV1 py-3">
                   <div className="flex items-center gap-2">
                     <IconMessage className="h-5 w-5 text-primary" />
-                    <span className="font-semibold text-primary uppercase tracking-tight">
+                    <span className="font-semibold text-primary">
                       Ghi chú từ khách hàng
                     </span>
                   </div>
