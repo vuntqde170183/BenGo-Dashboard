@@ -31,11 +31,24 @@ interface PromotionDetailsDialogProps {
 }
 
 const VEHICLE_TYPES = [
-  { id: "MOTORCYCLE", label: "Xe máy" },
-  { id: "CAR", label: "Ô tô" },
+  { id: "BIKE", label: "Xe máy" },
   { id: "VAN", label: "Xe tải nhỏ (Van)" },
   { id: "TRUCK", label: "Xe tải" },
 ];
+
+interface FormValues {
+  code: string;
+  title: string;
+  description: string;
+  discountType: string;
+  discountValue: string;
+  minOrderValue: string;
+  maxDiscountAmount: string;
+  startDate: string;
+  endDate: string;
+  applicableVehicles: string[];
+  usageLimit: string;
+}
 
 export function PromotionDetailsDialog({
   isOpen,
@@ -53,7 +66,7 @@ export function PromotionDetailsDialog({
     watch,
     control,
     formState: { errors },
-  } = useForm();
+  } = useForm<FormValues>();
 
   const discountType = watch(
     "discountType",
@@ -67,16 +80,16 @@ export function PromotionDetailsDialog({
         title: promotion.title,
         description: promotion.description,
         discountType: promotion.discountType,
-        discountValue: promotion.discountValue,
-        minOrderValue: promotion.minOrderValue,
-        maxDiscountAmount: promotion.maxDiscountAmount,
+        discountValue: promotion.discountValue?.toString() || "",
+        minOrderValue: promotion.minOrderValue?.toString() || "",
+        maxDiscountAmount: promotion.maxDiscountAmount?.toString() || "",
         startDate: promotion.startDate
           ? new Date(promotion.startDate).toISOString().slice(0, 16)
           : "",
         endDate: promotion.endDate
           ? new Date(promotion.endDate).toISOString().slice(0, 16)
           : "",
-        usageLimit: promotion.usageLimit,
+        usageLimit: promotion.usageLimit?.toString() || "",
         applicableVehicles: promotion.applicableVehicles || [],
       });
     }

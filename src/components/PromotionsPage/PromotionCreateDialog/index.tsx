@@ -29,11 +29,24 @@ interface PromotionCreateDialogProps {
 }
 
 const VEHICLE_TYPES = [
-  { id: "MOTORCYCLE", label: "Xe máy" },
-  { id: "CAR", label: "Ô tô" },
-  { id: "VAN", label: "Xe tải nhỏ (Van)" },
+  { id: "BIKE", label: "Xe máy" },
+  { id: "VAN", label: "Xe tải nhỏ" },
   { id: "TRUCK", label: "Xe tải" },
 ];
+
+interface FormValues {
+  code: string;
+  title: string;
+  description: string;
+  discountType: string;
+  discountValue: string;
+  minOrderValue: string;
+  maxDiscountAmount: string;
+  startDate: string;
+  endDate: string;
+  applicableVehicles: string[];
+  usageLimit: string;
+}
 
 export function PromotionCreateDialog({
   isOpen,
@@ -50,10 +63,19 @@ export function PromotionCreateDialog({
     watch,
     control,
     formState: { errors },
-  } = useForm({
+  } = useForm<FormValues>({
     defaultValues: {
+      code: "",
+      title: "",
+      description: "",
       discountType: "PERCENTAGE",
-      applicableVehicles: ["MOTORCYCLE", "CAR", "VAN", "TRUCK"],
+      discountValue: "",
+      minOrderValue: "",
+      maxDiscountAmount: "",
+      startDate: "",
+      endDate: "",
+      applicableVehicles: ["BIKE", "VAN", "TRUCK"],
+      usageLimit: "",
     },
   });
 
