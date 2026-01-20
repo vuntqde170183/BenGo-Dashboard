@@ -18,7 +18,7 @@ import {
   IconUpload,
   IconTrash,
   IconPlus,
-  IconUser,
+  IconUserSquareRounded,
   IconTruck,
   IconId,
   IconBuildingBank,
@@ -193,7 +193,7 @@ export const UserForm = ({
           </div>
         )}
         <div className="space-y-2">
-          <Label htmlFor="name" className="dark:text-neutral-200">
+          <Label htmlFor="name" className="text-neutral-400">
             Họ tên <span className="text-red-500">*</span>
           </Label>
           <Input
@@ -209,7 +209,7 @@ export const UserForm = ({
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="phone" className="dark:text-neutral-200">
+          <Label htmlFor="phone" className="text-neutral-400">
             Số điện thoại <span className="text-red-500">*</span>
           </Label>
           <Input
@@ -228,7 +228,7 @@ export const UserForm = ({
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="email" className="dark:text-neutral-200">
+          <Label htmlFor="email" className="text-neutral-400">
             Email
           </Label>
           <Input
@@ -243,7 +243,7 @@ export const UserForm = ({
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="password" className="dark:text-neutral-200">
+          <Label htmlFor="password" className="text-neutral-400">
             Mật khẩu {mode === "edit" && "(để trống nếu không đổi)"}{" "}
             <span className="text-red-500">{mode === "create" && "*"}</span>
           </Label>
@@ -275,7 +275,7 @@ export const UserForm = ({
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="walletBalance" className="dark:text-neutral-200">
+          <Label htmlFor="walletBalance" className="text-neutral-400">
             Số dư ví <span className="text-red-500">*</span>
           </Label>
           <Input
@@ -290,7 +290,7 @@ export const UserForm = ({
 
         {role === "DRIVER" && (
           <div className="space-y-2">
-            <Label htmlFor="rating" className="dark:text-neutral-200">
+            <Label htmlFor="rating" className="text-neutral-400">
               Điểm đánh giá <span className="text-red-500">*</span>
             </Label>
             <Input
@@ -323,10 +323,7 @@ export const UserForm = ({
             <AccordionContent className="pt-4 space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="space-y-2">
-                  <Label
-                    htmlFor="vehicleType"
-                    className="dark:text-neutral-200"
-                  >
+                  <Label htmlFor="vehicleType" className="text-neutral-400">
                     Loại xe <span className="text-red-500">*</span>
                   </Label>
                   <Select
@@ -346,10 +343,7 @@ export const UserForm = ({
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label
-                    htmlFor="plateNumber"
-                    className="dark:text-neutral-200"
-                  >
+                  <Label htmlFor="plateNumber" className="text-neutral-400">
                     Biển số xe <span className="text-red-500">*</span>
                   </Label>
                   <Input
@@ -368,7 +362,7 @@ export const UserForm = ({
                 <div className="space-y-2">
                   <Label
                     htmlFor="drivingLicenseNumber"
-                    className="dark:text-neutral-200"
+                    className="text-neutral-400"
                   >
                     Số bằng lái xe
                   </Label>
@@ -385,7 +379,7 @@ export const UserForm = ({
               <div className="grid grid-cols-2 gap-4">
                 {/* Ảnh Bằng lái */}
                 <div className="space-y-2 w-full">
-                  <Label className="dark:text-neutral-200">Ảnh bằng lái</Label>
+                  <Label className="text-neutral-400">Ảnh bằng lái</Label>
                   {formData.licenseImage ? (
                     <div className="relative aspect-video rounded-lg overflow-hidden border border-darkBorderV1 bg-darkBackgroundV2 group">
                       <img
@@ -428,9 +422,7 @@ export const UserForm = ({
 
                 {/* Ảnh đăng ký xe (Cà vẹt) */}
                 <div className="space-y-2 w-full">
-                  <Label className="dark:text-neutral-200">
-                    Ảnh đăng ký xe
-                  </Label>
+                  <Label className="text-neutral-400">Ảnh đăng ký xe</Label>
                   {formData.vehicleRegistrationImage ? (
                     <div className="relative aspect-video rounded-lg overflow-hidden border border-darkBorderV1 bg-darkBackgroundV2 group">
                       <img
@@ -491,10 +483,7 @@ export const UserForm = ({
             </AccordionTrigger>
             <AccordionContent className="pt-4 space-y-6">
               <div className="space-y-2">
-                <Label
-                  htmlFor="identityNumber"
-                  className="dark:text-neutral-200"
-                >
+                <Label htmlFor="identityNumber" className="text-neutral-400">
                   Số CCCD/CMND
                 </Label>
                 <Input
@@ -511,7 +500,7 @@ export const UserForm = ({
               <div className="grid grid-cols-2 md:grid-cols-2 gap-4">
                 {/* Mặt trước */}
                 <div className="space-y-2">
-                  <Label className="dark:text-neutral-200">Mặt trước</Label>
+                  <Label className="text-neutral-400">Mặt trước</Label>
                   {formData.identityFrontImage ? (
                     <div className="relative aspect-video rounded-lg overflow-hidden border border-darkBorderV1 bg-darkBackgroundV2 group">
                       <img
@@ -559,7 +548,7 @@ export const UserForm = ({
 
                 {/* Mặt sau */}
                 <div className="space-y-2">
-                  <Label className="dark:text-neutral-200">Mặt sau</Label>
+                  <Label className="text-neutral-400">Mặt sau</Label>
                   {formData.identityBackImage ? (
                     <div className="relative aspect-video rounded-lg overflow-hidden border border-darkBorderV1 bg-darkBackgroundV2 group">
                       <img
@@ -621,7 +610,7 @@ export const UserForm = ({
             <AccordionContent className="pt-4">
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 <div className="space-y-2">
-                  <Label className="dark:text-neutral-200">Tên ngân hàng</Label>
+                  <Label className="text-neutral-400">Tên ngân hàng</Label>
                   <Input
                     value={formData.bankInfo?.bankName || ""}
                     onChange={(e) =>
@@ -631,7 +620,7 @@ export const UserForm = ({
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label className="dark:text-neutral-200">Số tài khoản</Label>
+                  <Label className="text-neutral-400">Số tài khoản</Label>
                   <Input
                     value={formData.bankInfo?.accountNumber || ""}
                     onChange={(e) =>
@@ -644,7 +633,7 @@ export const UserForm = ({
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label className="dark:text-neutral-200">Chủ tài khoản</Label>
+                  <Label className="text-neutral-400">Chủ tài khoản</Label>
                   <Input
                     value={formData.bankInfo?.accountHolder || ""}
                     onChange={(e) =>

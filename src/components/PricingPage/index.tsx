@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { motion } from "framer-motion";
-import { Car, Save } from "lucide-react";
+import { IconCar, IconDeviceFloppy } from "@tabler/icons-react";
 import { useForm } from "react-hook-form";
 
 export default function PricingPage() {
@@ -77,7 +77,7 @@ export default function PricingPage() {
               <Card key={config.vehicleType || config._id}>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Car className="w-5 h-5" />
+                    <IconCar className="w-5 h-5" />
                     {config.vehicleType}
                   </CardTitle>
                 </CardHeader>
@@ -142,7 +142,7 @@ export default function PricingPage() {
               Hủy
             </Button>
             <Button type="submit" disabled={isPending}>
-              <Save className="w-4 h-4 mr-2" />
+              <IconDeviceFloppy className="w-4 h-4 mr-2" />
               {isPending ? "Đang lưu..." : "Lưu thay đổi"}
             </Button>
           </div>

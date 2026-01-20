@@ -164,7 +164,7 @@ export const DriverDetailsDialog = ({
             "Có lỗi xảy ra khi cập nhật tài xế!";
           toast.error(errorMsg);
         },
-      }
+      },
     );
   };
 
@@ -221,11 +221,13 @@ export const DriverDetailsDialog = ({
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent size="medium">
         <DialogHeader>
-          <DialogTitle>
+          <DialogTitle className="flex items-center gap-2 text-primary">
             <Icon path={mdiClipboardAccount} size={0.8} />
-            {isEditing
-              ? "Cập nhật tài xế: " + userData?.data?.name
-              : "Chi tiết tài xế"}
+            <span>
+              {isEditing
+                ? "Cập nhật tài xế: " + userData?.data?.name
+                : "Chi tiết tài xế"}
+            </span>
           </DialogTitle>
         </DialogHeader>
 

@@ -9,7 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { getRoleBadge } from "@/lib/badge-helpers";
-import { Star } from "lucide-react";
+import { IconStar } from "@tabler/icons-react";
 
 import { IUser } from "@/interface/auth";
 import { mdiTableEye, mdiTrashCanOutline } from "@mdi/js";
@@ -96,7 +96,7 @@ export const UserTable = ({
                   <TableCell>{getRoleBadge(user.role)}</TableCell>
                   <TableCell>
                     <div className="flex items-center gap-1 dark:text-neutral-200 font-medium">
-                      <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+                      <IconStar className="w-4 h-4 text-yellow-500 fill-yellow-500" />
                       {user.rating}
                     </div>
                   </TableCell>
