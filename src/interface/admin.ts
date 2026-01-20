@@ -4,6 +4,8 @@ export type VehicleType = 'BIKE' | 'VAN' | 'TRUCK';
 export type OrderStatus = 'PENDING' | 'ACCEPTED' | 'PICKED_UP' | 'DELIVERED' | 'CANCELLED';
 export type TicketStatus = 'OPEN' | 'IN_PROGRESS' | 'RESOLVED' | 'CLOSED';
 export type TicketPriority = 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT';
+export type TReportType = 'REVENUE' | 'ALL';
+export type TReportPeriod = 'WEEK' | 'MONTH' | 'YEAR';
 
 export interface IDriver {
   _id: string;
@@ -99,6 +101,28 @@ export interface IReportResponse {
   revenue: {
     daily: number;
     monthly: number;
+    total: number;
+    byVehicleType: {
+      BIKE: number;
+      VAN: number;
+      TRUCK: number;
+    };
+    chartData: Array<{
+      date: string;
+      value: number;
+    }>;
+  };
+  topDrivers: Array<{
+    driverId: string;
+    name: string;
+    revenue: number;
+    completedOrders: number;
+    rating: number;
+  }>;
+  orderStats: {
+    total: number;
+    completed: number;
+    cancelled: number;
   };
 }
 

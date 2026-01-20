@@ -1,4 +1,4 @@
-import { useDashboardOverview } from "@/hooks/useAdmin";
+import { useDashboardOverview, useAdminReports } from "@/hooks/useAdmin";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Icon } from "@mdi/react";
 import {
@@ -7,17 +7,22 @@ import {
   mdiCarSide,
   mdiCurrencyUsd,
   mdiTrendingUp,
-  mdiTicket,
   mdiChartLine,
   mdiShieldCheck,
-  mdiHistory,
-  mdiAccountCircleOutline,
+  mdiMotorbike,
+  mdiVanPassenger,
+  mdiTruck,
+  mdiStar,
+  mdiArrowRightThin,
 } from "@mdi/js";
 import { formatCurrency } from "@/lib/format";
 import { Link } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
 import { motion } from "framer-motion";
 import { Badge } from "../ui/badge";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useState } from "react";
+import { TReportPeriod, TReportType } from "@/interface/admin";
 import {
   AreaChart,
   Area,
@@ -26,52 +31,6 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-
-// Mock data for charts
-const revenueData = [
-  { name: "Mon", revenue: 4000, orders: 240 },
-  { name: "Tue", revenue: 3000, orders: 198 },
-  { name: "Wed", revenue: 2000, orders: 300 },
-  { name: "Thu", revenue: 2780, orders: 180 },
-  { name: "Fri", revenue: 1890, orders: 250 },
-  { name: "Sat", revenue: 2390, orders: 380 },
-  { name: "Sun", revenue: 3490, orders: 430 },
-];
-
-const recentActivities = [
-  {
-    id: 1,
-    user: "John Doe",
-    action: "đã hoàn thành chuyến đi",
-    time: "2 phút trước",
-    icon: mdiCarSide,
-    color: "text-blue-400",
-  },
-  {
-    id: 2,
-    user: "Alice Smith",
-    action: "đã đăng ký làm tài xế",
-    time: "15 phút trước",
-    icon: mdiAccountGroup,
-    color: "text-green-400",
-  },
-  {
-    id: 3,
-    user: "Hệ thống",
-    action: "thanh toán đã được xử lý",
-    time: "1 giờ trước",
-    icon: mdiCurrencyUsd,
-    color: "text-purple-400",
-  },
-  {
-    id: 4,
-    user: "Hỗ trợ kỹ thuật",
-    action: "đã xử lý yêu cầu #1204",
-    time: "2 giờ trước",
-    icon: mdiTicket,
-    color: "text-orange-400",
-  },
-];
 
 interface MetricCardProps {
   icon: React.ReactNode;
@@ -101,21 +60,23 @@ function MetricCard({
         <Card className="h-full bg-gradient-to-br from-darkCardV1 via-darkCardV1 to-primary/10 border-primary/20 transition-all duration-300">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
-              <div className="flex-1">
-                <p className="text-sm font-medium text-neutral-400">{title}</p>
-                <h3 className="text-2xl font-bold mt-2">{value}</h3>
-                {subtitle && (
-                  <p className="text-sm text-neutral-200 mt-1">{subtitle}</p>
-                )}
+              <div className="flex-1 flex flex-col gap-2">
+                <p className="text-sm uppercase text-nowrap truncate font-medium text-neutral-400">
+                  {title}
+                </p>
+                <div className="flex justify-between items-center">
+                  <h3 className="text-2xl font-bold mt-2">{value}</h3>
+                  <div className="p-3 rounded-full bg-darkBorderV1 text-neutral-200">
+                    {icon}
+                  </div>
+                </div>
+                {subtitle && <p className="text-sm text-primary">{subtitle}</p>}
                 {trend && (
-                  <div className="flex items-center gap-1 mt-2 text-green-600 text-sm text-nowrap">
+                  <div className="flex items-center gap-1 text-primary text-sm text-nowrap">
                     <Icon path={mdiTrendingUp} size={0.8} />
                     <span>{trend}</span>
                   </div>
                 )}
-              </div>
-              <div className="p-3 rounded-full bg-darkBorderV1 text-neutral-200">
-                {icon}
               </div>
             </div>
           </CardContent>
@@ -128,7 +89,6 @@ function MetricCard({
 function DashboardSkeleton() {
   return (
     <div className="space-y-4 bg-darkCardV1 p-4 rounded-2xl border border-darkBorderV1 animate-pulse">
-      {/* Header Skeleton */}
       <div className="flex justify-between items-center">
         <div className="space-y-2">
           <Skeleton className="h-8 w-48" />
@@ -137,7 +97,6 @@ function DashboardSkeleton() {
         <Skeleton className="h-10 w-32 rounded-lg" />
       </div>
 
-      {/* Metric Cards Skeleton */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {[1, 2, 3, 4].map((i) => (
           <Card key={i}>
@@ -154,11 +113,9 @@ function DashboardSkeleton() {
         ))}
       </div>
 
-      {/* Main Content Grid Skeleton */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {/* Revenue Chart Skeleton */}
         <Card className="lg:col-span-2">
-          <CardHeader>
+          <CardHeader className="border-b border-b-darkBorderV1 py-3">
             <Skeleton className="h-6 w-36" />
           </CardHeader>
           <CardContent>
@@ -166,9 +123,8 @@ function DashboardSkeleton() {
           </CardContent>
         </Card>
 
-        {/* Quick Stats Skeleton */}
         <Card>
-          <CardHeader>
+          <CardHeader className="border-b border-b-darkBorderV1 py-3">
             <Skeleton className="h-6 w-32" />
           </CardHeader>
           <CardContent className="space-y-4">
@@ -178,9 +134,8 @@ function DashboardSkeleton() {
           </CardContent>
         </Card>
 
-        {/* System Status Skeleton */}
         <Card>
-          <CardHeader>
+          <CardHeader className="border-b border-b-darkBorderV1 py-3">
             <Skeleton className="h-6 w-32" />
           </CardHeader>
           <CardContent className="space-y-4">
@@ -191,9 +146,8 @@ function DashboardSkeleton() {
         </Card>
       </div>
 
-      {/* Activity Log Skeleton */}
       <Card>
-        <CardHeader>
+        <CardHeader className="border-b border-b-darkBorderV1 py-3">
           <Skeleton className="h-6 w-40" />
         </CardHeader>
         <CardContent>
@@ -218,9 +172,43 @@ function DashboardSkeleton() {
 }
 
 export default function StatisticsPage() {
-  const { data: overview, isLoading } = useDashboardOverview();
+  const [period, setPeriod] = useState<TReportPeriod>("WEEK");
+
+  const { data: overview, isLoading: isLoadingOverview } =
+    useDashboardOverview();
+  const { data: reports, isLoading: isLoadingReports } = useAdminReports(
+    "ALL",
+    period,
+  );
+
+  const isLoading = isLoadingOverview || isLoadingReports;
 
   if (isLoading) return <DashboardSkeleton />;
+
+  const revenueData =
+    reports?.revenue?.chartData?.map((item) => {
+      const date = new Date(item.date);
+      let label = "";
+      if (period === "WEEK") {
+        label = date.toLocaleDateString("vi-VN", { weekday: "short" });
+      } else if (period === "MONTH") {
+        label = `D${date.getDate()}`;
+      } else {
+        label = date.toLocaleDateString("vi-VN", { month: "short" });
+      }
+
+      return {
+        name: label,
+        fullName: date.toLocaleDateString("vi-VN", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+        }),
+        revenue: item.value,
+      };
+    }) || [];
+
+  const topDrivers = reports?.topDrivers || [];
 
   return (
     <div className="space-y-4 bg-darkCardV1 p-4 rounded-2xl border border-darkBorderV1">
@@ -229,22 +217,20 @@ export default function StatisticsPage() {
           <h1 className="text-3xl font-bold text-neutral-200">
             Bảng điều khiển
           </h1>
-          <p className="text-neutral-400 mt-1">
+          <p className="text-neutral-400 mt-2 text-base">
             Chào mừng quay trở lại, đây là những gì đang diễn ra hôm nay.
           </p>
         </div>
         <div className="flex gap-2">
-          <Badge
-            variant="ghost"
-            className="flex items-center gap-2 py-2 px-4 bg-darkCardV1 border-darkBorderV1"
-          >
-            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-            Cập nhật trực tiếp
-          </Badge>
+          {(overview?.pendingTickets ?? 0) > 0 && (
+            <Badge variant="emerald">
+              <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
+              {overview?.pendingTickets} Yêu cầu trợ giúp
+            </Badge>
+          )}
         </div>
       </div>
 
-      {/* Metric Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <MetricCard
           icon={<Icon path={mdiAccountGroup} size={0.8} />}
@@ -276,20 +262,37 @@ export default function StatisticsPage() {
         />
       </div>
 
-      {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {/* Revenue Chart - Expanded */}
         <Card className="lg:col-span-2">
-          <CardHeader>
-            <CardTitle className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
+          <CardHeader className="border-b border-b-darkBorderV1 py-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
                 <Icon path={mdiChartLine} size={0.8} />
-                <span className="text-lg text-neutral-200">
-                  Tăng trưởng doanh thu
-                </span>
+                <span className="font-semibold">Tăng trưởng doanh thu</span>
               </div>
-              <Badge variant="ghost">Hàng tuần</Badge>
-            </CardTitle>
+              <div className="flex items-center gap-2">
+                <Tabs
+                  value={period}
+                  onValueChange={(v) => setPeriod(v as TReportPeriod)}
+                  className="w-[200px]"
+                >
+                  <TabsList className="p-1">
+                    <TabsTrigger value="WEEK" className="text-sm">
+                      Tuần
+                    </TabsTrigger>
+                    <TabsTrigger value="MONTH" className="text-sm">
+                      Tháng
+                    </TabsTrigger>
+                    <TabsTrigger value="YEAR" className="text-sm">
+                      Năm
+                    </TabsTrigger>
+                  </TabsList>
+                </Tabs>
+                <Badge variant="emerald">
+                  Hôm nay: {formatCurrency(reports?.revenue?.daily || 0)}
+                </Badge>
+              </div>
+            </div>
           </CardHeader>
           <CardContent>
             <div className="h-[300px] w-full">
@@ -313,7 +316,9 @@ export default function StatisticsPage() {
                     fontSize={12}
                     tickLine={false}
                     axisLine={false}
-                    tickFormatter={(value) => `$${value}`}
+                    tickFormatter={(value) =>
+                      `${(value / 1000000).toFixed(0)}M`
+                    }
                   />
                   <Tooltip
                     contentStyle={{
@@ -322,6 +327,10 @@ export default function StatisticsPage() {
                       borderRadius: "8px",
                       color: "#E5E5E5",
                     }}
+                    formatter={(value: number, name: string, props: any) => [
+                      formatCurrency(value),
+                      `Doanh thu (${props.payload.fullName})`,
+                    ]}
                   />
                   <Area
                     type="monotone"
@@ -337,128 +346,174 @@ export default function StatisticsPage() {
           </CardContent>
         </Card>
 
-        {/* Original Quick Stats */}
         <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <Icon path={mdiChartLine} size={0.8} />
-              <span className="text-lg">Thống kê nhanh</span>
-            </CardTitle>
+          <CardHeader className="border-b border-b-darkBorderV1 py-3">
+            <div className="flex items-center gap-2">
+              <Icon path={mdiMotorbike} size={0.8} />
+              <span className="font-semibold">Doanh thu theo loại xe</span>
+            </div>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               <div className="flex justify-between items-center">
                 <span className="text-neutral-400 flex items-center gap-2">
-                  <Icon path={mdiTicket} size={0.8} />
-                  Yêu cầu đang chờ
+                  <Icon path={mdiMotorbike} size={0.8} /> Xe máy
                 </span>
                 <span className="font-semibold text-base">
-                  {overview?.pendingTickets || 0}
+                  {formatCurrency(reports?.revenue?.byVehicleType?.BIKE || 0)}
                 </span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-neutral-400 flex items-center gap-2">
-                  <Icon path={mdiPackageVariant} size={0.8} />
-                  Đơn hàng đang hoạt động
+                  <Icon path={mdiVanPassenger} size={0.8} /> Xe Van
                 </span>
                 <span className="font-semibold text-base">
-                  {overview?.activeOrders || 0}
+                  {formatCurrency(reports?.revenue?.byVehicleType?.VAN || 0)}
                 </span>
               </div>
+              <div className="flex justify-between items-center">
+                <span className="text-neutral-400 flex items-center gap-2">
+                  <Icon path={mdiTruck} size={0.8} /> Xe tải
+                </span>
+                <span className="font-semibold text-base">
+                  {formatCurrency(reports?.revenue?.byVehicleType?.TRUCK || 0)}
+                </span>
+              </div>
+              <div className="pt-4 border-t border-darkBorderV1">
+                <div className="flex justify-between items-center">
+                  <span className="text-neutral-200 font-semibold">
+                    Tổng cộng
+                  </span>
+                  <span className="font-bold text-lg text-primary">
+                    {formatCurrency(reports?.revenue?.total || 0)}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="border-b border-b-darkBorderV1 py-3">
+            <div className="flex items-center gap-2">
+              <Icon path={mdiChartLine} size={0.8} />
+              <span className="font-semibold">Thống kê đơn hàng</span>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
               <div className="flex justify-between items-center">
                 <span className="text-neutral-400 flex items-center gap-2">
                   <Icon path={mdiPackageVariant} size={0.8} />
                   Tổng đơn hàng
                 </span>
                 <span className="font-semibold text-base">
-                  {overview?.orders || 0}
+                  {reports?.orderStats?.total || 0}
                 </span>
               </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Original System Status */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <Icon path={mdiShieldCheck} size={0.8} />
-              <span className="text-lg">Trạng thái hệ thống</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
+              <div className="flex justify-between items-center">
                 <span className="text-neutral-400 flex items-center gap-2">
-                  <Icon path={mdiShieldCheck} size={0.8} />
-                  Sức khỏe hệ thống
+                  <Icon
+                    path={mdiShieldCheck}
+                    size={0.8}
+                    className="text-green-500"
+                  />
+                  Đơn hoàn thành
                 </span>
-                <Badge variant="ghost">Hoạt động tốt</Badge>
+                <span className="font-semibold text-base text-green-500">
+                  {reports?.orderStats?.completed || 0}
+                </span>
               </div>
-              <div className="flex items-center justify-between">
+              <div className="flex justify-between items-center">
                 <span className="text-neutral-400 flex items-center gap-2">
-                  <Icon path={mdiChartLine} size={0.8} />
-                  Trạng thái API
+                  <Icon
+                    path={mdiPackageVariant}
+                    size={0.8}
+                    className="text-red-500"
+                  />
+                  Đơn đã hủy
                 </span>
-                <Badge variant="ghost">Trực tuyến</Badge>
+                <span className="font-semibold text-base text-red-500">
+                  {reports?.orderStats?.cancelled || 0}
+                </span>
               </div>
-              <div className="flex items-center justify-between">
-                <span className="text-neutral-400 flex items-center gap-2">
-                  <Icon path={mdiTrendingUp} size={0.8} />
-                  Cập nhật lần cuối
-                </span>
-                <span className="text-sm text-neutral-200">Vừa xong</span>
+              <div className="pt-4 border-t border-darkBorderV1">
+                <div className="flex justify-between items-center">
+                  <span className="text-neutral-200 font-semibold">
+                    Tỷ lệ hoàn thành
+                  </span>
+                  <span className="font-bold text-lg text-primary">
+                    {reports?.orderStats?.total
+                      ? (
+                          (reports.orderStats.completed /
+                            reports.orderStats.total) *
+                          100
+                        ).toFixed(1)
+                      : 0}
+                    %
+                  </span>
+                </div>
               </div>
             </div>
           </CardContent>
         </Card>
       </div>
 
-      {/* Activity Log */}
       <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <Icon path={mdiHistory} size={0.8} />
-              <span className="text-lg text-neutral-200">
-                Hoạt động gần đây
-              </span>
+        <CardHeader className="border-b border-b-darkBorderV1 py-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Icon path={mdiCarSide} size={0.8} />
+              <span className="font-semibold">Tài xế xuất sắc</span>
             </div>
             <Link
-              to="/admin/logs"
+              to="/admin/drivers"
               className="text-sm text-primary hover:underline flex items-center gap-1"
             >
               Xem tất cả
-              <Icon path={mdiTrendingUp} size={0.6} className="rotate-45" />
+              <Icon path={mdiArrowRightThin} size={0.8} />
             </Link>
-          </CardTitle>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {recentActivities.map((activity) => (
-              <div
-                key={activity.id}
-                className="flex items-center gap-4 p-3 rounded-lg bg-darkBorderV1/20 border border-darkBorderV1/40 hover:bg-darkBorderV1/30 transition-colors"
-              >
+            {topDrivers.length > 0 ? (
+              topDrivers.map((driver, index) => (
                 <div
-                  className={`p-3 rounded-full bg-darkCardV1 ${activity.color}`}
+                  key={driver.driverId}
+                  className="flex items-center gap-4 p-3 rounded-lg bg-darkBorderV1/20 border border-darkBorderV1/40 hover:bg-darkBorderV1/30 transition-colors"
                 >
-                  <Icon path={activity.icon} size={0.8} />
+                  <div className="flex items-center justify-center w-12 h-12 rounded-full bg-primary/20 text-primary font-bold text-lg">
+                    #{index + 1}
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-sm text-neutral-200 font-semibold">
+                      {driver.name}
+                    </p>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="text-xs text-neutral-400">
+                        {driver.completedOrders} chuyến
+                      </span>
+                      <span className="text-xs text-neutral-400">•</span>
+                      <span className="text-sm text-yellow-500 flex items-center gap-1">
+                        <Icon path={mdiStar} size={0.8} />{" "}
+                        {driver.rating.toFixed(1)}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm font-semibold text-primary">
+                      {formatCurrency(driver.revenue)}
+                    </p>
+                    <p className="text-xs text-neutral-400 mt-0.5">Doanh thu</p>
+                  </div>
                 </div>
-                <div className="flex-1">
-                  <p className="text-sm text-neutral-200">
-                    <span className="font-semibold">{activity.user}</span>{" "}
-                    {activity.action}
-                  </p>
-                  <p className="text-sm text-neutral-400 mt-0.5">
-                    {activity.time}
-                  </p>
-                </div>
-                <div className="p-2 rounded bg-darkCardV1 text-neutral-400">
-                  <Icon path={mdiAccountCircleOutline} size={0.8} />
-                </div>
+              ))
+            ) : (
+              <div className="col-span-2 text-center py-8 text-neutral-400">
+                Chưa có dữ liệu tài xế
               </div>
-            ))}
+            )}
           </div>
         </CardContent>
       </Card>
