@@ -127,7 +127,7 @@ function MetricCard({
 
 function DashboardSkeleton() {
   return (
-    <div className="space-y-6 bg-darkCardV1 p-4 rounded-2xl border border-darkBorderV1 animate-pulse">
+    <div className="space-y-4 bg-darkCardV1 p-4 rounded-2xl border border-darkBorderV1 animate-pulse">
       {/* Header Skeleton */}
       <div className="flex justify-between items-center">
         <div className="space-y-2">
@@ -223,7 +223,7 @@ export default function StatisticsPage() {
   if (isLoading) return <DashboardSkeleton />;
 
   return (
-    <div className="space-y-6 bg-darkCardV1 p-4 rounded-2xl border border-darkBorderV1">
+    <div className="space-y-4 bg-darkCardV1 p-4 rounded-2xl border border-darkBorderV1">
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold text-neutral-200">

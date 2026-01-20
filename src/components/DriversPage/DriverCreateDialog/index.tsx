@@ -216,7 +216,7 @@ export const DriverCreateDialog = ({
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
         >
-          <div className="space-y-6">
+          <div className="space-y-4">
             {/* Avatar Section */}
             <div className="flex flex-col items-center gap-4">
               <div className="relative group">

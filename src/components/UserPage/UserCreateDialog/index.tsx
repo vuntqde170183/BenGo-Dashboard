@@ -221,7 +221,7 @@ export const UserCreateDialog = ({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
-          className="space-y-6 mt-4"
+          className="space-y-4 mt-4"
         >
           {/* Avatar Section */}
           <div className="flex flex-col items-center gap-4">
