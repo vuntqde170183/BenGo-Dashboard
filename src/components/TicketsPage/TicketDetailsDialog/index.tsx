@@ -1,4 +1,4 @@
-import { useTicketDetails, useUpdateTicketStatus } from "@/hooks/useAdmin";
+import { useTicketDetails, useUpdateTicketStatus, useAssignTicket, useAdminUsers } from "@/hooks/useAdmin";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import {
     Dialog,
@@ -27,6 +27,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
 import { formatDate, formatRelativeTime, getPriorityVariant } from "@/lib/format";
 import { getStatusBadge } from "@/lib/badge-helpers";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -50,7 +51,16 @@ export function TicketDetailsDialog({
     const ticket = ticketResponse?.data;
     const { mutate: updateStatus, isPending: isUpdating } =
         useUpdateTicketStatus();
+    const { mutate: assignTicket, isPending: isAssigning } = useAssignTicket();
 
+    // Fetch dispatchers list
+    const { data: dispatchersResponse } = useAdminUsers({
+        role: "DISPATCHER",
+        per_page: 100
+    });
+    const dispatchers = dispatchersResponse?.data || [];
+
+    const [assignedTo, setAssignedTo] = useState("");
     const [confirmConfig, setConfirmConfig] = useState<{
         isOpen: boolean;
         title: string;
@@ -81,6 +91,26 @@ export function TicketDetailsDialog({
                 const resolution = status === "RESOLVED" ? "Đã xử lý xong" : "";
                 updateStatus({ id: ticketId, data: { status, resolution } });
                 setConfirmConfig((prev) => ({ ...prev, isOpen: false }));
+            },
+        });
+    };
+
+    const handleAssignTicket = () => {
+        if (!assignedTo.trim()) {
+            return;
+        }
+        const selectedDispatcher = dispatchers.find((d: any) => d.id === assignedTo);
+        const dispatcherName = selectedDispatcher?.name || assignedTo;
+
+        setConfirmConfig({
+            isOpen: true,
+            title: "Xác nhận phân công ticket",
+            description: `Bạn có chắc chắn muốn phân công ticket này cho "${dispatcherName}"?`,
+            variant: "warning",
+            onConfirm: () => {
+                assignTicket({ id: ticketId, assignedTo: assignedTo.trim() });
+                setConfirmConfig((prev) => ({ ...prev, isOpen: false }));
+                setAssignedTo("");
             },
         });
     };
@@ -198,53 +228,6 @@ export function TicketDetailsDialog({
                                 </div>
                             )}
                         </div>
-
-                        {/* Quick Actions / Status Updates */}
-                        <div className="flex flex-col md:flex-row gap-4 p-4 rounded-2xl bg-darkBackgroundV1/40 border border-darkBorderV1">
-                            <div className="flex-1 space-y-2">
-                                <p className="text-xs font-bold text-white uppercase">
-                                    Cập nhật trạng thái
-                                </p>
-                                <div className="flex flex-wrap gap-2">
-                                    <Select
-                                        value={ticket.status}
-                                        onValueChange={handleStatusUpdate}
-                                        disabled={isUpdating}
-                                    >
-                                        <SelectTrigger className="w-full">
-                                            <SelectValue placeholder="Chọn trạng thái" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="OPEN">Đang mở</SelectItem>
-                                            <SelectItem value="IN_PROGRESS">Đang xử lý</SelectItem>
-                                            <SelectItem value="RESOLVED">Đã giải quyết</SelectItem>
-                                            <SelectItem value="CLOSED">Đã đóng</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-                            </div>
-
-                            <div className="w-px bg-darkBorderV1 hidden md:block" />
-
-                            <div className="flex-1 space-y-2">
-                                <p className="text-xs font-bold text-white uppercase">
-                                    Độ ưu tiên
-                                </p>
-                                <Badge
-                                    variant={getPriorityVariant(ticket.priority || "LOW")}
-                                    className="text-sm px-4 py-2"
-                                >
-                                    {ticket.priority === "URGENT"
-                                        ? "Khẩn cấp"
-                                        : ticket.priority === "HIGH"
-                                            ? "Cao"
-                                            : ticket.priority === "MEDIUM"
-                                                ? "Trung bình"
-                                                : "Thấp"}
-                                </Badge>
-                            </div>
-                        </div>
-
                         {/* Unified Ticket Details Card */}
                         <Card className="border-darkBorderV1 bg-darkBackgroundV1/20 overflow-hidden">
                             <CardContent className="p-4 space-y-6">
@@ -258,7 +241,7 @@ export function TicketDetailsDialog({
                                                 Người dùng
                                             </span>
                                         </div>
-                                        <div className="flex items-center gap-4 pl-7">
+                                        <div className="flex items-center gap-4">
                                             <Avatar className="w-12 h-12 ring-2 ring-primary/20 ring-offset-2 ring-offset-darkBackgroundV1">
                                                 <AvatarImage
                                                     src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${ticket.userId?.name}`}
@@ -281,7 +264,7 @@ export function TicketDetailsDialog({
                                                             size={16}
                                                             className="group-hover:text-primary transition-colors"
                                                         />
-                                                        <span className="text-xs">
+                                                        <span className="text-sm">
                                                             {ticket.userId?.phone || "N/A"}
                                                         </span>
                                                     </div>
@@ -291,7 +274,7 @@ export function TicketDetailsDialog({
                                                                 size={16}
                                                                 className="group-hover:text-primary transition-colors"
                                                             />
-                                                            <span className="text-xs truncate max-w-[200px]">
+                                                            <span className="text-sm truncate max-w-[200px]">
                                                                 {ticket.userId.email}
                                                             </span>
                                                         </div>
@@ -309,35 +292,129 @@ export function TicketDetailsDialog({
                                                 Thông tin ticket
                                             </span>
                                         </div>
-                                        <div className="space-y-4 pl-7">
-                                            <div className="space-y-2">
-                                                <div className="flex items-center gap-2">
-                                                    <IconClock size={16} className="text-neutral-400" />
-                                                    <span className="text-xs text-white uppercase font-bold tracking-wider">
-                                                        Ngày tạo
-                                                    </span>
-                                                </div>
-                                                <div>
-                                                    <p className="text-sm font-medium text-neutral-200">
-                                                        {formatDate(ticket.createdAt)}
-                                                    </p>
-                                                    <p className="text-xs text-neutral-400">
-                                                        {formatRelativeTime(ticket.createdAt)}
-                                                    </p>
-                                                </div>
+                                        <div className="space-y-4">
+                                            <div className="flex justify-between items-center">
+                                                <p className="text-neutral-400 text-sm font-semibold">
+                                                    Ngày tạo
+                                                </p>
+                                                <p className="text-sm font-medium text-neutral-200">
+                                                    {formatDate(ticket.createdAt)} ({formatRelativeTime(ticket.createdAt)})
+                                                </p>
+                                            </div>
+                                            <div className="flex justify-between items-center">
+                                                <p className="text-neutral-400 text-sm font-semibold">
+                                                    Độ ưu tiên
+                                                </p>
+                                                <Badge variant={getPriorityVariant(ticket.priority || "LOW")}>
+                                                    {ticket.priority === "URGENT"
+                                                        ? "Khẩn cấp"
+                                                        : ticket.priority === "HIGH"
+                                                            ? "Cao"
+                                                            : ticket.priority === "MEDIUM"
+                                                                ? "Trung bình"
+                                                                : "Thấp"}
+                                                </Badge>
                                             </div>
 
-                                            {ticket.assignedTo && (
-                                                <div className="space-y-2">
-                                                    <span className="text-xs text-white uppercase font-bold tracking-wider">
-                                                        Người xử lý
-                                                    </span>
-                                                    <p className="text-sm font-medium text-neutral-200">
-                                                        {ticket.assignedTo}
-                                                    </p>
-                                                </div>
-                                            )}
+
                                         </div>
+                                    </div>
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div className="flex-1 space-y-2">
+                                        <p className="text-xs text-white uppercase font-bold tracking-wider">
+                                            Cập nhật trạng thái
+                                        </p>
+                                        <div className="flex flex-wrap gap-2">
+                                            <Select
+                                                value={ticket.status}
+                                                onValueChange={handleStatusUpdate}
+                                                disabled={isUpdating}
+                                            >
+                                                <SelectTrigger className="w-full">
+                                                    <SelectValue placeholder="Chọn trạng thái" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    <SelectItem value="OPEN">Đang mở</SelectItem>
+                                                    <SelectItem value="IN_PROGRESS">Đang xử lý</SelectItem>
+                                                    <SelectItem value="RESOLVED">Đã giải quyết</SelectItem>
+                                                    <SelectItem value="CLOSED">Đã đóng</SelectItem>
+                                                </SelectContent>
+                                            </Select>
+                                        </div>
+                                    </div>
+                                    {/* Assign Ticket Section */}
+                                    <div className="space-y-2">
+                                        <p className="text-xs text-white uppercase font-bold tracking-wider">
+                                            {ticket.assignedTo ? "Người xử lý" : "Phân công xử lý"}
+                                        </p>
+                                        {ticket.assignedTo ? (
+                                            <div className="space-y-2">
+                                                <p className="text-sm font-medium text-neutral-200">
+                                                    {ticket.assignedTo}
+                                                </p>
+                                                <div className="flex gap-2">
+                                                    <Select
+                                                        value={assignedTo}
+                                                        onValueChange={setAssignedTo}
+                                                        disabled={isAssigning}
+                                                    >
+                                                        <SelectTrigger className="flex-1">
+                                                            <SelectValue placeholder="Chọn người xử lý mới" />
+                                                        </SelectTrigger>
+                                                        <SelectContent>
+                                                            {dispatchers.map((dispatcher: any) => (
+                                                                <SelectItem key={dispatcher.id} value={dispatcher.id}>
+                                                                    <div className="flex flex-col">
+                                                                        <span className="font-medium">{dispatcher.name}</span>
+                                                                        <span className="text-xs text-neutral-400">
+                                                                            {dispatcher.email} • {dispatcher.phone}
+                                                                        </span>
+                                                                    </div>
+                                                                </SelectItem>
+                                                            ))}
+                                                        </SelectContent>
+                                                    </Select>
+                                                    <Button
+                                                        size="sm"
+                                                        onClick={handleAssignTicket}
+                                                        disabled={isAssigning || !assignedTo.trim()}
+                                                    >
+                                                        Cập nhật
+                                                    </Button>
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <div className="flex gap-2">
+                                                <Select
+                                                    value={assignedTo}
+                                                    onValueChange={setAssignedTo}
+                                                    disabled={isAssigning}
+                                                >
+                                                    <SelectTrigger className="flex-1 text-left">
+                                                        <SelectValue placeholder="Chọn người xử lý" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        {dispatchers.map((dispatcher: any) => (
+                                                            <SelectItem key={dispatcher.id} value={dispatcher.id}>
+                                                                <div className="flex flex-col">
+                                                                    <span className="font-medium">{dispatcher.name}</span>
+                                                                    <span className="text-xs text-neutral-400">
+                                                                        {dispatcher.email}
+                                                                    </span>
+                                                                </div>
+                                                            </SelectItem>
+                                                        ))}
+                                                    </SelectContent>
+                                                </Select>
+                                                <Button
+                                                    onClick={handleAssignTicket}
+                                                    disabled={isAssigning || !assignedTo.trim()}
+                                                >
+                                                    Phân công
+                                                </Button>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
 
@@ -351,7 +428,7 @@ export function TicketDetailsDialog({
                                             Nội dung yêu cầu
                                         </span>
                                     </div>
-                                    <div className="pl-7 space-y-3">
+                                    <div className="space-y-2">
                                         <h3 className="text-lg font-bold text-white">
                                             {ticket.subject}
                                         </h3>
@@ -373,7 +450,7 @@ export function TicketDetailsDialog({
                 title={confirmConfig.title}
                 description={confirmConfig.description}
                 variant={confirmConfig.variant}
-                isPending={isUpdating}
+                isPending={isUpdating || isAssigning}
             />
         </Dialog>
     );

@@ -7,7 +7,6 @@ import { adminPromotionApi } from "@/api/admin-promotions";
 import { adminTicketApi } from "@/api/admin-tickets";
 import { adminReportApi } from "@/api/admin-reports";
 import { toast } from "react-toastify";
-import { TReportPeriod, TReportType } from "@/interface/admin";
 
 // Quản lý người dùng
 export const useAdminUsers = (params: any) => {
@@ -92,7 +91,7 @@ export const useDriverDetails = (id: string) => {
 export const useUpdateDriverStatus = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data: UpdateDriverStatusDto) => 
+    mutationFn: (data: UpdateDriverStatusDto) =>
       adminDriverApi.updateDriverStatus(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin", "drivers"] });
@@ -263,6 +262,7 @@ export const useDashboardOverview = () => {
   });
 };
 
+import { TReportPeriod, TReportType } from "@/interface/admin";
 export const useAdminReports = (type: TReportType, period?: TReportPeriod) => {
   return useQuery({
     queryKey: ["admin", "reports", type, period],
