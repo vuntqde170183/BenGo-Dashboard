@@ -68,6 +68,21 @@ export const useUpdateUser = () => {
   });
 };
 
+export const useUpdateUserRole = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string; data: { role: string; reason?: string; driverProfile?: any } }) =>
+      adminUserApi.updateUserRole(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "users"] });
+      toast.success("Cập nhật vai trò người dùng thành công");
+    },
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.message || "Cập nhật vai trò thất bại");
+    },
+  });
+};
+
 // Alias for consistency with other components
 export const useGetUserById = useUserDetails;
 
