@@ -7,4 +7,5 @@ export const adminUserApi = {
   updateUser: (id: string, data: any) => sendPut(`/admin/users/${id}`, data),
   blockUser: (id: string, data: { blocked: boolean; reason: string }) => sendPut(`/admin/users/${id}/block`, data),
   deleteUser: (id: string) => sendDelete(`/admin/users/${id}`),
+  updateUserRole: (id: string, data: { role: string; reason?: string; driverProfile?: any }) => sendPut(`/admin/users/${id}/role`, data),
 };

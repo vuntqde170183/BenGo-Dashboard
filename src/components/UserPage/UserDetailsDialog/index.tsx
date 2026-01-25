@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useGetUserById, useUpdateUser } from "@/hooks/useAdmin";
 import { IUpdateUserBody } from "@/interface/auth";
 import { toast } from "react-toastify";
-import { IconX, IconEdit } from "@tabler/icons-react";
+import { IconX, IconEdit, IconUserCog } from "@tabler/icons-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Dialog,
@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { UserTable } from "./UserTable";
 import { UserForm } from "./UserForm";
+import { ChangeRoleDialog } from "../ChangeRoleDialog";
 import Icon from "@mdi/react";
 import { mdiClipboardAccount } from "@mdi/js";
 
@@ -30,6 +31,7 @@ export const UserDetailsDialog = ({
   onSuccess,
 }: UserDetailsDialogProps) => {
   const [isEditing, setIsEditing] = useState(false);
+  const [isChangeRoleOpen, setIsChangeRoleOpen] = useState(false);
   const [formData, setFormData] = useState<IUpdateUserBody>({
     name: "",
     email: "",
@@ -264,6 +266,10 @@ export const UserDetailsDialog = ({
                     <IconX className="h-4 w-4" />
                     Đóng
                   </Button>
+                  <Button variant="outline" className="text-primary border-primary hover:bg-primary/10" onClick={() => setIsChangeRoleOpen(true)}>
+                    <IconUserCog className="h-4 w-4 text-primary" />
+                    Phân quyền
+                  </Button>
                   <Button onClick={handleEdit}>
                     <IconEdit className="h-4 w-4" />
                     Chỉnh sửa
@@ -274,6 +280,21 @@ export const UserDetailsDialog = ({
           </div>
         )}
       </DialogContent>
+
+      {userData?.data && (
+        <ChangeRoleDialog
+          isOpen={isChangeRoleOpen}
+          onClose={() => setIsChangeRoleOpen(false)}
+          user={{
+            id: userId,
+            name: userData.data.name,
+            role: userData.data.role,
+          }}
+          onSuccess={() => {
+            onSuccess?.();
+          }}
+        />
+      )}
     </Dialog>
   );
 };

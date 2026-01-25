@@ -77,12 +77,12 @@ interface UpdateStatusDialogProps {
   isLoading?: boolean;
   confirmText?: string;
   confirmButtonVariant?:
-    | "default"
-    | "destructive"
-    | "outline"
-    | "secondary"
-    | "ghost"
-    | "link";
+  | "default"
+  | "destructive"
+  | "outline"
+  | "secondary"
+  | "ghost"
+  | "link";
 }
 
 export const UpdateStatusDialog = ({
