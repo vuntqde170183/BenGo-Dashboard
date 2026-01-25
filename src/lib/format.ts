@@ -9,11 +9,11 @@ export const formatCurrency = (amount: number): string => {
 
 export const formatDate = (dateString: string | Date): string => {
   if (!dateString) return "";
-  
+
   const date = new Date(dateString);
-  
+
   if (isNaN(date.getTime())) return typeof dateString === 'string' ? dateString : "";
-  
+
   return new Intl.DateTimeFormat("vi-VN", {
     day: "2-digit",
     month: "2-digit",
@@ -25,11 +25,11 @@ export const formatDate = (dateString: string | Date): string => {
 
 export const formatDateOnly = (dateString: string | Date): string => {
   if (!dateString) return "";
-  
+
   const date = new Date(dateString);
-  
+
   if (isNaN(date.getTime())) return typeof dateString === 'string' ? dateString : "";
-  
+
   return new Intl.DateTimeFormat("vi-VN", {
     day: "2-digit",
     month: "2-digit",
@@ -41,7 +41,7 @@ export const formatRelativeTime = (date: string | Date): string => {
   const rtf = new Intl.RelativeTimeFormat('vi-VN', { numeric: 'auto' });
   const diff = new Date(date).getTime() - Date.now();
   const minutes = Math.floor(diff / 60000);
-  
+
   if (Math.abs(minutes) < 60) {
     return rtf.format(minutes, 'minute');
   }
@@ -91,12 +91,12 @@ export const formatAbbreviatedCurrency = (value: string | number) => {
   }
 };
 
-export const getPriorityVariant = (priority: string): "default" | "destructive" | "secondary" => {
+export const getPriorityVariant = (priority: string): "slate" | "amber" | "orange" | "red" => {
   const variants: Record<string, any> = {
-    LOW: 'default',
-    MEDIUM: 'secondary',
-    HIGH: 'destructive',
-    URGENT: 'destructive'
+    LOW: 'slate',
+    MEDIUM: 'amber',
+    HIGH: 'orange',
+    URGENT: 'red'
   };
-  return variants[priority] || 'default';
+  return variants[priority] || 'slate';
 };
