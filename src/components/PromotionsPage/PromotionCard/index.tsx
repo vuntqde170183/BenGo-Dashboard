@@ -62,7 +62,7 @@ export function PromotionCard({ promo, onEdit, onDelete }: PromotionCardProps) {
           </div>
         </div>
       </CardHeader>
-      <CardContent className="space-y-3 pt-4 flex-1 flex flex-col">
+      <CardContent className="space-y-2 pt-4 flex-1 flex flex-col">
         {promo.imageUrl && (
           <img
             src={promo.imageUrl}

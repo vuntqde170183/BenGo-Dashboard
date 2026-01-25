@@ -133,7 +133,7 @@ export default function LoginPage() {
           <div className="p-8 flex flex-col justify-center bg-gradient-to-br from-white to-gray-50">
             <div className="max-w-md mx-auto w-full space-y-8">
               {/* Header */}
-              <div className="text-center space-y-3">
+              <div className="text-center space-y-2">
                 <h2 className="text-3xl font-bold bg-gradient-to-r from-teal-600 to-emerald-600 bg-clip-text text-transparent uppercase">
                   Admin Dashboard
                 </h2>

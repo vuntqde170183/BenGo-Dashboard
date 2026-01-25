@@ -71,10 +71,10 @@ export const UserDetailsDialog = ({
           profile?.drivingLicenseNumber || user.drivingLicenseNumber || "",
         bankInfo: profile?.bankInfo ||
           user.bankInfo || {
-            bankName: "",
-            accountNumber: "",
-            accountHolder: "",
-          },
+          bankName: "",
+          accountNumber: "",
+          accountHolder: "",
+        },
       });
     }
   }, [userData]);
@@ -213,10 +213,10 @@ export const UserDetailsDialog = ({
           profile?.drivingLicenseNumber || user.drivingLicenseNumber || "",
         bankInfo: profile?.bankInfo ||
           user.bankInfo || {
-            bankName: "",
-            accountNumber: "",
-            accountHolder: "",
-          },
+          bankName: "",
+          accountNumber: "",
+          accountHolder: "",
+        },
       });
     }
   };
