@@ -74,7 +74,7 @@ export function OrdersTable({
               <TableCell>
                 <button
                   onClick={() => onViewDetails(order._id)}
-                  className="text-blue-600 hover:underline font-mono"
+                  className="text-primary hover:underline font-mono"
                 >
                   #{order._id?.slice(-8)}
                 </button>

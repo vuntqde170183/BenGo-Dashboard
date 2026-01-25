@@ -63,6 +63,26 @@ export function getStatusBadge(status: string) {
         </Badge>
       );
 
+    // Ticket Statuses
+    case "OPEN":
+      return (
+        <Badge variant="blue" className="capitalize">
+          Đang mở
+        </Badge>
+      );
+    case "IN_PROGRESS":
+      return (
+        <Badge variant="amber" className="capitalize">
+          Đang xử lý
+        </Badge>
+      );
+    case "RESOLVED":
+      return (
+        <Badge variant="green" className="capitalize">
+          Đã giải quyết
+        </Badge>
+      );
+
     case "CLOSED":
       return (
         <Badge variant="slate" className="capitalize">
