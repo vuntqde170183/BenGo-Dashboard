@@ -2,10 +2,9 @@ import { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { useCreateUser } from "@/hooks/useAdmin";
 import { useUploadFile } from "@/hooks/useUpload";
-import { ICreateUserBody, IUploadResponse } from "@/interface/auth";
+import { IUploadResponse } from "@/interface/auth";
 import { toast } from "react-toastify";
 import { IconLoader2, IconX, IconUpload } from "@tabler/icons-react";
-import { motion } from "framer-motion";
 import {
   Dialog,
   DialogContent,
@@ -15,6 +14,7 @@ import {
 import { mdiPlusBox } from "@mdi/js";
 import Icon from "@mdi/react";
 import { UserForm } from "@/components/UserPage/UserDetailsDialog/UserForm";
+import { useDriverCreateForm } from "@/stores/useDriverCreateForm";
 
 interface DriverCreateDialogProps {
   isOpen: boolean;
@@ -27,31 +27,9 @@ export const DriverCreateDialog = ({
   onClose,
   onSuccess,
 }: DriverCreateDialogProps) => {
-  const [formData, setFormData] = useState<ICreateUserBody>({
-    name: "",
-    email: "",
-    password: "",
-    phone: "",
-    avatar: "",
-    role: "DRIVER",
-    active: true,
-    walletBalance: 0,
-    rating: 5,
-    vehicleType: "BIKE",
-    plateNumber: "",
-    licenseImage: "",
-    identityNumber: "",
-    identityFrontImage: "",
-    identityBackImage: "",
-    vehicleRegistrationImage: "",
-    drivingLicenseNumber: "",
-    bankInfo: {
-      bankName: "",
-      accountNumber: "",
-      accountHolder: "",
-    },
-  });
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const { formData, errors, setFormData, updateFormData, setErrors, resetForm } =
+    useDriverCreateForm();
+
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
 
   const { mutate: createUserMutation, isPending } = useCreateUser();
@@ -80,7 +58,7 @@ export const DriverCreateDialog = ({
           response?.data?.statusCode === 200
         ) {
           const imageUrl = response?.data?.data?.url;
-          setFormData((prev) => ({ ...prev, avatar: imageUrl }));
+          updateFormData({ avatar: imageUrl });
           toast.success("Tải ảnh đại diện thành công!");
         } else {
           toast.error("Tải ảnh đại diện thất bại!");
@@ -159,7 +137,9 @@ export const DriverCreateDialog = ({
     createUserMutation(submitData, {
       onSuccess: () => {
         toast.success("Tạo tài xế thành công!");
-        handleClose();
+        // Reset form only after successful creation
+        resetForm();
+        onClose();
         onSuccess?.();
       },
       onError: (error: any) => {
@@ -173,31 +153,7 @@ export const DriverCreateDialog = ({
   };
 
   const handleClose = () => {
-    setFormData({
-      name: "",
-      email: "",
-      password: "",
-      phone: "",
-      avatar: "",
-      role: "DRIVER",
-      active: true,
-      walletBalance: 0,
-      rating: 5,
-      vehicleType: "BIKE",
-      plateNumber: "",
-      licenseImage: "",
-      identityNumber: "",
-      identityFrontImage: "",
-      identityBackImage: "",
-      vehicleRegistrationImage: "",
-      drivingLicenseNumber: "",
-      bankInfo: {
-        bankName: "",
-        accountNumber: "",
-        accountHolder: "",
-      },
-    });
-    setErrors({});
+    // Don't reset form on close - data persists
     onClose();
   };
 
@@ -211,77 +167,69 @@ export const DriverCreateDialog = ({
           </DialogTitle>
         </DialogHeader>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-        >
-          <div className="space-y-4">
-            {/* Avatar Section */}
-            <div className="flex flex-col items-center gap-4">
-              <div className="relative group">
-                <div className="w-32 h-32 rounded-full border-2 border-dashed border-lightBorderV1 dark:border-darkBorderV1 overflow-hidden flex items-center justify-center bg-slate-50 dark:bg-darkBackgroundV1">
-                  {formData.avatar ? (
-                    <img
-                      src={formData.avatar}
-                      alt="Avatar"
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="text-neutral-400 text-center p-2">
-                      {isUploadingAvatar ? (
-                        <IconLoader2 className="h-8 w-8 animate-spin mx-auto" />
-                      ) : (
-                        <>
-                          <IconUpload className="h-8 w-8 mx-auto mb-1" />
-                          <span className="text-xs">Ảnh đại diện</span>
-                        </>
-                      )}
-                    </div>
-                  )}
-                </div>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageUpload}
-                  className="hidden"
-                  id="avatar-upload-driver"
-                  disabled={isUploadingAvatar}
-                />
-                <Label
-                  htmlFor="avatar-upload-driver"
-                  className="absolute inset-0 cursor-pointer rounded-full"
-                />
-                {formData.avatar && (
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setFormData((prev) => ({ ...prev, avatar: "" }))
-                    }
-                    className="absolute -top-1 -right-1 p-1 bg-red-500 text-white rounded-full shadow-lg"
-                  >
-                    <IconX className="h-3 w-3" />
-                  </button>
+        <div className="space-y-4">
+          {/* Avatar Section */}
+          <div className="flex flex-col items-center gap-4">
+            <div className="relative group">
+              <div className="w-32 h-32 rounded-full border-2 border-dashed border-lightBorderV1 dark:border-darkBorderV1 overflow-hidden flex items-center justify-center bg-slate-50 dark:bg-darkBackgroundV1">
+                {formData.avatar ? (
+                  <img
+                    src={formData.avatar}
+                    alt="Avatar"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="text-neutral-400 text-center p-2">
+                    {isUploadingAvatar ? (
+                      <IconLoader2 className="h-8 w-8 animate-spin mx-auto" />
+                    ) : (
+                      <>
+                        <IconUpload className="h-8 w-8 mx-auto mb-1" />
+                        <span className="text-xs">Ảnh đại diện</span>
+                      </>
+                    )}
+                  </div>
                 )}
               </div>
-              <p className="text-sm text-neutral-400">
-                Tải lên ảnh PNG, JPG (Max 10MB)
-              </p>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                className="hidden"
+                id="avatar-upload-driver"
+                disabled={isUploadingAvatar}
+              />
+              <Label
+                htmlFor="avatar-upload-driver"
+                className="absolute inset-0 cursor-pointer rounded-full"
+              />
+              {formData.avatar && (
+                <button
+                  type="button"
+                  onClick={() => updateFormData({ avatar: "" })}
+                  className="absolute -top-1 -right-1 p-1 bg-red-500 text-white rounded-full shadow-lg"
+                >
+                  <IconX className="h-3 w-3" />
+                </button>
+              )}
             </div>
-
-            <UserForm
-              mode="create"
-              hideRoleSelect={true}
-              formData={formData}
-              errors={errors}
-              isUpdating={isPending}
-              onFormDataChange={handleFormDataChange}
-              onErrorsChange={handleErrorsChange}
-              onSubmit={handleSubmit}
-              onCancel={handleClose}
-            />
+            <p className="text-sm text-neutral-400">
+              Tải lên ảnh PNG, JPG (Max 10MB)
+            </p>
           </div>
-        </motion.div>
+
+          <UserForm
+            mode="create"
+            hideRoleSelect={true}
+            formData={formData}
+            errors={errors}
+            isUpdating={isPending}
+            onFormDataChange={handleFormDataChange}
+            onErrorsChange={handleErrorsChange}
+            onSubmit={handleSubmit}
+            onCancel={handleClose}
+          />
+        </div>
       </DialogContent>
     </Dialog>
   );
