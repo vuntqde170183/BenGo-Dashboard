@@ -1,0 +1,439 @@
+export function getDispatcherDashboardMenuItems(): MenuItem[] {
+    return [
+        {
+            id: 'dispatcher-dashboard',
+            label: 'Dashboard',
+            labelVi: 'Tổng quan',
+            icon: '📊',
+            route: '/dispatcher/dashboard',
+            description: 'Tổng quan hoạt động điều phối',
+        },
+        {
+            id: 'dispatcher-orders',
+            label: 'Order Management',
+            labelVi: 'Quản lý đơn hàng',
+            icon: '📦',
+            route: '/dispatcher/orders',
+            description: 'Theo dõi và quản lý đơn hàng (All, Pending, Active, Special)',
+        },
+        {
+            id: 'dispatcher-drivers',
+            label: 'Driver Management',
+            labelVi: 'Quản lý tài xế',
+            icon: '🚗',
+            route: '/dispatcher/drivers',
+            description: 'Theo dõi vị trí, trạng thái và hiệu suất tài xế',
+        },
+        {
+            id: 'dispatcher-assignment',
+            label: 'Trip Assignment',
+            labelVi: 'Phân chuyến',
+            icon: '🎯',
+            route: '/dispatcher/assignment',
+            description: 'Phân công chuyến đi thủ công',
+        },
+        {
+            id: 'dispatcher-support',
+            label: 'Support Center',
+            labelVi: 'Trung tâm hỗ trợ',
+            icon: '🎫',
+            route: '/dispatcher/support',
+            description: 'Hỗ trợ khách hàng, tài xế và xử lý sự cố',
+        },
+        {
+            id: 'dispatcher-reports',
+            label: 'Reports',
+            labelVi: 'Báo cáo',
+            icon: '📊',
+            route: '/dispatcher/reports',
+            description: 'Báo cáo và thống kê hoạt động',
+        },
+        {
+            id: 'dispatcher-settings',
+            label: 'Settings',
+            labelVi: 'Cài đặt',
+            icon: '⚙️',
+            route: '/dispatcher/settings',
+            description: 'Cài đặt cá nhân',
+        },
+    ];
+}
+
+================================================================================
+1. TỔNG QUAN 7 CHỨC NĂNG NGHIỆP VỤ
+================================================================================
+
+1. Monitor orders / Theo dõi đơn hàng
+2. View driver locations / Xem vị trí tài xế
+3. Manual trip assignment / Phân chuyến thủ công
+4. Manage special trips / Quản lý chuyến đặc biệt
+5. Support customers & drivers / Hỗ trợ KH & tài xế
+6. Issue tracking & notes / Ghi chú & xử lý sự cố
+7. Driver performance tracking / Theo dõi hiệu suất tài xế
+
+Hệ thống điều phối được chia thành 5 trang chính:
+- (1+4) Quản lý đơn hàng | (2) Quản lý tài xế | (3) Phân chuyến | (5+6) Trung tâm hỗ trợ | (7) Báo cáo
+
+================================================================================
+2. Cấu trúc Project & Dịch vụ API
+================================================================================
+
+src/services/api/dispatcherApi.ts (HOÀN CHỈNH):
+----------------------------------------------
+import api from './axiosConfig';
+
+export const dispatcherApi = {
+  getDashboardStats: () => api.get('/dispatcher/dashboard/stats'),
+  getOrders: (status = 'ALL') => api.get(`/dispatcher/orders?status=${status}`),
+  getSpecialOrders: () => api.get('/dispatcher/orders/special'),
+  markSpecial: (orderId, data) => api.post(`/dispatcher/orders/${orderId}/mark-special`, data),
+  unmarkSpecial: (orderId) => api.post(`/dispatcher/orders/${orderId}/unmark-special`),
+  getDrivers: (lat, lng, radius) => api.get(`/dispatcher/drivers?lat=${lat}&lng=${lng}&radius=${radius}`),
+  assignDriver: (orderId, driverId) => api.post('/dispatcher/assign', { orderId, driverId }),
+  getSupportTickets: (status = 'OPEN') => api.get(`/dispatcher/support?status=${status}`),
+  updateTicket: (ticketId, data) => api.put(`/dispatcher/support/${ticketId}`, data),
+  getDriverPerformance: (driverId, from, to) => api.get(`/dispatcher/drivers/${driverId}/performance?from=${from}&to=${to}`),
+};
+
+================================================================================
+3. API ENDPOINTS CHI TIẾT (SPEC KỸ THUẬT)
+================================================================================
+
+3.1. [TRANG ĐƠN HÀNG] - GET /dispatcher/orders
+Method: GET
+Query: status ("PENDING" | "ACTIVE" | "ALL")
+Response JSON mẫu:
+[
+  {
+    "id": "64f5a1b2c3d4e5f6g7h8i9j0",
+    "from": "123 Nguyễn Văn Linh",
+    "to": "456 Trần Duy Hưng",
+    "status": "PENDING",
+    "customerId": { "name": "Nguyễn Văn A", "phone": "090..." },
+    "createdAt": "2024-01-01T10:00:00.000Z"
+  }
+]
+
+3.2. [CHUYẾN ĐẶC BIỆT] - POST /dispatcher/orders/:id/mark-special
+Method: POST
+Payload:
+{
+  "priority": "VIP" | "URGENT" | "FRAGILE",
+  "specialNote": "Cần xe tải có bàn nâng",
+  "tags": ["VIP", "FRAGILE"]
+}
+
+3.3. [VỊ TRÍ TÀI XẾ] - GET /dispatcher/drivers
+Method: GET
+Query: lat, lng, radius
+Response:
+[
+  {
+    "id": "d1",
+    "name": "Tài xế B",
+    "location": { "lat": 21.0244, "lng": 105.8587 },
+    "status": "ONLINE"
+  }
+]
+
+3.4. [BÁO CÁO] - GET /dispatcher/drivers/:id/performance
+Response:
+{
+  "totalTrips": 150,
+  "completedTrips": 145,
+  "totalEarnings": 15000000,
+  "rating": 4.8,
+  "acceptanceRate": 95
+}
+
+3.5. [DASHBOARD CHÍNH] - GET /dispatcher/dashboard/stats
+Method: GET
+Response mẫu:
+{
+  "totalOrders": 1245,
+  "pendingOrders": 45,
+  "activeOrders": 132,
+  "completedToday": 89,
+  "onlineDrivers": 67,
+  "openTickets": 15
+}
+
+================================================================================
+4. CHI TIẾT TRIỂN KHAI 5 TRANG (UI & CODE MẪU BẢN FULL)
+================================================================================
+
+4.1. QUẢN LÝ ĐƠN HÀNG (Monitor & Special)
+-----------------------------------------
+● Mô tả UI: Giao diện bảng (Table) với Tab navigation. Tab [Đặc biệt] hiển thị các đơn có badge priority (VIP/Urgent).
+
+● Phân tích Thành phần (Components):
+  1. StatCards (Thành phần tóm tắt): Hiển thị các ô số liệu nhanh (Đơn chờ, Đơn đang chạy, Đơn cần xử lý gấp).
+  2. TabNavigation: Bộ lọc trạng thái đơn hàng (Tất cả, Chờ gán, Đang đi, Hoàn thành, Đặc biệt).
+  3. Search & Filter Bar: Tìm kiếm theo mã đơn hoặc SĐT khách hàng.
+  4. OrderTable (Thành phần chính): 
+     - Hiển thị danh sách đơn hàng với các cột: ID, Khách hàng (Tên/SĐT), Lộ trình, Trạng thái, Thời gian tạo.
+     - PriorityBadge: Hiển thị icon/màu sắc khác biệt cho đơn hàng VIP/Urgent.
+  5. ActionButtons: Nút điều hướng nhanh đến trang "Phân chuyến" (cho đơn PENDING) hoặc "Đánh dấu đặc biệt".
+
+● API & Data Flow:
+  1. API chính: `dispatcherApi.getOrders(status)`
+     - Method: `GET`
+     - Params: `status` (PENDING, ACTIVE, ALL...)
+  2. Data Source (Nguồn dữ liệu):
+     - Dữ liệu gốc lấy từ Collection `Order` trong Database.
+     - Thông tin Khách hàng được `populate` từ Collection `User`.
+     - Thông tin Tài xế (nếu có) được `populate` từ Collection `Driver`.
+  3. Cơ chế cập nhật: 
+     - Sử dụng Polling (setInterval 30s) để đảm bảo danh sách Monitor luôn mới nhất.
+     - Khi chuyển Tab, Reset page và fetch lại dữ liệu theo status mới.
+
+● Phân mục: Quản lý Chuyến Đặc Biệt (Chức năng 4)
+-----------------------------------------
+● Phân tích Thành phần (Components):
+  1. SpecialOrderTable: Một view riêng hoặc tab riêng hiển thị các đơn hàng có `priority !== 'NORMAL'`.
+  2. MarkSpecialModal (Thành phần quan trọng nhất): 
+     - Select Box: Chọn mức độ ưu tiên (VIP, URGENT, FRAGILE).
+     - TextArea: Nhập ghi chú đặc biệt (ví dụ: "Cần tài xế mặc đồng phục", "Hàng linh kiện điện tử").
+     - TagInput: Nhập các nhãn phân loại để lọc nhanh (ví dụ: #SieuToc, #DienTu).
+  3. ActionButtons: 
+     - [Hủy đặc biệt]: Để đưa đơn hàng về trạng thái bình thường.
+     - [Sửa thông tin]: Để cập nhật lại ghi chú/mức độ ưu tiên.
+
+● API & Data Flow:
+  1. Fetching: `dispatcherApi.getSpecialOrders()`
+  2. Execution: 
+     - `dispatcherApi.markSpecial(orderId, payload)`: Khi Dispatcher muốn nâng cấp một đơn thường lên đặc biệt.
+     - `dispatcherApi.unmarkSpecial(orderId)`: Khi không cần chế độ giám sát đặc biệt nữa.
+  3. Data Source (Nguồn dữ liệu):
+     - Các trường `priority`, `specialNote`, `tags` được lưu trực tiếp trong Document của `Order`.
+     - Dispatcher có quyền ghi đè (Overwrite) lên các trường này thông qua API.
+
+● Logic nghiệp vụ:
+  - Một đơn hàng được coi là "Đặc biệt" khi nó có giá trị `priority` khác `NORMAL`.
+  - Trên giao diện Monitor, các đơn này phải luôn nổi bật (Blinking hoặc dùng màu vàng/đỏ) để Dispatcher ưu tiên gán tài xế tốt nhất.
+
+● Code React mẫu:
+-----------------------------------------
+import { useState, useEffect } from 'react';
+import { dispatcherApi } from '@/services/api/dispatcherApi';
+
+export default function OrdersPage() {
+  const [orders, setOrders] = useState([]);
+  const [activeTab, setActiveTab] = useState('ALL');
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      const data = activeTab === 'SPECIAL' ? await dispatcherApi.getSpecialOrders() : await dispatcherApi.getOrders(activeTab);
+      setOrders(data);
+    };
+    fetchOrders();
+    const interval = setInterval(fetchOrders, 30000); // Tự động làm mới mỗi 30s
+    return () => clearInterval(interval);
+  }, [activeTab]);
+
+  return (
+    <div>
+      <div className="tabs">
+        {['ALL', 'PENDING', 'ACTIVE', 'SPECIAL'].map(tab => (
+          <button key={tab} className={activeTab === tab ? 'active' : ''} onClick={() => setActiveTab(tab)}>{tab}</button>
+        ))}
+      </div>
+      <table>
+        <thead><tr><th>ID</th><th>Từ</th><th>Đến</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
+        <tbody>
+          {orders.map(o => (
+            <tr key={o.id}>
+              <td>{o.id}</td><td>{o.from}</td><td>{o.to}</td><td>{o.status}</td>
+              <td><button onClick={() => {/* Mở Modal Đánh dấu Đặc biệt */}}>Đánh dấu VIP</button></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+4.2. QUẢN LÝ TÀI XẾ (Bản đồ & Vị trí)
+-------------------------------------
+● Mô tả UI: Bản đồ Google Maps toàn màn hình. Marker tài xế thay đổi theo trạng thái Online/Busy.
+
+● Phân tích Thành phần (Components):
+  1. GoogleMap Container: Thành phần nền tích hợp Google Maps API.
+  2. MapStatsOverlay: Overlay nhỏ trên bản đồ hiển thị: Tổng tài xế online, Tài xế đang rảnh, Tài xế đang bận.
+  3. CustomDriverMarkers: Các biểu tượng tài xế trên bản đồ. 
+     - Màu Xanh: Online & Sẵn sàng.
+     - Màu Đỏ: Đang thực hiện chuyến hàng.
+     - Màu Xám: Vừa mới Offline (trong vòng 5 phút).
+  4. DriverInfoWindow (Popup): Hiện ra khi click vào Marker, chứa: Tên, SĐT, Loại xe, Biển số và đơn hàng hiện tại (nếu có).
+  5. LiveDriverSidebar: Danh sách tài xế dạng text bên cạnh bản đồ, cho phép tìm nhanh tài xế và "Fly to" tài xế đó trên map.
+
+● API & Data Flow:
+  1. API chính: `dispatcherApi.getDrivers(lat, lng, radius)`
+     - Method: `GET`
+     - Params: Vị trí trung tâm và bán kính quét (thường quét toàn thành phố hoặc vùng điều phối).
+  2. Data Source (Nguồn dữ liệu):
+     - Dữ liệu vị trí thực tế lấy từ Collection `Driver` (trường `location` kiểu GeoJSON Point).
+     - Thông tin định danh tài xế được `populate` từ `User`.
+  3. Cơ chế cập nhật:
+     - Polling liên tục mỗi 10 giây (Heartbeat). 
+     - Sử dụng `smooth animation` để dịch chuyển Marker giữa các lần fetch, tránh gây giật lag trên bản đồ.
+
+● Luồng xử lý: 
+  - Call API `getDrivers` mỗi 10 giây. 
+  - Update mảng `drivers` state -> React tự động re-render Marker trên Map.
+
+4.3. PHÂN CHUYẾN THỦ CÔNG (Manual Dispatch)
+-------------------------------------------
+● Mô tả UI: Màn hình chia đôi (Split Screen). Danh sách đơn bên trái, Thẻ tài xế bên phải.
+
+● Phân tích Thành phần (Components):
+  1. PendingOrderList (Cột Trái): Danh sách các đơn hàng ở trạng thái `PENDING`. 
+     - Card: Chứa thông tin rút gọn (Mã đơn, Khoảng cách, Loại xe yêu cầu).
+     - Selection State: Highlight (đổi màu border) khi được chọn.
+  2. AvailableDriverList (Cột Phải): Danh sách tài xế đang `ONLINE` và `SẴN SÀNG`.
+     - Card: Chứa thông tin tài xế (Tên, Loại xe, Rating).
+     - Selection State: Highlight (đổi màu border) khi được chọn.
+  3. DispatchActionPanel (Thanh tác vụ): Nằm ở giữa hoặc dưới cùng.
+     - Hiển thị ID đơn đang chọn + ID tài xế đang chọn.
+     - Nút [XÁC NHẬN PHÂN CHUYẾN] (Confirm Button).
+  4. QuickSearch: Ô tìm kiếm nhanh cho cả 2 danh sách.
+
+● API & Data Flow:
+  1. API lấy dữ liệu đầu vào:
+     - `dispatcherApi.getOrders('PENDING')` (Lấy danh sách đơn chờ).
+     - `dispatcherApi.getDrivers(lat, lng, radius)` (Lấy danh sách tài xế quanh khu vực trung tâm điều phối).
+  2. API thực thi: `dispatcherApi.assignDriver(orderId, driverId)`
+     - Method: `POST`
+     - Payload: Gửi cặp ID đã chọn lên backend.
+  3. Data Source (Nguồn dữ liệu):
+     - Đơn hàng lấy từ Collection `Order`.
+     - Tài xế lấy từ Collection `Driver` (phải lọc isOnline: true).
+  
+● Logic điều phối:
+  - Hệ thống chỉ cho phép chọn duy nhất 1 Đơn hàng và 1 Tài xế.
+  - Khi nhấn nút xác nhận, ứng dụng sẽ gọi API Assign. 
+  - Sau khi Assign thành công, thực hiện fetch lại cả 2 danh sách để loại bỏ các item đã được gán (Đơn hàng biến mất khỏi list PENDING, Tài xế biến mất khỏi list SẴN SÀNG).
+
+● Logic: Chọn item 1 bên đơn -> item 1 bên drivers -> Nút [Phân chuyến] sáng lên.
+● API: `dispatcherApi.assignDriver(orderId, driverId)`.
+
+4.4. TRUNG TÂM HỖ TRỢ (Support & Issue Tracking)
+------------------------------------------------
+● Mô tả UI: Giao diện Master-Detail (Bên trái danh sách, bên phải nội dung chi tiết). 
+
+● Phân tích Thành phần (Components):
+  1. TicketMasterList (Thanh bên): Danh sách các yêu cầu hỗ trợ.
+     - Phân loại bằng badge: OPEN (Xanh dương), IN_PROGRESS (Vàng), RESOLVED (Xanh lá).
+     - Hiển thị preview: Tên người gửi + 1 dòng nội dung đầu tiên.
+  2. TicketSummaryHeader: Thanh tiêu đề hiển thị: ID Ticket, Tên khách hàng, SĐT, Thời gian tạo.
+  3. LinkedOrderCard: Một "mini-card" hiển thị thông tin đơn hàng liên quan (nếu ticket này tạo từ một đơn hàng cụ thể). Cho phép click để xem nhanh Monitor đơn đó.
+  4. TicketDescription: Hiển thị toàn văn nội dung yêu cầu của khách hàng/tài xế.
+
+● API & Data Flow:
+  1. API Fetching: `dispatcherApi.getSupportTickets(status)`
+     - Params: `OPEN` (mặc định), `IN_PROGRESS`, `CLOSED`.
+  2. Data Source (Nguồn dữ liệu):
+     - Dữ liệu lấy từ Collection `SupportTicket`.
+     - `orderId` được sử dụng để liên kết ngược lại dữ liệu của đơn hàng trong Dashboard.
+  
+● Giao diện xử lý: Form xử lý sự cố. 
+  - Sidebar: List Ticket OPEN.
+  - Main: Thông tin sự cố + Ô nhập "Diễn biến/Ghi chú điều phối".
+● Phân mục: Ghi chú & Xử lý sự cố (Chức năng 6)
+-----------------------------------------
+● Phân tích Thành phần (Components):
+  1. InternalNoteTimeline (Dòng thời gian): Hiển thị các ghi chú trước đó của Dispatcher. Mỗi ghi chú có timestamp và định danh người xử lý.
+  2. StatusUpdateDropdown: Cho phép chuyển trạng thái Ticket (đang xử lý, đã giải quyết).
+  3. ResolutionForm:
+     - DispatcherNoteField (TextArea): Nơi nhập diễn biến (ví dụ: "Đã liên hệ tài xế, lốp bị xịt").
+     - FinalResolutionField (TextArea): Nơi nhập kết quả cuối cùng ("Đã đổi tài xế khác cho khách").
+  4. SaveActionButton: Nút [Cập nhật tiến độ] hoặc [Đóng Ticket].
+
+● API & Data Flow:
+  1. API thực thi: `dispatcherApi.updateTicket(ticketId, payload)`
+     - Method: `PUT`
+     - Payload: `{ status, note, resolution }`
+  2. Logic ghi chú:
+     - Trường `note` trong payload được backend sử dụng để cập nhật diễn biến xử lý.
+     - Sau mỗi lần Update, trang Detail phải tự động tải lại dữ liệu mới nhất.
+  3. Data Source (Nguồn dữ liệu): 
+     - Toàn bộ nội dung xử lý sự cố được lưu trong trường `adminNote` và `resolution` của Collection `SupportTicket`.
+
+● Logic Ghi chú (Chức năng 6): Dùng API `updateTicket` truyền trường `note` để lưu dấu vết xử lý sự cố.
+
+4.5. BÁO CÁO (Driver Performance)
+---------------------------------
+● Mô tả UI: Chọn tài xế + Date Picker -> Render 4 thông số KPI lớn và Biểu đồ doanh thu.
+
+● Phân tích Thành phần (Components):
+  1. DriverSearchSelector: Ô tìm kiếm và chọn tài xế từ danh sách (nên dùng Autocomplete/Select2).
+  2. DateRangeFilter: Bộ chọn khoảng thời gian (Từ ngày - Đến ngày) để lọc dữ liệu báo cáo.
+  3. PerformanceSummaryGrid: Tập hợp các thẻ KPI lớn:
+     - Thẻ Tổng chuyến: Tổng số đơn hàng tài xế đã nhận trong kỳ.
+     - Thẻ Tỷ lệ hoàn thành (Acceptance Rate): (Số đơn hoàn thành / Tổng đơn gán) * 100.
+     - Thẻ Thu nhập: Tổng số tiền tài xế đã kiếm được.
+     - Thẻ Đánh giá (Rating): Số sao trung bình dựa trên feedback khách hàng.
+  4. AnalysisChart (Biểu đồ): 
+     - Biểu đồ đường (Line Chart) thể hiện xu hướng thu nhập theo ngày.
+     - Biểu đồ cột (Bar Chart) so sánh số chuyến hoàn thành vs số chuyến bị hủy.
+
+● API & Data Flow:
+  1. API Fetching: `dispatcherApi.getDriverPerformance(driverId, from, to)`
+     - Method: `GET`
+     - Params: `driverId` (định danh tài xế), `from/to` (khoảng thời gian báo cáo).
+  2. Logic xử lý:
+     - Mặc định khi vào trang hiển thị dữ liệu 30 ngày gần nhất của tài xế đầu tiên trong list.
+     - Khi thay đổi bất kỳ filter nào (Driver hoặc Date), ứng dụng sẽ trigger call API mới.
+  3. Data Source (Nguồn dữ liệu):
+     - Backend thực hiện tính năng Aggregation (tổng hợp) từ Collection `Order` và lấy thông tin sao từ Collection `Driver`.
+
+● Ý nghĩa nghiệp vụ: 
+  - Giúp Dispatcher đưa ra quyết định dựa trên dữ liệu (Data-driven decision) để thưởng cho tài xế tích cực hoặc nhắc nhở tài xế có tỷ lệ hủy đơn cao.
+
+4.6. DASHBOARD TỔNG QUAN (/dispatcher/dashboard)
+-----------------------------------------------
+● Mô tả UI: Màn hình trung tâm chỉ huy. Hiển thị các khối chỉ số quan trọng (KPI Cards) và danh sách các "điểm nóng" cần chú ý.
+
+● Phân tích Thành phần (Components):
+  1. KPI Grid: Bộ 4-6 thẻ số liệu (Total, Pending, Active, Online Drivers). Mỗi thẻ có màu sắc cảnh báo riêng.
+  2. LiveStatusBanner: Thanh thông báo chạy ngang hiển thị các sự kiện mới nhất (ví dụ: "Có 1 đơn VIP mới vừa được tạo").
+  3. OperationChart: Biểu đồ đường thể hiện tần suất đơn hàng theo giờ trong ngày.
+  4. QuickLinkPanel: Các nút tắt dẫn nhanh tới: [Giao nhanh đơn chờ], [Xem tài xế gần nhất], [Xử lý hỏa tốc].
+
+● API & Data Flow:
+  1. API chính: `dispatcherApi.getDashboardStats()`
+  2. Data Source: Tổng hợp (Aggregated) từ Order, Driver và SupportTicket collections.
+  3. Cơ chế cập nhật: Polling 30s hoặc dùng Webhook/Socket nếu muốn Real-time tuyệt đối.
+
+● Code React mẫu:
+-----------------------------------------
+import { useState, useEffect } from 'react';
+import { dispatcherApi } from '@/services/api/dispatcherApi';
+
+export default function DashboardPage() {
+  const [stats, setStats] = useState(null);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      const data = await dispatcherApi.getDashboardStats();
+      setStats(data);
+    };
+    fetchStats();
+    const timer = setInterval(fetchStats, 30000);
+    return () => clearInterval(timer);
+  }, []);
+
+  if (!stats) return <div>Đang tải...</div>;
+
+  return (
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-6">Bảng điều phối trung tâm</h1>
+      <div className="grid grid-cols-3 gap-4">
+        <div className="card bg-blue-100 p-4">Đơn đang chạy: {stats.activeOrders}</div>
+        <div className="card bg-yellow-100 p-4">Đơn đang chờ: {stats.pendingOrders}</div>
+        <div className="card bg-green-100 p-4">Tài xế Online: {stats.onlineDrivers}</div>
+      </div>
+      {/* Thêm Chart và Recent Activities ở đây */}
+    </div>
+  );
+}

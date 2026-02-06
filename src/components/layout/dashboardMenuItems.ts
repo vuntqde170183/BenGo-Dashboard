@@ -7,10 +7,13 @@ import {
 	mdiCurrencyUsd,
 	mdiGift,
 	mdiTicket,
-	mdiViewQuilt
+	mdiViewQuilt,
+	mdiChartBar,
+	mdiCog,
+	mdiTarget
 } from "@mdi/js";
 
-export const getDashboardMenuItems = (): MenuItem[] => [
+export const getAdminDashboardMenuItems = (): MenuItem[] => [
 	{
 		id: "dashboard",
 		name: "Báo cáo và thống kê",
@@ -58,5 +61,44 @@ export const getDashboardMenuItems = (): MenuItem[] => [
 		name: "Quản lý nội dung",
 		path: "/admin/content",
 		icon: mdiViewQuilt,
+	},
+];
+
+export const getDispatcherDashboardMenuItems = (): MenuItem[] => [
+	{
+		id: "dispatcher-dashboard",
+		name: "Tổng quan",
+		path: "/dispatcher",
+		icon: mdiViewDashboard,
+	},
+	{
+		id: "order-management",
+		name: "Quản lý đơn hàng",
+		path: "/dispatcher/orders",
+		icon: mdiPackageVariant,
+	},
+	{
+		id: "driver-management",
+		name: "Quản lý tài xế",
+		path: "/dispatcher/drivers",
+		icon: mdiCarSide,
+	},
+	{
+		id: "assignment",
+		name: "Phân chuyến thủ công",
+		path: "/dispatcher/assignment",
+		icon: mdiTarget,
+	},
+	{
+		id: "support-tickets",
+		name: "Trung tâm hỗ trợ",
+		path: "/dispatcher/support",
+		icon: mdiTicket,
+	},
+	{
+		id: "reports",
+		name: "Báo cáo hiệu suất",
+		path: "/dispatcher/reports",
+		icon: mdiChartBar,
 	},
 ];
