@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { useDispatcherOrders, useSpecialOrders, useMarkOrderSpecial, useUnmarkOrderSpecial } from "@/hooks/useDispatcher";
-import { mdiStar, mdiStarOff, mdiTableEye, mdiAccountPlus } from "@mdi/js";
+import { mdiStar, mdiStarOff, mdiTableEye, mdiAccountPlus, mdiInboxRemoveOutline } from "@mdi/js";
 import { Icon } from "@mdi/react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -301,8 +301,11 @@ export default function DispatcherOrdersPage() {
                                             ))}
                                             {(!filteredOrders || filteredOrders.length === 0) && (
                                                 <TableRow>
-                                                    <TableCell colSpan={7} className="h-32 text-center text-neutral-500">
-                                                        Không tìm thấy đơn hàng nào.
+                                                    <TableCell colSpan={7} className="h-64 border-none">
+                                                        <div className="flex flex-col items-center justify-center py-4 text-neutral-400 italic gap-3">
+                                                            <Icon path={mdiInboxRemoveOutline} size={1.6} className="opacity-60" />
+                                                            <p>{searchQuery ? "Không tìm thấy đơn hàng nào" : "Chưa có đơn hàng"}</p>
+                                                        </div>
                                                     </TableCell>
                                                 </TableRow>
                                             )}

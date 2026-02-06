@@ -35,7 +35,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { formatCurrency, formatDate } from "@/lib/format";
-import { getOrderStatusBadge } from "@/lib/badge-helpers";
+import { getOrderStatusBadge, getPriorityBadge } from "@/lib/badge-helpers";
 import { Skeleton } from "@/components/ui/skeleton";
 import Icon from "@mdi/react";
 import {
@@ -533,16 +533,24 @@ export function OrderDetailsDialog({
                       </div>
                       <div className="space-y-1">
                         <p className="text-xs text-white uppercase font-bold tracking-wider">
+                          Độ ưu tiên
+                        </p>
+                        <div className="flex items-center gap-1">
+                          {getPriorityBadge(order.priority)}
+                        </div>
+                      </div>
+                      <div className="space-y-1">
+                        <p className="text-xs text-white uppercase font-bold tracking-wider">
                           Thanh toán
                         </p>
                         <div className="flex flex-col gap-2">
-                          <div className="flex items-center gap-1">
+                          <div className="flex items-center justify-between gap-1">
                             <span className="text-sm text-neutral-400">
                               Phương thức:
                             </span>
                             {getOrderStatusBadge(order.paymentMethod)}
                           </div>
-                          <div className="flex items-center gap-1">
+                          <div className="flex items-center justify-between gap-1">
                             <span className="text-sm text-neutral-400">
                               Trạng thái:
                             </span>

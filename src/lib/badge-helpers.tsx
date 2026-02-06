@@ -169,3 +169,39 @@ export function getOrderStatusBadge(status: string) {
       );
   }
 }
+
+export function getPriorityBadge(priority: string) {
+  if (!priority) return null;
+  switch (priority.toUpperCase()) {
+    case "NORMAL":
+      return (
+        <Badge variant="slate" className="capitalize">
+          Bình thường
+        </Badge>
+      );
+    case "VIP":
+      return (
+        <Badge variant="orange" className="capitalize">
+          VIP
+        </Badge>
+      );
+    case "URGENT":
+      return (
+        <Badge variant="red" className="capitalize">
+          Hỏa tốc
+        </Badge>
+      );
+    case "FRAGILE":
+      return (
+        <Badge variant="amber" className="capitalize">
+          Hàng dễ vỡ
+        </Badge>
+      );
+    default:
+      return (
+        <Badge variant="slate" className="capitalize">
+          {priority}
+        </Badge>
+      );
+  }
+}

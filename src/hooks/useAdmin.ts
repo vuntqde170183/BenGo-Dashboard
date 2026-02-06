@@ -130,10 +130,19 @@ export const useDeleteDriver = () => {
 };
 
 // Order Management
-export const useAdminOrders = (params: any) => {
+export const useAdminOrders = (params: any, options?: any) => {
   return useQuery({
     queryKey: ["admin", "orders", params],
     queryFn: () => adminOrderApi.getOrders(params),
+    ...options,
+  });
+};
+
+export const useAdminSpecialOrders = (params: any, options?: any) => {
+  return useQuery({
+    queryKey: ["admin", "orders", "special", params],
+    queryFn: () => adminOrderApi.getSpecialOrders(params),
+    ...options,
   });
 };
 

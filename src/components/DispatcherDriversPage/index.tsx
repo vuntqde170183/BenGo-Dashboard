@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Icon } from "@mdi/react";
-import { mdiMagnify, mdiCarSide, mdiStar, mdiTrendingUp, mdiMapMarker, mdiInformationOutline, mdiChartLine } from "@mdi/js";
+import { mdiMagnify, mdiCarSide, mdiStar, mdiTrendingUp, mdiMapMarker, mdiInformationOutline, mdiChartLine, mdiInboxRemoveOutline } from "@mdi/js";
 import { cn } from "@/lib/utils";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import { IDriverMapLocation } from "@/interface/dispatcher";
@@ -62,6 +62,11 @@ export default function DispatcherDriversPage() {
                     <CardContent className="flex-1 overflow-y-auto space-y-2 custom-scrollbar p-2">
                         {isLoading ? (
                             <div className="py-20 flex justify-center"><LoadingSpinner /></div>
+                        ) : filteredDrivers?.length === 0 ? (
+                            <div className="flex flex-col items-center justify-center py-10 text-neutral-400 italic gap-3">
+                                <Icon path={mdiInboxRemoveOutline} size={1.6} className="opacity-60" />
+                                <p>Không tìm thấy tài xế</p>
+                            </div>
                         ) : (
                             filteredDrivers?.map(driver => (
                                 <div
