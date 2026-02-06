@@ -1,5 +1,5 @@
-import DispatcherDriversPage from "@/components/DispatcherDriversPage";
+import DriversPage from "@/components/DriversPage";
 
 export default function page() {
-    return <DispatcherDriversPage />;
+    return <DriversPage />;
 }

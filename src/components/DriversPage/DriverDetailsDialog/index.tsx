@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useGetUserById, useUpdateUser } from "@/hooks/useAdmin";
+import { useProfile } from "@/hooks/useAuth";
 import { IUpdateUserBody } from "@/interface/auth";
 import { toast } from "react-toastify";
-import { IconX, IconEdit } from "@tabler/icons-react";
+import { IconX, IconEdit, IconMapPin, IconExternalLink } from "@tabler/icons-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Link } from "react-router-dom";
 import {
   Dialog,
   DialogContent,
@@ -40,6 +43,8 @@ export const DriverDetailsDialog = ({
   const [errors, setErrors] = useState<Record<string, string>>({});
   const { data: userData, isLoading: isLoadingUser } = useGetUserById(driverId);
   const { mutate: updateUserMutation, isPending: isUpdating } = useUpdateUser();
+  const { data: profileData } = useProfile();
+  const userRole = profileData?.data?.role;
 
   useEffect(() => {
     if (userData?.data) {
@@ -71,10 +76,10 @@ export const DriverDetailsDialog = ({
           profile?.drivingLicenseNumber || user.drivingLicenseNumber || "",
         bankInfo: profile?.bankInfo ||
           user.bankInfo || {
-            bankName: "",
-            accountNumber: "",
-            accountHolder: "",
-          },
+          bankName: "",
+          accountNumber: "",
+          accountHolder: "",
+        },
       });
     }
   }, [userData]);
@@ -209,10 +214,10 @@ export const DriverDetailsDialog = ({
           profile?.drivingLicenseNumber || user.drivingLicenseNumber || "",
         bankInfo: profile?.bankInfo ||
           user.bankInfo || {
-            bankName: "",
-            accountNumber: "",
-            accountHolder: "",
-          },
+          bankName: "",
+          accountNumber: "",
+          accountHolder: "",
+        },
       });
     }
   };
@@ -255,15 +260,41 @@ export const DriverDetailsDialog = ({
             ) : (
               <>
                 {userData?.data && <UserTable user={userData.data} />}
-                <div className="flex gap-2 justify-end">
+
+                {userRole === "DISPATCHER" && (
+                  <Card className="border border-dashed border-primary/30 bg-primary/5">
+                    <CardHeader className="py-3 border-b border-primary/10">
+                      <div className="flex items-center gap-2 text-primary">
+                        <IconMapPin className="h-5 w-5" />
+                        <span className="font-semibold">Vị trí tài xế</span>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="pt-4 flex items-center justify-between">
+                      <div className="space-y-1">
+                        <p className="text-sm text-neutral-200">Theo dõi vị trí thời gian thực trên bản đồ điều phối.</p>
+                        <p className="text-sm text-neutral-500 italic">Trạng thái: {userData.data.isOnline ? "Trực tuyến" : "Ngoại tuyến"}</p>
+                      </div>
+                      <Link to="/admin/dispatcher/drivers">
+                        <Button>
+                          <IconExternalLink className="h-4 w-4" />
+                          Xem bản đồ
+                        </Button>
+                      </Link>
+                    </CardContent>
+                  </Card>
+                )}
+
+                <div className="flex gap-2 justify-end pt-4">
                   <Button variant="outline" onClick={handleClose}>
                     <IconX className="h-4 w-4" />
                     Đóng
                   </Button>
-                  <Button onClick={handleEdit}>
-                    <IconEdit className="h-4 w-4" />
-                    Chỉnh sửa
-                  </Button>
+                  {userRole !== "DISPATCHER" && (
+                    <Button onClick={handleEdit}>
+                      <IconEdit className="h-4 w-4" />
+                      Chỉnh sửa
+                    </Button>
+                  )}
                 </div>
               </>
             )}
