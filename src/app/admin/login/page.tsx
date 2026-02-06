@@ -84,7 +84,7 @@ export default function LoginPage() {
         try {
           await fetchUserProfile();
         } catch (err) {
-          console.log("fetchUserProfile error (non-critical):", err);
+          console.error(err)
         }
 
         toast.success(loginResponse?.message || "Đăng nhập thành công!");
@@ -95,7 +95,6 @@ export default function LoginPage() {
         toast.error("Đăng nhập thất bại: Phản hồi từ máy chủ không hợp lệ");
       }
     } catch (error: any) {
-      console.error("Login error:", error);
       const errorMessage =
         error?.response?.data?.message ||
         error?.message ||
