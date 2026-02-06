@@ -88,25 +88,23 @@ export default function ProtectedRoute({
 
     setIsCheckingRole(true);
 
-    const userRole = profile?.data?.role || "admin";
+    const rawRole = profile?.data?.role || (profile?.data as any)?.user?.role || "admin";
+    const userRole = rawRole.toUpperCase();
+    const upperAllowedRoles = allowedRoles.map(r => r.toUpperCase());
 
-    if (!allowedRoles.includes(userRole)) {
-      // Only admin role is supported, always redirect to admin
+    if (!upperAllowedRoles.includes(userRole)) {
       navigate("/admin");
     }
 
     setIsCheckingRole(false);
   };
 
-  // Optimized loading states - reduced loading time by checking localStorage first
   if (!isClient) {
-    // Check localStorage immediately for faster initial render
     if (typeof window !== "undefined") {
       const storedProfile = localStorage.getItem("userProfile");
       const hasToken = localStorage.getItem("accessToken");
 
       if (storedProfile && hasToken) {
-        // Return children immediately if we have stored auth data
         return <>{children}</>;
       }
     }

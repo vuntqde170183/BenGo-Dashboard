@@ -114,7 +114,6 @@ export const UserCreateDialog = ({
       return;
     }
 
-    // Clean data based on role
     const submitData: any = {
       name: formData.name,
       phone: formData.phone,
@@ -143,7 +142,6 @@ export const UserCreateDialog = ({
     createUserMutation(submitData, {
       onSuccess: () => {
         toast.success("Tạo người dùng thành công!");
-        // Reset form only after successful creation
         resetForm();
         onClose();
         onSuccess?.();

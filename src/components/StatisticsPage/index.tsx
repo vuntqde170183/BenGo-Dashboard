@@ -32,59 +32,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-interface MetricCardProps {
-  icon: React.ReactNode;
-  title: string;
-  value: string | number;
-  subtitle?: string;
-  trend?: string;
-  href: string;
-}
-
-function MetricCard({
-  icon,
-  title,
-  value,
-  subtitle,
-  trend,
-  href,
-}: MetricCardProps) {
-  return (
-    <Link to={href} className="h-full block">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="h-full"
-      >
-        <Card className="h-full bg-gradient-to-br from-darkCardV1 via-darkCardV1 to-primary/10 border-primary/20 transition-all duration-300">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div className="flex-1 flex flex-col gap-2">
-                <p className="text-sm uppercase text-nowrap truncate font-medium text-neutral-400">
-                  {title}
-                </p>
-                <div className="flex justify-between items-center">
-                  <h3 className="text-2xl font-bold mt-2">{value}</h3>
-                  <div className="p-3 rounded-full bg-darkBorderV1 text-neutral-200">
-                    {icon}
-                  </div>
-                </div>
-                {subtitle && <p className="text-sm text-primary">{subtitle}</p>}
-                {trend && (
-                  <div className="flex items-center gap-1 text-primary text-sm text-nowrap">
-                    <Icon path={mdiTrendingUp} size={0.8} />
-                    <span>{trend}</span>
-                  </div>
-                )}
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </motion.div>
-    </Link>
-  );
-}
+import MetricCard from "@/components/Common/MetricCard";
 
 function DashboardSkeleton() {
   return (
@@ -212,8 +160,8 @@ export default function StatisticsPage() {
 
   return (
     <div className="space-y-4 bg-darkCardV1 p-4 rounded-2xl border border-darkBorderV1">
-      <div className="flex justify-between items-center">
-        <div>
+      <div className="flex justify-between items-center relative pr-24">
+        <div className="z-10">
           <h1 className="text-3xl font-bold text-neutral-200">
             Bảng điều khiển
           </h1>
@@ -221,13 +169,17 @@ export default function StatisticsPage() {
             Chào mừng quay trở lại, đây là những gì đang diễn ra hôm nay.
           </p>
         </div>
-        <div className="flex gap-2">
-          {(overview?.pendingTickets ?? 0) > 0 && (
-            <Badge variant="emerald">
-              <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
-              {overview?.pendingTickets} Yêu cầu trợ giúp
-            </Badge>
-          )}
+        <div className="absolute -top-12 -right-12 w-48 h-48 flex items-center justify-center pointer-events-none">
+          <div className="absolute w-32 h-32 bg-primary/20 rounded-full blur-[45px] animate-pulse" />
+
+          <motion.img
+            initial={{ y: 0, rotate: 0 }}
+            animate={{ y: [-6, 6, -6], rotate: [-2, 2, -2] }}
+            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+            src="/images/onlinechart.webp"
+            alt="growthchart"
+            className="w-28 h-28 relative z-10 drop-shadow-[0_12px_18px_rgba(65,198,81,0.4)]"
+          />
         </div>
       </div>
 
@@ -445,10 +397,10 @@ export default function StatisticsPage() {
                   <span className="font-bold text-lg text-primary">
                     {reports?.orderStats?.total
                       ? (
-                          (reports.orderStats.completed /
-                            reports.orderStats.total) *
-                          100
-                        ).toFixed(1)
+                        (reports.orderStats.completed /
+                          reports.orderStats.total) *
+                        100
+                      ).toFixed(1)
                       : 0}
                     %
                   </span>

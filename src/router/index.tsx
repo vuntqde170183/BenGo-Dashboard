@@ -5,6 +5,7 @@ import { lazy, Suspense } from "react";
 import RootLayout from "@/layouts/RootLayout";
 import AuthLayout from "@/layouts/AuthLayout";
 import AdminLayout from "@/layouts/AdminLayout";
+import DispatcherLayout from "@/layouts/DispatcherLayout";
 
 // Loading component
 const LoadingFallback = () => (
@@ -13,7 +14,7 @@ const LoadingFallback = () => (
   </div>
 );
 
-// Lazy load pages - wrapping imports to re-export default
+// Lazy load pages
 const HomePage = lazy(() =>
   import("@/app/page").then((m) => ({ default: m.default })),
 );
@@ -47,6 +48,26 @@ const AdminPromotions = lazy(() =>
 );
 const AdminTickets = lazy(() =>
   import("@/app/admin/tickets/page").then((m) => ({ default: m.default })),
+);
+
+// Dispatcher pages
+const DispatcherDashboard = lazy(() =>
+  import("@/app/dispatcher/page").then((m) => ({ default: m.default })),
+);
+const DispatcherOrders = lazy(() =>
+  import("@/app/dispatcher/orders/page").then((m) => ({ default: m.default })),
+);
+const DispatcherDrivers = lazy(() =>
+  import("@/app/dispatcher/drivers/page").then((m) => ({ default: m.default })),
+);
+const DispatcherAssignment = lazy(() =>
+  import("@/app/dispatcher/assignment/page").then((m) => ({ default: m.default })),
+);
+const DispatcherSupport = lazy(() =>
+  import("@/app/dispatcher/support/page").then((m) => ({ default: m.default })),
+);
+const DispatcherReports = lazy(() =>
+  import("@/app/dispatcher/reports/page").then((m) => ({ default: m.default })),
 );
 
 // Wrapper component for Suspense
@@ -143,6 +164,60 @@ export const router = createBrowserRouter([
             element: (
               <SuspenseWrapper>
                 <AdminTickets />
+              </SuspenseWrapper>
+            ),
+          },
+        ],
+      },
+      {
+        path: "dispatcher",
+        element: <DispatcherLayout />,
+        children: [
+          {
+            index: true,
+            element: (
+              <SuspenseWrapper>
+                <DispatcherDashboard />
+              </SuspenseWrapper>
+            ),
+          },
+          {
+            path: "orders",
+            element: (
+              <SuspenseWrapper>
+                <DispatcherOrders />
+              </SuspenseWrapper>
+            ),
+          },
+          {
+            path: "drivers",
+            element: (
+              <SuspenseWrapper>
+                <DispatcherDrivers />
+              </SuspenseWrapper>
+            ),
+          },
+          {
+            path: "assignment",
+            element: (
+              <SuspenseWrapper>
+                <DispatcherAssignment />
+              </SuspenseWrapper>
+            ),
+          },
+          {
+            path: "support",
+            element: (
+              <SuspenseWrapper>
+                <DispatcherSupport />
+              </SuspenseWrapper>
+            ),
+          },
+          {
+            path: "reports",
+            element: (
+              <SuspenseWrapper>
+                <DispatcherReports />
               </SuspenseWrapper>
             ),
           },

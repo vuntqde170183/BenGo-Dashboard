@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import type React from "react";
 import { useState } from "react";
-import { getDashboardMenuItems } from "./dashboardMenuItems";
+import { getAdminDashboardMenuItems, getDispatcherDashboardMenuItems } from "./dashboardMenuItems";
 import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import { RippleEffect } from "@/components/ui/ripple-effect";
 import CommonHeader from "../Common/CommonHeader";
@@ -23,8 +23,10 @@ export default function DashboardLayout({
   const pathname = location.pathname;
   const { isOpen } = useMenuSidebar();
 
-  // Get admin menu items
-  const dashboardMenuItems: MenuItem[] = getDashboardMenuItems();
+  // Get menu items based on role/path
+  const dashboardMenuItems: MenuItem[] = pathname.startsWith("/dispatcher")
+    ? getDispatcherDashboardMenuItems()
+    : getAdminDashboardMenuItems();
 
   const isMenuActive = (menu: MenuItem) => {
     if (menu.path && pathname === menu.path) return true;
