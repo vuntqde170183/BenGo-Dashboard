@@ -4,6 +4,7 @@ import {
   useUpdateDriverStatus,
   useDeleteDriver,
 } from "@/hooks/useAdmin";
+import { useProfile } from "@/hooks/useAuth";
 import { ViewReasonDialog, UpdateStatusDialog } from "./DriverStatusDialogs";
 import { DriverDetailsDialog } from "./DriverDetailsDialog";
 import {
@@ -53,6 +54,8 @@ export default function DriversPage() {
     useUpdateDriverStatus();
   const { mutate: deleteDriverMutation, isPending: isDeleting } =
     useDeleteDriver();
+  const { data: profile } = useProfile();
+  const role = profile?.data?.role;
 
   const statusParam = statusFilter;
 
@@ -201,10 +204,12 @@ export default function DriversPage() {
                   <SelectItem value="REJECTED">Từ chối</SelectItem>
                 </SelectContent>
               </Select>
-              <Button onClick={() => setCreateDialogOpen(true)}>
-                Thêm tài xế
-                <IconUserPlus className="h-4 w-4" />
-              </Button>
+              {role !== "DISPATCHER" && (
+                <Button onClick={() => setCreateDialogOpen(true)}>
+                  Thêm tài xế
+                  <IconUserPlus className="h-4 w-4" />
+                </Button>
+              )}
             </div>
           </div>
 
@@ -235,6 +240,7 @@ export default function DriversPage() {
                 onReject={(id) => openUpdateDialog(id, "REJECTED")}
                 onLock={(id) => openUpdateDialog(id, "LOCKED")}
                 onUnlock={(id) => openUpdateDialog(id, "APPROVED")}
+                role={role}
               />
             )}
           </Card>

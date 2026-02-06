@@ -7,6 +7,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import { IconStar } from "@tabler/icons-react";
 import { getStatusBadge } from "@/lib/badge-helpers";
@@ -50,6 +51,7 @@ interface DriverTableProps {
   onReject?: (id: string) => void;
   onLock?: (id: string) => void;
   onUnlock?: (id: string) => void;
+  role?: string;
   currentPage?: number;
   pageSize?: number;
 }
@@ -63,6 +65,7 @@ export const DriverTable = ({
   onReject,
   onLock,
   onUnlock,
+  role,
   currentPage = 1,
   pageSize = 10,
 }: DriverTableProps) => {
@@ -86,6 +89,7 @@ export const DriverTable = ({
             <TableHead>Biển số xe</TableHead>
             <TableHead>Loại xe</TableHead>
             <TableHead>Đánh giá</TableHead>
+            <TableHead>Trực tuyến</TableHead>
             <TableHead>Trạng thái</TableHead>
             <TableHead>Thao tác</TableHead>
           </TableRow>
@@ -145,6 +149,19 @@ export const DriverTable = ({
                       : "5.0"}
                   </div>
                 </TableCell>
+                <TableCell>
+                  {driver.isOnline ? (
+                    <Badge variant="emerald" className="capitalize">
+                      <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                      Trực tuyến
+                    </Badge>
+                  ) : (
+                    <Badge variant="slate" className="capitalize">
+                      <span className="w-1.5 h-1.5 rounded-full bg-neutral-400" />
+                      Ngoại tuyến
+                    </Badge>
+                  )}
+                </TableCell>
                 <TableCell>{getStatusBadge(driver.status)}</TableCell>
                 <TableCell className="text-right">
                   <div className="flex justify-end space-x-2">
@@ -165,7 +182,7 @@ export const DriverTable = ({
                     </motion.div>
 
                     {/* APPROVED: Show Lock */}
-                    {driver.status === "APPROVED" && (
+                    {driver.status === "APPROVED" && role !== "DISPATCHER" && (
                       <motion.div
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
@@ -185,7 +202,7 @@ export const DriverTable = ({
                     )}
 
                     {/* PENDING: Show Approve and Reject */}
-                    {driver.status === "PENDING" && (
+                    {driver.status === "PENDING" && role !== "DISPATCHER" && (
                       <>
                         <motion.div
                           whileHover={{ scale: 1.05 }}
@@ -223,7 +240,7 @@ export const DriverTable = ({
                     )}
 
                     {/* LOCKED: Show Unlock */}
-                    {driver.status === "LOCKED" && (
+                    {driver.status === "LOCKED" && role !== "DISPATCHER" && (
                       <motion.div
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
@@ -242,22 +259,24 @@ export const DriverTable = ({
                       </motion.div>
                     )}
 
-                    <motion.div
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      <Button
-                        className="bg-red-500 hover:bg-red-600"
-                        size="icon"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onDelete(driverId);
-                        }}
-                        title="Xóa"
+                    {role !== "DISPATCHER" && (
+                      <motion.div
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
                       >
-                        <Icon path={mdiTrashCanOutline} size={0.8} />
-                      </Button>
-                    </motion.div>
+                        <Button
+                          className="bg-red-500 hover:bg-red-600"
+                          size="icon"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onDelete(driverId);
+                          }}
+                          title="Xóa"
+                        >
+                          <Icon path={mdiTrashCanOutline} size={0.8} />
+                        </Button>
+                      </motion.div>
+                    )}
                   </div>
                 </TableCell>
               </TableRow>
