@@ -1,5 +1,5 @@
-import DispatcherReportsPage from "@/components/DispatcherPage/DispatcherReportsPage";
+import DispatcherReportsPage from "@/components/DispatcherReportsPage";
 
-export default function ReportsPage() {
+export default function page() {
     return <DispatcherReportsPage />;
 }

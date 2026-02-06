@@ -80,7 +80,7 @@ export default function DispatcherDriversPage() {
                                     <div className="flex-1 min-w-0">
                                         <p className="font-bold text-neutral-200 truncate">{driver.name}</p>
                                         <div className="flex items-center gap-2">
-                                            <span className="text-[10px] text-neutral-500">{driver.phone}</span>
+                                            <span className="text-xs text-neutral-500">{driver.phone}</span>
                                             <Badge className={cn("text-[9px] px-1 py-0 border-none",
                                                 driver.status === 'ONLINE' ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'
                                             )}>
@@ -112,19 +112,19 @@ export default function DispatcherDriversPage() {
                                         {isLoadingPerf ? <LoadingSpinner /> : (
                                             <div className="grid grid-cols-2 gap-4">
                                                 <div>
-                                                    <p className="text-[10px] text-neutral-500 uppercase font-bold">Tổng chuyến</p>
+                                                    <p className="text-xs text-neutral-500 uppercase font-bold">Tổng chuyến</p>
                                                     <p className="text-2xl font-bold text-neutral-100">{performance?.totalTrips || 0}</p>
                                                 </div>
                                                 <div>
-                                                    <p className="text-[10px] text-neutral-500 uppercase font-bold">Hoàn thành</p>
+                                                    <p className="text-xs text-neutral-500 uppercase font-bold">Hoàn thành</p>
                                                     <p className="text-2xl font-bold text-green-500">{performance?.completedTrips || 0}</p>
                                                 </div>
                                                 <div>
-                                                    <p className="text-[10px] text-neutral-500 uppercase font-bold">Tỷ lệ chấp nhận</p>
+                                                    <p className="text-xs text-neutral-500 uppercase font-bold">Tỷ lệ chấp nhận</p>
                                                     <p className="text-2xl font-bold text-primary">{performance?.acceptanceRate || 0}%</p>
                                                 </div>
                                                 <div>
-                                                    <p className="text-[10px] text-neutral-500 uppercase font-bold">Đánh giá TB</p>
+                                                    <p className="text-xs text-neutral-500 uppercase font-bold">Đánh giá TB</p>
                                                     <p className="text-2xl font-bold text-yellow-500 flex items-center gap-1">
                                                         {performance?.rating || 0} <Icon path={mdiStar} size={0.8} />
                                                     </p>
@@ -144,7 +144,7 @@ export default function DispatcherDriversPage() {
                                     <CardContent className="pt-4 px-4">
                                         {isLoadingPerf ? <LoadingSpinner /> : (
                                             <div className="flex flex-col justify-center h-full gap-1 py-2">
-                                                <p className="text-[10px] text-neutral-500 uppercase font-bold">Tổng doanh thu</p>
+                                                <p className="text-xs text-neutral-500 uppercase font-bold">Tổng doanh thu</p>
                                                 <p className="text-3xl font-bold text-emerald-500">{formatCurrency(performance?.totalEarnings || 0)}</p>
                                                 <p className="text-xs text-neutral-400 mt-2">Dòng tiền ổn định trong 30 ngày qua</p>
                                             </div>

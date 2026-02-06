@@ -84,7 +84,7 @@ export default function TicketsPage() {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 pr-10 py-2 w-full border-lightBorderV1 focus:border-mainTextHoverV1 dark:text-neutral-200"
               />
-              <IconSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 dark:text-neutral-200 w-5 h-5" />
+              <IconSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-400 w-5 h-5" />
               {searchQuery && (
                 <button
                   onClick={handleClearSearch}

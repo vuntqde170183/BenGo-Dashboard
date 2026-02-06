@@ -73,7 +73,7 @@ export default function SupportCenterPage() {
                                     key={tab}
                                     onClick={() => setActiveTab(tab)}
                                     className={cn(
-                                        "flex-1 py-1.5 text-[10px] font-bold rounded-lg transition-all uppercase tracking-wider",
+                                        "flex-1 py-1.5 text-xs font-bold rounded-lg transition-all uppercase tracking-wider",
                                         activeTab === tab ? "bg-primary text-black" : "text-neutral-500 hover:text-neutral-300"
                                     )}
                                 >
@@ -107,7 +107,7 @@ export default function SupportCenterPage() {
                                         )} />
                                     </div>
                                     <p className="text-sm font-semibold text-neutral-100 truncate">{ticket.user}</p>
-                                    <p className="text-[10px] text-neutral-400 mb-2">{formatDate(ticket.createdAt)}</p>
+                                    <p className="text-xs text-neutral-400 mb-2">{formatDate(ticket.createdAt)}</p>
                                     <p className="text-xs text-neutral-400 line-clamp-2 italic">"{ticket.content}"</p>
                                 </div>
                             ))

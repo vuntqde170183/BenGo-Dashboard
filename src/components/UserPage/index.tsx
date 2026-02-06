@@ -125,7 +125,7 @@ export default function UserPage() {
                 onClear={handleClearSearch}
                 className="pl-10 pr-10 py-2 w-full"
               />
-              <IconSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 dark:text-neutral-200 w-5 h-5" />
+              <IconSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-400 w-5 h-5" />
             </div>
             <div className="flex items-center gap-3">
               <Select value={roleFilter} onValueChange={handleRoleFilterChange}>
@@ -192,11 +192,10 @@ export default function UserPage() {
         isDeleting={isDeleting}
         onClose={() => setIsDeleteDialogOpen(false)}
         onConfirm={confirmDelete}
-        title={`Xóa người dùng: ${
-          displayUsers.find(
-            (u: any) => u.id === selectedUserId || u._id === selectedUserId,
-          )?.name || ""
-        }`}
+        title={`Xóa người dùng: ${displayUsers.find(
+          (u: any) => u.id === selectedUserId || u._id === selectedUserId,
+        )?.name || ""
+          }`}
         description="Bạn có chắc chắn muốn xóa người dùng này không? Hành động này không thể hoàn tác."
         confirmText="Xóa người dùng"
         successMessage="Xóa người dùng thành công!"

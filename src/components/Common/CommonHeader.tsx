@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useMenuSidebar } from "@/stores/useMenuSidebar";
-import { mdiBellOutline, mdiLoading, mdiLogout } from "@mdi/js";
+import { mdiBellOutline, mdiLoading, mdiLogout, mdiMagnify } from "@mdi/js";
 import { Icon } from "@mdi/react";
 import type React from "react";
 import { useRef, useState } from "react";
@@ -15,7 +15,7 @@ export default function CommonHeader() {
   const isLoading = false;
   const { logoutUser } = useUser();
 
-  const handleSearchSubmit = () => {};
+  const handleSearchSubmit = () => { };
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm((e.target as HTMLInputElement).value);
   };
@@ -32,9 +32,6 @@ export default function CommonHeader() {
           >
             <HamburgerMenu size="20" color="#fff" />
           </button>
-          <h1 className="text-neutral-200 font-bold text-xl pr-4">
-            BenGo Admin
-          </h1>
         </div>
         <div className="relative hidden md:block">
           <form
@@ -42,22 +39,28 @@ export default function CommonHeader() {
             className="relative flex items-center gap-4"
           >
             <div className="relative w-[440px] flex justify-between items-center rounded-md bg-darkBorderV1">
+              {isLoading ? (
+                <Icon
+                  path={mdiLoading}
+                  size={1}
+                  spin
+                  className="absolute left-[10px] top-1/2 transform -translate-y-1/2 text-mainActiveV1"
+                />
+              ) : (
+                <Icon
+                  path={mdiMagnify}
+                  size={1}
+                  className="absolute left-[10px] top-1/2 transform -translate-y-1/2 text-neutral-400"
+                />
+              )}
               <Input
                 ref={inputRef}
                 placeholder="Tìm kiếm..."
-                className="w-[90%] pr-10 border-none focus:!outline-none focus:!ring-0 focus:!border-none !bg-transparent text-neutral-200 placeholder:text-neutral-200"
+                className="w-full pl-10 border-none focus:!outline-none focus:!ring-0 focus:!border-none !bg-transparent text-neutral-200 placeholder:text-neutral-200"
                 value={searchTerm}
                 onChange={handleSearchChange}
                 disabled={isLoading}
               />
-              {isLoading && (
-                <Icon
-                  path={mdiLoading}
-                  size={0.8}
-                  spin
-                  className="absolute right-[10px] top-1/2 transform -translate-y-1/2 text-mainActiveV1"
-                />
-              )}
             </div>
             <button
               type="submit"

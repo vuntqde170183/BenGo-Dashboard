@@ -184,7 +184,7 @@ export default function DriversPage() {
                 onClear={handleClearSearch}
                 className="pl-10 pr-10 py-2 w-full"
               />
-              <IconSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 dark:text-neutral-200 w-5 h-5" />
+              <IconSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-400 w-5 h-5" />
             </div>
             <div className="flex items-center gap-3">
               <Select

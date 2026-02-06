@@ -116,7 +116,7 @@ export default function ManualAssignmentPage() {
                                     <div className="flex justify-between items-start mb-2">
                                         <span className="font-mono text-primary text-xs font-bold bg-primary/10 px-2 py-0.5 rounded">#{order.id.slice(-8)}</span>
                                         {order.priority && order.priority !== 'NORMAL' && (
-                                            <Badge className="bg-yellow-500/20 text-yellow-500 border-none text-[10px]">{order.priority}</Badge>
+                                            <Badge className="bg-yellow-500/20 text-yellow-500 border-none text-xs">{order.priority}</Badge>
                                         )}
                                     </div>
                                     <div className="text-sm text-neutral-300 space-y-2">
@@ -177,7 +177,7 @@ export default function ManualAssignmentPage() {
                                         <p className="font-bold text-neutral-100 group-hover:text-primary transition-colors">{driver.name}</p>
                                         <p className="text-xs text-neutral-400">{driver.phone}</p>
                                         <div className="flex items-center gap-2 mt-2">
-                                            <Badge className="bg-green-500/10 text-green-500 border-none text-[10px] px-1.5 py-0">ONLINE</Badge>
+                                            <Badge className="bg-green-500/10 text-green-500 border-none text-xs px-1.5 py-0">ONLINE</Badge>
                                             <span className="flex items-center text-yellow-500 text-xs font-bold gap-0.5">
                                                 <Icon path={mdiStar} size={0.5} /> 4.9
                                             </span>
@@ -199,7 +199,7 @@ export default function ManualAssignmentPage() {
                     className="bg-darkCardV1 border border-primary/30 p-4 rounded-2xl flex items-center justify-between gap-6 shadow-2xl relative z-10"
                 >
                     <div className="flex-1 text-center border-r border-darkBorderV1">
-                        <span className="text-[10px] text-neutral-400 block uppercase font-bold tracking-wider mb-1">Đơn hàng đã chọn</span>
+                        <span className="text-xs text-neutral-400 block uppercase font-bold tracking-wider mb-1">Đơn hàng đã chọn</span>
                         {selectedOrder ? (
                             <span className="text-primary font-bold">#{selectedOrder.id.slice(-8)} - {selectedOrder.customerName}</span>
                         ) : (
@@ -210,7 +210,7 @@ export default function ManualAssignmentPage() {
                         <Icon path={mdiChevronRight} size={1} />
                     </div>
                     <div className="flex-1 text-center">
-                        <span className="text-[10px] text-neutral-400 block uppercase font-bold tracking-wider mb-1">Tài xế đã chọn</span>
+                        <span className="text-xs text-neutral-400 block uppercase font-bold tracking-wider mb-1">Tài xế đã chọn</span>
                         {selectedDriver ? (
                             <span className="text-primary font-bold">{selectedDriver.name} - {selectedDriver.phone}</span>
                         ) : (

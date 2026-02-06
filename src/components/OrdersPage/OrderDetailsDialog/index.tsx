@@ -115,17 +115,16 @@ export function OrderDetailsDialog({
     isOpen: false,
     title: "",
     description: "",
-    onConfirm: () => {},
+    onConfirm: () => { },
   });
 
   const handleStatusUpdate = (status: string) => {
     setConfirmConfig({
       isOpen: true,
       title: "Xác nhận cập nhật trạng thái",
-      description: `Bạn có chắc chắn muốn thay đổi trạng thái đơn hàng sang "${
-        ORDER_STATUS_STEPS.find((s) => s.key === status)?.label ||
+      description: `Bạn có chắc chắn muốn thay đổi trạng thái đơn hàng sang "${ORDER_STATUS_STEPS.find((s) => s.key === status)?.label ||
         (status === "CANCELLED" ? "Hủy đơn" : status)
-      }"?`,
+        }"?`,
       variant: status === "CANCELLED" ? "destructive" : "warning",
       onConfirm: () => {
         updateStatus({ id: orderId, data: { status } });
@@ -138,9 +137,8 @@ export function OrderDetailsDialog({
     setConfirmConfig({
       isOpen: true,
       title: "Xác nhận cập nhật thanh toán",
-      description: `Bạn có chắc chắn muốn đánh dấu đơn hàng này là ${
-        paymentStatus === "PAID" ? "Đã thanh toán" : "Chưa thanh toán"
-      }?`,
+      description: `Bạn có chắc chắn muốn đánh dấu đơn hàng này là ${paymentStatus === "PAID" ? "Đã thanh toán" : "Chưa thanh toán"
+        }?`,
       variant: "warning",
       onConfirm: () => {
         updateStatus({ id: orderId, data: { paymentStatus } });
@@ -238,7 +236,7 @@ export function OrderDetailsDialog({
                           </div>
                           <span
                             className={cn(
-                              "text-[10px] md:text-xs font-bold mt-2 uppercase tracking-tight transition-colors duration-300",
+                              "text-xs md:text-xs font-bold mt-2 uppercase tracking-tight transition-colors duration-300",
                               isActive ? "text-primary" : "text-neutral-400",
                             )}
                           >
@@ -291,7 +289,7 @@ export function OrderDetailsDialog({
                     }
                     className={cn(
                       order.paymentStatus === "PAID" &&
-                        "bg-green-500 hover:bg-green-600 text-white border-none",
+                      "bg-green-500 hover:bg-green-600 text-white border-none",
                     )}
                     disabled={isUpdating || order.paymentStatus === "PAID"}
                     onClick={() => handlePaymentUpdate("PAID")}
@@ -305,7 +303,7 @@ export function OrderDetailsDialog({
                     }
                     className={cn(
                       order.paymentStatus === "UNPAID" &&
-                        "bg-red-500 hover:bg-red-600 text-white border-none",
+                      "bg-red-500 hover:bg-red-600 text-white border-none",
                     )}
                     disabled={isUpdating || order.paymentStatus === "UNPAID"}
                     onClick={() => handlePaymentUpdate("UNPAID")}

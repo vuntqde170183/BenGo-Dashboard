@@ -215,7 +215,7 @@ export function TicketDetailsDialog({
                                                     </div>
                                                     <span
                                                         className={cn(
-                                                            "text-[10px] md:text-xs font-bold mt-2 uppercase tracking-tight transition-colors duration-300",
+                                                            "text-xs md:text-xs font-bold mt-2 uppercase tracking-tight transition-colors duration-300",
                                                             isActive ? "text-primary" : "text-neutral-400",
                                                         )}
                                                     >

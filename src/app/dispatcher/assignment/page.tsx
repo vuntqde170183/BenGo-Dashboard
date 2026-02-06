@@ -1,5 +1,5 @@
-import ManualAssignmentPage from "@/components/DispatcherPage/ManualAssignmentPage";
+import ManualAssignmentPage from "@/components/ManualAssignmentPage";
 
-export default function AssignmentPage() {
+export default function page() {
     return <ManualAssignmentPage />;
 }

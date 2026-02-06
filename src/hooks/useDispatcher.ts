@@ -16,7 +16,7 @@ export const useDispatcherStats = () => {
 };
 
 // 2. Order Management
-export const useDispatcherOrders = (params: { status?: DispatcherOrderStatus }) => {
+export const useDispatcherOrders = (params: { status?: DispatcherOrderStatus; page?: number; limit?: number }) => {
     return useQuery({
         queryKey: ["dispatcher", "orders", params],
         queryFn: () => dispatcherApi.getOrders(params),

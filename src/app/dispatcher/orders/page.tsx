@@ -1,5 +1,4 @@
-import DispatcherOrdersPage from "@/components/DispatcherPage/DispatcherOrdersPage";
-
-export default function OrdersPage() {
-    return <DispatcherOrdersPage />;
+import OrdersPage from "@/components/OrdersPage";
+export default function page() {
+    return <OrdersPage />;
 }
