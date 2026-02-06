@@ -158,7 +158,7 @@ export function ChangeRoleDialog({
                                                 </div>
                                                 <div className="flex flex-col">
                                                     <span className="font-medium">{role.label}</span>
-                                                    <span className="text-[10px] text-neutral-400">
+                                                    <span className="text-xs text-neutral-400">
                                                         {role.description}
                                                     </span>
                                                 </div>

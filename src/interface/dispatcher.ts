@@ -12,17 +12,41 @@ export interface IDispatcherStats {
 }
 
 export interface IDispatcherOrder {
-    id: string;
-    from: string;
-    to: string;
-    status: DispatcherOrderStatus;
-    customerName: string;
-    customerPhone: string;
+    _id: string;
+    customerId: {
+        _id: string;
+        name: string;
+        phone: string;
+    };
+    driverId?: {
+        _id: string;
+        name: string;
+        phone: string;
+    };
+    pickup: {
+        address: string;
+        lat: number;
+        lng: number;
+        _id?: string;
+    };
+    dropoff: {
+        address: string;
+        lat: number;
+        lng: number;
+        _id?: string;
+    };
+    vehicleType: string;
+    goodsImages?: string[];
+    status: string;
+    totalPrice: number;
+    distanceKm: number;
+    paymentMethod: string;
+    paymentStatus: string;
     createdAt: string;
+    updatedAt?: string;
     priority?: string;
     specialNote?: string;
     tags?: string[];
-    driverId?: string;
 }
 
 export interface IDriverMapLocation {

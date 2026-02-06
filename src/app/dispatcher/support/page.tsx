@@ -1,5 +1,5 @@
-import SupportCenterPage from "@/components/DispatcherPage/SupportCenterPage";
+import SupportCenterPage from "@/components/SupportCenterPage";
 
-export default function SupportPage() {
+export default function page() {
     return <SupportCenterPage />;
 }
