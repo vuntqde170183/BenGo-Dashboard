@@ -12,7 +12,7 @@ import { getRoleBadge } from "@/lib/badge-helpers";
 import { IconStar } from "@tabler/icons-react";
 
 import { IUser } from "@/interface/auth";
-import { mdiTableEye, mdiTrashCanOutline } from "@mdi/js";
+import { mdiTableEye, mdiTrashCanOutline, mdiInboxRemoveOutline } from "@mdi/js";
 import Icon from "@mdi/react";
 
 interface UserTableProps {
@@ -39,6 +39,15 @@ export const UserTable = ({
     }).format(amount);
   };
 
+  if (users.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-4 text-neutral-400 italic gap-3">
+        <Icon path={mdiInboxRemoveOutline} size={1.6} className="opacity-60" />
+        <p>{isSearching ? "Không tìm thấy người dùng" : "Danh sách người dùng trống"}</p>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full overflow-auto border border-darkBackgroundV1 rounded-md">
       <Table>
@@ -54,94 +63,85 @@ export const UserTable = ({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {users.length === 0 ? (
-            <TableRow>
-              <TableCell colSpan={7}>
-                {isSearching
-                  ? "Không tìm thấy người dùng"
-                  : "Danh sách người dùng trống"}
-              </TableCell>
-            </TableRow>
-          ) : (
-            users.map((user, index) => {
-              const rowNumber = (currentPage - 1) * pageSize + index + 1;
-              return (
-                <TableRow
-                  key={user.id}
-                  className="cursor-pointer hover:bg-slate-50/50 dark:hover:bg-darkBorderV1/50 transition-colors"
-                  onClick={() => onEdit(user.id)}
-                >
-                  <TableCell>{rowNumber}</TableCell>
-                  <TableCell className="flex items-center gap-2">
-                    <div className="w-12 h-12 flex-shrink-0 rounded-full bg-darkBorderV1 flex items-center justify-center overflow-hidden">
-                      <img
-                        src={
-                          user.avatar ||
-                          `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.name}`
-                        }
-                        alt="avatar"
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div>
-                      <p className="font-semibold dark:text-neutral-200">
-                        {user.name}
-                      </p>
-                      {user.phone && (
-                        <p className="text-sm text-neutral-400">{user.phone}</p>
-                      )}
-                    </div>
-                  </TableCell>
-                  <TableCell className="w-[180px]">{user.email}</TableCell>
-                  <TableCell>{getRoleBadge(user.role)}</TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-1 dark:text-neutral-200 font-medium">
-                      <IconStar className="w-4 h-4 text-yellow-500 fill-yellow-500" />
-                      {user.rating}
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <span className="font-medium text-green-500">
-                      {formatCurrency(user.walletBalance)}
-                    </span>
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex justify-end space-x-2">
-                      <motion.div
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
+          {users.map((user, index) => {
+            const rowNumber = (currentPage - 1) * pageSize + index + 1;
+            return (
+              <TableRow
+                key={user.id}
+                className="cursor-pointer hover:bg-slate-50/50 dark:hover:bg-darkBorderV1/50 transition-colors"
+                onClick={() => onEdit(user.id)}
+              >
+                <TableCell>{rowNumber}</TableCell>
+                <TableCell className="flex items-center gap-2">
+                  <div className="w-12 h-12 flex-shrink-0 rounded-full bg-darkBorderV1 flex items-center justify-center overflow-hidden">
+                    <img
+                      src={
+                        user.avatar ||
+                        `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.name}`
+                      }
+                      alt="avatar"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div>
+                    <p className="font-semibold dark:text-neutral-200">
+                      {user.name}
+                    </p>
+                    {user.phone && (
+                      <p className="text-sm text-neutral-400">{user.phone}</p>
+                    )}
+                  </div>
+                </TableCell>
+                <TableCell className="w-[180px]">{user.email}</TableCell>
+                <TableCell>{getRoleBadge(user.role)}</TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-1 dark:text-neutral-200 font-medium">
+                    <IconStar className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+                    {user.rating}
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <span className="font-medium text-green-500">
+                    {formatCurrency(user.walletBalance)}
+                  </span>
+                </TableCell>
+                <TableCell className="text-right">
+                  <div className="flex justify-end space-x-2">
+                    <motion.div
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <Button
+                        size="icon"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onEdit(user.id);
+                        }}
                       >
-                        <Button
-                          size="icon"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            onEdit(user.id);
-                          }}
-                        >
-                          <Icon path={mdiTableEye} size={0.8} />
-                        </Button>
-                      </motion.div>
-                      <motion.div
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
+                        <Icon path={mdiTableEye} size={0.8} />
+                      </Button>
+                    </motion.div>
+                    <motion.div
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <Button
+                        className="bg-red-500 hover:bg-red-600"
+                        size="icon"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onDelete(user.id);
+                        }}
                       >
-                        <Button
-                          className="bg-red-500 hover:bg-red-600"
-                          size="icon"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            onDelete(user.id);
-                          }}
-                        >
-                          <Icon path={mdiTrashCanOutline} size={0.8} />
-                        </Button>
-                      </motion.div>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              );
-            })
-          )}
+                        <Icon path={mdiTrashCanOutline} size={0.8} />
+                      </Button>
+                    </motion.div>
+                  </div>
+                </TableCell>
+              </TableRow>
+            );
+          })
+          }
         </TableBody>
       </Table>
     </div>

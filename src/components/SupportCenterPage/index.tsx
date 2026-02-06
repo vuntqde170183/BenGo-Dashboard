@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Icon } from "@mdi/react";
-import { mdiTicketOutline, mdiMessageProcessing, mdiCheckDecagram, mdiAlertDecagram, mdiClockOutline, mdiPackageVariant } from "@mdi/js";
+import { mdiTicketOutline, mdiMessageProcessing, mdiCheckDecagram, mdiAlertDecagram, mdiClockOutline, mdiPackageVariant, mdiInboxRemoveOutline } from "@mdi/js";
 import { cn } from "@/lib/utils";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import { ISupportTicket } from "@/interface/dispatcher";
@@ -86,7 +86,10 @@ export default function SupportCenterPage() {
                         {isLoading ? (
                             <div className="py-20 flex justify-center"><LoadingSpinner /></div>
                         ) : tickets?.length === 0 ? (
-                            <div className="text-center py-20 text-neutral-500 italic">Không có yêu cầu nào</div>
+                            <div className="flex flex-col items-center justify-center py-10 text-neutral-400 italic gap-3">
+                                <Icon path={mdiInboxRemoveOutline} size={1.6} className="opacity-60" />
+                                <p>Không có yêu cầu nào</p>
+                            </div>
                         ) : (
                             tickets?.map(ticket => (
                                 <div

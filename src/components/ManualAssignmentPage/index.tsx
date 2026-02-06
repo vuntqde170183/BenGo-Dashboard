@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react";
 import { useDispatcherOrders, useAllDrivers, useAssignDriver } from "@/hooks/useDispatcher";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Icon } from "@mdi/react";
-import { mdiMagnify, mdiAccountHardHat, mdiPackageVariant, mdiChevronRight, mdiStar } from "@mdi/js";
-import { cn } from "@/lib/utils";
-import LoadingSpinner from "@/components/ui/LoadingSpinner";
+import { mdiMagnify, mdiAccountHardHat, mdiPackageVariant, mdiChevronRight, mdiStar, mdiInboxRemoveOutline } from "@mdi/js";
+import { motion } from "framer-motion";
 import { useSearchParams } from "react-router-dom";
 import { IDispatcherOrder, IDriverMapLocation } from "@/interface/dispatcher";
-import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 export default function ManualAssignmentPage() {
     const [searchParams] = useSearchParams();
@@ -21,14 +21,15 @@ export default function ManualAssignmentPage() {
     const [searchOrder, setSearchOrder] = useState("");
     const [searchDriver, setSearchDriver] = useState("");
 
-    const { data: pendingOrders, isLoading: isLoadingOrders } = useDispatcherOrders({ status: "PENDING" });
+    const { data: pendingOrdersResponse, isLoading: isLoadingOrders } = useDispatcherOrders({ status: "PENDING" });
+    const pendingOrders = pendingOrdersResponse?.data || [];
     const { data: drivers, isLoading: isLoadingDrivers } = useAllDrivers();
     const assignMutation = useAssignDriver();
 
     // Handle initial order from query param
     useEffect(() => {
-        if (initialOrderId && pendingOrders && !selectedOrder) {
-            const order = pendingOrders.find(o => o.id === initialOrderId);
+        if (initialOrderId && pendingOrders.length > 0 && !selectedOrder) {
+            const order = (pendingOrders as IDispatcherOrder[]).find(o => o._id === initialOrderId);
             if (order) setSelectedOrder(order);
         }
     }, [initialOrderId, pendingOrders, selectedOrder]);
@@ -36,7 +37,7 @@ export default function ManualAssignmentPage() {
     const handleAssign = () => {
         if (selectedOrder && selectedDriver) {
             assignMutation.mutate({
-                orderId: selectedOrder.id,
+                orderId: selectedOrder._id,
                 driverId: selectedDriver.id
             }, {
                 onSuccess: () => {
@@ -48,9 +49,9 @@ export default function ManualAssignmentPage() {
     };
 
     const filteredOrders = pendingOrders?.filter(o =>
-        o.id.toLowerCase().includes(searchOrder.toLowerCase()) ||
-        o.customerName.toLowerCase().includes(searchOrder.toLowerCase()) ||
-        o.customerPhone.includes(searchOrder)
+        o._id.toLowerCase().includes(searchOrder.toLowerCase()) ||
+        o.customerId?.name.toLowerCase().includes(searchOrder.toLowerCase()) ||
+        o.customerId?.phone.includes(searchOrder)
     );
 
     const filteredDrivers = drivers?.filter(d =>
@@ -98,32 +99,35 @@ export default function ManualAssignmentPage() {
                         {isLoadingOrders ? (
                             <div className="py-20 flex justify-center"><LoadingSpinner /></div>
                         ) : filteredOrders?.length === 0 ? (
-                            <div className="text-center py-20 text-neutral-500 italic">Không có đơn hàng chờ gán</div>
+                            <div className="flex flex-col items-center justify-center py-10 text-neutral-400 italic gap-3">
+                                <Icon path={mdiInboxRemoveOutline} size={1.6} className="opacity-60" />
+                                <p>Không có đơn hàng chờ gán</p>
+                            </div>
                         ) : (
                             filteredOrders?.map(order => (
                                 <motion.div
-                                    key={order.id}
+                                    key={order._id}
                                     whileHover={{ scale: 1.01 }}
                                     whileTap={{ scale: 0.99 }}
                                     onClick={() => setSelectedOrder(order)}
                                     className={cn(
                                         "p-4 rounded-2xl border transition-all cursor-pointer group",
-                                        selectedOrder?.id === order.id
+                                        selectedOrder?._id === order._id
                                             ? "bg-primary/10 border-primary shadow-[0_0_20px_rgba(65,198,81,0.15)]"
                                             : "bg-darkBackgroundV1/50 border-darkBorderV1 hover:border-primary/40 hover:bg-darkBackgroundV1"
                                     )}
                                 >
                                     <div className="flex justify-between items-start mb-2">
-                                        <span className="font-mono text-primary text-xs font-bold bg-primary/10 px-2 py-0.5 rounded">#{order.id.slice(-8)}</span>
+                                        <span className="font-mono text-primary text-xs font-bold bg-primary/10 px-2 py-0.5 rounded">#{order._id.slice(-8)}</span>
                                         {order.priority && order.priority !== 'NORMAL' && (
                                             <Badge className="bg-yellow-500/20 text-yellow-500 border-none text-xs">{order.priority}</Badge>
                                         )}
                                     </div>
                                     <div className="text-sm text-neutral-300 space-y-2">
-                                        <p className="font-bold text-neutral-100 group-hover:text-primary transition-colors">{order.customerName}</p>
+                                        <p className="font-bold text-neutral-100 group-hover:text-primary transition-colors">{order.customerId?.name}</p>
                                         <div className="space-y-1">
-                                            <p className="truncate flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-green-500 flex-shrink-0"></span> {order.from}</p>
-                                            <p className="truncate flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-red-500 flex-shrink-0"></span> {order.to}</p>
+                                            <p className="truncate flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-green-500 flex-shrink-0"></span> {order.pickup?.address}</p>
+                                            <p className="truncate flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-red-500 flex-shrink-0"></span> {order.dropoff?.address}</p>
                                         </div>
                                     </div>
                                 </motion.div>
@@ -155,7 +159,10 @@ export default function ManualAssignmentPage() {
                         {isLoadingDrivers ? (
                             <div className="py-20 flex justify-center"><LoadingSpinner /></div>
                         ) : filteredDrivers?.length === 0 ? (
-                            <div className="text-center py-20 text-neutral-500 italic">Không tìm thấy tài xế</div>
+                            <div className="flex flex-col items-center justify-center py-10 text-neutral-400 italic gap-3">
+                                <Icon path={mdiInboxRemoveOutline} size={1.6} className="opacity-60" />
+                                <p>Không tìm thấy tài xế</p>
+                            </div>
                         ) : (
                             filteredDrivers?.map(driver => (
                                 <motion.div
@@ -201,7 +208,7 @@ export default function ManualAssignmentPage() {
                     <div className="flex-1 text-center border-r border-darkBorderV1">
                         <span className="text-xs text-neutral-400 block uppercase font-bold tracking-wider mb-1">Đơn hàng đã chọn</span>
                         {selectedOrder ? (
-                            <span className="text-primary font-bold">#{selectedOrder.id.slice(-8)} - {selectedOrder.customerName}</span>
+                            <span className="text-primary font-bold">#{selectedOrder._id.slice(-8)} - {selectedOrder.customerId?.name}</span>
                         ) : (
                             <span className="text-neutral-500 italic text-sm">Vui lòng chọn đơn hàng</span>
                         )}

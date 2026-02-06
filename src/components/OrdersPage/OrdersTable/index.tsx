@@ -10,13 +10,14 @@ import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { formatCurrency, formatDate } from "@/lib/format";
 import { getVehicleIcon } from "@/lib/vehicle-helpers";
-import { getOrderStatusBadge } from "@/lib/badge-helpers";
+import { getOrderStatusBadge, getPriorityBadge } from "@/lib/badge-helpers";
 import Icon from "@mdi/react";
 import {
   mdiLocationEnter,
   mdiLocationExit,
   mdiTableEye,
   mdiCloseCircleOutline,
+  mdiInboxRemoveOutline,
 } from "@mdi/js";
 
 interface OrdersTableProps {
@@ -38,8 +39,9 @@ export function OrdersTable({
 }: OrdersTableProps) {
   if (orders.length === 0) {
     return (
-      <div className="text-center py-12 text-neutral-200">
-        {isSearching ? "Không tìm thấy đơn hàng nào" : "Chưa có đơn hàng"}
+      <div className="flex flex-col items-center justify-center py-4 text-neutral-400 italic gap-3">
+        <Icon path={mdiInboxRemoveOutline} size={1.6} className="opacity-60" />
+        <p>{isSearching ? "Không tìm thấy đơn hàng nào" : "Chưa có đơn hàng"}</p>
       </div>
     );
   }
@@ -51,6 +53,7 @@ export function OrdersTable({
           <TableRow>
             <TableHead className="w-[60px]">STT</TableHead>
             <TableHead>Mã đơn</TableHead>
+            <TableHead>Ưu tiên</TableHead>
             <TableHead>Khách hàng</TableHead>
             <TableHead>Tài xế</TableHead>
             <TableHead>Tuyến đường</TableHead>
@@ -78,6 +81,9 @@ export function OrdersTable({
                 >
                   #{order._id?.slice(-8)}
                 </button>
+              </TableCell>
+              <TableCell>
+                {getPriorityBadge(order.priority)}
               </TableCell>
               <TableCell>
                 <div>

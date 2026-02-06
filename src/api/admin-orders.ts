@@ -2,6 +2,7 @@ import { sendGet, sendPut } from "./axios";
 
 export const adminOrderApi = {
   getOrders: (params: any) => sendGet("/admin/orders", params),
+  getSpecialOrders: (params: any) => sendGet("/admin/orders/special", params),
   getOrderDetails: (id: string) => sendGet(`/admin/orders/${id}`),
   cancelOrder: (id: string, reason: string) => sendPut(`/admin/orders/${id}/cancel`, { reason }),
   updateOrderStatus: (id: string, data: { status?: string; paymentStatus?: string }) => sendPut(`/admin/orders/${id}/status`, data),

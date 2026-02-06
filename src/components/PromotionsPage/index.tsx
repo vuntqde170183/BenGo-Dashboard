@@ -20,6 +20,8 @@ import { DeleteDialog } from "@/components/ui/delete-dialog";
 import { PromotionCreateDialog } from "@/components/PromotionsPage/PromotionCreateDialog";
 import { PromotionDetailsDialog } from "@/components/PromotionsPage/PromotionDetailsDialog";
 import { PromotionCard } from "@/components/PromotionsPage/PromotionCard";
+import Icon from "@mdi/react";
+import { mdiInboxRemoveOutline } from "@mdi/js";
 
 export default function PromotionsPage() {
   const [filterStatus, setFilterStatus] = useState<string>("ALL");
@@ -165,8 +167,9 @@ export default function PromotionsPage() {
               ))}
             </div>
           ) : displayPromotions.length === 0 ? (
-            <div className="text-center py-12 text-neutral-200">
-              Không tìm thấy chương trình khuyến mãi nào
+            <div className="flex flex-col items-center justify-center py-12 text-neutral-400 italic gap-3">
+              <Icon path={mdiInboxRemoveOutline} size={1.6} className="opacity-60" />
+              <p>Không tìm thấy chương trình khuyến mãi nào</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

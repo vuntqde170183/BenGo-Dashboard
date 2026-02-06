@@ -14,6 +14,7 @@ import {
   mdiTruck,
   mdiStar,
   mdiArrowRightThin,
+  mdiInboxRemoveOutline,
 } from "@mdi/js";
 import { formatCurrency } from "@/lib/format";
 import { Link } from "react-router-dom";
@@ -462,8 +463,9 @@ export default function StatisticsPage() {
                 </div>
               ))
             ) : (
-              <div className="col-span-2 text-center py-8 text-neutral-400">
-                Chưa có dữ liệu tài xế
+              <div className="col-span-2 flex flex-col items-center justify-center py-8 text-neutral-400 italic gap-3">
+                <Icon path={mdiInboxRemoveOutline} size={1.6} className="opacity-60" />
+                <p>Chưa có dữ liệu tài xế</p>
               </div>
             )}
           </div>

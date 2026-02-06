@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAdminOrders, useCancelOrder } from "@/hooks/useAdmin";
+import { useAdminOrders, useAdminSpecialOrders, useCancelOrder } from "@/hooks/useAdmin";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -29,17 +29,38 @@ export default function OrdersPage() {
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
 
   const statusParam =
-    statusFilter && statusFilter !== "ALL" ? statusFilter : undefined;
+    statusFilter && statusFilter !== "ALL" && statusFilter !== "SPECIAL" ? statusFilter : undefined;
+
+  const isSpecial = statusFilter === "SPECIAL";
 
   const {
-    data: ordersData,
-    isLoading,
-    refetch,
-  } = useAdminOrders({
-    status: statusParam,
-    page: currentPage,
-    limit: pageSize,
-  });
+    data: normalOrders,
+    isLoading: isNormalLoading,
+    refetch: refetchNormal,
+  } = useAdminOrders(
+    {
+      status: statusParam,
+      page: currentPage,
+      limit: pageSize,
+    },
+    { enabled: !isSpecial }
+  );
+
+  const {
+    data: specialOrders,
+    isLoading: isSpecialLoading,
+    refetch: refetchSpecial,
+  } = useAdminSpecialOrders(
+    {
+      page: currentPage,
+      limit: pageSize,
+    },
+    { enabled: isSpecial }
+  );
+
+  const ordersData = isSpecial ? specialOrders : normalOrders;
+  const isLoading = isSpecial ? isSpecialLoading : isNormalLoading;
+  const refetch = isSpecial ? refetchSpecial : refetchNormal;
 
   const { mutate: cancelOrderMutation, isPending: isCanceling } =
     useCancelOrder();
@@ -83,7 +104,6 @@ export default function OrdersPage() {
     setSearchQuery("");
   };
 
-  const displayOrders = ordersData?.data || [];
 
   return (
     <div className="space-y-4 bg-darkCardV1 p-4 rounded-2xl border border-darkBorderV1">
@@ -105,10 +125,10 @@ export default function OrdersPage() {
         transition={{ duration: 0.3 }}
       >
         <div className="flex flex-col gap-4">
-          <div className="flex items-center justify-between gap-4 w-full">
-            <div className="relative w-full md:w-96">
+          <div className="flex items-center justify-between w-full">
+            <div className="relative w-full md:w-80">
               <Input
-                placeholder="Tìm kiếm theo mã đơn, khách hàng, tài xế..."
+                placeholder="Tìm kiếm theo mã đơn, khách hàng,..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 pr-10 py-2 w-full border-lightBorderV1 focus:border-mainTextHoverV1 dark:text-neutral-200"
@@ -132,6 +152,7 @@ export default function OrdersPage() {
                 <TabsTrigger value="PICKED_UP">Đã lấy hàng</TabsTrigger>
                 <TabsTrigger value="DELIVERED">Đã giao hàng</TabsTrigger>
                 <TabsTrigger value="CANCELLED">Đã hủy</TabsTrigger>
+                <TabsTrigger value="SPECIAL">⭐Chuyến đặc biệt</TabsTrigger>
               </TabsList>
             </Tabs>
           </div>
@@ -153,7 +174,7 @@ export default function OrdersPage() {
               </div>
             ) : (
               <OrdersTable
-                orders={displayOrders}
+                orders={(ordersData as any)?.data || []}
                 isSearching={false}
                 onViewDetails={handleViewDetails}
                 onCancel={handleCancel}
@@ -163,14 +184,14 @@ export default function OrdersPage() {
             )}
           </Card>
 
-          {(ordersData?.pagination?.total ?? 0) > pageSize && (
+          {((ordersData as any)?.pagination?.total ?? 0) > pageSize && (
             <Pagination
               page={currentPage}
               pageSize={pageSize}
-              total={ordersData?.pagination?.total ?? 0}
+              total={(ordersData as any)?.pagination?.total ?? 0}
               totalPages={
-                ordersData?.pagination?.total_pages ||
-                Math.ceil((ordersData?.pagination?.total ?? 0) / pageSize)
+                (ordersData as any)?.pagination?.total_pages ||
+                Math.ceil(((ordersData as any)?.pagination?.total ?? 0) / pageSize)
               }
               onPageChange={handlePageChange}
             />
