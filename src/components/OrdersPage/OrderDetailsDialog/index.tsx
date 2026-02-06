@@ -48,6 +48,7 @@ import {
 import { useEffect, useState } from "react";
 import { getVehicleIcon } from "@/lib/vehicle-helpers";
 import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
 
 interface OrderDetailsDialogProps {
   isOpen: boolean;
@@ -513,17 +514,17 @@ export function OrderDetailsDialog({
                     </div>
                   </CardHeader>
                   <CardContent className="p-4 space-y-4">
-                    <div className="grid grid-cols-2 gap-2">
-                      <div className="space-y-1">
+                    <div className="grid grid-cols-2 gap-2 gap-y-3">
+                      <div className="flex items-center justify-between">
                         <p className="text-xs text-white uppercase font-bold tracking-wider">
                           Loại xe
                         </p>
-                        <div className="flex items-center gap-1 text-neutral-400">
+                        <Badge variant="slate">
                           {getVehicleIcon(order.vehicleType)}
                           <span>{getVehicleTypeLabel(order.vehicleType)}</span>
-                        </div>
+                        </Badge>
                       </div>
-                      <div className="space-y-1">
+                      <div className="flex items-center justify-between">
                         <p className="text-xs text-white uppercase font-bold tracking-wider">
                           Khoảng cách
                         </p>
@@ -531,7 +532,7 @@ export function OrderDetailsDialog({
                           {order.distanceKm?.toFixed(2)} km
                         </p>
                       </div>
-                      <div className="space-y-1">
+                      <div className="flex items-center justify-between">
                         <p className="text-xs text-white uppercase font-bold tracking-wider">
                           Độ ưu tiên
                         </p>
@@ -539,26 +540,19 @@ export function OrderDetailsDialog({
                           {getPriorityBadge(order.priority)}
                         </div>
                       </div>
-                      <div className="space-y-1">
+                      <div className="flex items-center justify-between">
                         <p className="text-xs text-white uppercase font-bold tracking-wider">
-                          Thanh toán
+                          Phương thức th.toán
                         </p>
-                        <div className="flex flex-col gap-2">
-                          <div className="flex items-center justify-between gap-1">
-                            <span className="text-sm text-neutral-400">
-                              Phương thức:
-                            </span>
-                            {getOrderStatusBadge(order.paymentMethod)}
-                          </div>
-                          <div className="flex items-center justify-between gap-1">
-                            <span className="text-sm text-neutral-400">
-                              Trạng thái:
-                            </span>
-                            {getOrderStatusBadge(order.paymentStatus)}
-                          </div>
-                        </div>
+                        {getOrderStatusBadge(order.paymentMethod)}
                       </div>
-                      <div className="space-y-1">
+                      <div className="flex items-center justify-between">
+                        <p className="text-xs text-white uppercase font-bold tracking-wider">
+                          Trạng thái th.toán
+                        </p>
+                        {getOrderStatusBadge(order.paymentStatus)}
+                      </div>
+                      <div className="flex items-center justify-between">
                         <p className="text-xs text-white uppercase font-bold tracking-wider">
                           Ngày tạo
                         </p>
