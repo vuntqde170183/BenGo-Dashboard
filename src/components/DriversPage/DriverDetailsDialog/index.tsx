@@ -13,6 +13,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { UserTable } from "../../UserPage/UserDetailsDialog/UserTable";
 import { UserForm } from "../../UserPage/UserDetailsDialog/UserForm";
@@ -24,6 +25,8 @@ import {
   mdiMapMarker,
   mdiOpenInNew,
   mdiContentSave,
+  mdiRouter,
+  mdiNavigation,
 } from "@mdi/js";
 
 interface DriverDetailsDialogProps {
@@ -229,6 +232,18 @@ export const DriverDetailsDialog = ({
     }
   };
 
+  const openInGoogleMaps = () => {
+    const lat = userData?.data?.driverProfile?.location?.coordinates?.[1] || userData?.data?.location?.coordinates?.[1];
+    const lng = userData?.data?.driverProfile?.location?.coordinates?.[0] || userData?.data?.location?.coordinates?.[0];
+
+    if (lat && lng) {
+      window.open(
+        `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`,
+        "_blank"
+      );
+    }
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent size="medium">
@@ -241,6 +256,9 @@ export const DriverDetailsDialog = ({
                 : "Chi tiết tài xế"}
             </span>
           </DialogTitle>
+          <DialogDescription className="text-xs text-neutral-400 mt-1">
+            Xem và quản lý thông tin chi tiết, hồ sơ và trạng thái hoạt động của tài xế.
+          </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-3 md:space-y-4 max-h-[70vh] overflow-y-auto pr-1 custom-scrollbar p-3 md:p-4">
@@ -270,31 +288,100 @@ export const DriverDetailsDialog = ({
                 <>
                   {userData?.data && <UserTable user={userData.data} />}
                   {userRole === "DISPATCHER" && (
-                    <Card>
-                      <CardHeader className="py-3 border-b border-primary/10">
-                        <div className="flex items-center gap-2 text-primary">
-                          <Icon path={mdiMapMarker} size={0.8} />
-                          <span className="font-semibold">Vị trí tài xế</span>
-                        </div>
-                      </CardHeader>
-                      <CardContent className="pt-4 flex items-center justify-between">
-                        <div className="space-y-1">
-                          <p className="text-sm text-neutral-300">
-                            Theo dõi vị trí thời gian thực trên bản đồ điều phối.
-                          </p>
-                          <p className="text-sm text-neutral-400 italic">
-                            Trạng thái:{" "}
-                            {userData.data.isOnline ? "Trực tuyến" : "Ngoại tuyến"}
-                          </p>
-                        </div>
-                        <Link to="/admin/dispatcher/drivers">
-                          <Button>
-                            <Icon path={mdiOpenInNew} size={0.8} />
-                            Xem bản đồ
-                          </Button>
-                        </Link>
-                      </CardContent>
-                    </Card>
+                    <div className="space-y-4">
+                      {/* Driver Status Card */}
+                      <Card>
+                        <CardHeader className="py-3 border-b border-primary/10">
+                          <div className="flex items-center gap-2 text-primary">
+                            <Icon path={mdiMapMarker} size={0.8} />
+                            <span className="font-semibold">Trạng thái hoạt động</span>
+                          </div>
+                        </CardHeader>
+                        <CardContent className="pt-4">
+                          <div className="flex items-center justify-between">
+                            <div className="space-y-1">
+                              <p className="text-sm text-neutral-300">
+                                Trạng thái hiện tại của tài xế trên hệ thống.
+                              </p>
+                              <p className="text-sm text-neutral-400 italic">
+                                Trạng thái:{" "}
+                                {userData.data.isOnline ? "Trực tuyến" : "Ngoại tuyến"}
+                              </p>
+                            </div>
+                            <div className={`w-3 h-3 rounded-full animate-pulse ${userData.data.isOnline ? 'bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]' : 'bg-neutral-500'}`} />
+                          </div>
+                        </CardContent>
+                      </Card>
+
+                      {/* Interactive Google Map Section */}
+                      <Card className="overflow-hidden border-darkBorderV1 bg-darkBackgroundV1/30">
+                        <CardContent className="p-0 relative">
+                          <div className="h-64 w-full bg-darkBackgroundV1/50 relative">
+                            {(() => {
+                              const coords = userData?.data?.driverProfile?.location?.coordinates || userData?.data?.location?.coordinates;
+                              const lat = coords?.[1];
+                              const lng = coords?.[0];
+                              const hasCoords = typeof lat === "number" && typeof lng === "number";
+
+                              if (hasCoords) {
+                                return (
+                                  <>
+                                    <iframe
+                                      width="100%"
+                                      height="100%"
+                                      style={{ border: 0 }}
+                                      loading="lazy"
+                                      allowFullScreen
+                                      referrerPolicy="no-referrer-when-downgrade"
+                                      src={`https://www.google.com/maps/embed/v1/place?key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY
+                                        }&q=${lat},${lng}&zoom=15&maptype=roadmap`}
+                                      className="opacity-95 hover:opacity-100 transition-opacity"
+                                    ></iframe>
+                                    <button
+                                      onClick={openInGoogleMaps}
+                                      className="absolute bottom-4 right-4 bg-white text-black hover:bg-neutral-200 px-4 py-2 rounded-full text-[10px] font-bold shadow-2xl transition-all flex items-center gap-2 group/btn active:scale-95 z-20"
+                                    >
+                                      <Icon path={mdiRouter} size={0.6} />
+                                      <span>Xem trên Google Maps</span>
+                                    </button>
+                                  </>
+                                );
+                              }
+
+                              return (
+                                <div className="w-full h-full flex items-center justify-center text-neutral-500 italic text-sm gap-2">
+                                  <Icon path={mdiMapMarker} size={1} className="opacity-20" />
+                                  Chưa cập nhật vị trí
+                                </div>
+                              );
+                            })()}
+                          </div>
+
+                          <div className="p-4 bg-darkCardV1/40">
+                            <div className="flex items-start gap-3">
+                              <div className="p-2 rounded-lg bg-primary/10 text-primary mt-1 shadow-inner">
+                                <Icon path={mdiNavigation} size={0.8} />
+                              </div>
+                              <div className="space-y-1">
+                                <p className="text-[10px] uppercase font-bold text-white tracking-wider">
+                                  Vị trí hiện tại
+                                </p>
+                                <p className="font-semibold text-xs text-neutral-400 leading-relaxed">
+                                  {(() => {
+                                    const coords = userData?.data?.driverProfile?.location?.coordinates || userData?.data?.location?.coordinates;
+                                    const lat = coords?.[1];
+                                    const lng = coords?.[0];
+                                    return typeof lat === "number" && typeof lng === "number"
+                                      ? `Tọa độ: ${lat.toFixed(6)}, ${lng.toFixed(6)}`
+                                      : "Không có dữ liệu vị trí";
+                                  })()}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </div>
                   )}
                 </>
               )}

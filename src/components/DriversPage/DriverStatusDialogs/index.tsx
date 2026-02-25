@@ -5,6 +5,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import Icon from "@mdi/react";
@@ -38,6 +39,9 @@ export const ViewReasonDialog = ({
             <Icon path={mdiInformationOutline} size={0.8} />
             <span>Thông tin chi tiết</span>
           </DialogTitle>
+          <DialogDescription className="text-xs text-neutral-400 mt-1">
+            Xem các ghi chú và phản hồi từ hệ thống về trạng thái của tài xế.
+          </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-3 md:space-y-4 max-h-[70vh] overflow-y-auto pr-1 custom-scrollbar p-3 md:p-4">
@@ -122,12 +126,12 @@ export const UpdateStatusDialog = ({
             <Icon path={mdiAlertCircleOutline} size={0.8} />
             <span>{title}</span>
           </DialogTitle>
+          <DialogDescription className="text-xs text-neutral-400 mt-1">
+            {description || "Vui lòng cung cấp thông tin chi tiết cho việc thay đổi trạng thái này."}
+          </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-3 md:space-y-4 max-h-[70vh] overflow-y-auto pr-1 custom-scrollbar p-3 md:p-4">
-          {description && (
-            <p className="text-sm text-neutral-400">{description}</p>
-          )}
           <div className="space-y-4">
             <div className="space-y-2">
               <label className="text-sm font-medium">
