@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAllDrivers, useDriverPerformance } from "@/hooks/useDispatcher";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DatePicker } from "@/components/ui/date-picker";
 import { Button } from "@/components/ui/button";
@@ -43,7 +43,7 @@ export default function DispatcherReportsPage() {
                             </SelectTrigger>
                             <SelectContent className="bg-darkCardV1 border-darkBorderV1">
                                 {drivers?.map(d => (
-                                    <SelectItem key={d.id} value={d.id} className="text-neutral-300 focus:bg-primary/10 focus:text-primary">{d.name} ({d.phone})</SelectItem>
+                                    <SelectItem key={d.id} value={d.id} className="text-neutral-300 focus:bg-primary/5 focus:text-primary">{d.name} ({d.phone})</SelectItem>
                                 ))}
                             </SelectContent>
                         </Select>
@@ -155,7 +155,7 @@ export default function DispatcherReportsPage() {
                         </Card>
 
                         <Card className="bg-darkCardV1 border-darkBorderV1 shadow-lg flex flex-col justify-center items-center p-10 text-center">
-                            <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-4">
+                            <div className="w-16 h-16 rounded-full bg-primary/5 flex items-center justify-center text-primary mb-4">
                                 <Icon path={mdiChartLine} size={1.2} />
                             </div>
                             <h3 className="text-lg font-bold text-neutral-300 mb-2">Thông tin phân tích</h3>
@@ -163,7 +163,7 @@ export default function DispatcherReportsPage() {
                                 Dữ liệu thời gian thực được tổng hợp từ hệ thống điều phối BenGo.
                                 Tài xế đang có mức độ tin cậy {(performance?.acceptanceRate || 0) > 90 ? 'CAO' : 'TRUNG BÌNH'}.
                             </p>
-                            <Button variant="ghost" className="mt-6 text-primary hover:bg-primary/10">Xuất báo cáo PDF</Button>
+                            <Button variant="ghost" className="mt-6 text-primary hover:bg-primary/5">Xuất báo cáo PDF</Button>
                         </Card>
                     </div>
                 </div>

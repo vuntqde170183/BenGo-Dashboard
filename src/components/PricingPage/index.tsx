@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { motion } from "framer-motion";
-import { IconDeviceFloppy, IconPencilDollar, IconX } from "@tabler/icons-react";
+import { IconDeviceFloppy, IconX } from "@tabler/icons-react";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { getVehicleIcon } from "@/lib/vehicle-helpers";
@@ -121,7 +121,7 @@ export default function PricingPage() {
               <CardHeader className="border-b border-b-darkBorderV1 py-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-lg bg-primary/10 text-primary">
+                    <div className="p-2 rounded-lg bg-primary/5 text-primary">
                       {getVehicleIcon(config.vehicleType)}
                     </div>
                     <span className="font-bold text-lg text-primary tracking-tight">

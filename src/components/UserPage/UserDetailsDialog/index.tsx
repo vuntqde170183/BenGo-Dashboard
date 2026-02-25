@@ -297,7 +297,7 @@ export const UserDetailsDialog = ({
               </Button>
               <Button
                 variant="outline"
-                className="text-primary border-primary hover:bg-primary/10"
+                className="text-primary border-primary hover:bg-primary/5"
                 onClick={() => setIsChangeRoleOpen(true)}
               >
                 <Icon path={mdiAccountCog} size={0.8} />

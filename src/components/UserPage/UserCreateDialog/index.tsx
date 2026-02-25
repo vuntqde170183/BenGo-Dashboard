@@ -220,7 +220,7 @@ export const UserCreateDialog = ({
                   onClick={() => updateFormData({ avatar: "" })}
                   className="absolute -top-1 -right-1 p-1 bg-red-500 text-white rounded-full shadow-lg"
                 >
-                  <Icon path={mdiClose} size={0.5} />
+                  <Icon path={mdiClose} size={0.6} />
                 </button>
               )}
             </div>

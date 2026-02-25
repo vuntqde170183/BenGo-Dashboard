@@ -162,8 +162,8 @@ export function ChangeRoleDialog({
                                     return (
                                         <SelectItem key={role.value} value={role.value}>
                                             <div className="flex items-center gap-3">
-                                                <div className="p-1.5 rounded-md bg-primary/10 text-primary">
-                                                    <Icon path={role.icon} size={0.7} />
+                                                <div className="p-1.5 rounded-md bg-primary/5 text-primary">
+                                                    <Icon path={role.icon} size={0.6} />
                                                 </div>
                                                 <div className="flex flex-col">
                                                     <span className="font-medium text-sm">

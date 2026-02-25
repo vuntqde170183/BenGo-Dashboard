@@ -86,7 +86,7 @@ export default function DashboardLayout({
                               className={cn(
                                 "flex items-center rounded-lg p-[10px] h-[46px] text-[13px] font-medium transition-all duration-300 border",
                                 isMenuActive(menu)
-                                  ? "bg-primary/10 text-primary border-primary/20 shadow-[0_0_15px_rgba(65,198,81,0.1)]"
+                                  ? "bg-primary/5 text-primary border-primary/20 shadow-[0_0_15px_rgba(65,198,81,0.1)]"
                                   : "text-neutral-300/70 border-transparent hover:bg-primary/5 hover:text-primary/80 hover:border-primary/10",
                                 !isOpen && "!justify-center w-[46px]",
                               )}
@@ -127,7 +127,7 @@ export default function DashboardLayout({
                             className={cn(
                               "flex items-center rounded-lg p-[10px] h-[46px] text-[13px] font-medium transition-all duration-300 border",
                               isMenuActive(menu)
-                                ? "bg-primary/10 text-primary border-primary/20 shadow-[0_0_15px_rgba(65,198,81,0.1)]"
+                                ? "bg-primary/5 text-primary border-primary/20 shadow-[0_0_15px_rgba(65,198,81,0.1)]"
                                 : "text-neutral-300/70 border-transparent hover:bg-primary/5 hover:text-primary/80 hover:border-primary/10",
                               !isOpen && "!justify-center w-[46px]",
                             )}
@@ -194,7 +194,7 @@ export default function DashboardLayout({
                                         className={cn(
                                           "flex items-center rounded-lg p-[8px] h-[38px] text-[13px] font-normal transition-all duration-300 border",
                                           pathname === sub.path
-                                            ? "bg-primary/10 text-primary border-primary/20"
+                                            ? "bg-primary/5 text-primary border-primary/20"
                                             : "text-neutral-300/70 border-transparent hover:bg-primary/5 hover:text-primary/80 hover:border-primary/10",
                                         )}
                                       >

@@ -391,7 +391,7 @@ export function OrderDetailsDialog({
                       <div className="flex items-center gap-2">
                         <Icon
                           path={mdiAccountCircleOutline}
-                          size={0.7}
+                          size={0.6}
                           className="text-primary"
                         />
                         <span className="text-sm font-semibold text-primary">
@@ -408,7 +408,7 @@ export function OrderDetailsDialog({
                               `https://api.dicebear.com/7.x/avataaars/svg?seed=${order.customerId?.name}`
                             }
                           />
-                          <AvatarFallback className="bg-primary/10 text-primary font-bold">
+                          <AvatarFallback className="bg-primary/5 text-primary font-bold">
                             <img
                               src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${order.customerId?.name}`}
                               alt={order.customerId?.name}
@@ -424,7 +424,7 @@ export function OrderDetailsDialog({
                             <div className="flex items-center gap-1.5 text-neutral-400 group">
                               <Icon
                                 path={mdiPhone}
-                                size={0.5}
+                                size={0.6}
                                 className="group-hover:text-primary transition-colors"
                               />
                               <span className="text-xs">
@@ -435,7 +435,7 @@ export function OrderDetailsDialog({
                               <div className="flex items-center gap-1.5 text-neutral-400 group">
                                 <Icon
                                   path={mdiEmail}
-                                  size={0.5}
+                                  size={0.6}
                                   className="group-hover:text-primary transition-colors"
                                 />
                                 <span className="text-xs truncate max-w-[120px]">
@@ -454,7 +454,7 @@ export function OrderDetailsDialog({
                       <div className="flex items-center gap-2">
                         <Icon
                           path={mdiTruckOutline}
-                          size={0.7}
+                          size={0.6}
                           className="text-primary"
                         />
                         <span className="text-sm font-semibold text-primary">
@@ -472,7 +472,7 @@ export function OrderDetailsDialog({
                                 `https://api.dicebear.com/7.x/avataaars/svg?seed=${order.driverId?.name}`
                               }
                             />
-                            <AvatarFallback className="bg-primary/10 text-primary font-bold">
+                            <AvatarFallback className="bg-primary/5 text-primary font-bold">
                               <img
                                 src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${order.driverId?.name}`}
                                 alt={order.driverId?.name}
@@ -487,7 +487,7 @@ export function OrderDetailsDialog({
                             <div className="flex items-center gap-1.5 text-neutral-400 pt-1 group">
                               <Icon
                                 path={mdiPhone}
-                                size={0.5}
+                                size={0.6}
                                 className="group-hover:text-primary transition-colors"
                               />
                               <span className="text-xs">
@@ -520,7 +520,7 @@ export function OrderDetailsDialog({
                       <div className="flex items-center gap-2">
                         <Icon
                           path={mdiClipboardListOutline}
-                          size={0.7}
+                          size={0.6}
                           className="text-primary"
                         />
                         <span className="text-sm font-semibold text-primary">
@@ -534,7 +534,7 @@ export function OrderDetailsDialog({
                           <p className="text-xs uppercase font-medium text-neutral-400">
                             Loại xe
                           </p>
-                          <Badge variant="slate" className="text-xs">
+                          <Badge variant="neutral" className="text-xs">
                             {getVehicleIcon(order.vehicleType)}
                             <span>{getVehicleTypeLabel(order.vehicleType)}</span>
                           </Badge>
@@ -578,7 +578,7 @@ export function OrderDetailsDialog({
 
                       <div className="flex items-center justify-between pt-1">
                         <div className="flex items-center gap-2">
-                          <div className="p-1.5 rounded bg-primary/10 text-primary">
+                          <div className="p-1.5 rounded bg-primary/5 text-primary">
                             <Icon path={mdiCurrencyUsd} size={0.6} />
                           </div>
                           <span className="font-bold text-neutral-400 text-sm">
@@ -598,7 +598,7 @@ export function OrderDetailsDialog({
                         <div className="flex items-center gap-2">
                           <Icon
                             path={mdiImageOutline}
-                            size={0.7}
+                            size={0.6}
                             className="text-primary"
                           />
                           <span className="text-sm font-semibold text-primary">
@@ -633,7 +633,7 @@ export function OrderDetailsDialog({
                     <div className="flex items-center gap-2">
                       <Icon
                         path={mdiMessageTextOutline}
-                        size={0.7}
+                        size={0.6}
                         className="text-primary"
                       />
                       <span className="text-sm font-semibold text-primary">
@@ -672,4 +672,3 @@ export function OrderDetailsDialog({
     </Dialog>
   );
 }
-

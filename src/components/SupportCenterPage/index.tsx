@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { useSupportTickets, useUpdateSupportTicket } from "@/hooks/useDispatcher";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Icon } from "@mdi/react";
 import { mdiTicketOutline, mdiMessageProcessing, mdiCheckDecagram, mdiAlertDecagram, mdiClockOutline, mdiPackageVariant, mdiInboxRemoveOutline } from "@mdi/js";
@@ -11,7 +10,7 @@ import { cn } from "@/lib/utils";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import { ISupportTicket } from "@/interface/dispatcher";
 import { formatDate } from "@/lib/format";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 export default function SupportCenterPage() {
     const [activeTab, setActiveTab] = useState<any>("OPEN");
@@ -98,7 +97,7 @@ export default function SupportCenterPage() {
                                     className={cn(
                                         "p-3 rounded-xl border transition-all cursor-pointer",
                                         selectedTicket?.id === ticket.id
-                                            ? "bg-primary/10 border-primary"
+                                            ? "bg-primary/5 border-primary"
                                             : "bg-darkBackgroundV1/30 border-darkBorderV1 hover:bg-darkBackgroundV1/60"
                                     )}
                                 >
@@ -163,7 +162,7 @@ export default function SupportCenterPage() {
                                                     <p className="text-primary font-bold">#{selectedTicket.orderId}</p>
                                                 </div>
                                             </div>
-                                            <Button variant="outline" size="sm" className="border-primary/30 text-primary hover:bg-primary/10">
+                                            <Button variant="outline" size="sm" className="border-primary/30 text-primary hover:bg-primary/5">
                                                 Theo dõi đơn này
                                             </Button>
                                         </div>

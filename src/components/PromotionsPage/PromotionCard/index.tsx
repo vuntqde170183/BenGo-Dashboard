@@ -44,7 +44,7 @@ export function PromotionCard({ promo, onEdit, onDelete }: PromotionCardProps) {
               </p>
               <button
                 onClick={handleCopyCode}
-                className="text-neutral-400 hover:text-primary transition-colors p-1 rounded hover:bg-primary/10"
+                className="text-neutral-400 hover:text-primary transition-colors p-1 rounded hover:bg-primary/5"
                 title="Sao chép mã"
               >
                 <IconCopy className="w-4 h-4" />

@@ -266,7 +266,7 @@ export function TicketDetailsDialog({
                                                     <AvatarImage
                                                         src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${ticket.userId?.name}`}
                                                     />
-                                                    <AvatarFallback className="bg-primary/10 text-primary font-bold">
+                                                    <AvatarFallback className="bg-primary/5 text-primary font-bold">
                                                         <img
                                                             src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${ticket.userId?.name}`}
                                                             alt={ticket.userId?.name}
