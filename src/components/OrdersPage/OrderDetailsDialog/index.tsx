@@ -246,7 +246,7 @@ export function OrderDetailsDialog({
                             </div>
                             <span
                               className={cn(
-                                "text-[10px] md:text-xs font-bold mt-2 uppercase tracking-tight transition-colors duration-300",
+                                "text-xs md:text-xs font-bold mt-2 uppercase tracking-tight transition-colors duration-300",
                                 isActive ? "text-primary" : "text-neutral-400",
                               )}
                             >
@@ -346,7 +346,7 @@ export function OrderDetailsDialog({
                     )}
                     <button
                       onClick={openInGoogleMaps}
-                      className="absolute bottom-4 right-4 bg-white text-black hover:bg-neutral-200 px-4 py-2 rounded-full text-[10px] font-bold shadow-2xl transition-all flex items-center gap-2 group/btn active:scale-95 z-20"
+                      className="absolute bottom-4 right-4 bg-white text-black hover:bg-neutral-200 px-4 py-2 rounded-full text-xs font-bold shadow-2xl transition-all flex items-center gap-2 group/btn active:scale-95 z-20"
                     >
                       <Icon path={mdiRouter} size={0.6} />
                       <span>Xem trên Google Maps</span>
@@ -359,7 +359,7 @@ export function OrderDetailsDialog({
                         <Icon path={mdiLocationExit} size={0.8} />
                       </div>
                       <div className="space-y-1">
-                        <p className="text-[10px] uppercase font-bold text-white tracking-wider">
+                        <p className="text-xs uppercase font-bold text-white tracking-wider">
                           Địa chỉ đón (A)
                         </p>
                         <p className="font-semibold text-xs text-neutral-400 leading-relaxed">
@@ -372,7 +372,7 @@ export function OrderDetailsDialog({
                         <Icon path={mdiLocationEnter} size={0.8} />
                       </div>
                       <div className="space-y-1">
-                        <p className="text-[10px] uppercase font-bold text-white tracking-wider">
+                        <p className="text-xs uppercase font-bold text-white tracking-wider">
                           Địa chỉ trả (B)
                         </p>
                         <p className="font-semibold text-xs text-neutral-400 leading-relaxed">
@@ -534,7 +534,7 @@ export function OrderDetailsDialog({
                           <p className="text-xs uppercase font-medium text-neutral-400">
                             Loại xe
                           </p>
-                          <Badge variant="slate" className="text-[10px]">
+                          <Badge variant="slate" className="text-xs">
                             {getVehicleIcon(order.vehicleType)}
                             <span>{getVehicleTypeLabel(order.vehicleType)}</span>
                           </Badge>

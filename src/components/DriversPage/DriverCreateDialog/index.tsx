@@ -10,7 +10,6 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
-  DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { mdiPlusBox, mdiLoading, mdiUpload, mdiClose, mdiPlus } from "@mdi/js";
@@ -167,9 +166,6 @@ export const DriverCreateDialog = ({
             <Icon path={mdiPlusBox} size={0.8} />
             <span>Thêm tài xế mới</span>
           </DialogTitle>
-          <DialogDescription className="text-xs text-neutral-400 mt-1">
-            Nhập thông tin cá nhân và hồ sơ lái xe để đăng ký tài xế mới vào hệ thống.
-          </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-3 md:space-y-4 max-h-[70vh] overflow-y-auto pr-1 custom-scrollbar p-3 md:p-4">

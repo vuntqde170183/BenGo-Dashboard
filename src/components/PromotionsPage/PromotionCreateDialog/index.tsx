@@ -142,7 +142,7 @@ export function PromotionCreateDialog({
                 className="uppercase"
               />
               {errors.code && (
-                <p className="text-[10px] text-red-500 mt-1">{errors.code}</p>
+                <p className="text-xs text-red-500 mt-1">{errors.code}</p>
               )}
             </div>
             <div className="space-y-2">
@@ -156,7 +156,7 @@ export function PromotionCreateDialog({
                 onChange={(e) => updateFormData({ title: e.target.value })}
               />
               {errors.title && (
-                <p className="text-[10px] text-red-500 mt-1">{errors.title}</p>
+                <p className="text-xs text-red-500 mt-1">{errors.title}</p>
               )}
             </div>
           </div>
@@ -212,7 +212,7 @@ export function PromotionCreateDialog({
                 }
               />
               {errors.discountValue && (
-                <p className="text-[10px] text-red-500 mt-1">
+                <p className="text-xs text-red-500 mt-1">
                   {errors.discountValue}
                 </p>
               )}
@@ -246,7 +246,7 @@ export function PromotionCreateDialog({
                   updateFormData({ maxDiscountAmount: e.target.value })
                 }
               />
-              <p className="text-[10px] text-neutral-400 mt-1">
+              <p className="text-xs text-neutral-400 mt-1">
                 Để trống nếu không giới hạn
               </p>
             </div>
@@ -265,7 +265,7 @@ export function PromotionCreateDialog({
                 onChange={(e) => updateFormData({ startDate: e.target.value })}
               />
               {errors.startDate && (
-                <p className="text-[10px] text-red-500 mt-1">{errors.startDate}</p>
+                <p className="text-xs text-red-500 mt-1">{errors.startDate}</p>
               )}
             </div>
             <div className="space-y-2">
@@ -279,7 +279,7 @@ export function PromotionCreateDialog({
                 onChange={(e) => updateFormData({ endDate: e.target.value })}
               />
               {errors.endDate && (
-                <p className="text-[10px] text-red-500 mt-1">{errors.endDate}</p>
+                <p className="text-xs text-red-500 mt-1">{errors.endDate}</p>
               )}
             </div>
           </div>
