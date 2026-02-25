@@ -16,7 +16,7 @@ export const dispatcherApi = {
         sendGet("/dispatcher/dashboard/stats").then(res => res.data),
 
     // 2. Order Management
-    getOrders: (params: { status?: DispatcherOrderStatus; page?: number; limit?: number }): Promise<any> =>
+    getOrders: (params: { status?: DispatcherOrderStatus; page?: number; limit?: number }): Promise<IDispatcherOrder[]> =>
         sendGet("/dispatcher/orders", params).then(res => res.data),
 
     getOrderDetails: (id: string): Promise<IDispatcherOrder> =>

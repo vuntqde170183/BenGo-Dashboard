@@ -23,7 +23,7 @@ html,
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: #233738;
   border-radius: 10px;
 }
 
@@ -121,6 +121,7 @@ ul.ant-menu.ant-menu-sub.ant-menu-inline {
   background-color: #44d7b6 !important;
   border-color: #44d7b6 !important;
 }
+
 .ant-pagination-item-active:hover {
   background-color: #44d7b6 !important;
   border-color: #44d7b6 !important;
@@ -193,6 +194,7 @@ ul.ant-menu.ant-menu-sub.ant-menu-inline {
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
+
   .dark {
     --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
@@ -233,6 +235,7 @@ ul.ant-menu.ant-menu-sub.ant-menu-inline {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -244,6 +247,7 @@ ul.ant-menu.ant-menu-sub.ant-menu-inline {
     text-fill-color: transparent;
     color: transparent;
   }
+
   .text-outline-white {
     -webkit-text-stroke: 1px #ffffff;
     -webkit-text-fill-color: transparent;
@@ -274,6 +278,7 @@ button[type="button"].absolute:focus {
 .paginationContainer :global(.ant-select-selector) {
   display: none !important;
 }
+
 .ant-pagination-options {
   display: none !important;
 }
@@ -318,6 +323,7 @@ button[type="button"].absolute:focus {
     transform: scale(0);
     opacity: 0.6;
   }
+
   100% {
     transform: scale(1);
     opacity: 0;
@@ -330,10 +336,13 @@ button[type="button"].absolute:focus {
 
 /* Other styles */
 .hide-scrollbar {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 .hide-scrollbar::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
+  display: none;
+  /* Chrome, Safari, Opera */
 }

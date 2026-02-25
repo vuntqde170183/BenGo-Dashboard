@@ -228,7 +228,7 @@ export default function PricingPage() {
 
                     <div className="grid grid-cols-2 gap-4">
                       <div className="p-3 rounded-xl bg-darkBackgroundV1/40 border border-darkBorderV1/50 flex flex-col items-center justify-center text-center gap-1">
-                        <p className="text-xs uppercase font-bold text-neutral-400 tracking-wider mb-1">
+                        <p className="text-xs uppercase font-bold text-neutral-400  mb-1">
                           Giá / KM
                         </p>
                         <p className="font-bold text-white text-sm">
@@ -239,7 +239,7 @@ export default function PricingPage() {
                         </p>
                       </div>
                       <div className="p-3 rounded-xl bg-darkBackgroundV1/40 border border-darkBorderV1/50 flex flex-col items-center justify-center text-center gap-1">
-                        <p className="text-xs uppercase font-bold text-neutral-400 tracking-wider mb-1">
+                        <p className="text-xs uppercase font-bold text-neutral-400  mb-1">
                           Hệ số cao điểm
                         </p>
                         <div className="flex justify-between items-center w-full">

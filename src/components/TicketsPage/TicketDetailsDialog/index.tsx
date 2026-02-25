@@ -352,7 +352,7 @@ export function TicketDetailsDialog({
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         <div className="space-y-2">
-                                            <Label className="text-xs text-white uppercase font-bold tracking-wider">
+                                            <Label className="text-xs text-white uppercase font-bold ">
                                                 Cập nhật trạng thái
                                             </Label>
                                             <Select
@@ -377,7 +377,7 @@ export function TicketDetailsDialog({
                                         </div>
                                         {/* Assign Ticket Section */}
                                         <div className="space-y-2">
-                                            <Label className="text-xs text-white uppercase font-bold tracking-wider">
+                                            <Label className="text-xs text-white uppercase font-bold ">
                                                 {ticket.assignedTo ? "Người xử lý" : "Phân công xử lý"}
                                             </Label>
                                             <div className="flex gap-2">

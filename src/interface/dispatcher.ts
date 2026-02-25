@@ -52,12 +52,19 @@ export interface IDispatcherOrder {
 export interface IDriverMapLocation {
     id: string;
     name: string;
+    userId?: {
+        _id: string;
+        phone: string;
+        name: string;
+    };
     location: {
         lat: number;
         lng: number;
     };
     status: 'ONLINE' | 'OFFLINE' | 'BUSY';
-    phone: string;
+    phone?: string;
+    rating?: number;
+    vehicleType?: string;
 }
 
 export interface IDriverPerformance {

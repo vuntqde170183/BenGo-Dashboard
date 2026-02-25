@@ -72,7 +72,7 @@ export default function SupportCenterPage() {
                                     key={tab}
                                     onClick={() => setActiveTab(tab)}
                                     className={cn(
-                                        "flex-1 py-1.5 text-xs font-bold rounded-lg transition-all uppercase tracking-wider",
+                                        "flex-1 py-1.5 text-xs font-bold rounded-lg transition-all uppercase ",
                                         activeTab === tab ? "bg-primary text-black" : "text-neutral-400 hover:text-neutral-300"
                                     )}
                                 >
