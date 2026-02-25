@@ -10,8 +10,7 @@ import {
     DialogContent,
     DialogHeader,
     DialogTitle,
-    DialogFooter,
-    DialogDescription,
+    DialogFooter
 } from "@/components/ui/dialog";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -140,9 +139,6 @@ export function TicketDetailsDialog({
                         <span>Chi tiết ticket #{ticket?._id?.slice(-8)}</span>
                         {ticket && getStatusBadge(ticket.status)}
                     </DialogTitle>
-                    <DialogDescription className="text-xs text-neutral-400 mt-1">
-                        Xem thông tin chi tiết và xử lý yêu cầu hỗ trợ từ người dùng.
-                    </DialogDescription>
                 </DialogHeader>
 
                 <div className="space-y-3 md:space-y-4 max-h-[70vh] overflow-y-auto pr-1 custom-scrollbar p-3 md:p-4">
@@ -234,7 +230,7 @@ export function TicketDetailsDialog({
                                                         </div>
                                                         <span
                                                             className={cn(
-                                                                "text-[10px] md:text-xs font-bold mt-2 uppercase tracking-tight transition-colors duration-300",
+                                                                "text-xs md:text-xs font-bold mt-2 uppercase tracking-tight transition-colors duration-300",
                                                                 isActive ? "text-primary" : "text-neutral-400",
                                                             )}
                                                         >
@@ -407,7 +403,7 @@ export function TicketDetailsDialog({
                                                                     <span className="font-medium">
                                                                         {dispatcher.name}
                                                                     </span>
-                                                                    <span className="text-[10px] text-neutral-400">
+                                                                    <span className="text-xs text-neutral-400">
                                                                         {dispatcher.email} • {dispatcher.phone}
                                                                     </span>
                                                                 </div>
@@ -476,4 +472,3 @@ export function TicketDetailsDialog({
         </Dialog>
     );
 }
-

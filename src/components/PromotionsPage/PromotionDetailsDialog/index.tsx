@@ -145,7 +145,7 @@ export function PromotionDetailsDialog({
                 className="uppercase"
               />
               {errors.code && (
-                <p className="text-[10px] text-red-500 mt-1">
+                <p className="text-xs text-red-500 mt-1">
                   {errors.code.message as string}
                 </p>
               )}
@@ -160,7 +160,7 @@ export function PromotionDetailsDialog({
                 {...register("title", { required: "Vui lòng nhập tiêu đề" })}
               />
               {errors.title && (
-                <p className="text-[10px] text-red-500 mt-1">
+                <p className="text-xs text-red-500 mt-1">
                   {errors.title.message as string}
                 </p>
               )}
@@ -215,7 +215,7 @@ export function PromotionDetailsDialog({
                 })}
               />
               {errors.discountValue && (
-                <p className="text-[10px] text-red-500 mt-1">
+                <p className="text-xs text-red-500 mt-1">
                   {errors.discountValue.message as string}
                 </p>
               )}
@@ -243,7 +243,7 @@ export function PromotionDetailsDialog({
                 placeholder="Không bắt buộc"
                 {...register("maxDiscountAmount")}
               />
-              <p className="text-[10px] text-neutral-400 mt-1">
+              <p className="text-xs text-neutral-400 mt-1">
                 Để trống nếu không giới hạn
               </p>
             </div>
@@ -263,7 +263,7 @@ export function PromotionDetailsDialog({
                 })}
               />
               {errors.startDate && (
-                <p className="text-[10px] text-red-500 mt-1">
+                <p className="text-xs text-red-500 mt-1">
                   {errors.startDate.message as string}
                 </p>
               )}
@@ -280,7 +280,7 @@ export function PromotionDetailsDialog({
                 })}
               />
               {errors.endDate && (
-                <p className="text-[10px] text-red-500 mt-1">
+                <p className="text-xs text-red-500 mt-1">
                   {errors.endDate.message as string}
                 </p>
               )}

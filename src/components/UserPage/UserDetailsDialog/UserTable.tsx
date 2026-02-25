@@ -74,10 +74,10 @@ export const UserTable = ({ user }: UserTableProps) => {
                 renderTableRow(
                   "Đánh giá",
                   <div className="flex items-center gap-1">
-                    <span className="font-medium">
+                    <span className="font-semibold text-yellow-400">
                       {profile?.rating || user.rating || 5}
                     </span>
-                    <IconStar className="w-4 h-4 text-primary fill-primary" />
+                    <IconStar className="w-4 h-4 text-yellow-400 fill-yellow-400" />
                   </div>,
                 )}
               {renderTableRow(

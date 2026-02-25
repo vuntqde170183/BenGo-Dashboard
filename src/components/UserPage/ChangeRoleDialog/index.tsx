@@ -4,9 +4,7 @@ import {
     Dialog,
     DialogContent,
     DialogHeader,
-    DialogTitle,
-    DialogDescription,
-    DialogFooter,
+    DialogTitle, DialogFooter
 } from "@/components/ui/dialog";
 import {
     Select,
@@ -130,10 +128,6 @@ export function ChangeRoleDialog({
                         <Icon path={mdiAccountCog} size={0.8} />
                         <span>Phân quyền người dùng</span>
                     </DialogTitle>
-                    <DialogDescription className="text-xs text-neutral-400 mt-1">
-                        Thay đổi vai trò của{" "}
-                        <span className="font-semibold text-white">{user.name}</span>
-                    </DialogDescription>
                 </DialogHeader>
 
                 <div className="space-y-3 md:space-y-4 max-h-[70vh] overflow-y-auto pr-1 custom-scrollbar p-3 md:p-4">
@@ -175,7 +169,7 @@ export function ChangeRoleDialog({
                                                     <span className="font-medium text-sm">
                                                         {role.label}
                                                     </span>
-                                                    <span className="text-[10px] text-neutral-400">
+                                                    <span className="text-xs text-neutral-400">
                                                         {role.description}
                                                     </span>
                                                 </div>
@@ -271,4 +265,3 @@ export function ChangeRoleDialog({
         </Dialog>
     );
 }
-

@@ -1,19 +1,18 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { useGetUserById, useUpdateUser } from "@/hooks/useAdmin";
 import { useProfile } from "@/hooks/useAuth";
 import { IUpdateUserBody } from "@/interface/auth";
 import { toast } from "react-toastify";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Link } from "react-router-dom";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
 } from "@/components/ui/dialog";
 import { UserTable } from "../../UserPage/UserDetailsDialog/UserTable";
 import { UserForm } from "../../UserPage/UserDetailsDialog/UserForm";
@@ -22,12 +21,11 @@ import {
   mdiClipboardAccount,
   mdiClose,
   mdiPencil,
-  mdiMapMarker,
-  mdiOpenInNew,
-  mdiContentSave,
+  mdiMapMarker, mdiContentSave,
   mdiRouter,
-  mdiNavigation,
+  mdiNavigation
 } from "@mdi/js";
+import { Badge } from "@/components/ui/badge";
 
 interface DriverDetailsDialogProps {
   isOpen: boolean;
@@ -55,6 +53,37 @@ export const DriverDetailsDialog = ({
   const { mutate: updateUserMutation, isPending: isUpdating } = useUpdateUser();
   const { data: profileData } = useProfile();
   const userRole = profileData?.data?.role;
+  const [currentAddress, setCurrentAddress] = useState<string>("");
+
+  useEffect(() => {
+    const coords =
+      userData?.data?.driverProfile?.location?.coordinates ||
+      userData?.data?.location?.coordinates;
+    const lat = coords?.[1];
+    const lng = coords?.[0];
+
+    if (typeof lat === "number" && typeof lng === "number") {
+      const fetchAddress = async () => {
+        try {
+          const response = await axios.get(
+            `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY
+            }&language=vi`
+          );
+          if (response.data.status === "OK" && response.data.results.length > 0) {
+            setCurrentAddress(response.data.results[0].formatted_address);
+          } else {
+            setCurrentAddress(`Tọa độ: ${lat.toFixed(6)}, ${lng.toFixed(6)}`);
+          }
+        } catch (error) {
+          console.error("Geocoding error:", error);
+          setCurrentAddress(`Tọa độ: ${lat.toFixed(6)}, ${lng.toFixed(6)}`);
+        }
+      };
+      fetchAddress();
+    } else {
+      setCurrentAddress("Không có dữ liệu vị trí");
+    }
+  }, [userData]);
 
   useEffect(() => {
     if (userData?.data) {
@@ -256,9 +285,6 @@ export const DriverDetailsDialog = ({
                 : "Chi tiết tài xế"}
             </span>
           </DialogTitle>
-          <DialogDescription className="text-xs text-neutral-400 mt-1">
-            Xem và quản lý thông tin chi tiết, hồ sơ và trạng thái hoạt động của tài xế.
-          </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-3 md:space-y-4 max-h-[70vh] overflow-y-auto pr-1 custom-scrollbar p-3 md:p-4">
@@ -289,30 +315,6 @@ export const DriverDetailsDialog = ({
                   {userData?.data && <UserTable user={userData.data} />}
                   {userRole === "DISPATCHER" && (
                     <div className="space-y-4">
-                      {/* Driver Status Card */}
-                      <Card>
-                        <CardHeader className="py-3 border-b border-primary/10">
-                          <div className="flex items-center gap-2 text-primary">
-                            <Icon path={mdiMapMarker} size={0.8} />
-                            <span className="font-semibold">Trạng thái hoạt động</span>
-                          </div>
-                        </CardHeader>
-                        <CardContent className="pt-4">
-                          <div className="flex items-center justify-between">
-                            <div className="space-y-1">
-                              <p className="text-sm text-neutral-300">
-                                Trạng thái hiện tại của tài xế trên hệ thống.
-                              </p>
-                              <p className="text-sm text-neutral-400 italic">
-                                Trạng thái:{" "}
-                                {userData.data.isOnline ? "Trực tuyến" : "Ngoại tuyến"}
-                              </p>
-                            </div>
-                            <div className={`w-3 h-3 rounded-full animate-pulse ${userData.data.isOnline ? 'bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]' : 'bg-neutral-500'}`} />
-                          </div>
-                        </CardContent>
-                      </Card>
-
                       {/* Interactive Google Map Section */}
                       <Card className="overflow-hidden border-darkBorderV1 bg-darkBackgroundV1/30">
                         <CardContent className="p-0 relative">
@@ -339,7 +341,7 @@ export const DriverDetailsDialog = ({
                                     ></iframe>
                                     <button
                                       onClick={openInGoogleMaps}
-                                      className="absolute bottom-4 right-4 bg-white text-black hover:bg-neutral-200 px-4 py-2 rounded-full text-[10px] font-bold shadow-2xl transition-all flex items-center gap-2 group/btn active:scale-95 z-20"
+                                      className="absolute bottom-4 right-4 bg-white text-black hover:bg-neutral-200 px-4 py-2 rounded-full text-xs font-bold shadow-2xl transition-all flex items-center gap-2 group/btn active:scale-95 z-20"
                                     >
                                       <Icon path={mdiRouter} size={0.6} />
                                       <span>Xem trên Google Maps</span>
@@ -357,27 +359,24 @@ export const DriverDetailsDialog = ({
                             })()}
                           </div>
 
-                          <div className="p-4 bg-darkCardV1/40">
+                          <div className="p-4 bg-darkCardV1/40 flex items-center justify-between">
                             <div className="flex items-start gap-3">
                               <div className="p-2 rounded-lg bg-primary/10 text-primary mt-1 shadow-inner">
                                 <Icon path={mdiNavigation} size={0.8} />
                               </div>
                               <div className="space-y-1">
-                                <p className="text-[10px] uppercase font-bold text-white tracking-wider">
+                                <p className="text-xs uppercase font-bold text-white tracking-wider">
                                   Vị trí hiện tại
                                 </p>
-                                <p className="font-semibold text-xs text-neutral-400 leading-relaxed">
-                                  {(() => {
-                                    const coords = userData?.data?.driverProfile?.location?.coordinates || userData?.data?.location?.coordinates;
-                                    const lat = coords?.[1];
-                                    const lng = coords?.[0];
-                                    return typeof lat === "number" && typeof lng === "number"
-                                      ? `Tọa độ: ${lat.toFixed(6)}, ${lng.toFixed(6)}`
-                                      : "Không có dữ liệu vị trí";
-                                  })()}
+                                <p className="font-semibold text-sm text-primary leading-relaxed">
+                                  {currentAddress || "Đang tải vị trí..."}
                                 </p>
                               </div>
                             </div>
+                            <Badge variant={userData.data.isOnline ? "green" : "neutral"}>
+                              <div className={`w-2 h-2 rounded-full animate-pulse ${userData.data.isOnline ? 'bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]' : 'bg-neutral-500'}`} />
+                              {userData.data.isOnline ? "Trực tuyến" : "Ngoại tuyến"}
+                            </Badge>
                           </div>
                         </CardContent>
                       </Card>
@@ -424,4 +423,3 @@ export const DriverDetailsDialog = ({
     </Dialog>
   );
 };
-
