@@ -365,7 +365,7 @@ export const DriverDetailsDialog = ({
                                 <Icon path={mdiNavigation} size={0.8} />
                               </div>
                               <div className="space-y-1">
-                                <p className="text-xs uppercase font-bold text-white tracking-wider">
+                                <p className="text-xs uppercase font-bold text-white ">
                                   Vị trí hiện tại
                                 </p>
                                 <p className="font-semibold text-sm text-primary leading-relaxed">

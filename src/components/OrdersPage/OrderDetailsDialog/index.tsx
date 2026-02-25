@@ -359,7 +359,7 @@ export function OrderDetailsDialog({
                         <Icon path={mdiLocationExit} size={0.8} />
                       </div>
                       <div className="space-y-1">
-                        <p className="text-xs uppercase font-bold text-white tracking-wider">
+                        <p className="text-xs uppercase font-bold text-white ">
                           Địa chỉ đón (A)
                         </p>
                         <p className="font-semibold text-xs text-neutral-400 leading-relaxed">
@@ -372,7 +372,7 @@ export function OrderDetailsDialog({
                         <Icon path={mdiLocationEnter} size={0.8} />
                       </div>
                       <div className="space-y-1">
-                        <p className="text-xs uppercase font-bold text-white tracking-wider">
+                        <p className="text-xs uppercase font-bold text-white ">
                           Địa chỉ trả (B)
                         </p>
                         <p className="font-semibold text-xs text-neutral-400 leading-relaxed">
