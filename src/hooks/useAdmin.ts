@@ -83,11 +83,9 @@ export const useUpdateUserRole = () => {
   });
 };
 
-// Alias for consistency with other components
 export const useGetUserById = useUserDetails;
 
 
-// Quản lý tài xế
 export const useAdminDrivers = (params: any) => {
   return useQuery({
     queryKey: ["admin", "drivers", params],
@@ -294,4 +292,3 @@ export const useAdminReports = (type: TReportType, period?: TReportPeriod) => {
     enabled: !!type,
   });
 };
-
