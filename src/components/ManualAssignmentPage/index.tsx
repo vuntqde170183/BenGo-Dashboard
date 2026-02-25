@@ -11,7 +11,7 @@ import { useSearchParams } from "react-router-dom";
 import { IDispatcherOrder, IDriverMapLocation } from "@/interface/dispatcher";
 import { cn } from "@/lib/utils";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
-
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 export default function ManualAssignmentPage() {
     const [searchParams] = useSearchParams();
     const initialOrderId = searchParams.get("orderId");
@@ -60,20 +60,24 @@ export default function ManualAssignmentPage() {
     );
 
     return (
-        <div className="space-y-6 h-[calc(100vh-120px)] flex flex-col">
-            <div className="flex justify-between items-center">
-                <div>
-                    <h1 className="text-2xl font-bold text-neutral-300">Phân chuyến thủ công</h1>
-                    <p className="text-sm text-neutral-400">Chọn một đơn hàng và một tài xế để thực hiện gán chuyến.</p>
-                </div>
-                <Button
-                    onClick={handleAssign}
-                    disabled={!selectedOrder || !selectedDriver || assignMutation.isPending}
-                    className="bg-primary hover:bg-primary/90 text-black font-bold h-11 px-8 rounded-xl shadow-lg shadow-primary/20"
-                >
-                    {assignMutation.isPending ? "Đang xử lý..." : "Xác nhận điều phối"}
-                </Button>
-            </div>
+        <div className="space-y-4 bg-darkCardV1 p-4 rounded-2xl border border-darkBorderV1">
+            <Breadcrumb>
+                <BreadcrumbList>
+                    <BreadcrumbItem>
+                        <BreadcrumbLink href="/">Bảng điều khiển</BreadcrumbLink>
+                    </BreadcrumbItem>
+                    <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                        <BreadcrumbPage>Phân chuyến thủ công</BreadcrumbPage>
+                    </BreadcrumbItem>
+                </BreadcrumbList>
+            </Breadcrumb>
+            <Button
+                onClick={handleAssign}
+                disabled={!selectedOrder || !selectedDriver || assignMutation.isPending}
+            >
+                {assignMutation.isPending ? "Đang xử lý..." : "Xác nhận điều phối"}
+            </Button>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 flex-1 min-h-0">
                 {/* Left: Pending Orders */}

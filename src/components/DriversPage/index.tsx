@@ -258,14 +258,12 @@ export default function DriversPage() {
           )}
         </div>
       </motion.div>
-
       <ViewReasonDialog
         isOpen={viewDialogOpen}
         onClose={() => setViewDialogOpen(false)}
         adminNote={selectedDriver?.adminNote}
         rejectionReason={selectedDriver?.rejectionReason}
       />
-
       <UpdateStatusDialog
         isOpen={updateDialogOpen}
         onClose={() => setUpdateDialogOpen(false)}
@@ -309,7 +307,6 @@ export default function DriversPage() {
               : "default"
         }
       />
-
       <DriverCreateDialog
         isOpen={createDialogOpen}
         onClose={() => setCreateDialogOpen(false)}
@@ -317,7 +314,6 @@ export default function DriversPage() {
           setCreateDialogOpen(false);
         }}
       />
-
       {selectedDriverId && (
         <DriverDetailsDialog
           isOpen={detailsDialogOpen}
