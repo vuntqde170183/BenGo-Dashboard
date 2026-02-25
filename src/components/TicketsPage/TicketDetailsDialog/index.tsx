@@ -11,6 +11,7 @@ import {
     DialogHeader,
     DialogTitle,
     DialogFooter,
+    DialogDescription,
 } from "@/components/ui/dialog";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -139,6 +140,9 @@ export function TicketDetailsDialog({
                         <span>Chi tiết ticket #{ticket?._id?.slice(-8)}</span>
                         {ticket && getStatusBadge(ticket.status)}
                     </DialogTitle>
+                    <DialogDescription className="text-xs text-neutral-400 mt-1">
+                        Xem thông tin chi tiết và xử lý yêu cầu hỗ trợ từ người dùng.
+                    </DialogDescription>
                 </DialogHeader>
 
                 <div className="space-y-3 md:space-y-4 max-h-[70vh] overflow-y-auto pr-1 custom-scrollbar p-3 md:p-4">

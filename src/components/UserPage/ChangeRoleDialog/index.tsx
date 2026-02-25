@@ -130,10 +130,10 @@ export function ChangeRoleDialog({
                         <Icon path={mdiAccountCog} size={0.8} />
                         <span>Phân quyền người dùng</span>
                     </DialogTitle>
-                    <div className="text-xs text-neutral-400 mt-1">
+                    <DialogDescription className="text-xs text-neutral-400 mt-1">
                         Thay đổi vai trò của{" "}
                         <span className="font-semibold text-white">{user.name}</span>
-                    </div>
+                    </DialogDescription>
                 </DialogHeader>
 
                 <div className="space-y-3 md:space-y-4 max-h-[70vh] overflow-y-auto pr-1 custom-scrollbar p-3 md:p-4">

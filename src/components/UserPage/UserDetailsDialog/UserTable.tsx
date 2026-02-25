@@ -17,10 +17,10 @@ interface UserTableProps {
 export const UserTable = ({ user }: UserTableProps) => {
   const renderTableRow = (label: string, value: React.ReactNode) => (
     <TableRow className="transition-colors border-b-darkBorderV1">
-      <TableCell className="text-neutral-400 w-1/3 border-none">
+      <TableCell className="text-neutral-300 w-1/3 border-none font-semibold">
         {label}
       </TableCell>
-      <TableCell className="text-white border-none">{value}</TableCell>
+      <TableCell className="text-neutral-400 border-none">{value}</TableCell>
     </TableRow>
   );
 

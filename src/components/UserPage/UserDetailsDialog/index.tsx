@@ -10,6 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { UserTable } from "./UserTable";
 import { UserForm } from "./UserForm";
@@ -241,6 +242,9 @@ export const UserDetailsDialog = ({
                 : "Chi tiết người dùng"}
             </span>
           </DialogTitle>
+          <DialogDescription className="text-xs text-neutral-400 mt-1">
+            Xem hồ sơ cá nhân, lịch sử hoạt động và quản lý thông tin tài khoản của người dùng.
+          </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-3 md:space-y-4 max-h-[70vh] overflow-y-auto pr-1 custom-scrollbar p-3 md:p-4">
