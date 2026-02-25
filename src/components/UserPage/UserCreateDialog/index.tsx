@@ -4,14 +4,21 @@ import { useCreateUser } from "@/hooks/useAdmin";
 import { useUploadFile } from "@/hooks/useUpload";
 import { IUploadResponse } from "@/interface/auth";
 import { toast } from "react-toastify";
-import { IconLoader2, IconX, IconUpload } from "@tabler/icons-react";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogFooter,
 } from "@/components/ui/dialog";
-import { mdiPlusBox } from "@mdi/js";
+import { Button } from "@/components/ui/button";
+import {
+  mdiPlusBox,
+  mdiLoading,
+  mdiUpload,
+  mdiClose,
+  mdiPlus,
+} from "@mdi/js";
 import Icon from "@mdi/react";
 import { UserForm } from "../UserDetailsDialog/UserForm";
 import { useUserCreateForm } from "@/stores/useUserCreateForm";
@@ -165,13 +172,13 @@ export const UserCreateDialog = ({
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent size="medium">
         <DialogHeader>
-          <DialogTitle className="dark:text-neutral-200">
+          <DialogTitle className="flex items-center gap-2 text-primary">
             <Icon path={mdiPlusBox} size={0.8} />
-            Thêm người dùng mới
+            <span>Thêm người dùng mới</span>
           </DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-4 mt-4">
+        <div className="space-y-3 md:space-y-4 max-h-[70vh] overflow-y-auto pr-1 custom-scrollbar p-3 md:p-4">
           {/* Avatar Section */}
           <div className="flex flex-col items-center gap-4">
             <div className="relative group">
@@ -185,10 +192,10 @@ export const UserCreateDialog = ({
                 ) : (
                   <div className="text-neutral-400 text-center p-2">
                     {isUploadingAvatar ? (
-                      <IconLoader2 className="h-8 w-8 animate-spin mx-auto" />
+                      <Icon path={mdiLoading} size={1} className="animate-spin mx-auto" />
                     ) : (
                       <>
-                        <IconUpload className="h-8 w-8 mx-auto mb-1" />
+                        <Icon path={mdiUpload} size={1.2} className="mx-auto mb-1" />
                         <span className="text-xs">Ảnh đại diện</span>
                       </>
                     )}
@@ -213,11 +220,11 @@ export const UserCreateDialog = ({
                   onClick={() => updateFormData({ avatar: "" })}
                   className="absolute -top-1 -right-1 p-1 bg-red-500 text-white rounded-full shadow-lg"
                 >
-                  <IconX className="h-3 w-3" />
+                  <Icon path={mdiClose} size={0.5} />
                 </button>
               )}
             </div>
-            <p className="text-sm text-neutral-400">
+            <p className="text-xs text-neutral-400">
               Tải lên ảnh PNG, JPG (Max 10MB)
             </p>
           </div>
@@ -231,9 +238,23 @@ export const UserCreateDialog = ({
             onErrorsChange={handleErrorsChange}
             onSubmit={handleSubmit}
             onCancel={handleClose}
+            showButtons={false}
           />
         </div>
+
+        <DialogFooter>
+          <Button variant="outline" onClick={handleClose} disabled={isPending}>
+            <Icon path={mdiClose} size={0.8} />
+            Hủy bỏ
+          </Button>
+          <Button onClick={handleSubmit} disabled={isPending}>
+            <Icon path={mdiPlus} size={0.8} />
+            {isPending ? "Đang xử lý..." : "Tạo người dùng"}
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
 };
+
+

@@ -8,9 +8,14 @@ import {
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import Icon from "@mdi/react";
-import { mdiInformationOutline, mdiAlertCircleOutline } from "@mdi/js";
+import {
+  mdiInformationOutline,
+  mdiAlertCircleOutline,
+  mdiClose,
+  mdiCheckCircleOutline,
+  mdiLoading,
+} from "@mdi/js";
 import { useState } from "react";
-import { IconLoader2 } from "@tabler/icons-react";
 
 interface ViewReasonDialogProps {
   isOpen: boolean;
@@ -27,19 +32,19 @@ export const ViewReasonDialog = ({
 }: ViewReasonDialogProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent size="small">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
+          <DialogTitle className="flex items-center gap-2 text-primary">
             <Icon path={mdiInformationOutline} size={0.8} />
-            Thông tin chi tiết
+            <span>Thông tin chi tiết</span>
           </DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-4">
+        <div className="space-y-3 md:space-y-4 max-h-[70vh] overflow-y-auto pr-1 custom-scrollbar p-3 md:p-4">
           {adminNote && (
             <div className="space-y-1">
               <span className="text-sm font-semibold">Ghi chú của Admin:</span>
-              <div className="p-3 bg-neutral-100 dark:bg-neutral-800 rounded-md text-sm">
+              <div className="p-3 bg-neutral-100 dark:bg-darkBorderV1 rounded-md text-sm">
                 {adminNote}
               </div>
             </div>
@@ -53,14 +58,17 @@ export const ViewReasonDialog = ({
             </div>
           )}
           {!adminNote && !rejectionReason && (
-            <div className="text-sm text-neutral-400 italic text-center">
+            <div className="text-sm text-neutral-400 italic text-center py-4">
               Không có thông tin ghi chú
             </div>
           )}
         </div>
 
         <DialogFooter>
-          <Button onClick={onClose}>Đóng</Button>
+          <Button variant="outline" onClick={onClose}>
+            <Icon path={mdiClose} size={0.8} />
+            Đóng
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -108,15 +116,15 @@ export const UpdateStatusDialog = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={(_) => !isLoading && onClose()}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent size="small">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
+          <DialogTitle className="flex items-center gap-2 text-primary">
             <Icon path={mdiAlertCircleOutline} size={0.8} />
-            {title}
+            <span>{title}</span>
           </DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-4">
+        <div className="space-y-3 md:space-y-4 max-h-[70vh] overflow-y-auto pr-1 custom-scrollbar p-3 md:p-4">
           {description && (
             <p className="text-sm text-neutral-400">{description}</p>
           )}
@@ -145,28 +153,30 @@ export const UpdateStatusDialog = ({
           </div>
         </div>
 
-        <DialogFooter className="flex gap-2">
+        <DialogFooter>
           <Button
             variant="outline"
             onClick={onClose}
             disabled={isLoading}
-            className="flex-1"
           >
-            Hủy
+            <Icon path={mdiClose} size={0.8} />
+            Hủy bỏ
           </Button>
           <Button
             variant={confirmButtonVariant}
             onClick={handleConfirm}
             disabled={isLoading || (isReasonRequired && !reason.trim())}
-            className="flex-1"
           >
             {isLoading ? (
               <>
-                <IconLoader2 className="w-4 h-4 mr-2 animate-spin" />
+                <Icon path={mdiLoading} size={0.8} className="animate-spin" />
                 Đang xử lý...
               </>
             ) : (
-              confirmText
+              <>
+                <Icon path={mdiCheckCircleOutline} size={0.8} />
+                {confirmText}
+              </>
             )}
           </Button>
         </DialogFooter>
@@ -174,3 +184,4 @@ export const UpdateStatusDialog = ({
     </Dialog>
   );
 };
+

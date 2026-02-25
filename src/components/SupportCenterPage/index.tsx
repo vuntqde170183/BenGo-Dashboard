@@ -54,7 +54,7 @@ export default function SupportCenterPage() {
         <div className="space-y-6 h-[calc(100vh-120px)] flex flex-col">
             <div className="flex justify-between items-center">
                 <div>
-                    <h1 className="text-2xl font-bold text-neutral-200">Trung tâm Hỗ trợ & Khiếu nại</h1>
+                    <h1 className="text-2xl font-bold text-neutral-300">Trung tâm Hỗ trợ & Khiếu nại</h1>
                     <p className="text-sm text-neutral-400">Xử lý các yêu cầu hỗ trợ và sự cố từ khách hàng/tài xế.</p>
                 </div>
             </div>
@@ -74,7 +74,7 @@ export default function SupportCenterPage() {
                                     onClick={() => setActiveTab(tab)}
                                     className={cn(
                                         "flex-1 py-1.5 text-xs font-bold rounded-lg transition-all uppercase tracking-wider",
-                                        activeTab === tab ? "bg-primary text-black" : "text-neutral-500 hover:text-neutral-300"
+                                        activeTab === tab ? "bg-primary text-black" : "text-neutral-400 hover:text-neutral-300"
                                     )}
                                 >
                                     {tab}
@@ -103,13 +103,13 @@ export default function SupportCenterPage() {
                                     )}
                                 >
                                     <div className="flex justify-between items-start mb-1">
-                                        <span className="font-bold text-neutral-200 text-xs">#{ticket.id.slice(-6)}</span>
+                                        <span className="font-bold text-neutral-300 text-xs">#{ticket.id.slice(-6)}</span>
                                         <Icon path={getStatusIcon(ticket.status)} size={0.6} className={cn(
                                             ticket.status === 'OPEN' ? 'text-red-500' :
                                                 ticket.status === 'IN_PROGRESS' ? 'text-yellow-500' : 'text-green-500'
                                         )} />
                                     </div>
-                                    <p className="text-sm font-semibold text-neutral-100 truncate">{ticket.user}</p>
+                                    <p className="text-sm font-semibold text-neutral-300 truncate">{ticket.user}</p>
                                     <p className="text-xs text-neutral-400 mb-2">{formatDate(ticket.createdAt)}</p>
                                     <p className="text-xs text-neutral-400 line-clamp-2 italic">"{ticket.content}"</p>
                                 </div>
@@ -128,8 +128,8 @@ export default function SupportCenterPage() {
                                         <Badge className="mb-2 w-fit bg-primary/20 text-primary border-none">PHÂN LOẠI: PHỔ THÔNG</Badge>
                                         <div className="flex items-center gap-2">
                                             <Icon path={mdiMessageProcessing} size={0.8} />
-                                            <span className="text-2xl font-bold text-neutral-100">{selectedTicket.user}</span>
-                                            <span className="text-sm font-normal text-neutral-500">#{selectedTicket.id}</span>
+                                            <span className="text-2xl font-bold text-neutral-300">{selectedTicket.user}</span>
+                                            <span className="text-sm font-normal text-neutral-400">#{selectedTicket.id}</span>
                                         </div>
                                         <p className="text-neutral-400 font-medium mt-1">{selectedTicket.phone}</p>
                                     </div>
@@ -146,10 +146,10 @@ export default function SupportCenterPage() {
                             <CardContent className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar">
                                 <div className="space-y-4">
                                     <div className="bg-darkBackgroundV1/50 rounded-2xl p-4 border border-darkBorderV1">
-                                        <h4 className="text-xs font-bold text-neutral-500 uppercase tracking-widest mb-2 flex items-center gap-2">
+                                        <h4 className="text-xs font-bold text-neutral-400 uppercase tracking-widest mb-2 flex items-center gap-2">
                                             <Icon path={mdiMessageProcessing} size={0.6} /> Nội dung yêu cầu
                                         </h4>
-                                        <p className="text-neutral-200 leading-relaxed text-lg italic">"{selectedTicket.content}"</p>
+                                        <p className="text-neutral-300 leading-relaxed text-lg italic">"{selectedTicket.content}"</p>
                                     </div>
 
                                     {selectedTicket.orderId && (
@@ -160,7 +160,7 @@ export default function SupportCenterPage() {
                                                 </div>
                                                 <div>
                                                     <p className="text-xs text-neutral-400 font-bold uppercase">Đơn hàng liên quan</p>
-                                                    <p className="text-primary font-mono font-bold">#{selectedTicket.orderId}</p>
+                                                    <p className="text-primary font-bold">#{selectedTicket.orderId}</p>
                                                 </div>
                                             </div>
                                             <Button variant="outline" size="sm" className="border-primary/30 text-primary hover:bg-primary/10">
@@ -171,7 +171,7 @@ export default function SupportCenterPage() {
 
                                     <div className="grid grid-cols-1 gap-4">
                                         <div>
-                                            <label className="text-xs font-bold text-neutral-500 uppercase tracking-widest mb-2 block">Ghi chú diễn biến (Nội bộ)</label>
+                                            <label className="text-xs font-bold text-neutral-400 uppercase tracking-widest mb-2 block">Ghi chú diễn biến (Nội bộ)</label>
                                             <Textarea
                                                 placeholder="Nhập diễn biến xử lý, thông tin từ các bên liên quan..."
                                                 className="bg-darkBackgroundV1 border-darkBorderV1 min-h-[100px] focus:ring-1 focus:ring-primary/40"
@@ -181,7 +181,7 @@ export default function SupportCenterPage() {
                                         </div>
                                         {(activeTab === 'IN_PROGRESS' || activeTab === 'OPEN') && (
                                             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                                                <label className="text-xs font-bold text-neutral-500 uppercase tracking-widest mb-2 block">Hướng giải quyết sau cùng</label>
+                                                <label className="text-xs font-bold text-neutral-400 uppercase tracking-widest mb-2 block">Hướng giải quyết sau cùng</label>
                                                 <Textarea
                                                     placeholder="Kết quả xử lý để phản hồi khách hàng..."
                                                     className="bg-darkBackgroundV1 border-darkBorderV1 min-h-[100px] focus:ring-1 focus:ring-primary/40 border-dashed border-primary/30"
@@ -224,7 +224,7 @@ export default function SupportCenterPage() {
                             </div>
                         </div>
                     ) : (
-                        <div className="flex-1 flex flex-col items-center justify-center text-neutral-500 p-20 gap-4 opacity-30">
+                        <div className="flex-1 flex flex-col items-center justify-center text-neutral-400 p-20 gap-4 opacity-30">
                             <Icon path={mdiTicketOutline} size={4} />
                             <p className="text-xl font-medium">Chọn một yêu cầu để xem chi tiết</p>
                         </div>

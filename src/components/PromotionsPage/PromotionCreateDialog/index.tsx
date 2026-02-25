@@ -4,6 +4,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,9 +18,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { mdiGiftOutline } from "@mdi/js";
+import { mdiGiftOutline, mdiPlus, mdiClose } from "@mdi/js";
 import Icon from "@mdi/react";
-import { IconPlus, IconX } from "@tabler/icons-react";
 import { usePromotionCreateForm } from "@/stores/usePromotionCreateForm";
 
 interface PromotionCreateDialogProps {
@@ -113,7 +113,7 @@ export function PromotionCreateDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent size="medium" className="max-h-[90vh] overflow-y-auto">
+      <DialogContent size="medium">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-primary">
             <Icon path={mdiGiftOutline} size={0.8} />
@@ -121,10 +121,14 @@ export function PromotionCreateDialog({
           </DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={onSubmit} className="space-y-4 pt-4">
+        <form
+          id="promotion-create-form"
+          onSubmit={onSubmit}
+          className="space-y-3 md:space-y-4 max-h-[70vh] overflow-y-auto pr-1 custom-scrollbar p-3 md:p-4"
+        >
           {/* Code & Title */}
           <div className="grid grid-cols-2 gap-4">
-            <div>
+            <div className="space-y-2">
               <Label htmlFor="code">
                 Mã khuyến mãi <span className="text-red-500">*</span>
               </Label>
@@ -138,10 +142,10 @@ export function PromotionCreateDialog({
                 className="uppercase"
               />
               {errors.code && (
-                <p className="text-sm text-red-500 mt-1">{errors.code}</p>
+                <p className="text-[10px] text-red-500 mt-1">{errors.code}</p>
               )}
             </div>
-            <div>
+            <div className="space-y-2">
               <Label htmlFor="title">
                 Tiêu đề <span className="text-red-500">*</span>
               </Label>
@@ -152,13 +156,13 @@ export function PromotionCreateDialog({
                 onChange={(e) => updateFormData({ title: e.target.value })}
               />
               {errors.title && (
-                <p className="text-sm text-red-500 mt-1">{errors.title}</p>
+                <p className="text-[10px] text-red-500 mt-1">{errors.title}</p>
               )}
             </div>
           </div>
 
           {/* Description */}
-          <div>
+          <div className="space-y-2">
             <Label htmlFor="description">Mô tả</Label>
             <Textarea
               id="description"
@@ -171,7 +175,7 @@ export function PromotionCreateDialog({
 
           {/* Discount Type & Value */}
           <div className="grid grid-cols-2 gap-4">
-            <div>
+            <div className="space-y-2">
               <Label htmlFor="discountType">
                 Loại giảm giá <span className="text-red-500">*</span>
               </Label>
@@ -190,7 +194,7 @@ export function PromotionCreateDialog({
                 </SelectContent>
               </Select>
             </div>
-            <div>
+            <div className="space-y-2">
               <Label htmlFor="discountValue">
                 Giá trị giảm giá <span className="text-red-500">*</span>
               </Label>
@@ -208,7 +212,7 @@ export function PromotionCreateDialog({
                 }
               />
               {errors.discountValue && (
-                <p className="text-sm text-red-500 mt-1">
+                <p className="text-[10px] text-red-500 mt-1">
                   {errors.discountValue}
                 </p>
               )}
@@ -217,7 +221,7 @@ export function PromotionCreateDialog({
 
           {/* Min Order & Max Discount */}
           <div className="grid grid-cols-2 gap-4">
-            <div>
+            <div className="space-y-2">
               <Label htmlFor="minOrderValue">Giá trị đơn tối thiểu (VNĐ)</Label>
               <Input
                 id="minOrderValue"
@@ -230,7 +234,7 @@ export function PromotionCreateDialog({
                 }
               />
             </div>
-            <div>
+            <div className="space-y-2">
               <Label htmlFor="maxDiscountAmount">Mức giảm tối đa (VNĐ)</Label>
               <Input
                 id="maxDiscountAmount"
@@ -242,7 +246,7 @@ export function PromotionCreateDialog({
                   updateFormData({ maxDiscountAmount: e.target.value })
                 }
               />
-              <p className="text-sm text-neutral-400 mt-1">
+              <p className="text-[10px] text-neutral-400 mt-1">
                 Để trống nếu không giới hạn
               </p>
             </div>
@@ -250,7 +254,7 @@ export function PromotionCreateDialog({
 
           {/* Dates */}
           <div className="grid grid-cols-2 gap-4">
-            <div>
+            <div className="space-y-2">
               <Label htmlFor="startDate">
                 Ngày bắt đầu <span className="text-red-500">*</span>
               </Label>
@@ -261,10 +265,10 @@ export function PromotionCreateDialog({
                 onChange={(e) => updateFormData({ startDate: e.target.value })}
               />
               {errors.startDate && (
-                <p className="text-sm text-red-500 mt-1">{errors.startDate}</p>
+                <p className="text-[10px] text-red-500 mt-1">{errors.startDate}</p>
               )}
             </div>
-            <div>
+            <div className="space-y-2">
               <Label htmlFor="endDate">
                 Ngày kết thúc <span className="text-red-500">*</span>
               </Label>
@@ -275,13 +279,13 @@ export function PromotionCreateDialog({
                 onChange={(e) => updateFormData({ endDate: e.target.value })}
               />
               {errors.endDate && (
-                <p className="text-sm text-red-500 mt-1">{errors.endDate}</p>
+                <p className="text-[10px] text-red-500 mt-1">{errors.endDate}</p>
               )}
             </div>
           </div>
 
           {/* Applicable Vehicles */}
-          <div>
+          <div className="space-y-2">
             <Label className="mb-2 block">Loại xe áp dụng</Label>
             <div className="grid grid-cols-2 gap-2 p-3 rounded-lg border border-darkBorderV1 bg-darkBackgroundV1/30">
               {VEHICLE_TYPES.map((type) => (
@@ -295,7 +299,7 @@ export function PromotionCreateDialog({
                   />
                   <Label
                     htmlFor={`create-vehicle-${type.id}`}
-                    className="text-sm font-normal cursor-pointer text-neutral-200"
+                    className="text-xs font-normal cursor-pointer text-neutral-300"
                   >
                     {type.label}
                   </Label>
@@ -305,37 +309,39 @@ export function PromotionCreateDialog({
           </div>
 
           {/* Usage Limit */}
-          <div>
-            <div className="space-y-2">
-              <Label htmlFor="usageLimit">Giới hạn lượt dùng (Tổng cộng)</Label>
-              <Input
-                id="usageLimit"
-                type="number"
-                placeholder="Để trống nếu không giới hạn"
-                value={formData.usageLimit}
-                onChange={(e) => updateFormData({ usageLimit: e.target.value })}
-              />
-            </div>
-          </div>
-
-          {/* Actions */}
-          <div className="flex justify-end gap-3 pt-6 border-t border-darkBorderV1">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={handleClose}
-              disabled={isPending}
-            >
-              <IconX className="w-4 h-4" />
-              Đóng
-            </Button>
-            <Button type="submit" disabled={isPending}>
-              <IconPlus className="w-4 h-4" />
-              {isPending ? "Đang tạo..." : "Tạo khuyến mãi"}
-            </Button>
+          <div className="space-y-2">
+            <Label htmlFor="usageLimit">Giới hạn lượt dùng (Tổng cộng)</Label>
+            <Input
+              id="usageLimit"
+              type="number"
+              placeholder="Để trống nếu không giới hạn"
+              value={formData.usageLimit}
+              onChange={(e) => updateFormData({ usageLimit: e.target.value })}
+            />
           </div>
         </form>
+
+        <DialogFooter>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={handleClose}
+            disabled={isPending}
+          >
+            <Icon path={mdiClose} size={0.8} />
+            Hủy bỏ
+          </Button>
+          <Button
+            type="submit"
+            form="promotion-create-form"
+            disabled={isPending}
+          >
+            <Icon path={mdiPlus} size={0.8} />
+            {isPending ? "Đang tạo..." : "Tạo khuyến mãi"}
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
 }
+

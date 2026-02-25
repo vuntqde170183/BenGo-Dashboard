@@ -48,7 +48,7 @@ export default function ManualAssignmentPage() {
         }
     };
 
-    const filteredOrders = pendingOrders?.filter(o =>
+    const filteredOrders = pendingOrders?.filter((o: any) =>
         o._id.toLowerCase().includes(searchOrder.toLowerCase()) ||
         o.customerId?.name.toLowerCase().includes(searchOrder.toLowerCase()) ||
         o.customerId?.phone.includes(searchOrder)
@@ -63,7 +63,7 @@ export default function ManualAssignmentPage() {
         <div className="space-y-6 h-[calc(100vh-120px)] flex flex-col">
             <div className="flex justify-between items-center">
                 <div>
-                    <h1 className="text-2xl font-bold text-neutral-200">Phân chuyến thủ công</h1>
+                    <h1 className="text-2xl font-bold text-neutral-300">Phân chuyến thủ công</h1>
                     <p className="text-sm text-neutral-400">Chọn một đơn hàng và một tài xế để thực hiện gán chuyến.</p>
                 </div>
                 <Button
@@ -104,7 +104,7 @@ export default function ManualAssignmentPage() {
                                 <p>Không có đơn hàng chờ gán</p>
                             </div>
                         ) : (
-                            filteredOrders?.map(order => (
+                            filteredOrders?.map((order: any) => (
                                 <motion.div
                                     key={order._id}
                                     whileHover={{ scale: 1.01 }}
@@ -118,13 +118,13 @@ export default function ManualAssignmentPage() {
                                     )}
                                 >
                                     <div className="flex justify-between items-start mb-2">
-                                        <span className="font-mono text-primary text-xs font-bold bg-primary/10 px-2 py-0.5 rounded">#{order._id.slice(-8)}</span>
+                                        <span className="text-primary text-xs font-bold bg-primary/10 px-2 py-0.5 rounded">#{order._id.slice(-8)}</span>
                                         {order.priority && order.priority !== 'NORMAL' && (
                                             <Badge className="bg-yellow-500/20 text-yellow-500 border-none text-xs">{order.priority}</Badge>
                                         )}
                                     </div>
                                     <div className="text-sm text-neutral-300 space-y-2">
-                                        <p className="font-bold text-neutral-100 group-hover:text-primary transition-colors">{order.customerId?.name}</p>
+                                        <p className="font-bold text-neutral-300 group-hover:text-primary transition-colors">{order.customerId?.name}</p>
                                         <div className="space-y-1">
                                             <p className="truncate flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-green-500 flex-shrink-0"></span> {order.pickup?.address}</p>
                                             <p className="truncate flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-red-500 flex-shrink-0"></span> {order.dropoff?.address}</p>
@@ -181,7 +181,7 @@ export default function ManualAssignmentPage() {
                                         {driver.name.charAt(0)}
                                     </div>
                                     <div className="flex-1">
-                                        <p className="font-bold text-neutral-100 group-hover:text-primary transition-colors">{driver.name}</p>
+                                        <p className="font-bold text-neutral-300 group-hover:text-primary transition-colors">{driver.name}</p>
                                         <p className="text-xs text-neutral-400">{driver.phone}</p>
                                         <div className="flex items-center gap-2 mt-2">
                                             <Badge className="bg-green-500/10 text-green-500 border-none text-xs px-1.5 py-0">ONLINE</Badge>
@@ -210,7 +210,7 @@ export default function ManualAssignmentPage() {
                         {selectedOrder ? (
                             <span className="text-primary font-bold">#{selectedOrder._id.slice(-8)} - {selectedOrder.customerId?.name}</span>
                         ) : (
-                            <span className="text-neutral-500 italic text-sm">Vui lòng chọn đơn hàng</span>
+                            <span className="text-neutral-400 italic text-sm">Vui lòng chọn đơn hàng</span>
                         )}
                     </div>
                     <div className="text-primary animate-pulse bg-primary/10 p-2 rounded-full">
@@ -221,7 +221,7 @@ export default function ManualAssignmentPage() {
                         {selectedDriver ? (
                             <span className="text-primary font-bold">{selectedDriver.name} - {selectedDriver.phone}</span>
                         ) : (
-                            <span className="text-neutral-500 italic text-sm">Vui lòng chọn tài xế</span>
+                            <span className="text-neutral-400 italic text-sm">Vui lòng chọn tài xế</span>
                         )}
                     </div>
                 </motion.div>

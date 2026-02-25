@@ -28,7 +28,7 @@ export default function CommonHeader() {
         <div className="flex items-center w-[244px] justify-between">
           <button
             onClick={toggle}
-            className="dark:bg-darkBorderV1 flex items-center justify-center hover:dark:bg-darkBorderV1/80 !text-neutral-200/70 !p-0 !h-10 !w-10 rounded-full"
+            className="dark:bg-darkBorderV1  flex items-center justify-center hover:dark:bg-darkBorderV1 /80 !text-neutral-300/70 !p-0 !h-10 !w-10 rounded-full"
           >
             <HamburgerMenu size="20" color="#fff" />
           </button>
@@ -56,7 +56,7 @@ export default function CommonHeader() {
               <Input
                 ref={inputRef}
                 placeholder="Tìm kiếm..."
-                className="w-full pl-10 border-none focus:!outline-none focus:!ring-0 focus:!border-none !bg-transparent text-neutral-200 placeholder:text-neutral-200"
+                className="w-full pl-10 border-none focus:!outline-none focus:!ring-0 focus:!border-none !bg-transparent text-neutral-300 placeholder:text-neutral-300"
                 value={searchTerm}
                 onChange={handleSearchChange}
                 disabled={isLoading}

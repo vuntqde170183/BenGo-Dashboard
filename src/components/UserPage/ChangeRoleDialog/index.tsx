@@ -6,6 +6,7 @@ import {
     DialogHeader,
     DialogTitle,
     DialogDescription,
+    DialogFooter,
 } from "@/components/ui/dialog";
 import {
     Select,
@@ -18,14 +19,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useUpdateUserRole } from "@/hooks/useAdmin";
-import {
-    IconUserCog,
-    IconAlertTriangle,
-    IconUser,
-    IconSteeringWheel,
-    IconHeadset,
-    IconShieldLock,
-} from "@tabler/icons-react";
+import { mdiAccountCog, mdiAlert, mdiAccount, mdiSteering, mdiHeadset, mdiShieldLock, mdiClose, mdiCheckBold } from "@mdi/js";
+import Icon from "@mdi/react";
 
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
@@ -41,10 +36,30 @@ interface ChangeRoleDialogProps {
 }
 
 const ROLES = [
-    { value: "CUSTOMER", label: "Khách hàng", description: "Sử dụng dịch vụ vận chuyển", icon: IconUser },
-    { value: "DRIVER", label: "Tài xế", description: "Cung cấp dịch vụ vận chuyển", icon: IconSteeringWheel },
-    { value: "DISPATCHER", label: "Điều phối viên", description: "Hỗ trợ và giám sát", icon: IconHeadset },
-    { value: "ADMIN", label: "Quản trị viên", description: "Quản lý hệ thống", icon: IconShieldLock },
+    {
+        value: "CUSTOMER",
+        label: "Khách hàng",
+        description: "Sử dụng dịch vụ vận chuyển",
+        icon: mdiAccount,
+    },
+    {
+        value: "DRIVER",
+        label: "Tài xế",
+        description: "Cung cấp dịch vụ vận chuyển",
+        icon: mdiSteering,
+    },
+    {
+        value: "DISPATCHER",
+        label: "Điều phối viên",
+        description: "Hỗ trợ và giám sát",
+        icon: mdiHeadset,
+    },
+    {
+        value: "ADMIN",
+        label: "Quản trị viên",
+        description: "Quản lý hệ thống",
+        icon: mdiShieldLock,
+    },
 ];
 
 const VEHICLE_TYPES = [
@@ -91,7 +106,7 @@ export function ChangeRoleDialog({
                     onSuccess?.();
                     handleClose();
                 },
-            }
+            },
         );
     };
 
@@ -112,25 +127,26 @@ export function ChangeRoleDialog({
             <DialogContent size="small">
                 <DialogHeader>
                     <DialogTitle className="flex items-center gap-2 text-primary">
-                        <IconUserCog className="h-5 w-5" />
-                        Phân quyền người dùng
+                        <Icon path={mdiAccountCog} size={0.8} />
+                        <span>Phân quyền người dùng</span>
                     </DialogTitle>
-                    <DialogDescription>
-                        Thay đổi vai trò của <span className="font-semibold text-white">{user.name}</span>
-                    </DialogDescription>
+                    <div className="text-xs text-neutral-400 mt-1">
+                        Thay đổi vai trò của{" "}
+                        <span className="font-semibold text-white">{user.name}</span>
+                    </div>
                 </DialogHeader>
 
-                <div className="space-y-4 py-4">
+                <div className="space-y-3 md:space-y-4 max-h-[70vh] overflow-y-auto pr-1 custom-scrollbar p-3 md:p-4">
                     {/* Current Role */}
                     <div className="space-y-2">
                         <Label>Vai trò hiện tại</Label>
                         <div className="px-3 py-2 bg-darkBackgroundV1 rounded-md border border-darkBorderV1 flex items-center gap-2">
                             {(() => {
-                                const currentRole = ROLES.find(r => r.value === user.role);
-                                const CurrentIcon = currentRole?.icon || IconUser;
+                                const currentRole = ROLES.find((r) => r.value === user.role);
+                                const CurrentIcon = currentRole?.icon || mdiAccount;
                                 return (
                                     <>
-                                        <CurrentIcon className="h-4 w-4 text-primary" />
+                                        <Icon path={CurrentIcon} size={0.6} className="text-primary" />
                                         <span className="text-white font-medium text-sm">
                                             {currentRole?.label || user.role}
                                         </span>
@@ -149,16 +165,17 @@ export function ChangeRoleDialog({
                             </SelectTrigger>
                             <SelectContent>
                                 {ROLES.map((role) => {
-                                    const RoleIcon = role.icon;
                                     return (
                                         <SelectItem key={role.value} value={role.value}>
                                             <div className="flex items-center gap-3">
                                                 <div className="p-1.5 rounded-md bg-primary/10 text-primary">
-                                                    <RoleIcon size={18} />
+                                                    <Icon path={role.icon} size={0.7} />
                                                 </div>
                                                 <div className="flex flex-col">
-                                                    <span className="font-medium">{role.label}</span>
-                                                    <span className="text-xs text-neutral-400">
+                                                    <span className="font-medium text-sm">
+                                                        {role.label}
+                                                    </span>
+                                                    <span className="text-[10px] text-neutral-400">
                                                         {role.description}
                                                     </span>
                                                 </div>
@@ -172,10 +189,13 @@ export function ChangeRoleDialog({
 
                     {/* Driver Profile (only show when changing to DRIVER) */}
                     {isDriverRole && (
-                        <div className="space-y-4 p-4 bg-darkBackgroundV1/40 rounded-lg border border-darkBorderV1">
-                            <h4 className="text-sm font-semibold text-primary">
-                                Thông tin tài xế
-                            </h4>
+                        <div className="space-y-3 p-3 bg-darkBackgroundV1/40 rounded-lg border border-darkBorderV1">
+                            <div className="flex items-center gap-3">
+                                <h4 className="text-sm font-semibold text-primary">
+                                    Thông tin tài xế
+                                </h4>
+                                <div className="flex-1 border-b border-dashed border-primary mr-1" />
+                            </div>
 
                             <div className="space-y-2">
                                 <Label htmlFor="vehicleType">Loại xe *</Label>
@@ -208,10 +228,11 @@ export function ChangeRoleDialog({
                     {/* Warning when changing from DRIVER */}
                     {wasDriver && newRole !== "DRIVER" && (
                         <Alert variant="destructive">
-                            <IconAlertTriangle className="h-4 w-4" />
+                            <Icon path={mdiAlert} size={0.6} />
                             <AlertDescription>
-                                Chuyển từ Tài xế sang vai trò khác sẽ <strong>xóa toàn bộ</strong> hồ sơ tài xế,
-                                bao gồm thông tin xe và giấy tờ. Không thể khôi phục sau khi xóa.
+                                Chuyển từ Tài xế sang vai trò khác sẽ <strong>xóa toàn bộ</strong>{" "}
+                                hồ sơ tài xế, bao gồm thông tin xe và giấy tờ. Không thể khôi
+                                phục sau khi xóa.
                             </AlertDescription>
                         </Alert>
                     )}
@@ -229,18 +250,25 @@ export function ChangeRoleDialog({
                     </div>
                 </div>
 
-                <div className="flex gap-2 justify-end">
+                <DialogFooter>
                     <Button variant="outline" onClick={handleClose} disabled={isPending}>
-                        Hủy
+                        <Icon path={mdiClose} size={0.8} />
+                        Hủy bỏ
                     </Button>
                     <Button
                         onClick={handleSubmit}
-                        disabled={isPending || !isRoleChanged || (isDriverRole && !plateNumber.trim())}
+                        disabled={
+                            isPending ||
+                            !isRoleChanged ||
+                            (isDriverRole && !plateNumber.trim())
+                        }
                     >
-                        {isPending ? "Đang xử lý..." : "Xác nhận"}
+                        <Icon path={mdiCheckBold} size={0.8} />
+                        {isPending ? "Đang xử lý..." : "Xác nhận thay đổi"}
                     </Button>
-                </div>
+                </DialogFooter>
             </DialogContent>
         </Dialog>
     );
 }
+

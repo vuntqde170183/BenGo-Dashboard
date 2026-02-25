@@ -39,7 +39,7 @@ export default function MetricCard({
                                 </p>
                                 <div className="flex justify-between items-center">
                                     <h3 className="text-2xl font-bold mt-2">{value}</h3>
-                                    <div className="p-3 rounded-full bg-darkBorderV1 text-neutral-200">
+                                    <div className="p-3 rounded-full bg-darkBorderV1 text-neutral-300">
                                         {icon}
                                     </div>
                                 </div>

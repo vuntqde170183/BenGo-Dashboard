@@ -79,7 +79,7 @@ export default function DispatcherDashboard() {
         <div className="space-y-6 bg-darkCardV1 p-6 rounded-2xl border border-darkBorderV1">
             <div className="flex justify-between items-center relative pr-24">
                 <div className="z-10">
-                    <h1 className="text-3xl font-bold text-neutral-200">
+                    <h1 className="text-3xl font-bold text-neutral-300">
                         Trung tâm Điều phối
                     </h1>
                     <p className="text-neutral-400 mt-2 text-base">

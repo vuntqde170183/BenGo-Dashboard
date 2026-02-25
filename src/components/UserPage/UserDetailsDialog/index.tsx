@@ -3,19 +3,25 @@ import { Button } from "@/components/ui/button";
 import { useGetUserById, useUpdateUser } from "@/hooks/useAdmin";
 import { IUpdateUserBody } from "@/interface/auth";
 import { toast } from "react-toastify";
-import { IconX, IconEdit, IconUserCog } from "@tabler/icons-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogFooter,
 } from "@/components/ui/dialog";
 import { UserTable } from "./UserTable";
 import { UserForm } from "./UserForm";
 import { ChangeRoleDialog } from "../ChangeRoleDialog";
 import Icon from "@mdi/react";
-import { mdiClipboardAccount } from "@mdi/js";
+import {
+  mdiClipboardAccount,
+  mdiClose,
+  mdiAccountCog,
+  mdiPencil,
+  mdiContentSave,
+} from "@mdi/js";
 
 interface UserDetailsDialogProps {
   isOpen: boolean;
@@ -237,48 +243,73 @@ export const UserDetailsDialog = ({
           </DialogTitle>
         </DialogHeader>
 
-        {isLoadingUser ? (
-          <div className="space-y-4">
-            {[...Array(6)].map((_, index) => (
-              <div key={index} className="space-y-2">
-                <Skeleton className="h-4 w-20" />
-                <Skeleton className="h-10 w-full" />
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="space-y-4">
-            {isEditing ? (
-              <UserForm
-                formData={formData}
-                errors={errors}
-                isUpdating={isUpdating}
-                onFormDataChange={handleFormDataChange}
-                onErrorsChange={handleErrorsChange}
-                onSubmit={handleSubmit}
-                onCancel={handleCancelEdit}
-              />
-            ) : (
-              <>
-                {userData?.data && <UserTable user={userData.data} />}
-                <div className="flex gap-2 justify-end">
-                  <Button variant="outline" onClick={handleClose}>
-                    <IconX className="h-4 w-4" />
-                    Đóng
-                  </Button>
-                  <Button variant="outline" className="text-primary border-primary hover:bg-primary/10" onClick={() => setIsChangeRoleOpen(true)}>
-                    <IconUserCog className="h-4 w-4 text-primary" />
-                    Phân quyền
-                  </Button>
-                  <Button onClick={handleEdit}>
-                    <IconEdit className="h-4 w-4" />
-                    Chỉnh sửa
-                  </Button>
+        <div className="space-y-3 md:space-y-4 max-h-[70vh] overflow-y-auto pr-1 custom-scrollbar p-3 md:p-4">
+          {isLoadingUser ? (
+            <div className="space-y-4">
+              {[...Array(6)].map((_, index) => (
+                <div key={index} className="space-y-2">
+                  <Skeleton className="h-4 w-20" />
+                  <Skeleton className="h-10 w-full" />
                 </div>
-              </>
-            )}
-          </div>
-        )}
+              ))}
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {isEditing ? (
+                <UserForm
+                  formData={formData}
+                  errors={errors}
+                  isUpdating={isUpdating}
+                  onFormDataChange={handleFormDataChange}
+                  onErrorsChange={handleErrorsChange}
+                  onSubmit={handleSubmit}
+                  onCancel={handleCancelEdit}
+                  showButtons={false}
+                />
+              ) : (
+                <>{userData?.data && <UserTable user={userData.data} />}</>
+              )}
+            </div>
+          )}
+        </div>
+
+        <DialogFooter>
+          {isEditing ? (
+            <>
+              <Button
+                variant="outline"
+                onClick={handleCancelEdit}
+                disabled={isUpdating}
+              >
+                <Icon path={mdiClose} size={0.8} />
+                Hủy bỏ
+              </Button>
+              <Button onClick={handleSubmit} disabled={isUpdating}>
+                <Icon path={mdiContentSave} size={0.8} />
+                {isUpdating ? "Đang lưu..." : "Lưu thay đổi"}
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button variant="outline" onClick={handleClose}>
+                <Icon path={mdiClose} size={0.8} />
+                Đóng
+              </Button>
+              <Button
+                variant="outline"
+                className="text-primary border-primary hover:bg-primary/10"
+                onClick={() => setIsChangeRoleOpen(true)}
+              >
+                <Icon path={mdiAccountCog} size={0.8} />
+                Phân quyền
+              </Button>
+              <Button onClick={handleEdit}>
+                <Icon path={mdiPencil} size={0.8} />
+                Chỉnh sửa
+              </Button>
+            </>
+          )}
+        </DialogFooter>
       </DialogContent>
 
       {userData?.data && (
@@ -298,3 +329,5 @@ export const UserDetailsDialog = ({
     </Dialog>
   );
 };
+
+

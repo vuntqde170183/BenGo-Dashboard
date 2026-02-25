@@ -27,7 +27,7 @@ export const UserTable = ({ user }: UserTableProps) => {
   const profile = user.role === "DRIVER" ? user.driverProfile : {};
 
   return (
-    <div className="space-y-4 max-h-[70vh] overflow-y-auto pr-2 custom-scrollbar">
+    <div className="space-y-4">
       {/* Basic Information */}
       <Card>
         <CardHeader className="border-b border-b-darkBorderV1 py-3">
@@ -114,14 +114,14 @@ export const UserTable = ({ user }: UserTableProps) => {
                   {renderTableRow(
                     "Số CCCD",
                     profile?.identityNumber ||
-                      user.identityNumber ||
-                      "Chưa cập nhật",
+                    user.identityNumber ||
+                    "Chưa cập nhật",
                   )}
                   {renderTableRow(
                     "Số bằng lái",
                     profile?.drivingLicenseNumber ||
-                      user.drivingLicenseNumber ||
-                      "Chưa cập nhật",
+                    user.drivingLicenseNumber ||
+                    "Chưa cập nhật",
                   )}
                 </TableBody>
               </Table>
@@ -140,7 +140,7 @@ export const UserTable = ({ user }: UserTableProps) => {
                       </span>
                       <div className="aspect-video rounded-lg overflow-hidden border border-darkBorderV1">
                         {profile?.identityFrontImage ||
-                        user.identityFrontImage ? (
+                          user.identityFrontImage ? (
                           <img
                             src={
                               profile?.identityFrontImage ||
@@ -150,7 +150,7 @@ export const UserTable = ({ user }: UserTableProps) => {
                             className="w-full h-full object-cover"
                           />
                         ) : (
-                          <div className="w-full h-full bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center text-neutral-400 italic text-xs">
+                          <div className="w-full h-full bg-neutral-100 dark:bg-darkBorderV1 flex items-center justify-center text-neutral-400 italic text-sm">
                             Chưa cập nhật
                           </div>
                         )}
@@ -162,7 +162,7 @@ export const UserTable = ({ user }: UserTableProps) => {
                       </span>
                       <div className="aspect-video rounded-lg overflow-hidden border border-darkBorderV1">
                         {profile?.identityBackImage ||
-                        user.identityBackImage ? (
+                          user.identityBackImage ? (
                           <img
                             src={
                               profile?.identityBackImage ||
@@ -172,7 +172,7 @@ export const UserTable = ({ user }: UserTableProps) => {
                             className="w-full h-full object-cover"
                           />
                         ) : (
-                          <div className="w-full h-full bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center text-neutral-400 italic text-xs">
+                          <div className="w-full h-full bg-neutral-100 dark:bg-darkBorderV1 flex items-center justify-center text-neutral-400 italic text-sm">
                             Chưa cập nhật
                           </div>
                         )}
@@ -199,7 +199,7 @@ export const UserTable = ({ user }: UserTableProps) => {
                             className="w-full h-full object-cover"
                           />
                         ) : (
-                          <div className="w-full h-full bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center text-neutral-400 italic text-xs">
+                          <div className="w-full h-full bg-neutral-100 dark:bg-darkBorderV1  flex items-center justify-center text-neutral-400 italic text-sm">
                             Chưa cập nhật
                           </div>
                         )}
@@ -211,7 +211,7 @@ export const UserTable = ({ user }: UserTableProps) => {
                       </span>
                       <div className="aspect-video rounded-lg overflow-hidden border border-darkBorderV1">
                         {profile?.vehicleRegistrationImage ||
-                        user.vehicleRegistrationImage ? (
+                          user.vehicleRegistrationImage ? (
                           <img
                             src={
                               profile?.vehicleRegistrationImage ||
@@ -221,7 +221,7 @@ export const UserTable = ({ user }: UserTableProps) => {
                             className="w-full h-full object-cover"
                           />
                         ) : (
-                          <div className="w-full h-full bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center text-neutral-400 italic text-xs">
+                          <div className="w-full h-full bg-neutral-100 dark:bg-darkBorderV1 flex items-center justify-center text-neutral-400 italic text-sm">
                             Chưa cập nhật
                           </div>
                         )}
@@ -249,20 +249,20 @@ export const UserTable = ({ user }: UserTableProps) => {
                   {renderTableRow(
                     "Ngân hàng",
                     profile?.bankInfo?.bankName ||
-                      user.bankInfo?.bankName ||
-                      "Chưa cập nhật",
+                    user.bankInfo?.bankName ||
+                    "Chưa cập nhật",
                   )}
                   {renderTableRow(
                     "Số tài khoản",
                     profile?.bankInfo?.accountNumber ||
-                      user.bankInfo?.accountNumber ||
-                      "Chưa cập nhật",
+                    user.bankInfo?.accountNumber ||
+                    "Chưa cập nhật",
                   )}
                   {renderTableRow(
                     "Chủ tài khoản",
                     profile?.bankInfo?.accountHolder ||
-                      user.bankInfo?.accountHolder ||
-                      "Chưa cập nhật",
+                    user.bankInfo?.accountHolder ||
+                    "Chưa cập nhật",
                   )}
                 </TableBody>
               </Table>

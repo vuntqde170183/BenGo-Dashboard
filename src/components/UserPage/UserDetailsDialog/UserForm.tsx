@@ -9,21 +9,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { IUpdateUserBody, IUploadResponse } from "@/interface/auth";
-import {
-  IconLoader2,
-  IconCheck,
-  IconEye,
-  IconEyeOff,
-  IconX,
-  IconUpload,
-  IconTrash,
-  IconPlus,
-  IconUserSquareRounded,
-  IconTruck,
-  IconId,
-  IconBuildingBank,
-  IconUserPlus,
-} from "@tabler/icons-react";
 import { useState } from "react";
 import { useUploadFile } from "@/hooks/useUpload";
 import { toast } from "react-toastify";
@@ -33,6 +18,21 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import Icon from "@mdi/react";
+import {
+  mdiLoading,
+  mdiEye,
+  mdiEyeOff,
+  mdiClose,
+  mdiUpload,
+  mdiTrashCan,
+  mdiPlus,
+  mdiTruck,
+  mdiCardAccountDetails,
+  mdiBank,
+  mdiAccountPlus,
+  mdiContentSave,
+} from "@mdi/js";
 
 interface UserFormProps {
   formData: IUpdateUserBody;
@@ -44,6 +44,7 @@ interface UserFormProps {
   onCancel: () => void;
   mode?: "create" | "edit";
   hideRoleSelect?: boolean;
+  showButtons?: boolean;
 }
 
 export const UserForm = ({
@@ -56,6 +57,7 @@ export const UserForm = ({
   onCancel,
   mode = "edit",
   hideRoleSelect = false,
+  showButtons = true,
 }: UserFormProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const { mutate: uploadFileMutation } = useUploadFile();
@@ -175,9 +177,7 @@ export const UserForm = ({
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
         {mode === "create" && !hideRoleSelect && (
           <div className="space-y-2">
-            <Label htmlFor="role-select" className="text-sm font-medium">
-              Vai trò người dùng
-            </Label>
+            <Label htmlFor="role-select">Vai trò người dùng</Label>
             <Select
               value={formData.role}
               onValueChange={(value) => handleSelectChange("role", value)}
@@ -194,7 +194,7 @@ export const UserForm = ({
           </div>
         )}
         <div className="space-y-2">
-          <Label htmlFor="name" className="text-neutral-400">
+          <Label htmlFor="name">
             Họ tên <span className="text-red-500">*</span>
           </Label>
           <Input
@@ -210,7 +210,7 @@ export const UserForm = ({
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="phone" className="text-neutral-400">
+          <Label htmlFor="phone">
             Số điện thoại <span className="text-red-500">*</span>
           </Label>
           <Input
@@ -229,9 +229,7 @@ export const UserForm = ({
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="email" className="text-neutral-400">
-            Email
-          </Label>
+          <Label htmlFor="email">Email</Label>
           <Input
             id="email"
             name="email"
@@ -244,7 +242,7 @@ export const UserForm = ({
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="password" className="text-neutral-400">
+          <Label htmlFor="password">
             Mật khẩu {mode === "edit" && "(để trống nếu không đổi)"}{" "}
             <span className="text-red-500">{mode === "create" && "*"}</span>
           </Label>
@@ -264,9 +262,9 @@ export const UserForm = ({
               className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400"
             >
               {showPassword ? (
-                <IconEyeOff className="h-5 w-5" />
+                <Icon path={mdiEyeOff} size={0.6} />
               ) : (
-                <IconEye className="h-5 w-5" />
+                <Icon path={mdiEye} size={0.6} />
               )}
             </button>
           </div>
@@ -276,7 +274,7 @@ export const UserForm = ({
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="walletBalance" className="text-neutral-400">
+          <Label htmlFor="walletBalance">
             Số dư ví <span className="text-red-500">*</span>
           </Label>
           <Input
@@ -291,7 +289,7 @@ export const UserForm = ({
 
         {role === "DRIVER" && (
           <div className="space-y-2">
-            <Label htmlFor="rating" className="text-neutral-400">
+            <Label htmlFor="rating">
               Điểm đánh giá <span className="text-red-500">*</span>
             </Label>
             <Input
@@ -315,7 +313,7 @@ export const UserForm = ({
           <AccordionItem value="vehicle" className="border-none mt-2">
             <AccordionTrigger className="hover:no-underline py-2">
               <div className="flex items-center gap-2">
-                <IconTruck className="h-5 w-5 text-primary" />
+                <Icon path={mdiTruck} size={0.8} className="text-primary" />
                 <span className="text-base font-semibold text-primary">
                   Thông tin xe
                 </span>
@@ -324,7 +322,7 @@ export const UserForm = ({
             <AccordionContent className="pt-4 space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="vehicleType" className="text-neutral-400">
+                  <Label htmlFor="vehicleType">
                     Loại xe <span className="text-red-500">*</span>
                   </Label>
                   <Select
@@ -344,7 +342,7 @@ export const UserForm = ({
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="plateNumber" className="text-neutral-400">
+                  <Label htmlFor="plateNumber">
                     Biển số xe <span className="text-red-500">*</span>
                   </Label>
                   <Input
@@ -361,12 +359,7 @@ export const UserForm = ({
                   )}
                 </div>
                 <div className="space-y-2">
-                  <Label
-                    htmlFor="drivingLicenseNumber"
-                    className="text-neutral-400"
-                  >
-                    Số bằng lái xe
-                  </Label>
+                  <Label htmlFor="drivingLicenseNumber">Số bằng lái xe</Label>
                   <Input
                     id="drivingLicenseNumber"
                     name="drivingLicenseNumber"
@@ -380,7 +373,7 @@ export const UserForm = ({
               <div className="grid grid-cols-2 gap-4">
                 {/* Ảnh Bằng lái */}
                 <div className="space-y-2 w-full">
-                  <Label className="text-neutral-400">Ảnh bằng lái</Label>
+                  <Label>Ảnh bằng lái</Label>
                   {formData.licenseImage ? (
                     <div className="relative aspect-video rounded-lg overflow-hidden border border-darkBorderV1 bg-darkBackgroundV2 group">
                       <img
@@ -395,16 +388,24 @@ export const UserForm = ({
                         }
                         className="absolute top-1 right-1 p-2 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
                       >
-                        <IconTrash className="h-4 w-4" />
+                        <Icon path={mdiTrashCan} size={0.6} />
                       </button>
                     </div>
                   ) : (
                     <label className="aspect-video flex flex-col items-center justify-center border-2 border-dashed border-darkBorderV1 rounded-lg cursor-pointer hover:bg-darkBackgroundV2 transition-colors">
                       {isUploading === "licenseImage" ? (
-                        <IconLoader2 className="h-6 w-6 animate-spin text-neutral-400" />
+                        <Icon
+                          path={mdiLoading}
+                          size={1}
+                          className="animate-spin text-neutral-400"
+                        />
                       ) : (
                         <>
-                          <IconPlus className="h-6 w-6 text-neutral-400" />
+                          <Icon
+                            path={mdiPlus}
+                            size={1}
+                            className="text-neutral-400"
+                          />
                           <span className="text-sm text-neutral-400">
                             Tải ảnh bằng lái
                           </span>
@@ -423,7 +424,7 @@ export const UserForm = ({
 
                 {/* Ảnh đăng ký xe (Cà vẹt) */}
                 <div className="space-y-2 w-full">
-                  <Label className="text-neutral-400">Ảnh đăng ký xe</Label>
+                  <Label>Ảnh đăng ký xe</Label>
                   {formData.vehicleRegistrationImage ? (
                     <div className="relative aspect-video rounded-lg overflow-hidden border border-darkBorderV1 bg-darkBackgroundV2 group">
                       <img
@@ -441,16 +442,24 @@ export const UserForm = ({
                         }
                         className="absolute top-1 right-1 p-2 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
                       >
-                        <IconTrash className="h-4 w-4" />
+                        <Icon path={mdiTrashCan} size={0.6} />
                       </button>
                     </div>
                   ) : (
                     <label className="aspect-video flex flex-col items-center justify-center border-2 border-dashed border-darkBorderV1 rounded-lg cursor-pointer hover:bg-darkBackgroundV2 transition-colors">
                       {isUploading === "vehicleRegistrationImage" ? (
-                        <IconLoader2 className="h-6 w-6 animate-spin text-neutral-400" />
+                        <Icon
+                          path={mdiLoading}
+                          size={1}
+                          className="animate-spin text-neutral-400"
+                        />
                       ) : (
                         <>
-                          <IconPlus className="h-6 w-6 text-neutral-400" />
+                          <Icon
+                            path={mdiPlus}
+                            size={1}
+                            className="text-neutral-400"
+                          />
                           <span className="text-sm text-neutral-400">
                             Tải ảnh đăng ký xe
                           </span>
@@ -476,7 +485,11 @@ export const UserForm = ({
           <AccordionItem value="documents" className="border-none mt-2">
             <AccordionTrigger className="hover:no-underline py-2">
               <div className="flex items-center gap-2">
-                <IconId className="h-5 w-5 text-primary" />
+                <Icon
+                  path={mdiCardAccountDetails}
+                  size={0.8}
+                  className="text-primary"
+                />
                 <span className="text-base font-semibold text-primary">
                   Giấy tờ & Định danh
                 </span>
@@ -484,9 +497,7 @@ export const UserForm = ({
             </AccordionTrigger>
             <AccordionContent className="pt-4 space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="identityNumber" className="text-neutral-400">
-                  Số CCCD/CMND
-                </Label>
+                <Label htmlFor="identityNumber">Số CCCD/CMND</Label>
                 <Input
                   id="identityNumber"
                   name="identityNumber"
@@ -501,7 +512,7 @@ export const UserForm = ({
               <div className="grid grid-cols-2 md:grid-cols-2 gap-4">
                 {/* Mặt trước */}
                 <div className="space-y-2">
-                  <Label className="text-neutral-400">Mặt trước</Label>
+                  <Label>Mặt trước</Label>
                   {formData.identityFrontImage ? (
                     <div className="relative aspect-video rounded-lg overflow-hidden border border-darkBorderV1 bg-darkBackgroundV2 group">
                       <img
@@ -519,16 +530,24 @@ export const UserForm = ({
                         }
                         className="absolute top-1 right-1 p-2 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
                       >
-                        <IconTrash className="h-4 w-4" />
+                        <Icon path={mdiTrashCan} size={0.6} />
                       </button>
                     </div>
                   ) : (
                     <label className="aspect-video flex flex-col items-center justify-center border-2 border-dashed border-darkBorderV1 rounded-lg cursor-pointer hover:bg-darkBackgroundV2 transition-colors">
                       {isUploading === "identityFrontImage" ? (
-                        <IconLoader2 className="h-6 w-6 animate-spin text-neutral-400" />
+                        <Icon
+                          path={mdiLoading}
+                          size={1}
+                          className="animate-spin text-neutral-400"
+                        />
                       ) : (
                         <>
-                          <IconPlus className="h-6 w-6 text-neutral-400" />
+                          <Icon
+                            path={mdiPlus}
+                            size={1}
+                            className="text-neutral-400"
+                          />
                           <span className="text-sm text-neutral-400 mt-1">
                             Tải ảnh CCCD mặt trước
                           </span>
@@ -549,7 +568,7 @@ export const UserForm = ({
 
                 {/* Mặt sau */}
                 <div className="space-y-2">
-                  <Label className="text-neutral-400">Mặt sau</Label>
+                  <Label>Mặt sau</Label>
                   {formData.identityBackImage ? (
                     <div className="relative aspect-video rounded-lg overflow-hidden border border-darkBorderV1 bg-darkBackgroundV2 group">
                       <img
@@ -567,16 +586,24 @@ export const UserForm = ({
                         }
                         className="absolute top-1 right-1 p-2 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
                       >
-                        <IconTrash className="h-4 w-4" />
+                        <Icon path={mdiTrashCan} size={0.6} />
                       </button>
                     </div>
                   ) : (
                     <label className="aspect-video flex flex-col items-center justify-center border-2 border-dashed border-darkBorderV1 rounded-lg cursor-pointer hover:bg-darkBackgroundV2 transition-colors">
                       {isUploading === "identityBackImage" ? (
-                        <IconLoader2 className="h-6 w-6 animate-spin text-neutral-400" />
+                        <Icon
+                          path={mdiLoading}
+                          size={1}
+                          className="animate-spin text-neutral-400"
+                        />
                       ) : (
                         <>
-                          <IconPlus className="h-6 w-6 text-neutral-400" />
+                          <Icon
+                            path={mdiPlus}
+                            size={1}
+                            className="text-neutral-400"
+                          />
                           <span className="text-sm text-neutral-400 mt-1">
                             Tải ảnh CCCD mặt sau
                           </span>
@@ -602,7 +629,7 @@ export const UserForm = ({
           <AccordionItem value="bank" className="border-none mt-2">
             <AccordionTrigger className="hover:no-underline py-2">
               <div className="flex items-center gap-2">
-                <IconBuildingBank className="h-5 w-5 text-primary" />
+                <Icon path={mdiBank} size={0.8} className="text-primary" />
                 <span className="text-base font-semibold text-primary">
                   Thông tin ngân hàng
                 </span>
@@ -611,7 +638,7 @@ export const UserForm = ({
             <AccordionContent className="pt-4">
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 <div className="space-y-2">
-                  <Label className="text-neutral-400">Tên ngân hàng</Label>
+                  <Label>Tên ngân hàng</Label>
                   <Input
                     value={formData.bankInfo?.bankName || ""}
                     onChange={(e) =>
@@ -621,7 +648,7 @@ export const UserForm = ({
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label className="text-neutral-400">Số tài khoản</Label>
+                  <Label>Số tài khoản</Label>
                   <Input
                     value={formData.bankInfo?.accountNumber || ""}
                     onChange={(e) =>
@@ -634,7 +661,7 @@ export const UserForm = ({
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label className="text-neutral-400">Chủ tài khoản</Label>
+                  <Label>Chủ tài khoản</Label>
                   <Input
                     value={formData.bankInfo?.accountHolder || ""}
                     onChange={(e) =>
@@ -649,25 +676,32 @@ export const UserForm = ({
         </Accordion>
       )}
 
-      <div className="flex gap-2 justify-end pt-4 border-t border-darkBorderV1">
-        <Button variant="outline" onClick={onCancel} disabled={isUpdating}>
-          <IconX className="h-4 w-4" />
-          {mode === "create" ? "Hủy" : "Đóng"}
-        </Button>
-        <Button onClick={onSubmit} disabled={isUpdating || !!isUploading}>
-          {isUpdating ? (
-            <>
-              <IconLoader2 className="h-4 w-4 animate-spin" />
-              {mode === "create" ? "Đang tạo..." : "Đang cập nhật..."}
-            </>
-          ) : (
-            <>
-              <IconUserPlus className="h-4 w-4" />
-              {mode === "create" ? "Tạo người dùng" : "Lưu thay đổi"}
-            </>
-          )}
-        </Button>
-      </div>
+      {showButtons && (
+        <div className="flex gap-2 justify-end pt-4 border-t border-darkBorderV1">
+          <Button variant="outline" onClick={onCancel} disabled={isUpdating}>
+            <Icon path={mdiClose} size={0.8} />
+            {mode === "create" ? "Hủy" : "Đóng"}
+          </Button>
+          <Button onClick={onSubmit} disabled={isUpdating || !!isUploading}>
+            {isUpdating ? (
+              <>
+                <Icon path={mdiLoading} size={0.8} className="animate-spin" />
+                {mode === "create" ? "Đang tạo..." : "Đang cập nhật..."}
+              </>
+            ) : (
+              <>
+                <Icon
+                  path={mode === "create" ? mdiAccountPlus : mdiContentSave}
+                  size={0.8}
+                />
+                {mode === "create" ? "Tạo người dùng" : "Lưu thay đổi"}
+              </>
+            )}
+          </Button>
+        </div>
+      )}
     </div>
   );
 };
+
+

@@ -99,7 +99,7 @@ export function OrdersTable({
                 {order.driverId ? (
                   <div>
                     <p className="font-medium">{order.driverId?.name}</p>
-                    <p className="text-sm text-neutral-200">
+                    <p className="text-sm text-neutral-300">
                       {order.driverId?.phone}
                     </p>
                   </div>
@@ -118,7 +118,7 @@ export function OrdersTable({
                       size={0.8}
                       className="text-green-500 flex-shrink-0"
                     />
-                    <span className="text-neutral-200 font-medium">Đón:</span>
+                    <span className="text-neutral-300 font-medium">Đón:</span>
                     <span>
                       {order.pickup?.address
                         ?.replace("Pickup Address", "Địa chỉ đón")
@@ -135,7 +135,7 @@ export function OrdersTable({
                       size={0.8}
                       className="text-red-500 flex-shrink-0"
                     />
-                    <span className="text-neutral-200 font-medium">Trả:</span>
+                    <span className="text-neutral-300 font-medium">Trả:</span>
                     <span>
                       {order.dropoff?.address
                         ?.replace("Dropoff Address", "Địa chỉ trả")
@@ -155,7 +155,7 @@ export function OrdersTable({
               <TableCell className="font-semibold">
                 {formatCurrency(order.totalPrice || 0)}
               </TableCell>
-              <TableCell className="text-sm text-neutral-200">
+              <TableCell className="text-sm text-neutral-300">
                 {formatDate(order.createdAt)}
               </TableCell>
               <TableCell className="text-right">
