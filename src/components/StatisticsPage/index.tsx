@@ -163,7 +163,7 @@ export default function StatisticsPage() {
     <div className="space-y-4 bg-darkCardV1 p-4 rounded-2xl border border-darkBorderV1">
       <div className="flex justify-between items-center relative pr-24">
         <div className="z-10">
-          <h1 className="text-3xl font-bold text-neutral-200">
+          <h1 className="text-3xl font-bold text-neutral-300">
             Bảng điều khiển
           </h1>
           <p className="text-neutral-400 mt-2 text-base">
@@ -334,7 +334,7 @@ export default function StatisticsPage() {
               </div>
               <div className="pt-4 border-t border-darkBorderV1">
                 <div className="flex justify-between items-center">
-                  <span className="text-neutral-200 font-semibold">
+                  <span className="text-neutral-300 font-semibold">
                     Tổng cộng
                   </span>
                   <span className="font-bold text-lg text-primary">
@@ -392,7 +392,7 @@ export default function StatisticsPage() {
               </div>
               <div className="pt-4 border-t border-darkBorderV1">
                 <div className="flex justify-between items-center">
-                  <span className="text-neutral-200 font-semibold">
+                  <span className="text-neutral-300 font-semibold">
                     Tỷ lệ hoàn thành
                   </span>
                   <span className="font-bold text-lg text-primary">
@@ -440,7 +440,7 @@ export default function StatisticsPage() {
                     #{index + 1}
                   </div>
                   <div className="flex-1">
-                    <p className="text-sm text-neutral-200 font-semibold">
+                    <p className="text-sm text-neutral-300 font-semibold">
                       {driver.name}
                     </p>
                     <div className="flex items-center gap-2 mt-1">

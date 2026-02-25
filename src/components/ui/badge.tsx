@@ -4,53 +4,51 @@ import type * as React from "react";
 import { cn } from "@/lib/utils";
 
 const badgeVariants = cva(
-  "flex items-center justify-center border px-2 py-1 h-fit rounded-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 cursor-pointer text-[13px] h-6 leading-[1px] w-fit text-nowrap",
+  "flex items-center justify-center border px-2 py-1 h-fit rounded-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 cursor-pointer text-sm h-6 leading-[1px] w-fit text-nowrap capitalize",
   {
     variants: {
       variant: {
         default: "border-darkBorderV1 text-darkBorderV1 text-nowrap",
         secondary:
-          "border-darkBorderV1 bg-secondary text-secondary-foreground hover:bg-secondary/80 text-neutral-200 text-nowrap",
+          "border-darkBorderV1 bg-secondary text-secondary-foreground hover:bg-secondary/80 text-neutral-300 text-nowrap",
         destructive:
           "border-red-600 bg-destructive text-destructive-foreground hover:bg-destructive/80 text-nowrap",
-        outline:
-          "text-foreground border h-[30px] px-3 !border-white/50 bg-darkBorderV1 text-[#343A40] font-semibold !rounded-none rounded-full text-nowrap",
         orange:
-          "bg-orange-600 hover:bg-orange-700 text-neutral-200 border-[2px] border-orange-500 text-nowrap flex items-center gap-1",
-        red: "bg-red-600 hover:bg-red-700 text-neutral-200 border-[2px] border-red-500 text-nowrap flex items-center gap-1",
+          "bg-orange-500/10 text-orange-400 border-orange-500/20 rounded-md px-1.5 py-0 text-xs font-bold",
+        red: "bg-red-500/10 text-red-400 border-red-500/20 rounded-md px-1.5 py-0 text-xs font-bold",
         amber:
-          "bg-amber-600 hover:bg-amber-700 text-neutral-200 border-[2px] border-amber-500 text-nowrap flex items-center gap-1",
+          "bg-amber-500/10 text-amber-400 border-amber-500/20 rounded-md px-1.5 py-0 text-xs font-bold",
         yellow:
-          "bg-yellow-600 hover:bg-yellow-700 text-neutral-200 border-[2px] border-yellow-500 text-nowrap flex items-center gap-1",
-        lime: "bg-lime-600 hover:bg-lime-700 text-neutral-200 border-[2px] border-lime-500 text-nowrap flex items-center gap-1",
+          "bg-yellow-500/10 text-yellow-400 border-yellow-500/20 rounded-md px-1.5 py-0 text-xs font-bold",
+        lime: "bg-lime-500/10 text-lime-400 border-lime-500/20 rounded-md px-1.5 py-0 text-xs font-bold",
         green:
-          "bg-green-600 hover:bg-green-700 text-neutral-200 border-[2px] border-green-500 text-nowrap flex items-center gap-1",
+          "bg-green-500/10 text-green-400 border-green-500/20 rounded-md px-1.5 py-0 text-xs font-bold",
         emerald:
-          "bg-emerald-600 hover:bg-emerald-700 text-neutral-200 border-[2px] border-emerald-500 text-nowrap flex items-center gap-1",
-        teal: "bg-teal-600 hover:bg-teal-700 text-neutral-200 border-[2px] border-teal-500 text-nowrap flex items-center gap-1",
-        cyan: "bg-cyan-600 hover:bg-cyan-700 text-neutral-200 border-[2px] border-cyan-500 text-nowrap flex items-center gap-1",
-        sky: "bg-sky-600 hover:bg-sky-700 text-neutral-200 border-[2px] border-sky-500 text-nowrap flex items-center gap-1",
-        blue: "bg-blue-600 hover:bg-blue-700 text-neutral-200 border-[2px] border-blue-500 text-nowrap flex items-center gap-1",
+          "bg-emerald-500/10 text-emerald-400 border-emerald-500/20 rounded-md px-1.5 py-0 text-xs font-bold",
+        teal: "bg-teal-500/10 text-teal-400 border-teal-500/20 rounded-md px-1.5 py-0 text-xs font-bold",
+        cyan: "bg-cyan-500/10 text-cyan-400 border-cyan-500/20 rounded-md px-1.5 py-0 text-xs font-bold",
+        sky: "bg-sky-500/10 text-sky-400 border-sky-500/20 rounded-md px-1.5 py-0 text-xs font-bold",
+        blue: "bg-blue-500/10 text-blue-400 border-blue-500/20 rounded-md px-1.5 py-0 text-xs font-bold",
         indigo:
-          "bg-indigo-600 hover:bg-indigo-700 text-neutral-200 border-[2px] border-indigo-500 text-nowrap flex items-center gap-1",
+          "bg-indigo-500/10 text-indigo-400 border-indigo-500/20 rounded-md px-1.5 py-0 text-xs font-bold",
         violet:
-          "bg-violet-600 hover:bg-violet-700 text-neutral-200 border-[2px] border-violet-500 text-nowrap flex items-center gap-1",
+          "bg-violet-500/10 text-violet-400 border-violet-500/20 rounded-md px-1.5 py-0 text-xs font-bold",
         purple:
-          "bg-purple-600 hover:bg-purple-700 text-neutral-200 border-[2px] border-purple-500 text-nowrap flex items-center gap-1",
+          "bg-purple-500/10 text-purple-400 border-purple-500/20 rounded-md px-1.5 py-0 text-xs font-bold",
         fuchsia:
-          "bg-fuchsia-600 hover:bg-fuchsia-700 text-neutral-200 border-[2px] border-fuchsia-500 text-nowrap flex items-center gap-1",
-        pink: "bg-pink-600 hover:bg-pink-700 text-neutral-200 border-[2px] border-pink-500 text-nowrap flex items-center gap-1",
-        rose: "bg-rose-600 hover:bg-rose-700 text-neutral-200 border-[2px] border-rose-500 text-nowrap flex items-center gap-1",
+          "bg-fuchsia-500/10 text-fuchsia-400 border-fuchsia-500/20 rounded-md px-1.5 py-0 text-xs font-bold",
+        pink: "bg-pink-500/10 text-pink-400 border-pink-500/20 rounded-md px-1.5 py-0 text-xs font-bold",
+        rose: "bg-rose-500/10 text-rose-400 border-rose-500/20 rounded-md px-1.5 py-0 text-xs font-bold",
         slate:
-          "bg-slate-600 hover:bg-slate-700 text-neutral-200 border-[2px] border-slate-500 text-nowrap flex items-center gap-1",
-        gray: "bg-gray-600 hover:bg-gray-700 text-neutral-200 border-[2px] border-gray-500 text-nowrap flex items-center gap-1",
-        zinc: "bg-zinc-600 hover:bg-zinc-700 text-neutral-200 border-[2px] border-zinc-500 text-nowrap flex items-center gap-1",
+          "bg-slate-500/10 text-slate-400 border-slate-500/20 rounded-md px-1.5 py-0 text-xs font-bold",
+        gray: "bg-gray-500/10 text-gray-400 border-gray-500/20 rounded-md px-1.5 py-0 text-xs font-bold",
+        zinc: "bg-zinc-500/10 text-zinc-400 border-zinc-500/20 rounded-md px-1.5 py-0 text-xs font-bold",
         neutral:
-          "bg-neutral-600 hover:bg-neutral-700 text-neutral-200 border-[2px] border-neutral-500 text-nowrap flex items-center gap-1",
+          "bg-neutral-500/10 text-neutral-300 border-neutral-500/20 rounded-md px-1.5 py-0 text-xs font-bold",
         stone:
-          "bg-stone-600 hover:bg-stone-700 text-neutral-200 border-[2px] border-stone-500 text-nowrap flex items-center gap-1",
+          "bg-stone-500/10 text-stone-400 border-stone-500/20 rounded-md px-1.5 py-0 text-xs font-bold",
         ghost:
-          "hover:text-neutral-200 border-darkBorderV1 bg-darkBorderV1 text-neutral-200",
+          "hover:text-neutral-300 border-darkBorderV1 bg-darkBorderV1 text-neutral-300",
       },
     },
     defaultVariants: {
@@ -61,8 +59,8 @@ const badgeVariants = cva(
 
 export interface BadgeProps
   extends
-    React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof badgeVariants> {}
+  React.HTMLAttributes<HTMLDivElement>,
+  VariantProps<typeof badgeVariants> { }
 
 function Badge({ className, variant, ...props }: BadgeProps) {
   return (

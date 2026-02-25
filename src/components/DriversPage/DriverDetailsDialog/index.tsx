@@ -4,20 +4,27 @@ import { useGetUserById, useUpdateUser } from "@/hooks/useAdmin";
 import { useProfile } from "@/hooks/useAuth";
 import { IUpdateUserBody } from "@/interface/auth";
 import { toast } from "react-toastify";
-import { IconX, IconEdit, IconMapPin, IconExternalLink } from "@tabler/icons-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Link } from "react-router-dom";
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
 import { UserTable } from "../../UserPage/UserDetailsDialog/UserTable";
 import { UserForm } from "../../UserPage/UserDetailsDialog/UserForm";
 import Icon from "@mdi/react";
-import { mdiClipboardAccount } from "@mdi/js";
+import {
+  mdiClipboardAccount,
+  mdiClose,
+  mdiPencil,
+  mdiMapMarker,
+  mdiOpenInNew,
+  mdiContentSave,
+} from "@mdi/js";
 
 interface DriverDetailsDialogProps {
   isOpen: boolean;
@@ -236,71 +243,98 @@ export const DriverDetailsDialog = ({
           </DialogTitle>
         </DialogHeader>
 
-        {isLoadingUser ? (
-          <div className="space-y-4">
-            {[...Array(6)].map((_, index) => (
-              <div key={index} className="space-y-2">
-                <Skeleton className="h-4 w-20" />
-                <Skeleton className="h-10 w-full" />
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="space-y-4">
-            {isEditing ? (
-              <UserForm
-                formData={formData}
-                errors={errors}
-                isUpdating={isUpdating}
-                onFormDataChange={handleFormDataChange}
-                onErrorsChange={handleErrorsChange}
-                onSubmit={handleSubmit}
-                onCancel={handleCancelEdit}
-              />
-            ) : (
-              <>
-                {userData?.data && <UserTable user={userData.data} />}
-
-                {userRole === "DISPATCHER" && (
-                  <Card className="border border-dashed border-primary/30 bg-primary/5">
-                    <CardHeader className="py-3 border-b border-primary/10">
-                      <div className="flex items-center gap-2 text-primary">
-                        <IconMapPin className="h-5 w-5" />
-                        <span className="font-semibold">Vị trí tài xế</span>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="pt-4 flex items-center justify-between">
-                      <div className="space-y-1">
-                        <p className="text-sm text-neutral-200">Theo dõi vị trí thời gian thực trên bản đồ điều phối.</p>
-                        <p className="text-sm text-neutral-500 italic">Trạng thái: {userData.data.isOnline ? "Trực tuyến" : "Ngoại tuyến"}</p>
-                      </div>
-                      <Link to="/admin/dispatcher/drivers">
-                        <Button>
-                          <IconExternalLink className="h-4 w-4" />
-                          Xem bản đồ
-                        </Button>
-                      </Link>
-                    </CardContent>
-                  </Card>
-                )}
-
-                <div className="flex gap-2 justify-end pt-4">
-                  <Button variant="outline" onClick={handleClose}>
-                    <IconX className="h-4 w-4" />
-                    Đóng
-                  </Button>
-                  {userRole !== "DISPATCHER" && (
-                    <Button onClick={handleEdit}>
-                      <IconEdit className="h-4 w-4" />
-                      Chỉnh sửa
-                    </Button>
-                  )}
+        <div className="space-y-3 md:space-y-4 max-h-[70vh] overflow-y-auto pr-1 custom-scrollbar p-3 md:p-4">
+          {isLoadingUser ? (
+            <div className="space-y-4">
+              {[...Array(6)].map((_, index) => (
+                <div key={index} className="space-y-2">
+                  <Skeleton className="h-4 w-20" />
+                  <Skeleton className="h-10 w-full" />
                 </div>
-              </>
-            )}
-          </div>
-        )}
+              ))}
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {isEditing ? (
+                <UserForm
+                  formData={formData}
+                  errors={errors}
+                  isUpdating={isUpdating}
+                  onFormDataChange={handleFormDataChange}
+                  onErrorsChange={handleErrorsChange}
+                  onSubmit={handleSubmit}
+                  onCancel={handleCancelEdit}
+                  showButtons={false}
+                />
+              ) : (
+                <>
+                  {userData?.data && <UserTable user={userData.data} />}
+                  {userRole === "DISPATCHER" && (
+                    <Card>
+                      <CardHeader className="py-3 border-b border-primary/10">
+                        <div className="flex items-center gap-2 text-primary">
+                          <Icon path={mdiMapMarker} size={0.8} />
+                          <span className="font-semibold">Vị trí tài xế</span>
+                        </div>
+                      </CardHeader>
+                      <CardContent className="pt-4 flex items-center justify-between">
+                        <div className="space-y-1">
+                          <p className="text-sm text-neutral-300">
+                            Theo dõi vị trí thời gian thực trên bản đồ điều phối.
+                          </p>
+                          <p className="text-sm text-neutral-400 italic">
+                            Trạng thái:{" "}
+                            {userData.data.isOnline ? "Trực tuyến" : "Ngoại tuyến"}
+                          </p>
+                        </div>
+                        <Link to="/admin/dispatcher/drivers">
+                          <Button>
+                            <Icon path={mdiOpenInNew} size={0.8} />
+                            Xem bản đồ
+                          </Button>
+                        </Link>
+                      </CardContent>
+                    </Card>
+                  )}
+                </>
+              )}
+            </div>
+          )}
+        </div>
+
+        <DialogFooter>
+          {isEditing ? (
+            <>
+              <Button
+                variant="outline"
+                onClick={handleCancelEdit}
+                disabled={isUpdating}
+              >
+                <Icon path={mdiClose} size={0.8} />
+                Hủy bỏ
+              </Button>
+              <Button onClick={handleSubmit} disabled={isUpdating}>
+                <Icon path={mdiContentSave} size={0.8} />
+                {isUpdating ? "Đang lưu..." : "Lưu thay đổi"}
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button variant="outline" onClick={handleClose}>
+                <Icon path={mdiClose} size={0.8} />
+                Đóng
+              </Button>
+              {userRole !== "DISPATCHER" && (
+                <Button onClick={handleEdit}>
+                  <Icon path={mdiPencil} size={0.8} />
+                  Chỉnh sửa
+                </Button>
+              )}
+            </>
+          )}
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
 };
+

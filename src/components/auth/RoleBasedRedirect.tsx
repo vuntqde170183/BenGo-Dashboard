@@ -37,7 +37,7 @@ export default function RoleBasedRedirect() {
       <div className="min-h-screen bg-darkCardV1 flex items-center justify-center">
         <div className="text-center">
           <LoadingSpinner />
-          <p className="text-neutral-200 mt-4">Loading your dashboard...</p>
+          <p className="text-neutral-300 mt-4">Loading your dashboard...</p>
         </div>
       </div>
     );

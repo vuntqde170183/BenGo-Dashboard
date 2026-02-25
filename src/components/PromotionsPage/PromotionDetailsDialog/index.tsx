@@ -4,6 +4,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,9 +20,8 @@ import {
 import { useForm, Controller } from "react-hook-form";
 import { useEffect } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
-import { mdiGiftOpenOutline } from "@mdi/js";
+import { mdiGiftOpenOutline, mdiClose, mdiPencil } from "@mdi/js";
 import Icon from "@mdi/react";
-import { IconEdit, IconX } from "@tabler/icons-react";
 
 interface PromotionDetailsDialogProps {
   isOpen: boolean;
@@ -119,7 +119,7 @@ export function PromotionDetailsDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent size="medium" className="max-h-[90vh] overflow-y-auto">
+      <DialogContent size="medium">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-primary">
             <Icon path={mdiGiftOpenOutline} size={0.8} />
@@ -127,10 +127,14 @@ export function PromotionDetailsDialog({
           </DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 pt-4">
+        <form
+          id="promotion-details-form"
+          onSubmit={handleSubmit(onSubmit)}
+          className="space-y-3 md:space-y-4 max-h-[70vh] overflow-y-auto pr-1 custom-scrollbar p-3 md:p-4"
+        >
           {/* Code & Title */}
           <div className="grid grid-cols-2 gap-4">
-            <div>
+            <div className="space-y-2">
               <Label htmlFor="code">
                 Mã khuyến mãi <span className="text-red-500">*</span>
               </Label>
@@ -141,12 +145,12 @@ export function PromotionDetailsDialog({
                 className="uppercase"
               />
               {errors.code && (
-                <p className="text-sm text-red-500 mt-1">
+                <p className="text-[10px] text-red-500 mt-1">
                   {errors.code.message as string}
                 </p>
               )}
             </div>
-            <div>
+            <div className="space-y-2">
               <Label htmlFor="title">
                 Tiêu đề <span className="text-red-500">*</span>
               </Label>
@@ -156,7 +160,7 @@ export function PromotionDetailsDialog({
                 {...register("title", { required: "Vui lòng nhập tiêu đề" })}
               />
               {errors.title && (
-                <p className="text-sm text-red-500 mt-1">
+                <p className="text-[10px] text-red-500 mt-1">
                   {errors.title.message as string}
                 </p>
               )}
@@ -164,7 +168,7 @@ export function PromotionDetailsDialog({
           </div>
 
           {/* Description */}
-          <div>
+          <div className="space-y-2">
             <Label htmlFor="description">Mô tả</Label>
             <Textarea
               id="description"
@@ -176,7 +180,7 @@ export function PromotionDetailsDialog({
 
           {/* Discount Type & Value */}
           <div className="grid grid-cols-2 gap-4">
-            <div>
+            <div className="space-y-2">
               <Label htmlFor="discountType">
                 Loại giảm giá <span className="text-red-500">*</span>
               </Label>
@@ -195,7 +199,7 @@ export function PromotionDetailsDialog({
                 </SelectContent>
               </Select>
             </div>
-            <div>
+            <div className="space-y-2">
               <Label htmlFor="discountValue">
                 Giá trị giảm giá <span className="text-red-500">*</span>
               </Label>
@@ -211,7 +215,7 @@ export function PromotionDetailsDialog({
                 })}
               />
               {errors.discountValue && (
-                <p className="text-sm text-red-500 mt-1">
+                <p className="text-[10px] text-red-500 mt-1">
                   {errors.discountValue.message as string}
                 </p>
               )}
@@ -220,7 +224,7 @@ export function PromotionDetailsDialog({
 
           {/* Min Order & Max Discount */}
           <div className="grid grid-cols-2 gap-4">
-            <div>
+            <div className="space-y-2">
               <Label htmlFor="minOrderValue">Giá trị đơn tối thiểu (VNĐ)</Label>
               <Input
                 id="minOrderValue"
@@ -230,7 +234,7 @@ export function PromotionDetailsDialog({
                 {...register("minOrderValue")}
               />
             </div>
-            <div>
+            <div className="space-y-2">
               <Label htmlFor="maxDiscountAmount">Mức giảm tối đa (VNĐ)</Label>
               <Input
                 id="maxDiscountAmount"
@@ -239,7 +243,7 @@ export function PromotionDetailsDialog({
                 placeholder="Không bắt buộc"
                 {...register("maxDiscountAmount")}
               />
-              <p className="text-sm text-neutral-400 mt-1">
+              <p className="text-[10px] text-neutral-400 mt-1">
                 Để trống nếu không giới hạn
               </p>
             </div>
@@ -247,7 +251,7 @@ export function PromotionDetailsDialog({
 
           {/* Dates */}
           <div className="grid grid-cols-2 gap-4">
-            <div>
+            <div className="space-y-2">
               <Label htmlFor="startDate">
                 Ngày bắt đầu <span className="text-red-500">*</span>
               </Label>
@@ -259,12 +263,12 @@ export function PromotionDetailsDialog({
                 })}
               />
               {errors.startDate && (
-                <p className="text-sm text-red-500 mt-1">
+                <p className="text-[10px] text-red-500 mt-1">
                   {errors.startDate.message as string}
                 </p>
               )}
             </div>
-            <div>
+            <div className="space-y-2">
               <Label htmlFor="endDate">
                 Ngày kết thúc <span className="text-red-500">*</span>
               </Label>
@@ -276,7 +280,7 @@ export function PromotionDetailsDialog({
                 })}
               />
               {errors.endDate && (
-                <p className="text-sm text-red-500 mt-1">
+                <p className="text-[10px] text-red-500 mt-1">
                   {errors.endDate.message as string}
                 </p>
               )}
@@ -284,7 +288,7 @@ export function PromotionDetailsDialog({
           </div>
 
           {/* Applicable Vehicles */}
-          <div>
+          <div className="space-y-2">
             <Label className="mb-2 block">Loại xe áp dụng</Label>
             <div className="grid grid-cols-2 gap-2 p-3 rounded-lg border border-darkBorderV1 bg-darkBackgroundV1/30">
               {VEHICLE_TYPES.map((type) => (
@@ -308,7 +312,7 @@ export function PromotionDetailsDialog({
                   />
                   <Label
                     htmlFor={`vehicle-${type.id}`}
-                    className="text-sm font-normal cursor-pointer text-neutral-200"
+                    className="text-xs font-normal cursor-pointer text-neutral-300"
                   >
                     {type.label}
                   </Label>
@@ -319,9 +323,9 @@ export function PromotionDetailsDialog({
 
           {/* Usage Stats & Limit */}
           <div className="grid grid-cols-2 gap-4">
-            <div>
+            <div className="space-y-2">
               <Label>Lượt sử dụng hiện tại</Label>
-              <p className="text-sm text-neutral-400 mt-2">
+              <p className="text-xs text-neutral-400 mt-1">
                 Đã dùng:{" "}
                 <span className="font-semibold text-primary">
                   {promotion?.usedCount || 0}
@@ -329,7 +333,7 @@ export function PromotionDetailsDialog({
                 lượt
               </p>
             </div>
-            <div>
+            <div className="space-y-2">
               <Label htmlFor="usageLimit">Giới hạn lượt dùng (Tổng cộng)</Label>
               <Input
                 id="usageLimit"
@@ -339,25 +343,29 @@ export function PromotionDetailsDialog({
               />
             </div>
           </div>
-
-          {/* Actions */}
-          <div className="flex justify-end gap-3 pt-6 border-t border-darkBorderV1">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={onClose}
-              disabled={isPending}
-            >
-              <IconX className="w-4 h-4" />
-              Đóng
-            </Button>
-            <Button type="submit" disabled={isPending}>
-              <IconEdit className="w-4 h-4" />
-              {isPending ? "Đang cập nhật..." : "Cập nhật"}
-            </Button>
-          </div>
         </form>
+
+        <DialogFooter>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={onClose}
+            disabled={isPending}
+          >
+            <Icon path={mdiClose} size={0.8} />
+            Hủy bỏ
+          </Button>
+          <Button
+            type="submit"
+            form="promotion-details-form"
+            disabled={isPending}
+          >
+            <Icon path={mdiPencil} size={0.8} />
+            {isPending ? "Đang cập nhật..." : "Cập nhật"}
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
 }
+

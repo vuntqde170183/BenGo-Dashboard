@@ -101,7 +101,7 @@ export function TicketsTable({
                                 </Badge>
                             </TableCell>
                             <TableCell>{getStatusBadge(ticket.status)}</TableCell>
-                            <TableCell className="text-sm text-neutral-200">
+                            <TableCell className="text-sm text-neutral-300">
                                 <div>
                                     <p>{formatDate(ticket.createdAt)}</p>
                                     <p className="text-xs text-neutral-400">

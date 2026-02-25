@@ -87,7 +87,7 @@ export default function DashboardLayout({
                                 "flex items-center rounded-lg p-[10px] h-[46px] text-[13px] font-medium transition-all duration-300 border",
                                 isMenuActive(menu)
                                   ? "bg-primary/10 text-primary border-primary/20 shadow-[0_0_15px_rgba(65,198,81,0.1)]"
-                                  : "text-neutral-200/70 border-transparent hover:bg-primary/5 hover:text-primary/80 hover:border-primary/10",
+                                  : "text-neutral-300/70 border-transparent hover:bg-primary/5 hover:text-primary/80 hover:border-primary/10",
                                 !isOpen && "!justify-center w-[46px]",
                               )}
                             >
@@ -106,7 +106,7 @@ export default function DashboardLayout({
                                   className={cn(
                                     isMenuActive(menu)
                                       ? "text-primary flex-shrink-0"
-                                      : "text-neutral-200/70 flex-shrink-0",
+                                      : "text-neutral-300/70 flex-shrink-0",
                                   )}
                                 />
                               </div>
@@ -128,7 +128,7 @@ export default function DashboardLayout({
                               "flex items-center rounded-lg p-[10px] h-[46px] text-[13px] font-medium transition-all duration-300 border",
                               isMenuActive(menu)
                                 ? "bg-primary/10 text-primary border-primary/20 shadow-[0_0_15px_rgba(65,198,81,0.1)]"
-                                : "text-neutral-200/70 border-transparent hover:bg-primary/5 hover:text-primary/80 hover:border-primary/10",
+                                : "text-neutral-300/70 border-transparent hover:bg-primary/5 hover:text-primary/80 hover:border-primary/10",
                               !isOpen && "!justify-center w-[46px]",
                             )}
                           >
@@ -147,7 +147,7 @@ export default function DashboardLayout({
                                 className={cn(
                                   isMenuActive(menu)
                                     ? "text-primary flex-shrink-0"
-                                    : "text-neutral-200/70 flex-shrink-0",
+                                    : "text-neutral-300/70 flex-shrink-0",
                                 )}
                               />
                             </div>
@@ -195,7 +195,7 @@ export default function DashboardLayout({
                                           "flex items-center rounded-lg p-[8px] h-[38px] text-[13px] font-normal transition-all duration-300 border",
                                           pathname === sub.path
                                             ? "bg-primary/10 text-primary border-primary/20"
-                                            : "text-neutral-200/70 border-transparent hover:bg-primary/5 hover:text-primary/80 hover:border-primary/10",
+                                            : "text-neutral-300/70 border-transparent hover:bg-primary/5 hover:text-primary/80 hover:border-primary/10",
                                         )}
                                       >
                                         <Icon
@@ -204,7 +204,7 @@ export default function DashboardLayout({
                                           className={cn(
                                             pathname === sub.path
                                               ? "text-primary flex-shrink-0"
-                                              : "text-neutral-200/70 flex-shrink-0",
+                                              : "text-neutral-300/70 flex-shrink-0",
                                             "mr-3",
                                           )}
                                         />
@@ -225,7 +225,7 @@ export default function DashboardLayout({
                             animate={{ opacity: 1, x: 0 }}
                             exit={{ opacity: 0, x: -5 }}
                             transition={{ duration: 0.2 }}
-                            className="fixed ml-16 mt-[-30px] dark:bg-darkBorderV1 border border-lightBorderV1 text-neutral-200 text-[13px] py-1.5 px-3 rounded-md shadow-light-grey z-50 whitespace-nowrap flex items-center"
+                            className="fixed ml-16 mt-[-30px] dark:bg-darkBorderV1  border border-lightBorderV1 text-neutral-300 text-[13px] py-1.5 px-3 rounded-md shadow-light-grey z-50 whitespace-nowrap flex items-center"
                           >
                             <span className="w-1.5 h-1.5 rounded-full bg-mainActiveV1 mr-1.5"></span>
                             <span className="font-medium">{menu.name}</span>

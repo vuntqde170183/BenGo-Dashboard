@@ -52,7 +52,7 @@ export function LoadingSpinnerWithText({
       className={`flex flex-col items-center justify-center space-y-4 ${className}`}
     >
       <LoadingSpinner size={size} />
-      <p className="text-neutral-200 font-semibold animate-pulse">{text}</p>
+      <p className="text-neutral-300 font-semibold animate-pulse">{text}</p>
     </div>
   );
 }

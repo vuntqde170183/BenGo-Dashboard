@@ -82,13 +82,13 @@ export default function TicketsPage() {
                 placeholder="Tìm kiếm theo mã yêu cầu, người dùng..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 pr-10 py-2 w-full border-lightBorderV1 focus:border-mainTextHoverV1 dark:text-neutral-200"
+                className="pl-10 pr-10 py-2 w-full border-lightBorderV1 focus:border-mainTextHoverV1 dark:text-neutral-300"
               />
               <IconSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-400 w-5 h-5" />
               {searchQuery && (
                 <button
                   onClick={handleClearSearch}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 dark:text-neutral-200 hover:text-red-500 transition-colors"
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 dark:text-neutral-300 hover:text-red-500 transition-colors"
                   type="button"
                 >
                   <IconX className="w-5 h-5" />

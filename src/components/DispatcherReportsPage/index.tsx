@@ -27,7 +27,7 @@ export default function DispatcherReportsPage() {
         <div className="space-y-6">
             <div className="flex justify-between items-center">
                 <div>
-                    <h1 className="text-2xl font-bold text-neutral-200">Báo cáo & Thống kê Hiệu suất</h1>
+                    <h1 className="text-2xl font-bold text-neutral-300">Báo cáo & Thống kê Hiệu suất</h1>
                     <p className="text-sm text-neutral-400">Phân tích chi tiết hoạt động của từng tài xế trên hệ thống.</p>
                 </div>
             </div>
@@ -36,26 +36,26 @@ export default function DispatcherReportsPage() {
             <Card className="bg-darkCardV1 border-darkBorderV1 shadow-xl">
                 <CardContent className="p-4 flex flex-wrap items-end gap-6">
                     <div className="space-y-1.5">
-                        <label className="text-xs font-bold text-neutral-500 uppercase tracking-widest">Chọn tài xế</label>
+                        <label className="text-xs font-bold text-neutral-400 uppercase tracking-widest">Chọn tài xế</label>
                         <Select value={driverId} onValueChange={setDriverId}>
                             <SelectTrigger className="w-[240px] bg-darkBackgroundV1 border-darkBorderV1 h-11 rounded-xl focus:ring-primary/20">
                                 <SelectValue placeholder="Chọn tài xế hệ thống..." />
                             </SelectTrigger>
                             <SelectContent className="bg-darkCardV1 border-darkBorderV1">
                                 {drivers?.map(d => (
-                                    <SelectItem key={d.id} value={d.id} className="text-neutral-200 focus:bg-primary/10 focus:text-primary">{d.name} ({d.phone})</SelectItem>
+                                    <SelectItem key={d.id} value={d.id} className="text-neutral-300 focus:bg-primary/10 focus:text-primary">{d.name} ({d.phone})</SelectItem>
                                 ))}
                             </SelectContent>
                         </Select>
                     </div>
 
                     <div className="space-y-1.5">
-                        <label className="text-xs font-bold text-neutral-500 uppercase tracking-widest">Từ ngày</label>
+                        <label className="text-xs font-bold text-neutral-400 uppercase tracking-widest">Từ ngày</label>
                         <DatePicker date={dateFrom} onDateChange={setDateFrom} />
                     </div>
 
                     <div className="space-y-1.5">
-                        <label className="text-xs font-bold text-neutral-500 uppercase tracking-widest">Đến ngày</label>
+                        <label className="text-xs font-bold text-neutral-400 uppercase tracking-widest">Đến ngày</label>
                         <DatePicker date={dateTo} onDateChange={setDateTo} />
                     </div>
 
@@ -73,7 +73,7 @@ export default function DispatcherReportsPage() {
                                 {selectedDriver.name.charAt(0)}
                             </div>
                             <div>
-                                <h2 className="text-xl font-bold text-neutral-100">{selectedDriver.name}</h2>
+                                <h2 className="text-xl font-bold text-neutral-300">{selectedDriver.name}</h2>
                                 <p className="text-sm text-neutral-400">{selectedDriver.phone} • Đối tác tài xế BenGo</p>
                             </div>
                             <Badge variant="emerald" className="ml-auto px-3 py-1">Đang hoạt động</Badge>
@@ -87,8 +87,8 @@ export default function DispatcherReportsPage() {
                                     <Icon path={mdiPackageVariant} size={3} />
                                 </div>
                                 <Icon path={mdiPackageVariant} size={1.5} className="text-primary mb-2" />
-                                {isLoadingPerf ? <LoadingSpinner /> : <p className="text-4xl font-black text-neutral-100">{performance?.totalTrips || 0}</p>}
-                                <p className="text-xs text-neutral-500 font-bold uppercase tracking-widest">Tổng chuyến gán</p>
+                                {isLoadingPerf ? <LoadingSpinner /> : <p className="text-4xl font-black text-neutral-300">{performance?.totalTrips || 0}</p>}
+                                <p className="text-xs text-neutral-400 font-bold uppercase tracking-widest">Tổng chuyến gán</p>
                             </CardContent>
                         </Card>
 
@@ -99,7 +99,7 @@ export default function DispatcherReportsPage() {
                                 </div>
                                 <Icon path={mdiCurrencyUsd} size={1.5} className="text-emerald-500 mb-2" />
                                 {isLoadingPerf ? <LoadingSpinner /> : <p className="text-4xl font-black text-emerald-500">{formatCurrency(performance?.totalEarnings || 0)}</p>}
-                                <p className="text-xs text-neutral-500 font-bold uppercase tracking-widest">Thu nhập gộp</p>
+                                <p className="text-xs text-neutral-400 font-bold uppercase tracking-widest">Thu nhập gộp</p>
                             </CardContent>
                         </Card>
 
@@ -112,7 +112,7 @@ export default function DispatcherReportsPage() {
                                 <div className="flex items-center gap-2">
                                     {isLoadingPerf ? <LoadingSpinner /> : <p className="text-4xl font-black text-yellow-500">{performance?.rating || 0}</p>}
                                 </div>
-                                <p className="text-xs text-neutral-500 font-bold uppercase tracking-widest">Đánh giá sao</p>
+                                <p className="text-xs text-neutral-400 font-bold uppercase tracking-widest">Đánh giá sao</p>
                             </CardContent>
                         </Card>
 
@@ -123,7 +123,7 @@ export default function DispatcherReportsPage() {
                                 </div>
                                 <Icon path={mdiChartBar} size={1.5} className="text-blue-500 mb-2" />
                                 {isLoadingPerf ? <LoadingSpinner /> : <p className="text-4xl font-black text-blue-500">{performance?.acceptanceRate || 0}%</p>}
-                                <p className="text-xs text-neutral-500 font-bold uppercase tracking-widest">Tỷ lệ hoàn thành</p>
+                                <p className="text-xs text-neutral-400 font-bold uppercase tracking-widest">Tỷ lệ hoàn thành</p>
                             </CardContent>
                         </Card>
                     </div>
@@ -158,8 +158,8 @@ export default function DispatcherReportsPage() {
                             <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-4">
                                 <Icon path={mdiChartLine} size={1.2} />
                             </div>
-                            <h3 className="text-lg font-bold text-neutral-200 mb-2">Thông tin phân tích</h3>
-                            <p className="text-sm text-neutral-500 max-w-[300px]">
+                            <h3 className="text-lg font-bold text-neutral-300 mb-2">Thông tin phân tích</h3>
+                            <p className="text-sm text-neutral-400 max-w-[300px]">
                                 Dữ liệu thời gian thực được tổng hợp từ hệ thống điều phối BenGo.
                                 Tài xế đang có mức độ tin cậy {(performance?.acceptanceRate || 0) > 90 ? 'CAO' : 'TRUNG BÌNH'}.
                             </p>

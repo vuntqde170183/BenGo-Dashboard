@@ -28,13 +28,13 @@ export default function DispatcherDriversPage() {
         <div className="space-y-6">
             <div className="flex justify-between items-center">
                 <div>
-                    <h1 className="text-2xl font-bold text-neutral-200">Quản lý & Theo dõi tài xế</h1>
+                    <h1 className="text-2xl font-bold text-neutral-300">Quản lý & Theo dõi tài xế</h1>
                     <p className="text-sm text-neutral-400">Giám sát vị trí, trạng thái và hiệu suất làm việc của tài xế.</p>
                 </div>
                 <div className="flex gap-4">
                     <Card className="bg-darkBackgroundV1/50 border-darkBorderV1 px-4 py-2 flex items-center gap-3">
                         <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                        <span className="text-sm font-bold text-neutral-200">{drivers?.length || 0} Online</span>
+                        <span className="text-sm font-bold text-neutral-300">{drivers?.length || 0} Online</span>
                     </Card>
                 </div>
             </div>
@@ -83,9 +83,9 @@ export default function DispatcherDriversPage() {
                                         {driver.name.charAt(0)}
                                     </div>
                                     <div className="flex-1 min-w-0">
-                                        <p className="font-bold text-neutral-200 truncate">{driver.name}</p>
+                                        <p className="font-bold text-neutral-300 truncate">{driver.name}</p>
                                         <div className="flex items-center gap-2">
-                                            <span className="text-xs text-neutral-500">{driver.phone}</span>
+                                            <span className="text-xs text-neutral-400">{driver.phone}</span>
                                             <Badge className={cn("text-[9px] px-1 py-0 border-none",
                                                 driver.status === 'ONLINE' ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'
                                             )}>
@@ -93,7 +93,7 @@ export default function DispatcherDriversPage() {
                                             </Badge>
                                         </div>
                                     </div>
-                                    <Icon path={mdiMapMarker} size={0.6} className="text-neutral-500" />
+                                    <Icon path={mdiMapMarker} size={0.6} className="text-neutral-400" />
                                 </div>
                             ))
                         )}
@@ -117,19 +117,19 @@ export default function DispatcherDriversPage() {
                                         {isLoadingPerf ? <LoadingSpinner /> : (
                                             <div className="grid grid-cols-2 gap-4">
                                                 <div>
-                                                    <p className="text-xs text-neutral-500 uppercase font-bold">Tổng chuyến</p>
-                                                    <p className="text-2xl font-bold text-neutral-100">{performance?.totalTrips || 0}</p>
+                                                    <p className="text-xs text-neutral-400 uppercase font-bold">Tổng chuyến</p>
+                                                    <p className="text-2xl font-bold text-neutral-300">{performance?.totalTrips || 0}</p>
                                                 </div>
                                                 <div>
-                                                    <p className="text-xs text-neutral-500 uppercase font-bold">Hoàn thành</p>
+                                                    <p className="text-xs text-neutral-400 uppercase font-bold">Hoàn thành</p>
                                                     <p className="text-2xl font-bold text-green-500">{performance?.completedTrips || 0}</p>
                                                 </div>
                                                 <div>
-                                                    <p className="text-xs text-neutral-500 uppercase font-bold">Tỷ lệ chấp nhận</p>
+                                                    <p className="text-xs text-neutral-400 uppercase font-bold">Tỷ lệ chấp nhận</p>
                                                     <p className="text-2xl font-bold text-primary">{performance?.acceptanceRate || 0}%</p>
                                                 </div>
                                                 <div>
-                                                    <p className="text-xs text-neutral-500 uppercase font-bold">Đánh giá TB</p>
+                                                    <p className="text-xs text-neutral-400 uppercase font-bold">Đánh giá TB</p>
                                                     <p className="text-2xl font-bold text-yellow-500 flex items-center gap-1">
                                                         {performance?.rating || 0} <Icon path={mdiStar} size={0.8} />
                                                     </p>
@@ -149,7 +149,7 @@ export default function DispatcherDriversPage() {
                                     <CardContent className="pt-4 px-4">
                                         {isLoadingPerf ? <LoadingSpinner /> : (
                                             <div className="flex flex-col justify-center h-full gap-1 py-2">
-                                                <p className="text-xs text-neutral-500 uppercase font-bold">Tổng doanh thu</p>
+                                                <p className="text-xs text-neutral-400 uppercase font-bold">Tổng doanh thu</p>
                                                 <p className="text-3xl font-bold text-emerald-500">{formatCurrency(performance?.totalEarnings || 0)}</p>
                                                 <p className="text-xs text-neutral-400 mt-2">Dòng tiền ổn định trong 30 ngày qua</p>
                                             </div>
@@ -162,7 +162,7 @@ export default function DispatcherDriversPage() {
                             <Card className="bg-darkCardV1 border-darkBorderV1 h-[340px] relative overflow-hidden flex flex-col items-center justify-center border-dashed border-2">
                                 <div className="absolute inset-0 bg-darkBackgroundV1/40 animate-pulse opacity-20" />
                                 <Icon path={mdiMapMarker} size={3} className="text-primary/20 mb-4" />
-                                <p className="text-neutral-500 font-bold uppercase tracking-widest text-sm">Vị trí thời gian thực</p>
+                                <p className="text-neutral-400 font-bold uppercase tracking-widest text-sm">Vị trí thời gian thực</p>
                                 <p className="text-xs text-neutral-600 mt-1 max-w-[300px] text-center italic">Bản đồ đang được tải ứng dụng tọa độ {drivers?.find(d => d.id === selectedDriverId)?.location.lat}, {drivers?.find(d => d.id === selectedDriverId)?.location.lng}</p>
 
                                 <div className="absolute bottom-4 left-4 right-4 bg-darkBackgroundV1/80 border border-darkBorderV1 p-3 rounded-xl flex items-center justify-between">

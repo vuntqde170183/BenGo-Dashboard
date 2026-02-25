@@ -9,6 +9,8 @@ import { Eye, EyeSlash, Lock1 } from "iconsax-reactjs";
 import { useLogin } from "@/hooks/useAuth";
 import { useUser } from "@/context/useUserContext";
 import { toast } from "react-toastify";
+import Icon from "@mdi/react";
+import { mdiEmail, mdiLock } from "@mdi/js";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -136,7 +138,7 @@ export default function LoginPage() {
                 <h2 className="text-3xl font-bold bg-gradient-to-r from-teal-600 to-emerald-600 bg-clip-text text-transparent uppercase">
                   Admin Dashboard
                 </h2>
-                <p className="text-neutral-400 text-sm">
+                <p className="text-neutral-400 text-base">
                   Đăng nhập để truy cập trang quản trị BenGo
                 </p>
               </div>
@@ -156,15 +158,24 @@ export default function LoginPage() {
                   >
                     Email
                   </Label>
-                  <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    disabled={isPending}
-                    className="border-0 border-b-2 border-gray-200 !bg-white rounded-none px-0 focus-visible:ring-0 focus-visible:border-[#41C651] !text-gray-800 placeholder:text-neutral-400"
-                  />
+                  <div className="relative">
+                    <Icon
+                      path={mdiEmail}
+                      size={0.8}
+                      color="#737373"
+                      className="absolute left-2 top-1/2 -translate-y-1/2 z-10 pointer-events-none"
+                    />
+                    <Input
+                      id="email"
+                      name="email"
+                      type="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      disabled={isPending}
+                      className="border-0 border-b-2 border-gray-200 !bg-white rounded-none px-0 focus-visible:ring-0 focus-visible:border-[#41C651] !text-gray-800 placeholder:text-neutral-400 pl-9 focus:ring-primary"
+                    />
+                  </div>
+
                   {errors.email && (
                     <p className="text-red-500 text-sm mt-1">{errors.email}</p>
                   )}
@@ -178,6 +189,12 @@ export default function LoginPage() {
                     Mật khẩu
                   </Label>
                   <div className="relative">
+                    <Icon
+                      path={mdiLock}
+                      size={0.8}
+                      color="#737373"
+                      className="absolute left-2 top-1/2 -translate-y-1/2 z-10 pointer-events-none"
+                    />
                     <Input
                       id="password"
                       name="password"
@@ -185,7 +202,7 @@ export default function LoginPage() {
                       value={formData.password}
                       onChange={handleInputChange}
                       disabled={isPending}
-                      className="border-0 border-b-2 border-gray-200 !bg-white rounded-none px-0 pr-10 focus-visible:ring-0 focus-visible:border-primary !text-gray-800 placeholder:text-neutral-400"
+                      className="border-0 border-b-2 border-gray-200 !bg-white rounded-none px-0 pr-10 focus-visible:ring-0 focus-visible:border-primary !text-gray-800 placeholder:text-neutral-400 pl-9"
                     />
                     <button
                       type="button"
@@ -206,21 +223,6 @@ export default function LoginPage() {
                     </p>
                   )}
                 </div>
-
-                {/* Remember Me */}
-                <div className="flex items-center justify-start">
-                  <label className="flex items-center gap-2 cursor-pointer group">
-                    <input
-                      type="checkbox"
-                      className="w-4 h-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500 cursor-pointer"
-                      disabled={isPending}
-                    />
-                    <span className="text-sm text-neutral-400 group-hover:text-gray-900 transition-colors">
-                      Ghi nhớ đăng nhập
-                    </span>
-                  </label>
-                </div>
-
                 {/* Login Button */}
                 <Button type="submit" disabled={isPending} className="w-full">
                   {isPending ? (

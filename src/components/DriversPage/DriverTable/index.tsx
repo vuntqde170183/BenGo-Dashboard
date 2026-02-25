@@ -118,7 +118,7 @@ export const DriverTable = ({
                       />
                     </div>
                     <div>
-                      <p className="font-semibold dark:text-neutral-200 text-nowrap">
+                      <p className="font-semibold dark:text-neutral-300 text-nowrap">
                         {driver.userId?.name}
                       </p>
                       {driver.userId?.phone && (
@@ -142,7 +142,7 @@ export const DriverTable = ({
                   </div>
                 </TableCell>
                 <TableCell>
-                  <div className="flex items-center gap-1 dark:text-neutral-200 font-medium">
+                  <div className="flex items-center gap-1 dark:text-neutral-300 font-medium">
                     <IconStar className="w-4 h-4 text-yellow-500 fill-yellow-500" />
                     {driver.userId?.rating
                       ? driver.userId.rating.toFixed(1)

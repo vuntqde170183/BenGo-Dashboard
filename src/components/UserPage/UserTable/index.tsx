@@ -84,7 +84,7 @@ export const UserTable = ({
                     />
                   </div>
                   <div>
-                    <p className="font-semibold dark:text-neutral-200">
+                    <p className="font-semibold dark:text-neutral-300">
                       {user.name}
                     </p>
                     {user.phone && (
@@ -95,7 +95,7 @@ export const UserTable = ({
                 <TableCell className="w-[180px]">{user.email}</TableCell>
                 <TableCell>{getRoleBadge(user.role)}</TableCell>
                 <TableCell>
-                  <div className="flex items-center gap-1 dark:text-neutral-200 font-medium">
+                  <div className="flex items-center gap-1 dark:text-neutral-300 font-medium">
                     <IconStar className="w-4 h-4 text-yellow-500 fill-yellow-500" />
                     {user.rating}
                   </div>
