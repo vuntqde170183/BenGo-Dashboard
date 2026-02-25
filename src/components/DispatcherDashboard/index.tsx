@@ -1,6 +1,6 @@
 import { useDispatcherStats } from "@/hooks/useDispatcher";
 import { useAdminReports } from "@/hooks/useAdmin";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Icon } from "@mdi/react";
 import {
     mdiPackageVariant,
@@ -12,7 +12,6 @@ import {
 } from "@mdi/js";
 import { Skeleton } from "@/components/ui/skeleton";
 import { motion } from "framer-motion";
-import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import { formatCurrency } from "@/lib/format";
 import {
@@ -204,11 +203,11 @@ export default function DispatcherDashboard() {
                         </div>
                     </CardHeader>
                     <CardContent className="pt-6 space-y-4">
-                        <Link to="/dispatcher/assignment" className="block p-4 rounded-xl bg-primary/10 border border-primary/20 hover:bg-primary/20 transition-all">
+                        <Link to="/dispatcher/assignment" className="block p-4 rounded-xl bg-primary/5 border border-primary/20 hover:bg-primary/20 transition-all">
                             <span className="block font-bold text-primary">Phân chuyến thủ công</span>
                             <span className="text-xs text-neutral-400">Gán tài xế cho đơn chờ</span>
                         </Link>
-                        <Link to="/dispatcher/orders?status=SPECIAL" className="block p-4 rounded-xl bg-primary/10 border border-primary/20 hover:bg-primary/20 transition-all">
+                        <Link to="/dispatcher/orders?status=SPECIAL" className="block p-4 rounded-xl bg-primary/5 border border-primary/20 hover:bg-primary/20 transition-all">
                             <span className="block font-bold text-primary">Giám sát đơn VIP</span>
                             <span className="text-xs text-neutral-400">Theo dõi chuyến đặc biệt</span>
                         </Link>

@@ -351,7 +351,7 @@ export const DriverDetailsDialog = ({
                               }
 
                               return (
-                                <div className="w-full h-full flex items-center justify-center text-neutral-500 italic text-sm gap-2">
+                                <div className="w-full h-full flex items-center justify-center text-neutral-400 italic text-sm gap-2">
                                   <Icon path={mdiMapMarker} size={1} className="opacity-20" />
                                   Chưa cập nhật vị trí
                                 </div>
@@ -361,7 +361,7 @@ export const DriverDetailsDialog = ({
 
                           <div className="p-4 bg-darkCardV1/40 flex items-center justify-between">
                             <div className="flex items-start gap-3">
-                              <div className="p-2 rounded-lg bg-primary/10 text-primary mt-1 shadow-inner">
+                              <div className="p-2 rounded-lg bg-primary/5 text-primary mt-1 shadow-inner">
                                 <Icon path={mdiNavigation} size={0.8} />
                               </div>
                               <div className="space-y-1">

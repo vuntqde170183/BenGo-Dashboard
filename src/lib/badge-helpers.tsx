@@ -28,7 +28,7 @@ export function getRoleBadge(role: string) {
       );
     default:
       return (
-        <Badge variant="slate" className="capitalize">
+        <Badge variant="neutral" className="capitalize">
           {role}
         </Badge>
       );
@@ -85,14 +85,14 @@ export function getStatusBadge(status: string) {
 
     case "CLOSED":
       return (
-        <Badge variant="slate" className="capitalize">
+        <Badge variant="neutral" className="capitalize">
           Đã đóng
         </Badge>
       );
 
     default:
       return (
-        <Badge variant="slate" className="capitalize">
+        <Badge variant="neutral" className="capitalize">
           {status}
         </Badge>
       );
@@ -150,7 +150,7 @@ export function getOrderStatusBadge(status: string) {
     // 3. Payment Methods
     case "CASH":
       return (
-        <Badge variant="slate" className="capitalize">
+        <Badge variant="neutral" className="capitalize">
           Tiền mặt
         </Badge>
       );
@@ -163,7 +163,7 @@ export function getOrderStatusBadge(status: string) {
 
     default:
       return (
-        <Badge variant="slate" className="capitalize">
+        <Badge variant="neutral" className="capitalize">
           {status}
         </Badge>
       );
@@ -175,7 +175,7 @@ export function getPriorityBadge(priority: string) {
   switch (priority.toUpperCase()) {
     case "NORMAL":
       return (
-        <Badge variant="slate" className="capitalize">
+        <Badge variant="neutral" className="capitalize">
           Bình thường
         </Badge>
       );
@@ -199,7 +199,7 @@ export function getPriorityBadge(priority: string) {
       );
     default:
       return (
-        <Badge variant="slate" className="capitalize">
+        <Badge variant="neutral" className="capitalize">
           {priority}
         </Badge>
       );

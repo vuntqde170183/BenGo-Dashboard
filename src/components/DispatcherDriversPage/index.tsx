@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAllDrivers, useDriverPerformance } from "@/hooks/useDispatcher";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -8,9 +8,7 @@ import { Icon } from "@mdi/react";
 import { mdiMagnify, mdiCarSide, mdiStar, mdiTrendingUp, mdiMapMarker, mdiInformationOutline, mdiChartLine, mdiInboxRemoveOutline } from "@mdi/js";
 import { cn } from "@/lib/utils";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
-import { IDriverMapLocation } from "@/interface/dispatcher";
 import { formatCurrency } from "@/lib/format";
-import { motion } from "framer-motion";
 
 export default function DispatcherDriversPage() {
     const [searchQuery, setSearchQuery] = useState("");
@@ -75,7 +73,7 @@ export default function DispatcherDriversPage() {
                                     className={cn(
                                         "p-3 rounded-xl border transition-all cursor-pointer flex items-center gap-3",
                                         selectedDriverId === driver.id
-                                            ? "bg-primary/10 border-primary"
+                                            ? "bg-primary/5 border-primary"
                                             : "bg-darkBackgroundV1/30 border-darkBorderV1 hover:bg-darkBackgroundV1/60"
                                     )}
                                 >

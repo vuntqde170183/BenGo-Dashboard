@@ -156,7 +156,7 @@ export const DriverTable = ({
                       Trực tuyến
                     </Badge>
                   ) : (
-                    <Badge variant="slate" className="capitalize">
+                    <Badge variant="neutral" className="capitalize">
                       <span className="w-1.5 h-1.5 rounded-full bg-neutral-400" />
                       Ngoại tuyến
                     </Badge>
