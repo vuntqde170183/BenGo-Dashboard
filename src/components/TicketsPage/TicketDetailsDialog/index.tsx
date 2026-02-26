@@ -166,7 +166,7 @@ export function TicketDetailsDialog({
                                             size={1.5}
                                             className="text-slate-500 mb-2"
                                         />
-                                        <p className="text-slate-500 font-bold">TICKET ĐÃ ĐÓNG</p>
+                                        <p className="text-slate-500 font-semibold">TICKET ĐÃ ĐÓNG</p>
                                         <p className="text-xs text-slate-400/80 mt-1">
                                             Ticket này đã được đóng
                                         </p>
@@ -230,7 +230,7 @@ export function TicketDetailsDialog({
                                                         </div>
                                                         <span
                                                             className={cn(
-                                                                "text-xs md:text-xs font-bold mt-2 uppercase tracking-tight transition-colors duration-300",
+                                                                "text-xs md:text-xs font-semibold mt-2 uppercase tracking-tight transition-colors duration-300",
                                                                 isActive ? "text-primary" : "text-neutral-400",
                                                             )}
                                                         >
@@ -266,7 +266,7 @@ export function TicketDetailsDialog({
                                                     <AvatarImage
                                                         src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${ticket.userId?.name}`}
                                                     />
-                                                    <AvatarFallback className="bg-primary/5 text-primary font-bold">
+                                                    <AvatarFallback className="bg-primary/5 text-primary font-semibold">
                                                         <img
                                                             src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${ticket.userId?.name}`}
                                                             alt={ticket.userId?.name}
@@ -275,7 +275,7 @@ export function TicketDetailsDialog({
                                                     </AvatarFallback>
                                                 </Avatar>
                                                 <div className="space-y-1">
-                                                    <p className="font-bold text-base text-white leading-none">
+                                                    <p className="font-semibold text-base text-white leading-none">
                                                         {ticket.userId?.name || "Ẩn danh"}
                                                     </p>
                                                     <div className="flex flex-col gap-1 pt-1">
@@ -352,7 +352,7 @@ export function TicketDetailsDialog({
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         <div className="space-y-2">
-                                            <Label className="text-xs text-white uppercase font-bold ">
+                                            <Label className="text-xs text-white uppercase font-semibold ">
                                                 Cập nhật trạng thái
                                             </Label>
                                             <Select
@@ -377,7 +377,7 @@ export function TicketDetailsDialog({
                                         </div>
                                         {/* Assign Ticket Section */}
                                         <div className="space-y-2">
-                                            <Label className="text-xs text-white uppercase font-bold ">
+                                            <Label className="text-xs text-white uppercase font-semibold ">
                                                 {ticket.assignedTo ? "Người xử lý" : "Phân công xử lý"}
                                             </Label>
                                             <div className="flex gap-2">
@@ -438,7 +438,7 @@ export function TicketDetailsDialog({
                                             </span>
                                         </div>
                                         <div className="space-y-2">
-                                            <h3 className="text-base font-bold text-white">
+                                            <h3 className="text-base font-semibold text-white">
                                                 {ticket.subject}
                                             </h3>
                                             <div className="bg-darkBackgroundV1 px-4 py-3 rounded-lg border border-darkBorderV1/50 text-neutral-300 text-sm leading-relaxed whitespace-pre-wrap">

@@ -10,17 +10,15 @@ import Icon from "@mdi/react";
 import {
     mdiMagnify,
     mdiAccountHardHat,
-    mdiPackageVariant,
-    mdiChevronRight,
-    mdiStar,
+    mdiPackageVariant, mdiStar,
     mdiInboxRemoveOutline,
     mdiClockOutline,
     mdiLocationExit,
     mdiLocationEnter,
     mdiMapMarkerDistance,
     mdiPhone,
-    mdiMapMarkerRadius, mdiCheckCircleOutline,
-    mdiSelectionMarker
+    mdiMapMarkerRadius, mdiSelectionMarker,
+    mdiCommentArrowRight
 } from "@mdi/js";
 import { motion } from "framer-motion";
 import { useSearchParams } from "react-router-dom";
@@ -29,6 +27,7 @@ import { cn } from "@/lib/utils";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import { AssignConfirmDialog } from "./AssignConfirmDialog";
 export default function ManualAssignmentPage() {
     const [searchParams] = useSearchParams();
     const initialOrderId = searchParams.get("orderId");
@@ -37,6 +36,7 @@ export default function ManualAssignmentPage() {
     const [selectedDriver, setSelectedDriver] = useState<IDriverMapLocation | null>(null);
     const [searchOrder, setSearchOrder] = useState("");
     const [searchDriver, setSearchDriver] = useState("");
+    const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
 
     const { data: pendingOrders, isLoading: isLoadingOrders } = useDispatcherOrders({ status: "PENDING" });
 
@@ -75,6 +75,7 @@ export default function ManualAssignmentPage() {
                 onSuccess: () => {
                     setSelectedOrder(null);
                     setSelectedDriver(null);
+                    setIsConfirmDialogOpen(false);
                 }
             });
         }
@@ -162,7 +163,7 @@ export default function ManualAssignmentPage() {
                                 >
                                     <div className="flex justify-between p-3 border-b border-b-darkBorderV1">
                                         <div className="flex flex-col">
-                                            <span className="text-primary text-sm font-bold  mb-0.5">#{order._id.slice(-8)}</span>
+                                            <span className="text-primary text-sm font-semibold  mb-0.5">#{order._id.slice(-8)}</span>
                                             <p className="text-neutral-300 group-hover:text-primary transition-colors text-sm truncate">
                                                 <strong>Khách hàng:</strong> {order.customerId?.name}
                                             </p>
@@ -173,7 +174,7 @@ export default function ManualAssignmentPage() {
                                             )}
                                             <Badge variant="neutral">
                                                 {getVehicleIcon(order.vehicleType)}
-                                                <span className="font-bold">{order.vehicleType}</span>
+                                                <span className="font-semibold">{order.vehicleType}</span>
                                             </Badge>
                                         </div>
                                     </div>
@@ -202,7 +203,7 @@ export default function ManualAssignmentPage() {
                                             </Badge>
                                         </div>
                                         <div className="flex items-center gap-1">
-                                            <span className="text-primary font-bold text-lg">
+                                            <span className="text-primary font-semibold text-lg">
                                                 {formatCurrency(order.totalPrice)}
                                             </span>
                                         </div>
@@ -236,13 +237,13 @@ export default function ManualAssignmentPage() {
                             </div>
                             {selectedOrder && (
                                 <div className="flex items-center gap-2">
-                                    <span className="text-sm text-neutral-400 font-bold whitespace-nowrap px-1">Bán kính:</span>
+                                    <span className="text-sm text-neutral-400 font-semibold whitespace-nowrap px-1">Bán kính:</span>
                                     <div className="flex gap-3 flex-1">
                                         {[1, 3, 5].map(r => (
                                             <Button
                                                 key={r}
                                                 variant={radius === r ? "default" : "outline"}
-                                                className="flex-1"
+                                                className="flex-1 rounded-full"
                                                 onClick={() => setRadius(r)}
                                             >
                                                 <Icon path={mdiMapMarkerRadius} size={0.8} />
@@ -283,29 +284,44 @@ export default function ManualAssignmentPage() {
                                 >
                                     {/* Header: Avatar, Name, Rating */}
                                     <div className="flex justify-between p-3 border-b border-b-darkBorderV1">
-                                        <div className="flex items-center gap-3 min-w-0">
-                                            <div className="relative">
-                                                <Avatar className="w-10 h-10 border border-darkBorderV1">
-                                                    <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${driver.name}`} />
-                                                    <AvatarFallback className="bg-darkBorderV1 text-primary text-sm">
-                                                        {driver.name.charAt(0)}
-                                                    </AvatarFallback>
-                                                </Avatar>
-                                                <div className={cn(
-                                                    "absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-darkCardV1",
-                                                    driver.status === 'ONLINE' ? 'bg-green-500' :
-                                                        driver.status === 'BUSY' ? 'bg-red-500' : 'bg-neutral-500'
-                                                )} />
-                                            </div>
-                                            <div className="flex flex-col min-w-0">
-                                                <p className="font-bold text-neutral-200 group-hover:text-primary transition-colors text-sm truncate tracking-tight">
-                                                    {driver.name}
-                                                </p>
-                                                <div className="flex items-center gap-1.5 text-sm text-neutral-400">
-                                                    <Icon path={mdiPhone} size={0.6} className="text-neutral-400" />
-                                                    <span className="tabular-nums">{driver.userId?.phone || driver.phone || "---"}</span>
+                                        <div className="flex items-center w-full justify-between">
+                                            <div className="flex items-center gap-3">
+                                                <div className="relative">
+                                                    <Avatar className="w-10 h-10 border border-darkBorderV1">
+                                                        <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${driver.name}`} />
+                                                        <AvatarFallback className="bg-darkBorderV1 text-primary text-sm">
+                                                            {driver.name.charAt(0)}
+                                                        </AvatarFallback>
+                                                    </Avatar>
+                                                    <div className={cn(
+                                                        "absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-darkCardV1",
+                                                        driver.status === 'ONLINE' ? 'bg-green-500' :
+                                                            driver.status === 'BUSY' ? 'bg-red-500' : 'bg-neutral-500'
+                                                    )} />
+                                                </div>
+                                                <div className="flex flex-col min-w-0">
+                                                    <p className="font-semibold text-neutral-200 group-hover:text-primary transition-colors text-sm truncate tracking-tight">
+                                                        {driver.name}
+                                                    </p>
+                                                    <div className="flex items-center gap-1.5 text-sm text-neutral-400">
+                                                        <Icon path={mdiPhone} size={0.6} className="text-neutral-400" />
+                                                        <span className="tabular-nums">{driver.userId?.phone || driver.phone || "---"}</span>
+                                                    </div>
                                                 </div>
                                             </div>
+
+                                            {selectedDriver?.id === driver.id && selectedOrder && (
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        setIsConfirmDialogOpen(true);
+                                                    }}
+                                                    className="h-10 w-10 text-white bg-primary flex items-center justify-center rounded-full hover:bg-primary/80 transition-colors shadow-lg shadow-primary/20"
+                                                >
+                                                    <Icon path={mdiCommentArrowRight} size={0.8} />
+                                                </button>
+                                            )}
+
                                         </div>
 
                                     </div>
@@ -340,53 +356,20 @@ export default function ManualAssignmentPage() {
                     </CardContent>
                 </Card>
             </div>
-
-            {/* Footer Status Bar overlay */}
-            {(selectedOrder || selectedDriver) && (
-                <motion.div
-                    initial={{ y: 100, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    className="bg-darkCardV1 border border-primary/30 p-4 rounded-2xl flex items-center justify-between gap-6 relative z-10"
-                >
-                    <div className="flex-1 text-center border-r border-darkBorderV1">
-                        <span className="text-sm text-neutral-400 block font-bold  mb-1">Đơn hàng đã chọn</span>
-                        {selectedOrder ? (
-                            <div className="flex flex-col">
-                                <span className="text-primary font-bold">#{selectedOrder._id.slice(-8)} - {selectedOrder.customerId?.name}</span>
-                                <span className="text-sm text-neutral-400">
-                                    {selectedOrder.vehicleType} • {formatCurrency(selectedOrder.totalPrice)}
-                                    {selectedOrder.priority === 'URGENT' && <span className="text-red-500 ml-1">(! Hỏa tốc)</span>}
-                                </span>
-                            </div>
-                        ) : (
-                            <span className="text-neutral-400 italic text-sm">Vui lòng chọn đơn hàng</span>
-                        )}
-                    </div>
-                    <div className="text-primary animate-pulse bg-primary/5 p-2 rounded-full">
-                        <Icon path={mdiChevronRight} size={1} />
-                    </div>
-                    <div className="flex-1 text-center">
-                        <span className="text-sm text-neutral-400 block font-bold  mb-1">Tài xế đã chọn</span>
-                        {selectedDriver ? (
-                            <div className="flex flex-col">
-                                <span className="text-primary font-bold">{selectedDriver.name}</span>
-                                <span className="text-sm text-neutral-400">{selectedDriver.userId?.phone || selectedDriver.phone || "---"}</span>
-                            </div>
-                        ) : (
-                            <span className="text-neutral-400 italic text-sm">Vui lòng chọn tài xế</span>
-                        )}
-                    </div>
-                    {selectedOrder && selectedDriver && (
-                        <Button
-                            onClick={handleAssign}
-                            disabled={assignMutation.isPending}
-                        >
-                            <Icon path={mdiCheckCircleOutline} size={0.8} />
-                            {assignMutation.isPending ? "Đang xử lý..." : "Gán chuyến ngay"}
-                        </Button>
-                    )}
-                </motion.div>
-            )}
+            <AssignConfirmDialog
+                isOpen={isConfirmDialogOpen}
+                onClose={() => setIsConfirmDialogOpen(false)}
+                onConfirm={handleAssign}
+                order={selectedOrder}
+                driver={selectedDriver}
+                isPending={assignMutation.isPending}
+                distance={selectedOrder && selectedDriver && selectedDriver.location ? calculateDistance(
+                    selectedOrder.pickup.lat,
+                    selectedOrder.pickup.lng,
+                    selectedDriver.location.lat,
+                    selectedDriver.location.lng
+                ) : undefined}
+            />
         </div>
     );
 }
