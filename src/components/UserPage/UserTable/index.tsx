@@ -14,6 +14,7 @@ import { IconStar } from "@tabler/icons-react";
 import { IUser } from "@/interface/auth";
 import { mdiTableEye, mdiTrashCanOutline, mdiInboxRemoveOutline } from "@mdi/js";
 import Icon from "@mdi/react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface UserTableProps {
   users: IUser[];
@@ -53,7 +54,7 @@ export const UserTable = ({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[60px]">STT</TableHead>
+            <TableHead>STT</TableHead>
             <TableHead>Thông tin người dùng</TableHead>
             <TableHead className="w-[180px]">Email</TableHead>
             <TableHead>Vai trò</TableHead>
@@ -105,8 +106,8 @@ export const UserTable = ({
                     {formatCurrency(user.walletBalance)}
                   </span>
                 </TableCell>
-                <TableCell className="text-right">
-                  <div className="flex justify-end space-x-2">
+                <TableCell>
+                  <div className="flex gap-2">
                     <motion.div
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
@@ -142,6 +143,52 @@ export const UserTable = ({
             );
           })
           }
+        </TableBody>
+      </Table>
+    </div>
+  );
+};
+
+export const UserTableSkeleton = () => {
+  return (
+    <div className="w-full overflow-auto border border-darkBackgroundV1 rounded-md">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>STT</TableHead>
+            <TableHead>Thông tin người dùng</TableHead>
+            <TableHead className="w-[180px]">Email</TableHead>
+            <TableHead>Vai trò</TableHead>
+            <TableHead>Đánh giá</TableHead>
+            <TableHead>Số dư ví</TableHead>
+            <TableHead>Thao tác</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {[...Array(5)].map((_, i) => (
+            <TableRow key={i}>
+              <TableCell><Skeleton className="h-4 w-4" /></TableCell>
+              <TableCell>
+                <div className="flex items-center gap-2">
+                  <Skeleton className="w-12 h-12 rounded-full" />
+                  <div className="space-y-2">
+                    <Skeleton className="h-4 w-24" />
+                    <Skeleton className="h-3 w-20" />
+                  </div>
+                </div>
+              </TableCell>
+              <TableCell><Skeleton className="h-4 w-32" /></TableCell>
+              <TableCell><Skeleton className="h-6 w-16 rounded-full" /></TableCell>
+              <TableCell><Skeleton className="h-4 w-12" /></TableCell>
+              <TableCell><Skeleton className="h-4 w-20" /></TableCell>
+              <TableCell>
+                <div className="flex gap-2">
+                  <Skeleton className="h-8 w-8 rounded-md" />
+                  <Skeleton className="h-8 w-8 rounded-md" />
+                </div>
+              </TableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
     </div>

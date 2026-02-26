@@ -168,7 +168,7 @@ export default function DispatcherReportsPage() {
                     </div>
                 </div>
             ) : (
-                <div className="py-40 flex flex-col items-center justify-center text-neutral-600 gap-4 opacity-30 border-2 border-dashed border-darkBorderV1 rounded-3xl">
+                <div className="py-40 flex flex-col items-center justify-center text-neutral-400 gap-4 opacity-30 border-2 border-dashed border-darkBorderV1 rounded-3xl">
                     <Icon path={mdiChartBar} size={4} />
                     <p className="text-xl font-semibold uppercase tracking-widest">Vui lòng chọn tài xế để xem báo cáo</p>
                 </div>

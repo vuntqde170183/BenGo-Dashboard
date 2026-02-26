@@ -5,7 +5,7 @@
 body {
   /* color: #1E293B; */
   font-family: var(--font-opensans);
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 html,

@@ -19,6 +19,7 @@ import {
   mdiCloseCircleOutline,
   mdiInboxRemoveOutline,
 } from "@mdi/js";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface OrdersTableProps {
   orders: any[];
@@ -51,7 +52,7 @@ export function OrdersTable({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[60px]">STT</TableHead>
+            <TableHead>STT</TableHead>
             <TableHead>Mã đơn</TableHead>
             <TableHead>Ưu tiên</TableHead>
             <TableHead>Khách hàng</TableHead>
@@ -61,7 +62,7 @@ export function OrdersTable({
             <TableHead>Trạng thái</TableHead>
             <TableHead>Giá tiền</TableHead>
             <TableHead>Ngày tạo</TableHead>
-            <TableHead className="text-right">Thao tác</TableHead>
+            <TableHead>Thao tác</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -158,8 +159,8 @@ export function OrdersTable({
               <TableCell className="text-sm text-neutral-300">
                 {formatDate(order.createdAt)}
               </TableCell>
-              <TableCell className="text-right">
-                <div className="flex justify-end space-x-2">
+              <TableCell>
+                <div className="flex gap-2">
                   <motion.div
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
@@ -195,6 +196,67 @@ export function OrdersTable({
                         </Button>
                       </motion.div>
                     )}
+                </div>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
+  );
+}
+
+export function OrdersTableSkeleton() {
+  return (
+    <div className="w-full overflow-auto border border-darkBackgroundV1 rounded-md">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>STT</TableHead>
+            <TableHead>Mã đơn</TableHead>
+            <TableHead>Ưu tiên</TableHead>
+            <TableHead>Khách hàng</TableHead>
+            <TableHead>Tài xế</TableHead>
+            <TableHead>Tuyến đường</TableHead>
+            <TableHead>Loại xe</TableHead>
+            <TableHead>Trạng thái</TableHead>
+            <TableHead>Giá tiền</TableHead>
+            <TableHead>Ngày tạo</TableHead>
+            <TableHead>Thao tác</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {[...Array(5)].map((_, i) => (
+            <TableRow key={i}>
+              <TableCell><Skeleton className="h-4 w-4" /></TableCell>
+              <TableCell><Skeleton className="h-4 w-20" /></TableCell>
+              <TableCell><Skeleton className="h-6 w-16 rounded-full" /></TableCell>
+              <TableCell>
+                <div className="space-y-2">
+                  <Skeleton className="h-4 w-24" />
+                  <Skeleton className="h-3 w-20" />
+                </div>
+              </TableCell>
+              <TableCell>
+                <div className="space-y-2">
+                  <Skeleton className="h-4 w-24" />
+                  <Skeleton className="h-3 w-20" />
+                </div>
+              </TableCell>
+              <TableCell>
+                <div className="space-y-2">
+                  <Skeleton className="h-3 w-40" />
+                  <Skeleton className="h-3 w-40" />
+                </div>
+              </TableCell>
+              <TableCell><Skeleton className="h-4 w-16" /></TableCell>
+              <TableCell><Skeleton className="h-6 w-20 rounded-full" /></TableCell>
+              <TableCell><Skeleton className="h-4 w-20" /></TableCell>
+              <TableCell><Skeleton className="h-4 w-24" /></TableCell>
+              <TableCell>
+                <div className="flex gap-2">
+                  <Skeleton className="h-8 w-8 rounded-md" />
+                  <Skeleton className="h-8 w-8 rounded-md" />
                 </div>
               </TableCell>
             </TableRow>

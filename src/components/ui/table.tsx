@@ -46,7 +46,7 @@ const TableBody = React.forwardRef<
   <tbody
     ref={ref}
     className={cn(
-      "[&_tr:last-child]:border-0 [&_tr:nth-child(odd)]:bg-darkBackgroundV1 [&_tr:nth-child(even)]:bg-darkCardV1",
+      "[&_tr:last-child]:border-0 [&_tr:nth-child(odd)]:bg-darkCardV1 [&_tr:nth-child(even)]:bg-darkBackgroundV1",
       className
     )}
     {...props}

@@ -9,6 +9,7 @@ import { mdiMagnify, mdiCarSide, mdiStar, mdiTrendingUp, mdiMapMarker, mdiInform
 import { cn } from "@/lib/utils";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import { formatCurrency } from "@/lib/format";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function DispatcherDriversPage() {
     const [searchQuery, setSearchQuery] = useState("");
@@ -19,7 +20,7 @@ export default function DispatcherDriversPage() {
 
     const filteredDrivers = drivers?.filter(d =>
         d.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        d.phone.includes(searchQuery)
+        (d.phone || "").includes(searchQuery)
     );
 
     return (
@@ -59,7 +60,11 @@ export default function DispatcherDriversPage() {
                     </div>
                     <CardContent className="flex-1 overflow-y-auto space-y-2 custom-scrollbar p-2">
                         {isLoading ? (
-                            <div className="py-20 flex justify-center"><LoadingSpinner /></div>
+                            <div className="space-y-2">
+                                {[...Array(6)].map((_, i) => (
+                                    <DriverCardSkeleton key={i} />
+                                ))}
+                            </div>
                         ) : filteredDrivers?.length === 0 ? (
                             <div className="flex flex-col items-center justify-center py-10 text-neutral-400 italic gap-3">
                                 <Icon path={mdiInboxRemoveOutline} size={1.6} className="opacity-60" />
@@ -161,7 +166,7 @@ export default function DispatcherDriversPage() {
                                 <div className="absolute inset-0 bg-darkBackgroundV1/40 animate-pulse opacity-20" />
                                 <Icon path={mdiMapMarker} size={3} className="text-primary/20 mb-4" />
                                 <p className="text-neutral-400 font-semibold uppercase tracking-widest text-sm">Vị trí thời gian thực</p>
-                                <p className="text-xs text-neutral-600 mt-1 max-w-[300px] text-center italic">Bản đồ đang được tải ứng dụng tọa độ {drivers?.find(d => d.id === selectedDriverId)?.location.lat}, {drivers?.find(d => d.id === selectedDriverId)?.location.lng}</p>
+                                <p className="text-xs text-neutral-400 mt-1 max-w-[300px] text-center italic">Bản đồ đang được tải ứng dụng tọa độ {drivers?.find(d => d.id === selectedDriverId)?.location.lat}, {drivers?.find(d => d.id === selectedDriverId)?.location.lng}</p>
 
                                 <div className="absolute bottom-4 left-4 right-4 bg-darkBackgroundV1/80 border border-darkBorderV1 p-3 rounded-xl flex items-center justify-between">
                                     <div className="flex items-center gap-3">
@@ -175,7 +180,7 @@ export default function DispatcherDriversPage() {
                             </Card>
                         </>
                     ) : (
-                        <div className="h-full flex flex-col items-center justify-center text-neutral-600 p-20 gap-4 opacity-30 border-2 border-dashed border-darkBorderV1 rounded-3xl">
+                        <div className="h-full flex flex-col items-center justify-center text-neutral-400 p-20 gap-4 opacity-30 border-2 border-dashed border-darkBorderV1 rounded-3xl">
                             <Icon path={mdiCarSide} size={4} />
                             <p className="text-xl font-semibold uppercase tracking-widest">Chọn tài xế để xem chi tiết</p>
                         </div>
@@ -185,3 +190,17 @@ export default function DispatcherDriversPage() {
         </div>
     );
 }
+
+const DriverCardSkeleton = () => (
+    <div className="p-3 rounded-xl border border-darkBorderV1 bg-darkBackgroundV1/30 flex items-center gap-3">
+        <Skeleton className="w-10 h-10 rounded-full" />
+        <div className="flex-1 space-y-2">
+            <Skeleton className="h-4 w-32" />
+            <div className="flex items-center gap-2">
+                <Skeleton className="h-3 w-20" />
+                <Skeleton className="h-4 w-12 rounded-full" />
+            </div>
+        </div>
+        <Skeleton className="w-4 h-4 rounded-full" />
+    </div>
+);

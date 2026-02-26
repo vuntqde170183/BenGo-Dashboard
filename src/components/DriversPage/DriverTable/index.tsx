@@ -22,6 +22,7 @@ import {
   mdiLockOpenVariantOutline,
   mdiInboxRemoveOutline,
 } from "@mdi/js";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface IDriver {
   _id: string;
@@ -79,187 +80,146 @@ export const DriverTable = ({
   }
 
   return (
-    <div className="w-full overflow-auto border border-darkBackgroundV1 rounded-md">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-[60px]">STT</TableHead>
-            <TableHead>Thông tin tài xế</TableHead>
-            <TableHead>Email</TableHead>
-            <TableHead>Biển số xe</TableHead>
-            <TableHead>Loại xe</TableHead>
-            <TableHead>Đánh giá</TableHead>
-            <TableHead>Trực tuyến</TableHead>
-            <TableHead>Trạng thái</TableHead>
-            <TableHead>Thao tác</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {drivers.map((driver, index) => {
-            const rowNumber = (currentPage - 1) * pageSize + index + 1;
-            const driverId = driver._id;
-            return (
-              <TableRow
-                key={driverId}
-                className="cursor-pointer hover:bg-slate-50/50 dark:hover:bg-darkBorderV1/50 transition-colors"
-                onClick={() => onEdit(driverId)}
-              >
-                <TableCell>{rowNumber}</TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-2">
-                    <div className="w-12 h-12 flex-shrink-0 rounded-full bg-darkBorderV1 flex items-center justify-center overflow-hidden">
-                      <img
-                        src={
-                          driver.userId?.avatar ||
-                          `https://api.dicebear.com/7.x/avataaars/svg?seed=${driver.userId?.name}`
-                        }
-                        alt="avatar"
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div>
-                      <p className="font-semibold dark:text-neutral-300 text-nowrap">
-                        {driver.userId?.name}
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>STT</TableHead>
+          <TableHead>Thông tin tài xế</TableHead>
+          <TableHead>Email</TableHead>
+          <TableHead>Biển số xe</TableHead>
+          <TableHead>Loại xe</TableHead>
+          <TableHead>Đánh giá</TableHead>
+          <TableHead>Trực tuyến</TableHead>
+          <TableHead>Trạng thái</TableHead>
+          <TableHead>Thao tác</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {drivers.map((driver, index) => {
+          const rowNumber = (currentPage - 1) * pageSize + index + 1;
+          const driverId = driver._id;
+          return (
+            <TableRow
+              key={driverId}
+              className="cursor-pointer hover:bg-slate-50/50 dark:hover:bg-darkBorderV1/50 transition-colors"
+              onClick={() => onEdit(driverId)}
+            >
+              <TableCell>{rowNumber}</TableCell>
+              <TableCell>
+                <div className="flex items-center gap-2">
+                  <div className="w-12 h-12 flex-shrink-0 rounded-full bg-darkBorderV1 flex items-center justify-center overflow-hidden">
+                    <img
+                      src={
+                        driver.userId?.avatar ||
+                        `https://api.dicebear.com/7.x/avataaars/svg?seed=${driver.userId?.name}`
+                      }
+                      alt="avatar"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div>
+                    <p className="font-semibold dark:text-neutral-300 text-nowrap">
+                      {driver.userId?.name}
+                    </p>
+                    {driver.userId?.phone && (
+                      <p className="text-sm text-neutral-400">
+                        {driver.userId.phone}
                       </p>
-                      {driver.userId?.phone && (
-                        <p className="text-sm text-neutral-400">
-                          {driver.userId.phone}
-                        </p>
-                      )}
-                    </div>
+                    )}
                   </div>
-                </TableCell>
-                <TableCell className="w-[180px]">
-                  {driver.userId?.email}
-                </TableCell>
-                <TableCell>
-                  <span className="font-medium">{driver.plateNumber}</span>
-                </TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-1">
-                    {getVehicleIcon(driver.vehicleType)}
-                    <span>{driver.vehicleType}</span>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-1 dark:text-neutral-300 font-medium">
-                    <IconStar className="w-4 h-4 text-yellow-500 fill-yellow-500" />
-                    {driver.userId?.rating
-                      ? driver.userId.rating.toFixed(1)
-                      : "5.0"}
-                  </div>
-                </TableCell>
-                <TableCell>
-                  {driver.isOnline ? (
-                    <Badge variant="emerald" className="capitalize">
-                      <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-                      Trực tuyến
-                    </Badge>
-                  ) : (
-                    <Badge variant="neutral" className="capitalize">
-                      <span className="w-1.5 h-1.5 rounded-full bg-neutral-400" />
-                      Ngoại tuyến
-                    </Badge>
-                  )}
-                </TableCell>
-                <TableCell>{getStatusBadge(driver.status)}</TableCell>
-                <TableCell className="text-right">
-                  <div className="flex justify-end space-x-2">
+                </div>
+              </TableCell>
+              <TableCell className="w-[180px]">
+                {driver.userId?.email}
+              </TableCell>
+              <TableCell>
+                <span className="font-medium">{driver.plateNumber}</span>
+              </TableCell>
+              <TableCell>
+                <div className="flex items-center gap-1">
+                  {getVehicleIcon(driver.vehicleType)}
+                  <span>{driver.vehicleType}</span>
+                </div>
+              </TableCell>
+              <TableCell>
+                <div className="flex items-center gap-1 dark:text-neutral-300 font-medium">
+                  <IconStar className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+                  {driver.userId?.rating
+                    ? driver.userId.rating.toFixed(1)
+                    : "5.0"}
+                </div>
+              </TableCell>
+              <TableCell>
+                {driver.isOnline ? (
+                  <Badge variant="emerald" className="capitalize">
+                    <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                    Trực tuyến
+                  </Badge>
+                ) : (
+                  <Badge variant="neutral" className="capitalize">
+                    <span className="w-1.5 h-1.5 rounded-full bg-neutral-400" />
+                    Ngoại tuyến
+                  </Badge>
+                )}
+              </TableCell>
+              <TableCell>{getStatusBadge(driver.status)}</TableCell>
+              <TableCell>
+                <div className="flex gap-2">
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <Button
+                      size="icon"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onEdit(driverId);
+                      }}
+                      title="Chi tiết"
+                    >
+                      <Icon path={mdiTableEye} size={0.8} />
+                    </Button>
+                  </motion.div>
+
+                  {/* APPROVED: Show Lock */}
+                  {driver.status === "APPROVED" && role !== "DISPATCHER" && (
                     <motion.div
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >
                       <Button
+                        className="bg-orange-500 hover:bg-orange-600"
                         size="icon"
                         onClick={(e) => {
                           e.stopPropagation();
-                          onEdit(driverId);
+                          onLock && onLock(driverId);
                         }}
-                        title="Chi tiết"
+                        title="Khóa tài khoản"
                       >
-                        <Icon path={mdiTableEye} size={0.8} />
+                        <Icon path={mdiLockOutline} size={0.8} />
                       </Button>
                     </motion.div>
+                  )}
 
-                    {/* APPROVED: Show Lock */}
-                    {driver.status === "APPROVED" && role !== "DISPATCHER" && (
+                  {/* PENDING: Show Approve and Reject */}
+                  {driver.status === "PENDING" && role !== "DISPATCHER" && (
+                    <>
                       <motion.div
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                       >
                         <Button
-                          className="bg-orange-500 hover:bg-orange-600"
+                          className="bg-green-500 hover:bg-green-600"
                           size="icon"
                           onClick={(e) => {
                             e.stopPropagation();
-                            onLock && onLock(driverId);
+                            onApprove && onApprove(driverId);
                           }}
-                          title="Khóa tài khoản"
+                          title="Duyệt"
                         >
-                          <Icon path={mdiLockOutline} size={0.8} />
+                          <Icon path={mdiCheckCircleOutline} size={0.8} />
                         </Button>
                       </motion.div>
-                    )}
-
-                    {/* PENDING: Show Approve and Reject */}
-                    {driver.status === "PENDING" && role !== "DISPATCHER" && (
-                      <>
-                        <motion.div
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                        >
-                          <Button
-                            className="bg-green-500 hover:bg-green-600"
-                            size="icon"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              onApprove && onApprove(driverId);
-                            }}
-                            title="Duyệt"
-                          >
-                            <Icon path={mdiCheckCircleOutline} size={0.8} />
-                          </Button>
-                        </motion.div>
-                        <motion.div
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                        >
-                          <Button
-                            className="bg-red-500 hover:bg-red-600"
-                            size="icon"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              onReject && onReject(driverId);
-                            }}
-                            title="Từ chối"
-                          >
-                            <Icon path={mdiCloseCircleOutline} size={0.8} />
-                          </Button>
-                        </motion.div>
-                      </>
-                    )}
-
-                    {/* LOCKED: Show Unlock */}
-                    {driver.status === "LOCKED" && role !== "DISPATCHER" && (
-                      <motion.div
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        <Button
-                          className="bg-blue-500 hover:bg-blue-600"
-                          size="icon"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            onUnlock && onUnlock(driverId);
-                          }}
-                          title="Mở khóa"
-                        >
-                          <Icon path={mdiLockOpenVariantOutline} size={0.8} />
-                        </Button>
-                      </motion.div>
-                    )}
-
-                    {role !== "DISPATCHER" && (
                       <motion.div
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
@@ -269,21 +229,109 @@ export const DriverTable = ({
                           size="icon"
                           onClick={(e) => {
                             e.stopPropagation();
-                            onDelete(driverId);
+                            onReject && onReject(driverId);
                           }}
-                          title="Xóa"
+                          title="Từ chối"
                         >
-                          <Icon path={mdiTrashCanOutline} size={0.8} />
+                          <Icon path={mdiCloseCircleOutline} size={0.8} />
                         </Button>
                       </motion.div>
-                    )}
-                  </div>
-                </TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
-    </div>
+                    </>
+                  )}
+
+                  {/* LOCKED: Show Unlock */}
+                  {driver.status === "LOCKED" && role !== "DISPATCHER" && (
+                    <motion.div
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <Button
+                        className="bg-blue-500 hover:bg-blue-600"
+                        size="icon"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onUnlock && onUnlock(driverId);
+                        }}
+                        title="Mở khóa"
+                      >
+                        <Icon path={mdiLockOpenVariantOutline} size={0.8} />
+                      </Button>
+                    </motion.div>
+                  )}
+
+                  {role !== "DISPATCHER" && (
+                    <motion.div
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <Button
+                        className="bg-red-500 hover:bg-red-600"
+                        size="icon"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onDelete(driverId);
+                        }}
+                        title="Xóa"
+                      >
+                        <Icon path={mdiTrashCanOutline} size={0.8} />
+                      </Button>
+                    </motion.div>
+                  )}
+                </div>
+              </TableCell>
+            </TableRow>
+          );
+        })}
+      </TableBody>
+    </Table>
+  );
+};
+
+export const DriverTableSkeleton = () => {
+  return (
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>STT</TableHead>
+          <TableHead>Thông tin tài xế</TableHead>
+          <TableHead>Email</TableHead>
+          <TableHead>Biển số xe</TableHead>
+          <TableHead>Loại xe</TableHead>
+          <TableHead>Đánh giá</TableHead>
+          <TableHead>Trực tuyến</TableHead>
+          <TableHead>Trạng thái</TableHead>
+          <TableHead>Thao tác</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {[...Array(5)].map((_, i) => (
+          <TableRow key={i}>
+            <TableCell><Skeleton className="h-4 w-4" /></TableCell>
+            <TableCell>
+              <div className="flex items-center gap-2">
+                <Skeleton className="w-12 h-12 rounded-full" />
+                <div className="space-y-2">
+                  <Skeleton className="h-4 w-24" />
+                  <Skeleton className="h-3 w-20" />
+                </div>
+              </div>
+            </TableCell>
+            <TableCell><Skeleton className="h-4 w-32" /></TableCell>
+            <TableCell><Skeleton className="h-4 w-20" /></TableCell>
+            <TableCell><Skeleton className="h-4 w-16" /></TableCell>
+            <TableCell><Skeleton className="h-4 w-12" /></TableCell>
+            <TableCell><Skeleton className="h-6 w-20 rounded-full" /></TableCell>
+            <TableCell><Skeleton className="h-6 w-20 rounded-full" /></TableCell>
+            <TableCell>
+              <div className="flex gap-2">
+                <Skeleton className="h-8 w-8 rounded-md" />
+                <Skeleton className="h-8 w-8 rounded-md" />
+                <Skeleton className="h-8 w-8 rounded-md" />
+              </div>
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
   );
 };

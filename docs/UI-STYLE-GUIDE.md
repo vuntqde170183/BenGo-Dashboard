@@ -179,3 +179,11 @@ Khi sử dụng `Card` để bọc các thành phần `Table` bên trong (thư�
     </Table>
 </Card>
 ```
+
+## 13. UI dành cho không có, chưa có:
+```tsx
+<div className="text-center text-neutral-400 text-sm py-20 italic flex flex-col items-center justify-center gap-3">
+    <Icon path={mdiSelectionMarker} size={1.2} className="text-neutral-400" />
+    <p>Vui lòng chọn một đơn hàng để tìm tài xế lân cận</p>
+</div>
+```

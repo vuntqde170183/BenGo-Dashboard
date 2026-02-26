@@ -11,9 +11,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { TicketsTable } from "@/components/TicketsPage/TicketsTable";
+import { TicketsTable, TicketsTableSkeleton } from "@/components/TicketsPage/TicketsTable";
 import { TicketDetailsDialog } from "@/components/TicketsPage/TicketDetailsDialog";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Pagination } from "@/components/ui/pagination";
 import { motion } from "framer-motion";
 import { IconSearch, IconX } from "@tabler/icons-react";
@@ -108,19 +107,7 @@ export default function TicketsPage() {
 
           <Card className="p-0 overflow-hidden border border-lightBorderV1 dark:border-darkBackgroundV1">
             {isLoading ? (
-              <div className="p-4">
-                <div className="flex flex-col gap-4">
-                  {[...Array(5)].map((_, index) => (
-                    <div key={index} className="flex items-center gap-4">
-                      <Skeleton className="h-8 w-8 rounded-full" />
-                      <div className="space-y-2">
-                        <Skeleton className="h-4 w-48" />
-                        <Skeleton className="h-4 w-24" />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <TicketsTableSkeleton />
             ) : (
               <TicketsTable
                 tickets={displayTickets}

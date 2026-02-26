@@ -12,7 +12,8 @@ import { motion } from "framer-motion";
 import { formatDate, formatRelativeTime, getPriorityVariant } from "@/lib/format";
 import { getStatusBadge } from "@/lib/badge-helpers";
 import Icon from "@mdi/react";
-import { mdiTableEye, mdiCheckCircle, mdiInboxRemoveOutline } from "@mdi/js";
+import { mdiTableEye, mdiInboxRemoveOutline } from "@mdi/js";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface TicketsTableProps {
     tickets: any[];
@@ -43,14 +44,14 @@ export function TicketsTable({
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead className="w-[60px]">STT</TableHead>
+                        <TableHead>STT</TableHead>
                         <TableHead>Mã yêu cầu</TableHead>
                         <TableHead>Người dùng</TableHead>
                         <TableHead>Chủ đề</TableHead>
                         <TableHead>Độ ưu tiên</TableHead>
                         <TableHead>Trạng thái</TableHead>
                         <TableHead>Ngày tạo</TableHead>
-                        <TableHead className="text-right">Thao tác</TableHead>
+                        <TableHead>Thao tác</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -109,8 +110,8 @@ export function TicketsTable({
                                     </p>
                                 </div>
                             </TableCell>
-                            <TableCell className="text-right">
-                                <div className="flex justify-end space-x-2">
+                            <TableCell>
+                                <div className="flex gap-2">
                                     <motion.div
                                         whileHover={{ scale: 1.05 }}
                                         whileTap={{ scale: 0.95 }}
@@ -135,3 +136,55 @@ export function TicketsTable({
         </div>
     );
 }
+
+export const TicketsTableSkeleton = () => {
+    return (
+        <div className="w-full overflow-auto border border-darkBackgroundV1 rounded-md">
+            <Table>
+                <TableHeader>
+                    <TableRow>
+                        <TableHead>STT</TableHead>
+                        <TableHead>Mã yêu cầu</TableHead>
+                        <TableHead>Người dùng</TableHead>
+                        <TableHead>Chủ đề</TableHead>
+                        <TableHead>Độ ưu tiên</TableHead>
+                        <TableHead>Trạng thái</TableHead>
+                        <TableHead>Ngày tạo</TableHead>
+                        <TableHead>Thao tác</TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    {[...Array(5)].map((_, i) => (
+                        <TableRow key={i}>
+                            <TableCell><Skeleton className="h-4 w-4" /></TableCell>
+                            <TableCell><Skeleton className="h-4 w-20" /></TableCell>
+                            <TableCell>
+                                <div className="space-y-2">
+                                    <Skeleton className="h-4 w-24" />
+                                    <Skeleton className="h-3 w-20" />
+                                </div>
+                            </TableCell>
+                            <TableCell>
+                                <div className="space-y-2">
+                                    <Skeleton className="h-4 w-48" />
+                                    <Skeleton className="h-3 w-32" />
+                                </div>
+                            </TableCell>
+                            <TableCell><Skeleton className="h-6 w-16 rounded-full" /></TableCell>
+                            <TableCell><Skeleton className="h-6 w-20 rounded-full" /></TableCell>
+                            <TableCell>
+                                <div className="space-y-1">
+                                    <Skeleton className="h-4 w-24" />
+                                    <Skeleton className="h-3 w-16" />
+                                </div>
+                            </TableCell>
+                            <TableCell>
+                                <Skeleton className="h-8 w-8 rounded-md" />
+                            </TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+        </div>
+    );
+};

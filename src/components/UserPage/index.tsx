@@ -18,16 +18,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { UserTable } from "@/components/UserPage/UserTable";
+import { UserTable, UserTableSkeleton } from "@/components/UserPage/UserTable";
 import { UserCreateDialog } from "@/components/UserPage/UserCreateDialog";
 import { UserDetailsDialog } from "@/components/UserPage/UserDetailsDialog";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Pagination } from "@/components/ui/pagination";
 import { motion } from "framer-motion";
 import { IconSearch, IconUserPlus } from "@tabler/icons-react";
 import { DeleteDialog } from "@/components/ui/delete-dialog";
-import Icon from "@mdi/react";
-import { mdiAccountPlusOutline } from "@mdi/js";
 
 export default function UserPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -149,19 +146,7 @@ export default function UserPage() {
 
           <Card className="p-0 overflow-hidden border border-lightBorderV1 dark:border-darkBackgroundV1">
             {isLoading ? (
-              <div className="p-4">
-                <div className="flex flex-col gap-4">
-                  {[...Array(5)].map((_, index) => (
-                    <div key={index} className="flex items-center gap-4">
-                      <Skeleton className="h-8 w-8 rounded-full" />
-                      <div className="space-y-2">
-                        <Skeleton className="h-4 w-48" />
-                        <Skeleton className="h-4 w-24" />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <UserTableSkeleton />
             ) : (
               <UserTable
                 users={displayUsers}
