@@ -37,6 +37,7 @@ export const useAssignDriver = () => {
         mutationFn: (data: { orderId: string; driverId: string }) => dispatcherApi.assignDriver(data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["dispatcher", "orders"] });
+            queryClient.invalidateQueries({ queryKey: ["dispatcher", "history"] });
             toast.success("Điều phối tài xế thành công");
         },
         onError: (error: any) => {
@@ -126,5 +127,13 @@ export const useUpdateSupportTicket = () => {
         onError: (error: any) => {
             toast.error(error?.message || "Cập nhật thất bại");
         }
+    });
+};
+
+// 6. Assignment History
+export const useAssignmentHistory = (params: { page?: number; limit?: number }) => {
+    return useQuery({
+        queryKey: ["dispatcher", "history", params],
+        queryFn: () => dispatcherApi.getAssignmentHistory(params),
     });
 };

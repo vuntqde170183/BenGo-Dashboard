@@ -88,3 +88,38 @@ export interface ISupportTicket {
     note?: string;
     resolution?: string;
 }
+
+export interface IAssignmentHistory {
+    _id: string;
+    orderId: {
+        _id: string;
+        totalPrice: number;
+        pickup: {
+            address: string;
+        };
+        dropoff: {
+            address: string;
+        };
+        vehicleType: string;
+        distanceKm: number;
+        priority?: string;
+    };
+    driverId: {
+        _id: string;
+        userId?: {
+            _id: string;
+            name: string;
+            phone?: string;
+            email?: string;
+        };
+        plateNumber?: string;
+        vehicleType?: string;
+    };
+    dispatcherId: {
+        _id: string;
+        name: string;
+        phone: string;
+    };
+    status: string;
+    createdAt: string;
+}
