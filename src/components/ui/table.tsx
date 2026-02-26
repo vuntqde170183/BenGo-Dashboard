@@ -12,12 +12,12 @@ const Table = React.forwardRef<
   return (
     <div
       ref={dragScrollRef}
-      className="w-full overflow-auto border border-neutral-800 rounded-2xl"
+      className="w-full overflow-auto border border-darkBorderV1 rounded-2xl"
     >
       <table
         ref={ref}
         className={cn(
-          "w-full caption-bottom text-sm dark:bg-darkBorderV1  dark:!border-neutral-800",
+          "w-full caption-bottom text-sm dark:bg-darkBorderV1  dark:!border-darkBorderV1",
           className
         )}
         {...props}
@@ -76,7 +76,7 @@ const TableRow = React.forwardRef<
   <tr
     ref={ref}
     className={cn(
-      "border-b border-b-neutral-800 transition-colors data-[state=selected]:bg-muted",
+      "border-b border-b-darkBorderV1 transition-colors data-[state=selected]:bg-muted",
       className
     )}
     {...props}
@@ -91,7 +91,7 @@ const TableHead = React.forwardRef<
   <th
     ref={ref}
     className={cn(
-      "h-12 px-4 font-semibold dark:text-neutral-300 text-nowrap text-center py-8 align-middle border-r border-r-neutral-800 last:border-r-0 [&:has([role=checkbox])]:pr-0",
+      "h-12 px-4 font-semibold dark:text-neutral-300 text-nowrap text-center py-8 align-middle border-r border-r-darkBorderV1 last:border-r-0 [&:has([role=checkbox])]:pr-0",
       className
     )}
     {...props}
@@ -106,7 +106,7 @@ const TableCell = React.forwardRef<
   <td
     ref={ref}
     className={cn(
-      "p-4 align-middle border-r border-r-neutral-800 last:border-r-0 [&:has([role=checkbox])]:pr-0",
+      "p-4 align-middle border-r border-r-darkBorderV1 last:border-r-0 [&:has([role=checkbox])]:pr-0",
       className
     )}
     {...props}

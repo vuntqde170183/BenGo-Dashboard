@@ -87,7 +87,7 @@ export default function SupportCenterPage() {
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
-                            <BreadcrumbPage>Hỗ trợ & Khiếu nại</BreadcrumbPage>
+                            <BreadcrumbPage>Trung tâm hỗ trợ</BreadcrumbPage>
                         </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>
@@ -129,7 +129,7 @@ export default function SupportCenterPage() {
                             </Tabs>
                         </div>
 
-                        <Card className="flex-1 overflow-hidden border border-lightBorderV1 dark:border-darkBackgroundV1 bg-transparent p-0 flex flex-col min-h-0 shadow-none">
+                        <Card className="p-0 overflow-hidden border border-lightBorderV1 dark:border-darkBackgroundV1">
                             {isLoading ? (
                                 <SupportTicketsTableSkeleton />
                             ) : (

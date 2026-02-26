@@ -9,12 +9,22 @@ import {
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableRow,
+} from "@/components/ui/table";
 import Icon from "@mdi/react";
 import {
     mdiClockOutline,
     mdiCheckCircleOutline,
-    mdiClose, mdiHandBackRightOutline
+    mdiClose,
+    mdiHandBackRightOutline,
+    mdiTagOutline,
+    mdiAccountOutline,
+    mdiCardTextOutline
 } from "@mdi/js";
 import { ISupportTicket, TicketStatus } from "@/interface/dispatcher";
 
@@ -88,49 +98,69 @@ export default function ProcessTicketDialog({
                         <span>{getTitle()}</span>
                     </DialogTitle>
                 </DialogHeader>
-                <div className="space-y-4 max-h-[70vh] overflow-y-auto custom-scrollbar p-3">
-                    <div className="bg-darkBackgroundV1/50 border border-darkBorderV1 rounded-2xl p-4 mb-2">
-                        <div className="flex items-center justify-between mb-3">
-                            <p className="text-xs font-bold text-primary uppercase tracking-wider">Thông tin phiếu</p>
-                            <Badge variant="neutral" className="text-[10px] border-primary/30 text-primary/80">
-                                #{ticket._id.slice(-8)}
-                            </Badge>
-                        </div>
-                        <p className="text-sm text-neutral-300 font-semibold mb-2">Người gửi: {ticket.userId?.name}</p>
-                        <div className="bg-darkBackgroundV1/80 rounded-xl p-3 border border-darkBorderV1/50">
-                            <p className="text-[13px] italic text-neutral-400 leading-relaxed">"{ticket.content}"</p>
-                        </div>
-                    </div>
+
+                <div className="space-y-4 max-h-[70vh] overflow-y-auto pr-1 custom-scrollbar p-3 md:p-4">
+                    <Card className="p-0 overflow-hidden border border-darkBorderV1 bg-transparent">
+                        <Table>
+                            <TableBody>
+                                <TableRow>
+                                    <TableCell className="font-semibold text-neutral-400 w-1/3 py-2 bg-darkBackgroundV1/30">
+                                        <div className="flex items-center gap-2 font-semibold text-neutral-300">
+                                            <Icon path={mdiTagOutline} size={0.6} />
+                                            Chủ đề
+                                        </div>
+                                    </TableCell>
+                                    <TableCell className="text-neutral-400">{ticket.subject}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell className="font-semibold text-neutral-400 py-2 bg-darkBackgroundV1/30">
+                                        <div className="flex items-center gap-2 font-semibold text-neutral-300">
+                                            <Icon path={mdiAccountOutline} size={0.6} />
+                                            Người gửi
+                                        </div>
+                                    </TableCell>
+                                    <TableCell className="text-neutral-400">{ticket.userId?.name}</TableCell>
+                                </TableRow>
+                                <TableRow className="border-b-0">
+                                    <TableCell className="font-semibold text-neutral-400 py-2 bg-darkBackgroundV1/30 align-top">
+                                        <div className="flex items-center gap-2 font-semibold text-neutral-300">
+                                            <Icon path={mdiCardTextOutline} size={0.6} />
+                                            Nội dung
+                                        </div>
+                                    </TableCell>
+                                    <TableCell className="text-neutral-400 italic leading-relaxed">
+                                        "{ticket.content}"
+                                    </TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
+                    </Card>
+
 
                     {actionType === 'ACCEPT' && (
-                        <div className="space-y-3 px-1">
-                            <Label className="text-[13px] text-neutral-300 font-bold flex items-center gap-2">
-                                <span className="w-1 h-4 bg-primary rounded-full" />
-                                Ghi chú diễn biến (Nội bộ)
-                            </Label>
+                        <div className="space-y-3">
+                            <Label>Ghi chú diễn biến (Nội bộ)</Label>
                             <Textarea
                                 placeholder="Ví dụ: Đã tiếp nhận yêu cầu, đang gọi cho tài xế Trần Văn B."
-                                className="bg-darkBackgroundV1 border-darkBorderV1 min-h-[120px] focus:ring-1 focus:ring-primary/40 rounded-2xl text-sm"
                                 value={note}
                                 onChange={(e) => setNote(e.target.value)}
+                                rows={4}
                             />
-                            <p className="text-[11px] text-neutral-500 italic px-1">* Thông tin này dùng để tránh Dispatcher khác xử lý trùng lặp.</p>
                         </div>
                     )}
 
                     {(actionType === 'RESOLVE' || actionType === 'CLOSE') && (
-                        <div className="space-y-3 px-1">
-                            <Label className="text-[13px] text-neutral-300 font-bold flex items-center gap-2">
-                                <span className="w-1 h-4 bg-green-500 rounded-full" />
-                                Hướng giải quyết sau cùng
-                            </Label>
+                        <div className="space-y-3">
+                            <div className="flex items-center gap-3">
+                                <Label className="text-primary font-semibold whitespace-nowrap">Hướng giải quyết sau cùng</Label>
+                                <div className="flex-1 border-b border-dashed border-primary mr-1" />
+                            </div>
                             <Textarea
                                 placeholder="Ví dụ: Đã điều phối tài xế khác đến hỗ trợ khách hàng. Khách hàng hài lòng."
-                                className="bg-darkBackgroundV1 border-green-500/30 min-h-[120px] focus:ring-1 focus:ring-green-500/40 rounded-2xl text-sm"
                                 value={resolution}
                                 onChange={(e) => setResolution(e.target.value)}
+                                rows={4}
                             />
-                            <p className="text-[11px] text-neutral-500 italic px-1">* Thông tin này sẽ được lưu lại để đối soát và phản hồi khách hàng.</p>
                         </div>
                     )}
                 </div>

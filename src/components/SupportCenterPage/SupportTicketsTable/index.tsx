@@ -114,7 +114,7 @@ export function SupportTicketsTable({
                         </TableCell>
                         <TableCell>
                             <div className="space-y-1">
-                                <p className="font-semibold text-neutral-300">
+                                <p className="font-semibold text-neutral-400">
                                     {ticket.userId?.name || "N/A"}
                                 </p>
                                 <Badge variant="neutral">
