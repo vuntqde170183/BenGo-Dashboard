@@ -1,20 +1,18 @@
 import { useDashboardOverview, useAdminReports } from "@/hooks/useAdmin";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Icon } from "@mdi/react";
 import {
   mdiAccountGroup,
   mdiPackageVariant,
   mdiCarSide,
-  mdiCurrencyUsd,
-  mdiTrendingUp,
-  mdiChartLine,
+  mdiCurrencyUsd, mdiChartLine,
   mdiShieldCheck,
   mdiMotorbike,
   mdiVanPassenger,
   mdiTruck,
   mdiStar,
   mdiArrowRightThin,
-  mdiInboxRemoveOutline,
+  mdiInboxRemoveOutline
 } from "@mdi/js";
 import { formatCurrency } from "@/lib/format";
 import { Link } from "react-router-dom";
@@ -23,7 +21,7 @@ import { motion } from "framer-motion";
 import { Badge } from "../ui/badge";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
-import { TReportPeriod, TReportType } from "@/interface/admin";
+import { TReportPeriod } from "@/interface/admin";
 import {
   AreaChart,
   Area,
@@ -163,7 +161,7 @@ export default function StatisticsPage() {
     <div className="space-y-4 bg-darkCardV1 p-4 rounded-2xl border border-darkBorderV1">
       <div className="flex justify-between items-center relative pr-24">
         <div className="z-10">
-          <h1 className="text-3xl font-bold text-neutral-300">
+          <h1 className="text-3xl font-semibold text-neutral-300">
             Bảng điều khiển
           </h1>
           <p className="text-neutral-400 mt-2 text-base">
@@ -337,7 +335,7 @@ export default function StatisticsPage() {
                   <span className="text-neutral-300 font-semibold">
                     Tổng cộng
                   </span>
-                  <span className="font-bold text-lg text-primary">
+                  <span className="font-semibold text-lg text-primary">
                     {formatCurrency(reports?.revenue?.total || 0)}
                   </span>
                 </div>
@@ -395,7 +393,7 @@ export default function StatisticsPage() {
                   <span className="text-neutral-300 font-semibold">
                     Tỷ lệ hoàn thành
                   </span>
-                  <span className="font-bold text-lg text-primary">
+                  <span className="font-semibold text-lg text-primary">
                     {reports?.orderStats?.total
                       ? (
                         (reports.orderStats.completed /
@@ -436,7 +434,7 @@ export default function StatisticsPage() {
                   key={driver.driverId}
                   className="flex items-center gap-4 p-3 rounded-lg bg-darkBorderV1/20 border border-darkBorderV1/40 hover:bg-darkBorderV1/30 transition-colors"
                 >
-                  <div className="flex items-center justify-center w-12 h-12 rounded-full bg-primary/20 text-primary font-bold text-lg">
+                  <div className="flex items-center justify-center w-12 h-12 rounded-full bg-primary/20 text-primary font-semibold text-lg">
                     #{index + 1}
                   </div>
                   <div className="flex-1">

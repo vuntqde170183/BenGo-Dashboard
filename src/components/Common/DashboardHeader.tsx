@@ -46,7 +46,7 @@ export default function DashboardHeader({
       {/* Content */}
       <div className="relative z-10 flex items-start justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">{title}</h1>
+          <h1 className="text-2xl font-semibold text-gray-900 mb-2">{title}</h1>
           <p className="dark:text-neutral-300">
             Welcome, Admin{" "}
             <span className="font-semibold text-green-600">{username}</span> -

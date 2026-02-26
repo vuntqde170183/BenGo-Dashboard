@@ -53,7 +53,7 @@ export default function SupportCenterPage() {
         <div className="space-y-6 h-[calc(100vh-120px)] flex flex-col">
             <div className="flex justify-between items-center">
                 <div>
-                    <h1 className="text-2xl font-bold text-neutral-300">Trung tâm Hỗ trợ & Khiếu nại</h1>
+                    <h1 className="text-2xl font-semibold text-neutral-300">Trung tâm Hỗ trợ & Khiếu nại</h1>
                     <p className="text-sm text-neutral-400">Xử lý các yêu cầu hỗ trợ và sự cố từ khách hàng/tài xế.</p>
                 </div>
             </div>
@@ -72,7 +72,7 @@ export default function SupportCenterPage() {
                                     key={tab}
                                     onClick={() => setActiveTab(tab)}
                                     className={cn(
-                                        "flex-1 py-1.5 text-xs font-bold rounded-lg transition-all uppercase ",
+                                        "flex-1 py-1.5 text-xs font-semibold rounded-lg transition-all uppercase ",
                                         activeTab === tab ? "bg-primary text-black" : "text-neutral-400 hover:text-neutral-300"
                                     )}
                                 >
@@ -102,7 +102,7 @@ export default function SupportCenterPage() {
                                     )}
                                 >
                                     <div className="flex justify-between items-start mb-1">
-                                        <span className="font-bold text-neutral-300 text-xs">#{ticket.id.slice(-6)}</span>
+                                        <span className="font-semibold text-neutral-300 text-xs">#{ticket.id.slice(-6)}</span>
                                         <Icon path={getStatusIcon(ticket.status)} size={0.6} className={cn(
                                             ticket.status === 'OPEN' ? 'text-red-500' :
                                                 ticket.status === 'IN_PROGRESS' ? 'text-yellow-500' : 'text-green-500'
@@ -127,12 +127,12 @@ export default function SupportCenterPage() {
                                         <Badge className="mb-2 w-fit bg-primary/20 text-primary border-none">PHÂN LOẠI: PHỔ THÔNG</Badge>
                                         <div className="flex items-center gap-2">
                                             <Icon path={mdiMessageProcessing} size={0.8} />
-                                            <span className="text-2xl font-bold text-neutral-300">{selectedTicket.user}</span>
+                                            <span className="text-2xl font-semibold text-neutral-300">{selectedTicket.user}</span>
                                             <span className="text-sm font-normal text-neutral-400">#{selectedTicket.id}</span>
                                         </div>
                                         <p className="text-neutral-400 font-medium mt-1">{selectedTicket.phone}</p>
                                     </div>
-                                    <Badge className={cn("px-3 py-1 text-sm font-bold h-fit",
+                                    <Badge className={cn("px-3 py-1 text-sm font-semibold h-fit",
                                         selectedTicket.status === 'OPEN' ? 'bg-red-500/10 text-red-500 border-red-500/20' :
                                             selectedTicket.status === 'IN_PROGRESS' ? 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20' :
                                                 'bg-green-500/10 text-green-500 border-green-500/20'
@@ -145,7 +145,7 @@ export default function SupportCenterPage() {
                             <CardContent className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar">
                                 <div className="space-y-4">
                                     <div className="bg-darkBackgroundV1/50 rounded-2xl p-4 border border-darkBorderV1">
-                                        <h4 className="text-xs font-bold text-neutral-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+                                        <h4 className="text-xs font-semibold text-neutral-400 uppercase tracking-widest mb-2 flex items-center gap-2">
                                             <Icon path={mdiMessageProcessing} size={0.6} /> Nội dung yêu cầu
                                         </h4>
                                         <p className="text-neutral-300 leading-relaxed text-lg italic">"{selectedTicket.content}"</p>
@@ -158,8 +158,8 @@ export default function SupportCenterPage() {
                                                     <Icon path={mdiPackageVariant} size={0.8} />
                                                 </div>
                                                 <div>
-                                                    <p className="text-xs text-neutral-400 font-bold uppercase">Đơn hàng liên quan</p>
-                                                    <p className="text-primary font-bold">#{selectedTicket.orderId}</p>
+                                                    <p className="text-xs text-neutral-400 font-semibold uppercase">Đơn hàng liên quan</p>
+                                                    <p className="text-primary font-semibold">#{selectedTicket.orderId}</p>
                                                 </div>
                                             </div>
                                             <Button variant="outline" size="sm" className="border-primary/30 text-primary hover:bg-primary/5">
@@ -170,7 +170,7 @@ export default function SupportCenterPage() {
 
                                     <div className="grid grid-cols-1 gap-4">
                                         <div>
-                                            <label className="text-xs font-bold text-neutral-400 uppercase tracking-widest mb-2 block">Ghi chú diễn biến (Nội bộ)</label>
+                                            <label className="text-xs font-semibold text-neutral-400 uppercase tracking-widest mb-2 block">Ghi chú diễn biến (Nội bộ)</label>
                                             <Textarea
                                                 placeholder="Nhập diễn biến xử lý, thông tin từ các bên liên quan..."
                                                 className="bg-darkBackgroundV1 border-darkBorderV1 min-h-[100px] focus:ring-1 focus:ring-primary/40"
@@ -180,7 +180,7 @@ export default function SupportCenterPage() {
                                         </div>
                                         {(activeTab === 'IN_PROGRESS' || activeTab === 'OPEN') && (
                                             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                                                <label className="text-xs font-bold text-neutral-400 uppercase tracking-widest mb-2 block">Hướng giải quyết sau cùng</label>
+                                                <label className="text-xs font-semibold text-neutral-400 uppercase tracking-widest mb-2 block">Hướng giải quyết sau cùng</label>
                                                 <Textarea
                                                     placeholder="Kết quả xử lý để phản hồi khách hàng..."
                                                     className="bg-darkBackgroundV1 border-darkBorderV1 min-h-[100px] focus:ring-1 focus:ring-primary/40 border-dashed border-primary/30"
@@ -197,7 +197,7 @@ export default function SupportCenterPage() {
                                 {selectedTicket.status === 'OPEN' && (
                                     <Button
                                         onClick={() => handleUpdate('IN_PROGRESS')}
-                                        className="flex-1 bg-yellow-500/80 hover:bg-yellow-500 text-black font-bold h-12"
+                                        className="flex-1 bg-yellow-500/80 hover:bg-yellow-500 text-black font-semibold h-12"
                                         disabled={updateMutation.isPending}
                                     >
                                         Tiếp nhận xử lý
@@ -206,7 +206,7 @@ export default function SupportCenterPage() {
                                 {(selectedTicket.status === 'OPEN' || selectedTicket.status === 'IN_PROGRESS') && (
                                     <Button
                                         onClick={() => handleUpdate('RESOLVED')}
-                                        className="flex-1 bg-primary hover:bg-primary/90 text-black font-bold h-12"
+                                        className="flex-1 bg-primary hover:bg-primary/90 text-black font-semibold h-12"
                                         disabled={updateMutation.isPending || !resolution}
                                     >
                                         Đã giải quyết

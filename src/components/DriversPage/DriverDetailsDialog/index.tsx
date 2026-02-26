@@ -341,7 +341,7 @@ export const DriverDetailsDialog = ({
                                     ></iframe>
                                     <button
                                       onClick={openInGoogleMaps}
-                                      className="absolute bottom-4 right-4 bg-white text-black hover:bg-neutral-200 px-4 py-2 rounded-full text-xs font-bold shadow-2xl transition-all flex items-center gap-2 group/btn active:scale-95 z-20"
+                                      className="absolute bottom-4 right-4 bg-white text-black hover:bg-neutral-200 px-4 py-2 rounded-full text-xs font-semibold shadow-2xl transition-all flex items-center gap-2 group/btn active:scale-95 z-20"
                                     >
                                       <Icon path={mdiRouter} size={0.6} />
                                       <span>Xem trên Google Maps</span>
@@ -365,7 +365,7 @@ export const DriverDetailsDialog = ({
                                 <Icon path={mdiNavigation} size={0.8} />
                               </div>
                               <div className="space-y-1">
-                                <p className="text-xs uppercase font-bold text-white ">
+                                <p className="text-xs uppercase font-semibold text-white ">
                                   Vị trí hiện tại
                                 </p>
                                 <p className="font-semibold text-sm text-primary leading-relaxed">

@@ -199,7 +199,7 @@ export function OrderDetailsDialog({
                       size={1.5}
                       className="text-red-500 mb-2"
                     />
-                    <p className="text-red-500 font-bold">ĐƠN HÀNG ĐÃ HỦY</p>
+                    <p className="text-red-500 font-semibold">ĐƠN HÀNG ĐÃ HỦY</p>
                     <p className="text-xs text-red-400/80 mt-1">
                       Lý do: {order.cancelReason || "Không có lý do"}
                     </p>
@@ -246,7 +246,7 @@ export function OrderDetailsDialog({
                             </div>
                             <span
                               className={cn(
-                                "text-xs md:text-xs font-bold mt-2 uppercase tracking-tight transition-colors duration-300",
+                                "text-xs md:text-xs font-semibold mt-2 uppercase tracking-tight transition-colors duration-300",
                                 isActive ? "text-primary" : "text-neutral-400",
                               )}
                             >
@@ -263,7 +263,7 @@ export function OrderDetailsDialog({
               {/* Quick Actions / Status Updates */}
               <div className="flex flex-col md:flex-row gap-4 p-4 rounded-lg bg-darkBackgroundV1/40 border border-darkBorderV1">
                 <div className="flex-1 space-y-2">
-                  <Label className="text-xs font-bold text-white uppercase">
+                  <Label className="text-xs font-semibold text-white uppercase">
                     Cập nhật trạng thái
                   </Label>
                   <Select
@@ -287,7 +287,7 @@ export function OrderDetailsDialog({
                 <div className="w-px bg-darkBorderV1 hidden md:block" />
 
                 <div className="flex-1 space-y-2">
-                  <Label className="text-xs font-bold text-white uppercase">
+                  <Label className="text-xs font-semibold text-white uppercase">
                     Thanh toán
                   </Label>
                   <div className="flex items-center gap-2">
@@ -346,7 +346,7 @@ export function OrderDetailsDialog({
                     )}
                     <button
                       onClick={openInGoogleMaps}
-                      className="absolute bottom-4 right-4 bg-white text-black hover:bg-neutral-200 px-4 py-2 rounded-full text-xs font-bold shadow-2xl transition-all flex items-center gap-2 group/btn active:scale-95 z-20"
+                      className="absolute bottom-4 right-4 bg-white text-black hover:bg-neutral-200 px-4 py-2 rounded-full text-xs font-semibold shadow-2xl transition-all flex items-center gap-2 group/btn active:scale-95 z-20"
                     >
                       <Icon path={mdiRouter} size={0.6} />
                       <span>Xem trên Google Maps</span>
@@ -359,7 +359,7 @@ export function OrderDetailsDialog({
                         <Icon path={mdiLocationExit} size={0.8} />
                       </div>
                       <div className="space-y-1">
-                        <p className="text-xs uppercase font-bold text-white ">
+                        <p className="text-xs uppercase font-semibold text-white ">
                           Địa chỉ đón (A)
                         </p>
                         <p className="font-semibold text-xs text-neutral-400 leading-relaxed">
@@ -372,7 +372,7 @@ export function OrderDetailsDialog({
                         <Icon path={mdiLocationEnter} size={0.8} />
                       </div>
                       <div className="space-y-1">
-                        <p className="text-xs uppercase font-bold text-white ">
+                        <p className="text-xs uppercase font-semibold text-white ">
                           Địa chỉ trả (B)
                         </p>
                         <p className="font-semibold text-xs text-neutral-400 leading-relaxed">
@@ -408,7 +408,7 @@ export function OrderDetailsDialog({
                               `https://api.dicebear.com/7.x/avataaars/svg?seed=${order.customerId?.name}`
                             }
                           />
-                          <AvatarFallback className="bg-primary/5 text-primary font-bold">
+                          <AvatarFallback className="bg-primary/5 text-primary font-semibold">
                             <img
                               src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${order.customerId?.name}`}
                               alt={order.customerId?.name}
@@ -417,7 +417,7 @@ export function OrderDetailsDialog({
                           </AvatarFallback>
                         </Avatar>
                         <div className="space-y-1">
-                          <p className="font-bold text-base text-white leading-none">
+                          <p className="font-semibold text-base text-white leading-none">
                             {order.customerId?.name}
                           </p>
                           <div className="flex items-center gap-3 pt-1">
@@ -472,7 +472,7 @@ export function OrderDetailsDialog({
                                 `https://api.dicebear.com/7.x/avataaars/svg?seed=${order.driverId?.name}`
                               }
                             />
-                            <AvatarFallback className="bg-primary/5 text-primary font-bold">
+                            <AvatarFallback className="bg-primary/5 text-primary font-semibold">
                               <img
                                 src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${order.driverId?.name}`}
                                 alt={order.driverId?.name}
@@ -481,7 +481,7 @@ export function OrderDetailsDialog({
                             </AvatarFallback>
                           </Avatar>
                           <div className="space-y-1">
-                            <p className="font-bold text-base text-white leading-none">
+                            <p className="font-semibold text-base text-white leading-none">
                               {order.driverId?.name}
                             </p>
                             <div className="flex items-center gap-1.5 text-neutral-400 pt-1 group">
@@ -581,11 +581,11 @@ export function OrderDetailsDialog({
                           <div className="p-1.5 rounded bg-primary/5 text-primary">
                             <Icon path={mdiCurrencyUsd} size={0.6} />
                           </div>
-                          <span className="font-bold text-neutral-400 text-sm">
+                          <span className="font-semibold text-neutral-400 text-sm">
                             Tổng cộng
                           </span>
                         </div>
-                        <span className="text-xl font-bold text-primary">
+                        <span className="text-xl font-semibold text-primary">
                           {formatCurrency(order.totalPrice)}
                         </span>
                       </div>

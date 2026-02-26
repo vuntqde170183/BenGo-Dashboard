@@ -78,7 +78,7 @@ export default function DispatcherDashboard() {
         <div className="space-y-6 bg-darkCardV1 p-6 rounded-2xl border border-darkBorderV1">
             <div className="flex justify-between items-center relative pr-24">
                 <div className="z-10">
-                    <h1 className="text-3xl font-bold text-neutral-300">
+                    <h1 className="text-3xl font-semibold text-neutral-300">
                         Trung tâm Điều phối
                     </h1>
                     <p className="text-neutral-400 mt-2 text-base">
@@ -204,17 +204,17 @@ export default function DispatcherDashboard() {
                     </CardHeader>
                     <CardContent className="pt-6 space-y-4">
                         <Link to="/dispatcher/assignment" className="block p-4 rounded-xl bg-primary/5 border border-primary/20 hover:bg-primary/20 transition-all">
-                            <span className="block font-bold text-primary">Phân chuyến thủ công</span>
+                            <span className="block font-semibold text-primary">Phân chuyến thủ công</span>
                             <span className="text-xs text-neutral-400">Gán tài xế cho đơn chờ</span>
                         </Link>
                         <Link to="/dispatcher/orders?status=SPECIAL" className="block p-4 rounded-xl bg-primary/5 border border-primary/20 hover:bg-primary/20 transition-all">
-                            <span className="block font-bold text-primary">Giám sát đơn VIP</span>
+                            <span className="block font-semibold text-primary">Giám sát đơn VIP</span>
                             <span className="text-xs text-neutral-400">Theo dõi chuyến đặc biệt</span>
                         </Link>
                         <div className="pt-4 border-t border-darkBorderV1">
                             <div className="flex justify-between items-center mb-2">
-                                <span className="text-xs text-neutral-400 uppercase font-bold">Hiệu suất đội ngũ</span>
-                                <span className="text-primary font-bold">Tốt</span>
+                                <span className="text-xs text-neutral-400 uppercase font-semibold">Hiệu suất đội ngũ</span>
+                                <span className="text-primary font-semibold">Tốt</span>
                             </div>
                             <div className="w-full bg-darkBackgroundV1 h-1.5 rounded-full overflow-hidden">
                                 <div className="bg-primary h-full w-[85%]" />

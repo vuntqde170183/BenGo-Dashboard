@@ -124,7 +124,7 @@ export default function PricingPage() {
                     <div className="p-2 rounded-lg bg-primary/5 text-primary">
                       {getVehicleIcon(config.vehicleType)}
                     </div>
-                    <span className="font-bold text-lg text-primary tracking-tight">
+                    <span className="font-semibold text-lg text-primary tracking-tight">
                       {getVehicleTypeLabel(config.vehicleType)}
                     </span>
                   </div>
@@ -149,7 +149,7 @@ export default function PricingPage() {
                       <div className="group">
                         <Label
                           htmlFor={`${config.vehicleType}-base`}
-                          className="text-xs font-bold uppercase text-neutral-400 group-focus-within:text-primary transition-colors"
+                          className="text-xs font-semibold uppercase text-neutral-400 group-focus-within:text-primary transition-colors"
                         >
                           Giá cơ bản (VNĐ)
                         </Label>
@@ -164,7 +164,7 @@ export default function PricingPage() {
                       <div className="group">
                         <Label
                           htmlFor={`${config.vehicleType}-km`}
-                          className="text-xs font-bold uppercase text-neutral-400 group-focus-within:text-primary transition-colors"
+                          className="text-xs font-semibold uppercase text-neutral-400 group-focus-within:text-primary transition-colors"
                         >
                           Giá mỗi KM (VNĐ)
                         </Label>
@@ -179,7 +179,7 @@ export default function PricingPage() {
                       <div className="group">
                         <Label
                           htmlFor={`${config.vehicleType}-peak`}
-                          className="text-xs font-bold uppercase text-neutral-400 group-focus-within:text-primary transition-colors"
+                          className="text-xs font-semibold uppercase text-neutral-400 group-focus-within:text-primary transition-colors"
                         >
                           Hệ số giờ cao điểm
                         </Label>
@@ -228,10 +228,10 @@ export default function PricingPage() {
 
                     <div className="grid grid-cols-2 gap-4">
                       <div className="p-3 rounded-xl bg-darkBackgroundV1/40 border border-darkBorderV1/50 flex flex-col items-center justify-center text-center gap-1">
-                        <p className="text-xs uppercase font-bold text-neutral-400  mb-1">
+                        <p className="text-xs uppercase font-semibold text-neutral-400  mb-1">
                           Giá / KM
                         </p>
-                        <p className="font-bold text-white text-sm">
+                        <p className="font-semibold text-white text-sm">
                           {new Intl.NumberFormat("vi-VN", {
                             style: "currency",
                             currency: "VND",
@@ -239,11 +239,11 @@ export default function PricingPage() {
                         </p>
                       </div>
                       <div className="p-3 rounded-xl bg-darkBackgroundV1/40 border border-darkBorderV1/50 flex flex-col items-center justify-center text-center gap-1">
-                        <p className="text-xs uppercase font-bold text-neutral-400  mb-1">
+                        <p className="text-xs uppercase font-semibold text-neutral-400  mb-1">
                           Hệ số cao điểm
                         </p>
                         <div className="flex justify-between items-center w-full">
-                          <p className="font-bold text-primary text-sm italic">
+                          <p className="font-semibold text-primary text-sm italic">
                             x{config.peakHourMultiplier}
                           </p>
                           <span className="text-sm text-green-500 font-medium">

@@ -135,7 +135,7 @@ export const UserTable = ({ user }: UserTableProps) => {
                   </h4>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <span className="text-xs uppercase font-bold text-neutral-400">
+                      <span className="text-xs uppercase font-semibold text-neutral-400">
                         Mặt trước
                       </span>
                       <div className="aspect-video rounded-lg overflow-hidden border border-darkBorderV1">
@@ -157,7 +157,7 @@ export const UserTable = ({ user }: UserTableProps) => {
                       </div>
                     </div>
                     <div className="space-y-2">
-                      <span className="text-xs uppercase font-bold text-neutral-400">
+                      <span className="text-xs uppercase font-semibold text-neutral-400">
                         Mặt sau
                       </span>
                       <div className="aspect-video rounded-lg overflow-hidden border border-darkBorderV1">
@@ -188,7 +188,7 @@ export const UserTable = ({ user }: UserTableProps) => {
                   </h4>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <span className="text-xs uppercase font-bold text-neutral-400">
+                      <span className="text-xs uppercase font-semibold text-neutral-400">
                         Ảnh bằng lái
                       </span>
                       <div className="aspect-video rounded-lg overflow-hidden border border-darkBorderV1">
@@ -206,7 +206,7 @@ export const UserTable = ({ user }: UserTableProps) => {
                       </div>
                     </div>
                     <div className="space-y-2">
-                      <span className="text-xs uppercase font-bold text-neutral-400">
+                      <span className="text-xs uppercase font-semibold text-neutral-400">
                         Ảnh đăng ký xe (Cà vẹt)
                       </span>
                       <div className="aspect-video rounded-lg overflow-hidden border border-darkBorderV1">
