@@ -55,7 +55,7 @@ export default function DashboardLayout({
       <CommonHeader />
 
       {/* Content area below header */}
-      <div className="flex mt-[78px] min-h-[calc(100vh-78px)]">
+      <div className="flex mt-[78px] h-[calc(100vh-78px)]">
         {/* Sidebar */}
         <div
           className={cn(

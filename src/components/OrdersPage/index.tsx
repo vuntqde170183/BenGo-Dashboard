@@ -11,9 +11,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { OrdersTable } from "@/components/OrdersPage/OrdersTable";
+import { OrdersTable, OrdersTableSkeleton } from "@/components/OrdersPage/OrdersTable";
 import { OrderDetailsDialog } from "@/components/OrdersPage/OrderDetailsDialog";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Pagination } from "@/components/ui/pagination";
 import { motion } from "framer-motion";
 import { IconSearch, IconX } from "@tabler/icons-react";
@@ -142,8 +141,8 @@ export default function OrdersPage() {
         transition={{ duration: 0.3 }}
       >
         <div className="flex flex-col gap-4">
-          <div className="flex items-center justify-between w-full">
-            <div className="relative w-full md:w-80">
+          <div className="flex items-center justify-between w-full gap-2">
+            <div className="relative flex-1">
               <Input
                 placeholder="Tìm kiếm theo mã đơn, khách hàng,..."
                 value={searchQuery}
@@ -176,19 +175,7 @@ export default function OrdersPage() {
 
           <Card className="p-0 overflow-hidden border border-lightBorderV1 dark:border-darkBackgroundV1">
             {isLoading ? (
-              <div className="p-4">
-                <div className="flex flex-col gap-4">
-                  {[...Array(5)].map((_, index) => (
-                    <div key={index} className="flex items-center gap-4">
-                      <Skeleton className="h-8 w-8 rounded-full" />
-                      <div className="space-y-2">
-                        <Skeleton className="h-4 w-48" />
-                        <Skeleton className="h-4 w-24" />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <OrdersTableSkeleton />
             ) : (
               <OrdersTable
                 orders={(ordersData as any)?.data || []}

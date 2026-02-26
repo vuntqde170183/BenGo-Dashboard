@@ -78,12 +78,21 @@ export interface IDriverPerformance {
 }
 
 export interface ISupportTicket {
-    id: string;
-    user: string;
-    phone: string;
+    _id: string;
+    userId: {
+        _id: string;
+        name: string;
+        phone: string;
+        email: string;
+        role: string;
+    };
+    subject?: string;
     content: string;
     status: TicketStatus;
+    priority: 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT';
     createdAt: string;
+    updatedAt?: string;
+    attachments?: string[];
     orderId?: string;
     note?: string;
     resolution?: string;
