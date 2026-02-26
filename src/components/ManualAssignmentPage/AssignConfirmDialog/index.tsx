@@ -103,7 +103,9 @@ export function AssignConfirmDialog({
                                 </TableRow>
                                 <TableRow className="bg-primary/5">
                                     <TableCell className="text-primary font-semibold">Tổng tiền</TableCell>
-                                    <TableCell className="text-lg text-primary font-semibold">{formatCurrency(order.totalPrice)}</TableCell>
+                                    <TableCell className="text-lg text-primary font-semibold">
+                                        {formatCurrency(order.totalPrice)}
+                                    </TableCell>
                                 </TableRow>
                             </TableBody>
                         </Table>

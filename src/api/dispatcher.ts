@@ -6,7 +6,8 @@ import {
     ISupportTicket,
     DispatcherOrderStatus,
     TicketStatus,
-    SpecialPriority
+    SpecialPriority,
+    IAssignmentHistory
 } from "@/interface/dispatcher";
 import { sendGet, sendPost, sendPut } from "./axios";
 
@@ -51,4 +52,8 @@ export const dispatcherApi = {
 
     updateSupportTicket: (id: string, data: { status: Exclude<TicketStatus, 'OPEN'>; note?: string; resolution?: string }) =>
         sendPut(`/dispatcher/support/${id}`, data),
+
+    // 6. Assignment History
+    getAssignmentHistory: (params: { page?: number; limit?: number }): Promise<{ data: IAssignmentHistory[], total: number, page: number, limit: number }> =>
+        sendGet("/dispatcher/history", params).then(res => res.data),
 };

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAdminOrders, useAdminSpecialOrders, useCancelOrder } from "@/hooks/useAdmin";
 import {
   Breadcrumb,
@@ -21,6 +21,7 @@ import { DeleteDialog } from "@/components/ui/delete-dialog";
 
 export default function OrdersPage() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("ALL");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(10);
@@ -31,6 +32,20 @@ export default function OrdersPage() {
   const statusParam =
     statusFilter && statusFilter !== "ALL" && statusFilter !== "SPECIAL" ? statusFilter : undefined;
 
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(searchQuery);
+    }, 500);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchQuery]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [debouncedSearch, statusFilter]);
+
   const isSpecial = statusFilter === "SPECIAL";
 
   const {
@@ -39,6 +54,7 @@ export default function OrdersPage() {
     refetch: refetchNormal,
   } = useAdminOrders(
     {
+      search: debouncedSearch,
       status: statusParam,
       page: currentPage,
       limit: pageSize,
@@ -52,6 +68,7 @@ export default function OrdersPage() {
     refetch: refetchSpecial,
   } = useAdminSpecialOrders(
     {
+      search: debouncedSearch,
       page: currentPage,
       limit: pageSize,
     },
@@ -175,7 +192,7 @@ export default function OrdersPage() {
             ) : (
               <OrdersTable
                 orders={(ordersData as any)?.data || []}
-                isSearching={false}
+                isSearching={!!debouncedSearch}
                 onViewDetails={handleViewDetails}
                 onCancel={handleCancel}
                 currentPage={currentPage}
