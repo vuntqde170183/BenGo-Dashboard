@@ -67,7 +67,7 @@ const ORDER_STATUS_STEPS = [
   },
   {
     key: "ACCEPTED",
-    label: "Đã nhận",
+    label: "Chấp nhận",
     icon: mdiPackage,
     color: "bg-blue-500",
     text: "text-blue-500",
