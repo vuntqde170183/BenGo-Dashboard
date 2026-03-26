@@ -41,7 +41,6 @@ export const useDeleteUser = () => {
     mutationFn: (id: string) => adminUserApi.deleteUser(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin", "users"] });
-      toast.success("User deleted successfully");
     },
   });
 };

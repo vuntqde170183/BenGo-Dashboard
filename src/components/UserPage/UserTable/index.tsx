@@ -68,9 +68,9 @@ export const UserTable = ({
             const rowNumber = (currentPage - 1) * pageSize + index + 1;
             return (
               <TableRow
-                key={user.id}
+                key={user.id || user._id}
                 className="cursor-pointer hover:bg-slate-50/50 dark:hover:bg-darkBorderV1/50 transition-colors"
-                onClick={() => onEdit(user.id)}
+                onClick={() => onEdit(user.id || user._id || "")}
               >
                 <TableCell>{rowNumber}</TableCell>
                 <TableCell className="flex items-center gap-2">
@@ -116,7 +116,7 @@ export const UserTable = ({
                         size="icon"
                         onClick={(e) => {
                           e.stopPropagation();
-                          onEdit(user.id);
+                          onEdit(user.id || user._id || "");
                         }}
                       >
                         <Icon path={mdiTableEye} size={0.8} />
@@ -131,7 +131,7 @@ export const UserTable = ({
                         size="icon"
                         onClick={(e) => {
                           e.stopPropagation();
-                          onDelete(user.id);
+                          onDelete(user.id || user._id || "");
                         }}
                       >
                         <Icon path={mdiTrashCanOutline} size={0.8} />

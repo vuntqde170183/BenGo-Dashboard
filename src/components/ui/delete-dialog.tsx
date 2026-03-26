@@ -52,7 +52,7 @@ export const DeleteDialog = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent size="small">
+      <DialogContent className="!max-w-[450px] !w-[450px]">
         <DialogHeader>
           <DialogTitle>
             <Icon path={mdiDeleteForever} size={0.8} />

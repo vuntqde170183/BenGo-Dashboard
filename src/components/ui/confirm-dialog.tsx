@@ -39,7 +39,7 @@ export const ConfirmDialog = ({
 }: ConfirmDialogProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent size="small">
+      <DialogContent className="!max-w-[450px] !w-[450px]">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <IconAlertTriangle

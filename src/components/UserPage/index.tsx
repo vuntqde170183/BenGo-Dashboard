@@ -48,7 +48,7 @@ export default function UserPage() {
     page: currentPage,
     limit: pageSize,
   });
-  const { mutate: deleteUserMutation, isPending: isDeleting } = useDeleteUser();
+  const { mutateAsync: deleteUserMutation, isPending: isDeleting } = useDeleteUser();
 
   useEffect(() => {
     setCurrentPage(1);
@@ -78,12 +78,11 @@ export default function UserPage() {
 
   const confirmDelete = async () => {
     if (!selectedUserId) {
-      return Promise.resolve();
+      return;
     }
 
     try {
-      deleteUserMutation(selectedUserId);
-      return Promise.resolve();
+      await deleteUserMutation(selectedUserId);
     } catch (error) {
       throw error;
     }
