@@ -13,6 +13,7 @@ export const useAdminUsers = (params: any) => {
   return useQuery({
     queryKey: ["admin", "users", params],
     queryFn: () => adminUserApi.getUsers(params),
+    refetchInterval: 4000,
   });
 };
 
@@ -89,6 +90,7 @@ export const useAdminDrivers = (params: any) => {
   return useQuery({
     queryKey: ["admin", "drivers", params],
     queryFn: () => adminDriverApi.getDrivers(params),
+    refetchInterval: 4000,
   });
 };
 
@@ -131,6 +133,7 @@ export const useAdminOrders = (params: any, options?: any) => {
   return useQuery({
     queryKey: ["admin", "orders", params],
     queryFn: () => adminOrderApi.getOrders(params),
+    refetchInterval: 4000,
     ...options,
   });
 };
@@ -139,6 +142,7 @@ export const useAdminSpecialOrders = (params: any, options?: any) => {
   return useQuery({
     queryKey: ["admin", "orders", "special", params],
     queryFn: () => adminOrderApi.getSpecialOrders(params),
+    refetchInterval: 4000,
     ...options,
   });
 };
@@ -201,6 +205,7 @@ export const useAdminPromotions = (params?: any) => {
   return useQuery({
     queryKey: ["admin", "promotions", params],
     queryFn: () => adminPromotionApi.getPromotions(params),
+    refetchInterval: 4000,
   });
 };
 
@@ -242,6 +247,7 @@ export const useAdminTickets = (params: any) => {
   return useQuery({
     queryKey: ["admin", "tickets", params],
     queryFn: () => adminTicketApi.getTickets(params),
+    refetchInterval: 4000,
   });
 };
 
@@ -280,6 +286,7 @@ export const useDashboardOverview = () => {
   return useQuery({
     queryKey: ["admin", "dashboard"],
     queryFn: () => adminReportApi.getDashboard(),
+    refetchInterval: 4000,
   });
 };
 
@@ -289,5 +296,6 @@ export const useAdminReports = (type: TReportType, period?: TReportPeriod) => {
     queryKey: ["admin", "reports", type, period],
     queryFn: () => adminReportApi.getReports(type, period),
     enabled: !!type,
+    refetchInterval: 4000,
   });
 };

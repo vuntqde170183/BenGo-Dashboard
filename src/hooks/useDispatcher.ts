@@ -12,6 +12,7 @@ export const useDispatcherStats = () => {
     return useQuery({
         queryKey: ["dispatcher", "stats"],
         queryFn: () => dispatcherApi.getDashboardStats(),
+        refetchInterval: 4000,
     });
 };
 
@@ -20,6 +21,7 @@ export const useDispatcherOrders = (params: { status?: DispatcherOrderStatus; pa
     return useQuery({
         queryKey: ["dispatcher", "orders", params],
         queryFn: () => dispatcherApi.getOrders(params),
+        refetchInterval: 4000,
     });
 };
 
@@ -51,6 +53,7 @@ export const useSpecialOrders = () => {
     return useQuery({
         queryKey: ["dispatcher", "orders", "special"],
         queryFn: () => dispatcherApi.getSpecialOrders(),
+        refetchInterval: 4000,
     });
 };
 
@@ -89,6 +92,7 @@ export const useDriverLocations = (params: { lat: number; lng: number; radius: n
         queryKey: ["dispatcher", "drivers", "locations", params],
         queryFn: () => dispatcherApi.getDriverLocations(params),
         enabled: !!params.lat && !!params.lng,
+        refetchInterval: 4000,
     });
 };
 
@@ -96,6 +100,7 @@ export const useAllDrivers = () => {
     return useQuery({
         queryKey: ["dispatcher", "drivers", "all"],
         queryFn: () => dispatcherApi.getAllDrivers(),
+        refetchInterval: 4000,
     });
 };
 
@@ -112,6 +117,7 @@ export const useSupportTickets = (params: { status?: TicketStatus }) => {
     return useQuery({
         queryKey: ["dispatcher", "support", params],
         queryFn: () => dispatcherApi.getSupportTickets(params),
+        refetchInterval: 4000,
     });
 };
 
