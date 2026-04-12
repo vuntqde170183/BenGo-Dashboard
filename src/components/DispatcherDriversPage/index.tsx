@@ -165,7 +165,7 @@ export default function DispatcherDriversPage() {
                             <Card className="bg-darkCardV1 border-darkBorderV1 h-[340px] relative overflow-hidden flex flex-col items-center justify-center border-dashed border-2">
                                 <div className="absolute inset-0 bg-darkBackgroundV1/40 animate-pulse opacity-20" />
                                 <Icon path={mdiMapMarker} size={3} className="text-primary/20 mb-4" />
-                                <p className="text-neutral-400 font-semibold uppercase tracking-widest text-sm">Vị trí thời gian thực</p>
+                                <p className="text-neutral-400 font-semibold uppercase text-sm">Vị trí thời gian thực</p>
                                 <p className="text-xs text-neutral-400 mt-1 max-w-[300px] text-center italic">Bản đồ đang được tải ứng dụng tọa độ {drivers?.find(d => d.id === selectedDriverId)?.location.lat}, {drivers?.find(d => d.id === selectedDriverId)?.location.lng}</p>
 
                                 <div className="absolute bottom-4 left-4 right-4 bg-darkBackgroundV1/80 border border-darkBorderV1 p-3 rounded-xl flex items-center justify-between">
@@ -182,7 +182,7 @@ export default function DispatcherDriversPage() {
                     ) : (
                         <div className="h-full flex flex-col items-center justify-center text-neutral-400 p-20 gap-4 opacity-30 border-2 border-dashed border-darkBorderV1 rounded-3xl">
                             <Icon path={mdiCarSide} size={4} />
-                            <p className="text-xl font-semibold uppercase tracking-widest">Chọn tài xế để xem chi tiết</p>
+                            <p className="text-xl font-semibold uppercase">Chọn tài xế để xem chi tiết</p>
                         </div>
                     )}
                 </div>

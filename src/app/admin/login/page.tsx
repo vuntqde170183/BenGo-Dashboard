@@ -154,7 +154,7 @@ export default function LoginPage() {
                 <div>
                   <Label
                     htmlFor="email"
-                    className="text-sm text-neutral-400 uppercase tracking-wide"
+                    className="text-sm text-neutral-400 uppercase"
                   >
                     Email
                   </Label>
@@ -184,7 +184,7 @@ export default function LoginPage() {
                 <div>
                   <Label
                     htmlFor="password"
-                    className="text-sm text-neutral-400 uppercase tracking-wide"
+                    className="text-sm text-neutral-400 uppercase"
                   >
                     Mật khẩu
                   </Label>

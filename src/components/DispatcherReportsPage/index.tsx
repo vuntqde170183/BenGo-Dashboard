@@ -36,7 +36,7 @@ export default function DispatcherReportsPage() {
             <Card className="bg-darkCardV1 border-darkBorderV1 shadow-xl">
                 <CardContent className="p-4 flex flex-wrap items-end gap-6">
                     <div className="space-y-1.5">
-                        <label className="text-xs font-semibold text-neutral-400 uppercase tracking-widest">Chọn tài xế</label>
+                        <label className="text-xs font-semibold text-neutral-400 uppercase">Chọn tài xế</label>
                         <Select value={driverId} onValueChange={setDriverId}>
                             <SelectTrigger className="w-[240px] bg-darkBackgroundV1 border-darkBorderV1 h-11 rounded-xl focus:ring-primary/20">
                                 <SelectValue placeholder="Chọn tài xế hệ thống..." />
@@ -50,12 +50,12 @@ export default function DispatcherReportsPage() {
                     </div>
 
                     <div className="space-y-1.5">
-                        <label className="text-xs font-semibold text-neutral-400 uppercase tracking-widest">Từ ngày</label>
+                        <label className="text-xs font-semibold text-neutral-400 uppercase">Từ ngày</label>
                         <DatePicker date={dateFrom} onDateChange={setDateFrom} />
                     </div>
 
                     <div className="space-y-1.5">
-                        <label className="text-xs font-semibold text-neutral-400 uppercase tracking-widest">Đến ngày</label>
+                        <label className="text-xs font-semibold text-neutral-400 uppercase">Đến ngày</label>
                         <DatePicker date={dateTo} onDateChange={setDateTo} />
                     </div>
 
@@ -88,7 +88,7 @@ export default function DispatcherReportsPage() {
                                 </div>
                                 <Icon path={mdiPackageVariant} size={1.5} className="text-primary mb-2" />
                                 {isLoadingPerf ? <LoadingSpinner /> : <p className="text-4xl font-black text-neutral-300">{performance?.totalTrips || 0}</p>}
-                                <p className="text-xs text-neutral-400 font-semibold uppercase tracking-widest">Tổng chuyến gán</p>
+                                <p className="text-xs text-neutral-400 font-semibold uppercase">Tổng chuyến gán</p>
                             </CardContent>
                         </Card>
 
@@ -99,7 +99,7 @@ export default function DispatcherReportsPage() {
                                 </div>
                                 <Icon path={mdiCurrencyUsd} size={1.5} className="text-emerald-500 mb-2" />
                                 {isLoadingPerf ? <LoadingSpinner /> : <p className="text-4xl font-black text-emerald-500">{formatCurrency(performance?.totalEarnings || 0)}</p>}
-                                <p className="text-xs text-neutral-400 font-semibold uppercase tracking-widest">Thu nhập gộp</p>
+                                <p className="text-xs text-neutral-400 font-semibold uppercase">Thu nhập gộp</p>
                             </CardContent>
                         </Card>
 
@@ -112,7 +112,7 @@ export default function DispatcherReportsPage() {
                                 <div className="flex items-center gap-2">
                                     {isLoadingPerf ? <LoadingSpinner /> : <p className="text-4xl font-black text-yellow-500">{performance?.rating || 0}</p>}
                                 </div>
-                                <p className="text-xs text-neutral-400 font-semibold uppercase tracking-widest">Đánh giá sao</p>
+                                <p className="text-xs text-neutral-400 font-semibold uppercase">Đánh giá sao</p>
                             </CardContent>
                         </Card>
 
@@ -123,7 +123,7 @@ export default function DispatcherReportsPage() {
                                 </div>
                                 <Icon path={mdiChartBar} size={1.5} className="text-blue-500 mb-2" />
                                 {isLoadingPerf ? <LoadingSpinner /> : <p className="text-4xl font-black text-blue-500">{performance?.acceptanceRate || 0}%</p>}
-                                <p className="text-xs text-neutral-400 font-semibold uppercase tracking-widest">Tỷ lệ hoàn thành</p>
+                                <p className="text-xs text-neutral-400 font-semibold uppercase">Tỷ lệ hoàn thành</p>
                             </CardContent>
                         </Card>
                     </div>
@@ -170,7 +170,7 @@ export default function DispatcherReportsPage() {
             ) : (
                 <div className="py-40 flex flex-col items-center justify-center text-neutral-400 gap-4 opacity-30 border-2 border-dashed border-darkBorderV1 rounded-3xl">
                     <Icon path={mdiChartBar} size={4} />
-                    <p className="text-xl font-semibold uppercase tracking-widest">Vui lòng chọn tài xế để xem báo cáo</p>
+                    <p className="text-xl font-semibold uppercase">Vui lòng chọn tài xế để xem báo cáo</p>
                 </div>
             )}
         </div>

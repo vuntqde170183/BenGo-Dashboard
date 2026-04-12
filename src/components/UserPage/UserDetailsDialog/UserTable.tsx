@@ -4,11 +4,11 @@ import {
   IconActivity,
   IconStar,
   IconTruck,
-  IconBuildingBank,
-  IconShieldCheck,
+  IconBuildingBank
 } from "@tabler/icons-react";
 import { formatDate, formatCurrency } from "@/lib/format";
-import { getRoleBadge } from "@/lib/badge-helpers";
+import { getRoleBadge, getStatusBadge } from "@/lib/badge-helpers";
+import { Badge } from "@/components/ui/badge";
 
 interface UserTableProps {
   user: any; // Using any to access extended fields not in IUser yet
@@ -20,7 +20,9 @@ export const UserTable = ({ user }: UserTableProps) => {
       <TableCell className="text-neutral-300 w-1/3 border-none font-semibold">
         {label}
       </TableCell>
-      <TableCell className="text-neutral-400 border-none">{value}</TableCell>
+      <TableCell>
+        {value}
+      </TableCell>
     </TableRow>
   );
 
@@ -38,7 +40,7 @@ export const UserTable = ({ user }: UserTableProps) => {
         </CardHeader>
         <CardContent className="space-y-4 pt-4">
           {/* User Header */}
-          <div className="flex items-center gap-4 pb-4 border-b border-b-darkBorderV1">
+          <div className="flex items-center gap-4">
             <div className="w-20 h-20 border border-darkBorderV1 flex-shrink-0 rounded-full bg-slate-100 flex items-center justify-center overflow-hidden">
               <img
                 src={
@@ -62,27 +64,39 @@ export const UserTable = ({ user }: UserTableProps) => {
 
           <Table>
             <TableBody>
-              {renderTableRow("Họ tên", user.name)}
-              {renderTableRow("Số điện thoại", user.phone)}
+              {renderTableRow("Họ tên", <Badge variant="neutral">
+                {user.name}</Badge>)}
+              {renderTableRow("Số điện thoại", <Badge variant="neutral">
+                {user.phone}</Badge>)}
               {renderTableRow(
                 "Số dư ví",
-                <span className="font-medium text-white">
+                <Badge variant="neutral">
                   {formatCurrency(user.walletBalance || 0)}
-                </span>,
+                </Badge>,
               )}
               {user.role === "DRIVER" &&
                 renderTableRow(
                   "Đánh giá",
-                  <div className="flex items-center gap-1">
-                    <span className="font-semibold text-yellow-400">
-                      {profile?.rating || user.rating || 5}
-                    </span>
-                    <IconStar className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-                  </div>,
+                  <Badge variant="amber">
+                    {profile?.rating || user.rating || 5} <IconStar className="w-3 h-3 text-yellow-400 fill-yellow-400" /></Badge>
                 )}
               {renderTableRow(
-                "Ngày tham gia",
-                formatDate(user.createdAt || ""),
+                "Trạng thái hoạt động",
+                <Badge variant={user.active ? "green" : "red"}>
+                  {user.active ? "Hoạt động" : "Bị khóa"}
+                </Badge>
+              )}
+              {renderTableRow(
+                "Tham gia",
+                <Badge variant="neutral">
+                  {formatDate(user.createdAt || "")}
+                </Badge>,
+              )}
+              {renderTableRow(
+                "Cập nhật",
+                <Badge variant="neutral">
+                  {formatDate(user.updatedAt || "")}
+                </Badge>,
               )}
             </TableBody>
           </Table>
@@ -105,23 +119,41 @@ export const UserTable = ({ user }: UserTableProps) => {
                 <TableBody>
                   {renderTableRow(
                     "Loại xe",
-                    profile?.vehicleType || user.vehicleType,
+                    <Badge variant="neutral">
+                      {profile?.vehicleType || user.vehicleType}
+                    </Badge>
+                  )}
+                  {renderTableRow(
+                    "Trạng thái hồ sơ",
+                    getStatusBadge(profile?.status || user.status),
+                  )}
+                  {renderTableRow(
+                    "Trạng thái hoạt động",
+                    <Badge variant={profile?.isOnline ? "green" : "neutral"}>
+                      {profile?.isOnline ? "Trực tuyến" : "Ngoại tuyến"}
+                    </Badge>
                   )}
                   {renderTableRow(
                     "Biển số xe",
-                    profile?.plateNumber || user.plateNumber,
+                    <Badge variant="neutral">
+                      {profile?.plateNumber || user.plateNumber}
+                    </Badge>
                   )}
                   {renderTableRow(
                     "Số CCCD",
-                    profile?.identityNumber ||
-                    user.identityNumber ||
-                    "Chưa cập nhật",
+                    <Badge variant="neutral">
+                      {profile?.identityNumber ||
+                        user.identityNumber ||
+                        "Chưa cập nhật"}
+                    </Badge>
                   )}
                   {renderTableRow(
                     "Số bằng lái",
-                    profile?.drivingLicenseNumber ||
-                    user.drivingLicenseNumber ||
-                    "Chưa cập nhật",
+                    <Badge variant="neutral">
+                      {profile?.drivingLicenseNumber ||
+                        user.drivingLicenseNumber ||
+                        "Chưa cập nhật"}
+                    </Badge>
                   )}
                 </TableBody>
               </Table>
@@ -129,9 +161,8 @@ export const UserTable = ({ user }: UserTableProps) => {
               {/* Document Images */}
               <div className="mt-6 space-y-4">
                 <div>
-                  <h4 className="text-sm font-semibold mb-3 text-primary flex items-center gap-2">
-                    <IconShieldCheck className="h-4 w-4 text-primary" /> Ảnh
-                    CCCD
+                  <h4 className="text-sm font-semibold mb-3 text-primary">
+                    Ảnh CCCD
                   </h4>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
@@ -182,9 +213,8 @@ export const UserTable = ({ user }: UserTableProps) => {
                 </div>
 
                 <div>
-                  <h4 className="text-sm font-semibold mb-3 text-primary flex items-center gap-2">
-                    <IconShieldCheck className="h-4 w-4 text-primary" /> Giấy tờ
-                    xe
+                  <h4 className="text-sm font-semibold mb-3 text-primary">
+                    Giấy tờ xe
                   </h4>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
@@ -248,21 +278,27 @@ export const UserTable = ({ user }: UserTableProps) => {
                 <TableBody>
                   {renderTableRow(
                     "Ngân hàng",
-                    profile?.bankInfo?.bankName ||
-                    user.bankInfo?.bankName ||
-                    "Chưa cập nhật",
+                    <Badge variant="neutral">
+                      {profile?.bankInfo?.bankName ||
+                        user.bankInfo?.bankName ||
+                        "Chưa cập nhật"}
+                    </Badge>
                   )}
                   {renderTableRow(
                     "Số tài khoản",
-                    profile?.bankInfo?.accountNumber ||
-                    user.bankInfo?.accountNumber ||
-                    "Chưa cập nhật",
+                    <Badge variant="neutral">
+                      {profile?.bankInfo?.accountNumber ||
+                        user.bankInfo?.accountNumber ||
+                        "Chưa cập nhật"}
+                    </Badge>
                   )}
                   {renderTableRow(
                     "Chủ tài khoản",
-                    profile?.bankInfo?.accountHolder ||
-                    user.bankInfo?.accountHolder ||
-                    "Chưa cập nhật",
+                    <Badge variant="neutral">
+                      {profile?.bankInfo?.accountHolder ||
+                        user.bankInfo?.accountHolder ||
+                        "Chưa cập nhật"}
+                    </Badge>
                   )}
                 </TableBody>
               </Table>

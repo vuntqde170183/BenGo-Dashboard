@@ -177,8 +177,8 @@ export default function DriversPage() {
         transition={{ duration: 0.3 }}
       >
         <div className="flex flex-col gap-4">
-          <div className="flex items-center justify-between gap-4 w-full md:w-auto">
-            <div className="relative w-full md:w-96">
+          <div className="flex items-center justify-between gap-3 w-full md:w-auto">
+            <div className="relative md:min-w-96 w-full flex-1">
               <Input
                 placeholder="Tìm kiếm theo tên, email, biển số xe..."
                 value={searchQuery}

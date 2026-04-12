@@ -6,11 +6,7 @@ import {
 	mdiPackageVariant,
 	mdiCurrencyUsd,
 	mdiGift,
-	mdiTicket,
-	mdiViewQuilt,
-	mdiChartBar,
-	mdiCog,
-	mdiTarget
+	mdiTicket, mdiChartBar, mdiTarget
 } from "@mdi/js";
 
 export const getAdminDashboardMenuItems = (): MenuItem[] => [
@@ -55,12 +51,6 @@ export const getAdminDashboardMenuItems = (): MenuItem[] => [
 		name: "Quản lý Ticket",
 		path: "/admin/tickets",
 		icon: mdiTicket,
-	},
-	{
-		id: "content-management",
-		name: "Quản lý nội dung",
-		path: "/admin/content",
-		icon: mdiViewQuilt,
 	},
 ];
 

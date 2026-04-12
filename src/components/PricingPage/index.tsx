@@ -215,7 +215,7 @@ export default function PricingPage() {
                 ) : (
                   <div className="space-y-4">
                     <div className="flex flex-col items-center justify-center py-2 text-center border-b border-darkBorderV1/50 pb-6">
-                      <p className="text-sm font-medium text-neutral-400 mb-1 uppercase tracking-widest">
+                      <p className="text-sm font-medium text-neutral-400 mb-1 uppercase">
                         Giá cơ bản
                       </p>
                       <p className="text-3xl font-black text-white">

@@ -103,6 +103,7 @@ export interface IUpdateUserBody {
     accountNumber: string;
     accountHolder: string;
   };
+  status?: DriverStatus | string;
   // Legacy or other
   studentId?: string;
   fullName?: string;
