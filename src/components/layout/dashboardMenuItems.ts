@@ -5,8 +5,7 @@ import {
 	mdiCarSide,
 	mdiPackageVariant,
 	mdiCurrencyUsd,
-	mdiGift,
-	mdiTicket, mdiChartBar, mdiTarget
+	mdiGift, mdiChartBar, mdiTarget
 } from "@mdi/js";
 
 export const getAdminDashboardMenuItems = (): MenuItem[] => [
@@ -46,12 +45,12 @@ export const getAdminDashboardMenuItems = (): MenuItem[] => [
 		path: "/admin/promotions",
 		icon: mdiGift,
 	},
-	{
-		id: "support-tickets",
-		name: "Quản lý Ticket",
-		path: "/admin/tickets",
-		icon: mdiTicket,
-	},
+	// {
+	// 	id: "support-tickets",
+	// 	name: "Quản lý Ticket",
+	// 	path: "/admin/tickets",
+	// 	icon: mdiTicket,
+	// },
 ];
 
 export const getDispatcherDashboardMenuItems = (): MenuItem[] => [
@@ -79,12 +78,12 @@ export const getDispatcherDashboardMenuItems = (): MenuItem[] => [
 		path: "/dispatcher/assignment",
 		icon: mdiTarget,
 	},
-	{
-		id: "support-tickets",
-		name: "Trung tâm hỗ trợ",
-		path: "/dispatcher/support",
-		icon: mdiTicket,
-	},
+	// {
+	// 	id: "support-tickets",
+	// 	name: "Trung tâm hỗ trợ",
+	// 	path: "/dispatcher/support",
+	// 	icon: mdiTicket,
+	// },
 	{
 		id: "reports",
 		name: "Báo cáo hiệu suất",
