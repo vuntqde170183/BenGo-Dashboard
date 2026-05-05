@@ -4,8 +4,8 @@ export type VehicleType = 'BIKE' | 'VAN' | 'TRUCK';
 export type OrderStatus = 'PENDING' | 'ACCEPTED' | 'PICKED_UP' | 'DELIVERED' | 'CANCELLED';
 export type TicketStatus = 'OPEN' | 'IN_PROGRESS' | 'RESOLVED' | 'CLOSED';
 export type TicketPriority = 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT';
-export type TReportType = 'REVENUE' | 'ALL';
-export type TReportPeriod = 'WEEK' | 'MONTH' | 'YEAR';
+export type TReportType = 'REVENUE' | 'ALL' | 'DRIVERS' | 'CUSTOMERS' | 'ORDERS';
+export type TReportPeriod = 'WEEK' | 'MONTH' | 'YEAR' | 'CUSTOM';
 
 export interface IDriver {
   _id: string;
@@ -107,6 +107,11 @@ export interface IReportResponse {
       VAN: number;
       TRUCK: number;
     };
+    byPaymentMethod: {
+      CASH: number;
+      WALLET: number;
+      QR: number;
+    };
     chartData: Array<{
       date: string;
       value: number;
@@ -133,4 +138,63 @@ export interface IDashboardOverview {
   activeOrders: number;
   revenue: number;
   pendingTickets: number;
+}
+
+export interface IDashboardSummary {
+  revenue: { total: number; net: number; growth: number };
+  orders: { total: number; completed: number; cancelled: number };
+  users: { new: number; active: number };
+  drivers: { online: number; active: number };
+}
+
+export interface IChartDataPoint {
+  label: string;
+  value: number;
+  secondaryValue?: number;
+}
+
+export interface IRevenueGrowth {
+  summary: {
+    totalRevenue: number;
+    growthPercentage: number;
+    currentPeriodRevenue: number;
+  };
+  chartData: Array<{
+    date: string;
+    value: number;
+    orderCount: number;
+  }>;
+}
+
+export interface IDriverPerformance {
+  driverId: string;
+  name: string;
+  phone: string;
+  completedOrders: number;
+  revenue: number;
+  rating: number;
+  status: DriverStatus;
+  cancellationRate: string;
+}
+
+export interface IReportOrder {
+  orderId: string;
+  customerName: string;
+  driverName: string | null;
+  pickupAddress: string;
+  totalPrice: number;
+  platformFee: number;
+  paymentMethod: 'CASH' | 'WALLET' | 'QR';
+  status: OrderStatus;
+  createdAt: string;
+}
+
+export interface ICustomerLoyalty {
+  customerId: string;
+  name: string;
+  phone: string;
+  totalOrders: number;
+  totalSpending: number;
+  lastOrder: string;
+  rank: 'BRONZE' | 'SILVER' | 'GOLD' | 'PLATINUM';
 }

@@ -299,3 +299,46 @@ export const useAdminReports = (type: TReportType, period?: TReportPeriod) => {
     refetchInterval: 4000,
   });
 };
+
+export const useDashboardSummary = (params: { startDate?: string; endDate?: string }) => {
+  return useQuery({
+    queryKey: ["admin", "reports", "summary", params],
+    queryFn: () => adminReportApi.getSummary(params),
+  });
+};
+
+export const useReportCharts = (params: { type: 'REVENUE' | 'ORDERS' | 'USERS'; groupBy: 'HOUR' | 'DAY' | 'MONTH' }) => {
+  return useQuery({
+    queryKey: ["admin", "reports", "charts", params],
+    queryFn: () => adminReportApi.getCharts(params),
+  });
+};
+
+export const useRevenueGrowth = (params: { period?: 'WEEK' | 'MONTH' | 'YEAR'; startDate?: string; endDate?: string }) => {
+  return useQuery({
+    queryKey: ["admin", "reports", "revenue-growth", params],
+    queryFn: () => adminReportApi.getRevenueGrowth(params),
+  });
+};
+
+export const useDriversPerformance = (params: any) => {
+  return useQuery({
+    queryKey: ["admin", "reports", "drivers-performance", params],
+    queryFn: () => adminReportApi.getDriversPerformance(params),
+  });
+};
+
+export const useReportOrders = (params: any) => {
+  return useQuery({
+    queryKey: ["admin", "reports", "orders", params],
+    queryFn: () => adminReportApi.getReportOrders(params),
+  });
+};
+
+export const useCustomersLoyalty = (params: { limit?: number }) => {
+  return useQuery({
+    queryKey: ["admin", "reports", "customers-loyalty", params],
+    queryFn: () => adminReportApi.getCustomersLoyalty(params),
+  });
+};
+
