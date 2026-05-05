@@ -54,8 +54,8 @@ export const UserTable = ({ user }: UserTableProps) => {
             </div>
             <div className="flex-1">
               <h3 className="text-lg font-semibold text-white">{user.name}</h3>
-              <p className="text-sm text-neutral-400">
-                {user.email || "Chưa cập nhật email"}
+              <p className={`text-sm text-neutral-400 ${!user.email ? 'italic' : ''}`}>
+                {user.email || "Chưa thiết lập email"}
               </p>
               <div className="flex items-center gap-2 mt-2">
                 {getRoleBadge(user.role)}
@@ -135,14 +135,14 @@ export const UserTable = ({ user }: UserTableProps) => {
                 )}
                 {renderTableRow(
                   "Số CCCD",
-                  <Badge variant="neutral">
-                    {profile?.identityNumber || "Chưa cập nhật"}
+                  <Badge variant="neutral" className={!profile?.identityNumber ? "text-neutral-400 italic font-normal" : ""}>
+                    {profile?.identityNumber || "Chưa thiết lập"}
                   </Badge>
                 )}
                 {renderTableRow(
                   "Số bằng lái",
-                  <Badge variant="neutral">
-                    {profile?.drivingLicenseNumber || "Chưa cập nhật"}
+                  <Badge variant="neutral" className={!profile?.drivingLicenseNumber ? "text-neutral-400 italic font-normal" : ""}>
+                    {profile?.drivingLicenseNumber || "Chưa thiết lập"}
                   </Badge>
                 )}
                 {profile?.rejectionReason && renderTableRow(
@@ -163,15 +163,21 @@ export const UserTable = ({ user }: UserTableProps) => {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="space-y-1">
                   <p className="text-xs text-neutral-400 uppercase font-bold">Ngân hàng</p>
-                  <p className="text-sm font-medium">{profile?.bankInfo?.bankName || "N/A"}</p>
+                  <p className={`text-sm font-medium ${!profile?.bankInfo?.bankName ? "text-neutral-400 italic font-normal" : ""}`}>
+                    {profile?.bankInfo?.bankName || "Chưa thiết lập"}
+                  </p>
                 </div>
                 <div className="space-y-1">
                   <p className="text-xs text-neutral-400 uppercase font-bold">Số tài khoản</p>
-                  <p className="text-sm font-medium">{profile?.bankInfo?.accountNumber || "N/A"}</p>
+                  <p className={`text-sm font-medium ${!profile?.bankInfo?.accountNumber ? "text-neutral-400 italic font-normal" : ""}`}>
+                    {profile?.bankInfo?.accountNumber || "Chưa thiết lập"}
+                  </p>
                 </div>
                 <div className="space-y-1">
                   <p className="text-xs text-neutral-400 uppercase font-bold">Chủ tài khoản</p>
-                  <p className="text-sm font-medium">{profile?.bankInfo?.accountHolder || "N/A"}</p>
+                  <p className={`text-sm font-medium ${!profile?.bankInfo?.accountHolder ? "text-neutral-400 italic font-normal" : ""}`}>
+                    {profile?.bankInfo?.accountHolder || "Chưa thiết lập"}
+                  </p>
                 </div>
               </div>
             </div>
@@ -190,7 +196,7 @@ export const UserTable = ({ user }: UserTableProps) => {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-neutral-500 text-xs italic">
+                    <div className="w-full h-full flex items-center justify-center text-neutral-400 text-sm italic">
                       Trống
                     </div>
                   )}
@@ -209,7 +215,7 @@ export const UserTable = ({ user }: UserTableProps) => {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-neutral-500 text-xs italic">
+                    <div className="w-full h-full flex items-center justify-center text-neutral-400 text-sm italic">
                       Trống
                     </div>
                   )}
@@ -228,7 +234,7 @@ export const UserTable = ({ user }: UserTableProps) => {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-neutral-500 text-xs italic">
+                    <div className="w-full h-full flex items-center justify-center text-neutral-400 text-sm italic">
                       Trống
                     </div>
                   )}
@@ -277,18 +283,18 @@ export const UserTable = ({ user }: UserTableProps) => {
                   )}
                   {renderTableRow(
                     "Số CCCD",
-                    <Badge variant="neutral">
+                    <Badge variant="neutral" className={!(profile?.identityNumber || user.identityNumber) ? "text-neutral-400 italic font-normal" : ""}>
                       {profile?.identityNumber ||
                         user.identityNumber ||
-                        "Chưa cập nhật"}
+                        "Chưa thiết lập"}
                     </Badge>
                   )}
                   {renderTableRow(
                     "Số bằng lái",
-                    <Badge variant="neutral">
+                    <Badge variant="neutral" className={!(profile?.drivingLicenseNumber || user.drivingLicenseNumber) ? "text-neutral-400 italic font-normal" : ""}>
                       {profile?.drivingLicenseNumber ||
                         user.drivingLicenseNumber ||
-                        "Chưa cập nhật"}
+                        "Chưa thiết lập"}
                     </Badge>
                   )}
                 </TableBody>
@@ -318,7 +324,7 @@ export const UserTable = ({ user }: UserTableProps) => {
                           />
                         ) : (
                           <div className="w-full h-full bg-neutral-100 dark:bg-darkBorderV1 flex items-center justify-center text-neutral-400 italic text-sm">
-                            Chưa cập nhật
+                            Chưa thiết lập
                           </div>
                         )}
                       </div>
@@ -340,7 +346,7 @@ export const UserTable = ({ user }: UserTableProps) => {
                           />
                         ) : (
                           <div className="w-full h-full bg-neutral-100 dark:bg-darkBorderV1 flex items-center justify-center text-neutral-400 italic text-sm">
-                            Chưa cập nhật
+                            Chưa thiết lập
                           </div>
                         )}
                       </div>
@@ -366,7 +372,7 @@ export const UserTable = ({ user }: UserTableProps) => {
                           />
                         ) : (
                           <div className="w-full h-full bg-neutral-100 dark:bg-darkBorderV1  flex items-center justify-center text-neutral-400 italic text-sm">
-                            Chưa cập nhật
+                            Chưa thiết lập
                           </div>
                         )}
                       </div>
@@ -388,7 +394,7 @@ export const UserTable = ({ user }: UserTableProps) => {
                           />
                         ) : (
                           <div className="w-full h-full bg-neutral-100 dark:bg-darkBorderV1 flex items-center justify-center text-neutral-400 italic text-sm">
-                            Chưa cập nhật
+                            Chưa thiết lập
                           </div>
                         )}
                       </div>
@@ -414,26 +420,26 @@ export const UserTable = ({ user }: UserTableProps) => {
                 <TableBody>
                   {renderTableRow(
                     "Ngân hàng",
-                    <Badge variant="neutral">
+                    <Badge variant="neutral" className={!(profile?.bankInfo?.bankName || user.bankInfo?.bankName) ? "text-neutral-400 italic font-normal" : ""}>
                       {profile?.bankInfo?.bankName ||
                         user.bankInfo?.bankName ||
-                        "Chưa cập nhật"}
+                        "Chưa thiết lập"}
                     </Badge>
                   )}
                   {renderTableRow(
                     "Số tài khoản",
-                    <Badge variant="neutral">
+                    <Badge variant="neutral" className={!(profile?.bankInfo?.accountNumber || user.bankInfo?.accountNumber) ? "text-neutral-400 italic font-normal" : ""}>
                       {profile?.bankInfo?.accountNumber ||
                         user.bankInfo?.accountNumber ||
-                        "Chưa cập nhật"}
+                        "Chưa thiết lập"}
                     </Badge>
                   )}
                   {renderTableRow(
                     "Chủ tài khoản",
-                    <Badge variant="neutral">
+                    <Badge variant="neutral" className={!(profile?.bankInfo?.accountHolder || user.bankInfo?.accountHolder) ? "text-neutral-400 italic font-normal" : ""}>
                       {profile?.bankInfo?.accountHolder ||
                         user.bankInfo?.accountHolder ||
-                        "Chưa cập nhật"}
+                        "Chưa thiết lập"}
                     </Badge>
                   )}
                 </TableBody>
