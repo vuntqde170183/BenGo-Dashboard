@@ -119,7 +119,7 @@ Các nút bấm cần tuân thủ các quy tắc sau để đảm bảo tính th
 ```
 
 ## 10. Kích thước chữ (Font Size)
-Cấm tuyệt đối việc sử dụng `text-xs`, `text-[11px]`, nhỏ nhất phải là `text-xs`.
+Cấm tuyệt đối việc sử dụng `text-xs`, `text-sm`, nhỏ nhất phải là `text-xs`.
 
 ## 11. Kích thước Icon (Icon Size)
 Tuyệt đối **CHỈ SỬ DỤNG** 2 kích thước icon sau cho toàn bộ dự án:

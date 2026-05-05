@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Icon } from "@mdi/react";
 import { mdiTrendingUp } from "@mdi/js";
 import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "../ui/badge";
 
 interface MetricCardProps {
     icon: React.ReactNode;
@@ -43,13 +44,17 @@ export default function MetricCard({
                                         {icon}
                                     </div>
                                 </div>
-                                {subtitle && <p className="text-sm text-primary">{subtitle}</p>}
-                                {trend && (
-                                    <div className="flex items-center gap-1 text-primary text-sm text-nowrap">
-                                        <Icon path={mdiTrendingUp} size={0.8} />
-                                        <span>{trend}</span>
-                                    </div>
-                                )}
+                                {
+                                    subtitle && <Badge variant="green">{subtitle}</Badge>
+                                }
+                                {
+                                    trend && (
+                                        <Badge variant="green">
+                                            <Icon path={mdiTrendingUp} size={0.8} />
+                                            <span>{trend}</span>
+                                        </Badge>
+                                    )
+                                }
                             </div>
                         </div>
                     </CardContent>

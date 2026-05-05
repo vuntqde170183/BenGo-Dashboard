@@ -20,7 +20,7 @@ import {
   mdiTruck,
   mdiStar
 } from "@mdi/js";
-import { formatCurrency } from "@/lib/format";
+import { formatCurrency, formatDate } from "@/lib/format";
 import { Skeleton } from "@/components/ui/skeleton";
 import { motion } from "framer-motion";
 import { Badge } from "../ui/badge";
@@ -55,11 +55,12 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import {
-  mdiMicrosoftExcel,
-  mdiFilterVariant, mdiCreditCard
+  mdiMicrosoftExcel, mdiCreditCard
 } from "@mdi/js";
 
 import MetricCard from "@/components/Common/MetricCard";
+import { getOrderStatusBadge, getStatusBadge } from "@/lib/badge-helpers";
+import { Pagination } from "@/components/ui/pagination";
 
 function DashboardSkeleton() {
   return (
@@ -150,7 +151,7 @@ export default function StatisticsPage() {
   const [period, setPeriod] = useState<TReportPeriod>("WEEK");
   const [driverPage, setDriverPage] = useState(1);
   const [orderPage, setOrderPage] = useState(1);
-  const [activeTab, setActiveTab] = useState("drivers");
+  const [activeTab, setActiveTab] = useState("orders");
 
   // Filter params
   const [dateRange, setDateRange] = useState<{ startDate?: string, endDate?: string }>({});
@@ -182,6 +183,7 @@ export default function StatisticsPage() {
   // 3.7 Order History
   const { data: reportOrders, isLoading: isLoadingOrderHistory } = useReportOrders({
     ...dateRange,
+    page: orderPage,
     limit: 10
   });
 
@@ -198,8 +200,6 @@ export default function StatisticsPage() {
     window.open(url, '_blank');
   };
 
-
-  if (isLoading) return <DashboardSkeleton />;
 
   const revenueData = useMemo(() => {
     return revenueGrowth?.chartData?.map((item) => {
@@ -234,6 +234,8 @@ export default function StatisticsPage() {
       { name: "QR Code", value: methods.QR, color: "#F59E0B" },
     ];
   }, [reports]);
+
+  if (isLoading) return <DashboardSkeleton />;
 
   return (
     <div className="space-y-4 bg-darkCardV1 p-4 rounded-2xl border border-darkBorderV1">
@@ -298,29 +300,37 @@ export default function StatisticsPage() {
               <div className="flex items-center gap-2">
                 <Icon path={mdiChartLine} size={0.8} />
                 <span className="font-semibold">Tăng trưởng doanh thu & Đơn hàng</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Tabs
-                  value={period}
-                  onValueChange={(v) => setPeriod(v as TReportPeriod)}
-                  className="w-[200px]"
-                >
-                  <TabsList className="p-1">
-                    <TabsTrigger value="WEEK" className="text-sm">
-                      Tuần
-                    </TabsTrigger>
-                    <TabsTrigger value="MONTH" className="text-sm">
-                      Tháng
-                    </TabsTrigger>
-                    <TabsTrigger value="YEAR" className="text-sm">
-                      Năm
-                    </TabsTrigger>
-                  </TabsList>
-                </Tabs>
                 <Badge variant="emerald">
                   Tăng trưởng: {revenueGrowth?.summary?.growthPercentage || 0}%
                 </Badge>
               </div>
+              <div className="flex items-center gap-2 pr-6 bg-darkCardV1/50 p-1 rounded-lg border border-darkBorderV1/30">
+                <Button
+                  variant={period === "WEEK" ? "default" : "ghost"}
+                  size="sm"
+                  onClick={() => setPeriod("WEEK")}
+                  className={`h-8 px-4 transition-all duration-300 ${period === "WEEK" ? 'shadow-lg shadow-primary/20' : ''}`}
+                >
+                  Tuần
+                </Button>
+                <Button
+                  variant={period === "MONTH" ? "default" : "ghost"}
+                  size="sm"
+                  onClick={() => setPeriod("MONTH")}
+                  className={`h-8 px-4 transition-all duration-300 ${period === "MONTH" ? 'shadow-lg shadow-primary/20' : ''}`}
+                >
+                  Tháng
+                </Button>
+                <Button
+                  variant={period === "YEAR" ? "default" : "ghost"}
+                  size="sm"
+                  onClick={() => setPeriod("YEAR")}
+                  className={`h-8 px-4 transition-all duration-300 ${period === "YEAR" ? 'shadow-lg shadow-primary/20' : ''}`}
+                >
+                  Năm
+                </Button>
+              </div>
+
             </div>
           </CardHeader>
           <CardContent>
@@ -477,19 +487,12 @@ export default function StatisticsPage() {
               <Icon path={mdiChartLine} size={0.8} />
               <span className="font-semibold text-lg">Báo cáo chi tiết</span>
             </div>
-            <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm" className="gap-2 border-darkBorderV1">
-                <Icon path={mdiFilterVariant} size={0.6} />
-                Bộ lọc nâng cao
-              </Button>
-              <Button
-                className="gap-2"
-                onClick={() => handleExport(activeTab)}
-              >
-                <Icon path={mdiMicrosoftExcel} size={0.6} />
-                Tải xuống Excel
-              </Button>
-            </div>
+            <Button
+              onClick={() => handleExport(activeTab)}
+            >
+              <Icon path={mdiMicrosoftExcel} size={0.8} />
+              Tải xuống Excel
+            </Button>
           </div>
         </CardHeader>
         <CardContent className="p-0">
@@ -497,16 +500,10 @@ export default function StatisticsPage() {
             <div className="px-4 border-b border-darkBorderV1">
               <TabsList className="bg-transparent border-none p-0 h-12">
                 <TabsTrigger
-                  value="drivers"
-                  className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent"
-                >
-                  Hiệu suất Tài xế
-                </TabsTrigger>
-                <TabsTrigger
                   value="orders"
                   className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent"
                 >
-                  Lịch sử Đơn hàng
+                  Lịch sử đơn hàng
                 </TabsTrigger>
                 <TabsTrigger
                   value="customers"
@@ -518,117 +515,126 @@ export default function StatisticsPage() {
             </div>
 
             <div className="p-4">
-              <TabsContent value="drivers">
-                <div className="rounded-md border border-darkBorderV1">
-                  <Table>
-                    <TableHeader className="bg-darkBorderV1/20">
-                      <TableRow>
-                        <TableHead>Tài xế</TableHead>
-                        <TableHead>Số điện thoại</TableHead>
-                        <TableHead className="text-right">Tổng chuyến</TableHead>
-                        <TableHead className="text-right">Doanh thu</TableHead>
-                        <TableHead className="text-center">Đánh giá</TableHead>
-                        <TableHead className="text-center">Tỷ lệ hủy</TableHead>
-                        <TableHead className="text-center">Trạng thái</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {driversPerf?.data?.map((driver: any) => (
-                        <TableRow key={driver.driverId}>
-                          <TableCell className="font-medium text-neutral-300">{driver.name}</TableCell>
-                          <TableCell className="text-neutral-400">{driver.phone}</TableCell>
-                          <TableCell className="text-right">{driver.completedOrders}</TableCell>
-                          <TableCell className="text-right text-primary font-semibold">
-                            {formatCurrency(driver.revenue)}
-                          </TableCell>
-                          <TableCell className="text-center">
-                            <span className="flex items-center justify-center gap-1 text-yellow-500">
-                              {driver.rating.toFixed(1)} <Icon path={mdiStar} size={0.5} />
-                            </span>
-                          </TableCell>
-                          <TableCell className="text-center text-red-400">{driver.cancellationRate}</TableCell>
-                          <TableCell className="text-center">
-                            <Badge variant={driver.status === 'ACTIVE' ? 'emerald' : 'destructive'}>
-                              {driver.status}
-                            </Badge>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </div>
-              </TabsContent>
-
               <TabsContent value="orders">
-                <div className="rounded-md border border-darkBorderV1">
-                  <Table>
-                    <TableHeader className="bg-darkBorderV1/20">
-                      <TableRow>
-                        <TableHead>Mã đơn</TableHead>
-                        <TableHead>Khách hàng</TableHead>
-                        <TableHead>Tài xế</TableHead>
-                        <TableHead className="text-right">Giá trị</TableHead>
-                        <TableHead className="text-right">Phí nền tảng</TableHead>
-                        <TableHead className="text-center">Thanh toán</TableHead>
-                        <TableHead className="text-center">Trạng thái</TableHead>
+                <Table>
+                  <TableHeader className="bg-darkBorderV1/20">
+                    <TableRow>
+                      <TableHead className="w-16">STT</TableHead>
+                      <TableHead>Thời gian</TableHead>
+                      <TableHead>Khách hàng</TableHead>
+                      <TableHead>Tài xế</TableHead>
+                      <TableHead>Điểm đi</TableHead>
+                      <TableHead className="text-right">Giá trị</TableHead>
+                      <TableHead className="text-right">Phí sàn</TableHead>
+                      <TableHead className="text-center">Thanh toán</TableHead>
+                      <TableHead className="text-center">Trạng thái</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {reportOrders?.data?.map((order: any, index: number) => (
+                      <TableRow key={order.orderId}>
+                        <TableCell className="text-center">
+                          <span className="text-neutral-400 text-sm">
+                            {(orderPage - 1) * 10 + index + 1}
+                          </span>
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant="neutral">{formatDate(order.createdAt)}</Badge>
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant="neutral">
+                            {order.customerName}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant="neutral">
+                            {order.driverName || '---'}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="min-w-[250px]">
+                          {order.pickupAddress}
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant="neutral">
+                            {formatCurrency(order.totalPrice)}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant="neutral">
+                            {formatCurrency(order.platformFee)}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          {getOrderStatusBadge(order.paymentMethod)}
+                        </TableCell>
+                        <TableCell>
+                          {getOrderStatusBadge(order.status)}
+                        </TableCell>
                       </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {reportOrders?.data?.map((order: any) => (
-                        <TableRow key={order.orderId}>
-                          <TableCell className="font-mono text-xs">{order.orderId}</TableCell>
-                          <TableCell>{order.customerName}</TableCell>
-                          <TableCell>{order.driverName || '---'}</TableCell>
-                          <TableCell className="text-right font-semibold">{formatCurrency(order.totalPrice)}</TableCell>
-                          <TableCell className="text-right text-neutral-400">{formatCurrency(order.platformFee)}</TableCell>
-                          <TableCell className="text-center">
-                            <Badge variant="neutral">{order.paymentMethod}</Badge>
-                          </TableCell>
-                          <TableCell className="text-center">
-                            <Badge variant={order.status === 'DELIVERED' ? 'emerald' : 'secondary'}>
-                              {order.status}
-                            </Badge>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </div>
-              </TabsContent>
+                    ))}
+                  </TableBody>
 
+                </Table>
+
+                {((reportOrders as any)?.pagination?.total ?? 0) > 10 && (
+                  <div className="mt-4">
+                    <Pagination
+                      page={orderPage}
+                      pageSize={10}
+                      total={(reportOrders as any)?.pagination?.total ?? 0}
+                      totalPages={
+                        (reportOrders as any)?.pagination?.total_pages ||
+                        Math.ceil(((reportOrders as any)?.pagination?.total ?? 0) / 10)
+                      }
+                      onPageChange={setOrderPage}
+                    />
+                  </div>
+                )}
+              </TabsContent>
               <TabsContent value="customers">
-                <div className="rounded-md border border-darkBorderV1">
-                  <Table>
-                    <TableHeader className="bg-darkBorderV1/20">
-                      <TableRow>
-                        <TableHead>Khách hàng</TableHead>
-                        <TableHead>Số điện thoại</TableHead>
-                        <TableHead className="text-right">Tổng đơn</TableHead>
-                        <TableHead className="text-right">Chi tiêu</TableHead>
-                        <TableHead className="text-center">Hạng</TableHead>
-                        <TableHead className="text-right">Đơn cuối</TableHead>
+                <Table>
+                  <TableHeader className="bg-darkBorderV1/20">
+                    <TableRow>
+                      <TableHead className="w-16">STT</TableHead>
+                      <TableHead>Khách hàng</TableHead>
+                      <TableHead>Số điện thoại</TableHead>
+                      <TableHead className="text-right">Tổng đơn</TableHead>
+                      <TableHead className="text-right">Chi tiêu</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {loyaltyData?.data?.map((user: any, index: number) => (
+                      <TableRow key={user.customerId}>
+                        <TableCell className="text-center">
+                          <span className="text-neutral-400  text-sm">
+                            {index + 1}
+                          </span>
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant="neutral">
+                            {user.name}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant="neutral">
+                            {user.phone}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant="neutral">
+                            {user.totalOrders} đơn
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant="neutral">
+                            {formatCurrency(user.totalSpending)} VNĐ
+                          </Badge>
+                        </TableCell>
+
                       </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {loyaltyData?.data?.map((user: any) => (
-                        <TableRow key={user.customerId}>
-                          <TableCell className="font-medium">{user.name}</TableCell>
-                          <TableCell className="text-neutral-400">{user.phone}</TableCell>
-                          <TableCell className="text-right">{user.totalOrders}</TableCell>
-                          <TableCell className="text-right text-primary font-semibold">
-                            {formatCurrency(user.totalSpending)}
-                          </TableCell>
-                          <TableCell className="text-center">
-                            <Badge variant="emerald">{user.rank}</Badge>
-                          </TableCell>
-                          <TableCell className="text-right text-xs text-neutral-400">
-                            {new Date(user.lastOrder).toLocaleDateString()}
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </div>
+                    ))}
+                  </TableBody>
+                </Table>
               </TabsContent>
             </div>
           </Tabs>
@@ -703,35 +709,67 @@ export default function StatisticsPage() {
 
         <Card>
           <CardHeader className="border-b border-b-darkBorderV1 py-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Icon path={mdiCarSide} size={0.8} />
-                <span className="font-semibold">Tài xế top hiệu suất</span>
-              </div>
+            <div className="flex items-center gap-2">
+              <Icon path={mdiCarSide} size={0.8} />
+              <span className="font-semibold">Tài xế top hiệu suất</span>
             </div>
           </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
+          <CardContent className="p-0">
+            <div className="divide-y divide-darkBorderV1/20">
               {driversPerf?.data?.slice(0, 5).map((driver: any, index: number) => (
                 <div
                   key={driver.driverId}
-                  className="flex items-center gap-4 p-3 rounded-lg bg-darkBorderV1/20 border border-darkBorderV1/40"
+                  className="group flex items-center gap-4 p-4 hover:bg-white/5 transition-all duration-300"
                 >
-                  <div className="flex items-center justify-center w-10 h-10 rounded-full bg-primary/20 text-primary font-semibold">
-                    #{index + 1}
+                  <div className="relative flex-shrink-0">
+                    <div className={`flex items-center justify-center w-10 h-10 rounded-xl font-bold text-sm transition-transform group-hover:scale-110 ${index === 0 ? 'bg-yellow-500/20 text-yellow-500 border border-yellow-500/30 shadow-[0_0_15px_rgba(234,179,8,0.15)]' :
+                      index === 1 ? 'bg-slate-300/20 text-slate-300 border border-slate-300/30' :
+                        index === 2 ? 'bg-amber-600/20 text-amber-600 border border-amber-600/30' :
+                          'bg-darkBorderV1/30 text-neutral-500 border border-darkBorderV1/20'
+                      }`}>
+                      {index + 1}
+                    </div>
                   </div>
-                  <div className="flex-1">
-                    <p className="text-sm font-semibold">{driver.name}</p>
-                    <p className="text-xs text-neutral-400">{driver.completedOrders} đơn • {driver.rating}⭐</p>
+
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <p className="text-sm font-semibold text-neutral-200 truncate group-hover:text-primary transition-colors">
+                        {driver.name}
+                      </p>
+                      {getStatusBadge(driver.status)}
+
+                    </div>
+                    <div className="flex items-center gap-3 mt-1.5">
+                      <div className="flex items-center gap-1 text-sm text-neutral-400">
+                        <Icon path={mdiPackageVariant} size={0.6} />
+                        <span>{driver.completedOrders} đơn</span>
+                      </div>
+                      <div className="w-1 h-1 rounded-full bg-neutral-700" />
+                      <div className="flex items-center gap-1 text-sm text-yellow-500/80">
+                        <Icon path={mdiStar} size={0.6} />
+                        <span>{driver.rating.toFixed(1)}</span>
+                      </div>
+                    </div>
                   </div>
+
                   <div className="text-right">
-                    <p className="text-sm font-semibold text-primary">{formatCurrency(driver.revenue)}</p>
+                    <p className="text-sm font-bold text-primary">
+                      {formatCurrency(driver.revenue)}
+                    </p>
+                    <p className="text-sm text-neutral-400 mt-0.5 font-medium">Doanh thu</p>
                   </div>
                 </div>
               ))}
             </div>
+            {!driversPerf?.data?.length && (
+              <div className="py-12 flex flex-col items-center justify-center gap-3 grayscale opacity-40">
+                <Icon path={mdiCarSide} size={1.5} />
+                <p className="text-sm italic">Chưa có dữ liệu tài xế</p>
+              </div>
+            )}
           </CardContent>
         </Card>
+
       </div>
     </div>
   );

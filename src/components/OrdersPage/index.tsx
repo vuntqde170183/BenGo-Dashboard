@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useAdminOrders, useAdminSpecialOrders, useCancelOrder } from "@/hooks/useAdmin";
+import { useAdminOrders, useAdminSpecialOrders, useCancelOrder, useDeleteOrder } from "@/hooks/useAdmin";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -26,6 +26,7 @@ export default function OrdersPage() {
   const [pageSize] = useState(10);
   const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
   const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
 
   const statusParam =
@@ -78,8 +79,8 @@ export default function OrdersPage() {
   const isLoading = isSpecial ? isSpecialLoading : isNormalLoading;
   const refetch = isSpecial ? refetchSpecial : refetchNormal;
 
-  const { mutate: cancelOrderMutation, isPending: isCanceling } =
-    useCancelOrder();
+  const cancelOrderMutation = useCancelOrder();
+  const deleteOrderMutation = useDeleteOrder();
 
   const handleViewDetails = (id: string) => {
     setSelectedOrderId(id);
@@ -91,6 +92,11 @@ export default function OrdersPage() {
     setIsCancelDialogOpen(true);
   };
 
+  const handleDelete = (id: string) => {
+    setSelectedOrderId(id);
+    setIsDeleteDialogOpen(true);
+  };
+
   const confirmCancel = async () => {
     if (!selectedOrderId) {
       return Promise.resolve();
@@ -98,14 +104,22 @@ export default function OrdersPage() {
 
     try {
       const reason = "Đã hủy bởi quản trị viên";
-      cancelOrderMutation(
-        { id: selectedOrderId, reason },
-        {
-          onSuccess: () => {
-            refetch();
-          },
-        },
-      );
+      await cancelOrderMutation.mutateAsync({ id: selectedOrderId, reason });
+      refetch();
+      return Promise.resolve();
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const confirmDelete = async () => {
+    if (!selectedOrderId) {
+      return Promise.resolve();
+    }
+
+    try {
+      await deleteOrderMutation.mutateAsync(selectedOrderId);
+      refetch();
       return Promise.resolve();
     } catch (error) {
       throw error;
@@ -119,6 +133,7 @@ export default function OrdersPage() {
   const handleClearSearch = () => {
     setSearchQuery("");
   };
+
 
 
   return (
@@ -182,6 +197,7 @@ export default function OrdersPage() {
                 isSearching={!!debouncedSearch}
                 onViewDetails={handleViewDetails}
                 onCancel={handleCancel}
+                onDelete={handleDelete}
                 currentPage={currentPage}
                 pageSize={pageSize}
               />
@@ -205,7 +221,7 @@ export default function OrdersPage() {
 
       <DeleteDialog
         isOpen={isCancelDialogOpen}
-        isDeleting={isCanceling}
+        isDeleting={cancelOrderMutation.isPending}
         onClose={() => setIsCancelDialogOpen(false)}
         onConfirm={confirmCancel}
         title="Hủy đơn hàng"
@@ -214,6 +230,18 @@ export default function OrdersPage() {
         successMessage="Hủy đơn hàng thành công!"
         errorMessage="Hủy đơn hàng thất bại."
         warningMessage="Khách hàng sẽ được thông báo về việc hủy đơn."
+      />
+
+      <DeleteDialog
+        isOpen={isDeleteDialogOpen}
+        isDeleting={deleteOrderMutation.isPending}
+        onClose={() => setIsDeleteDialogOpen(false)}
+        onConfirm={confirmDelete}
+        title="Xóa đơn hàng"
+        description="Bạn có chắc chắn muốn xóa vĩnh viễn đơn hàng này không? Hành động này không thể hoàn tác."
+        confirmText="Xóa vĩnh viễn"
+        successMessage="Xóa đơn hàng thành công!"
+        errorMessage="Xóa đơn hàng thất bại."
       />
 
       {selectedOrderId && (

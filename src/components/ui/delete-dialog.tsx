@@ -50,6 +50,8 @@ export const DeleteDialog = ({
     }
   };
 
+
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="!max-w-[450px] !w-[450px]">

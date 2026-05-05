@@ -67,7 +67,7 @@ export function TicketsTable({
                             <TableCell>
                                 <button
                                     onClick={() => onViewDetails(ticket._id)}
-                                    className="text-primary hover:underline font-mono"
+                                    className="text-primary hover:underline "
                                 >
                                     #{ticket._id?.slice(-8)}
                                 </button>

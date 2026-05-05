@@ -104,7 +104,7 @@ export function SupportTicketsTable({
                         <TableCell className="font-medium">
                             {(currentPage - 1) * pageSize + index + 1}
                         </TableCell>
-                        <TableCell className="font-mono text-primary">
+                        <TableCell className=" text-primary">
                             #{ticket._id.slice(-8)}
                         </TableCell>
                         <TableCell>

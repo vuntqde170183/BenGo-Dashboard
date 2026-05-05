@@ -180,6 +180,20 @@ export const useUpdateOrderStatus = () => {
   });
 };
 
+export const useDeleteOrder = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => adminOrderApi.deleteOrder(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "orders"] });
+      toast.success("Đã xóa đơn hàng thành công");
+    },
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.message || "Xóa đơn hàng thất bại");
+    }
+  });
+};
+
 // Pricing Config
 export const usePricing = () => {
   return useQuery({
@@ -341,4 +355,3 @@ export const useCustomersLoyalty = (params: { limit?: number }) => {
     queryFn: () => adminReportApi.getCustomersLoyalty(params),
   });
 };
-

@@ -39,7 +39,7 @@ export function PromotionCard({ promo, onEdit, onDelete }: PromotionCardProps) {
               {promo.title}
             </CardTitle>
             <div className="flex items-center gap-2 mt-1">
-              <p className="text-sm text-neutral-400 font-mono">
+              <p className="text-sm text-neutral-400 ">
                 Mã: {promo.code}
               </p>
               <button

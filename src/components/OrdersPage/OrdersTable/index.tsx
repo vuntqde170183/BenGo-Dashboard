@@ -18,6 +18,7 @@ import {
   mdiTableEye,
   mdiCloseCircleOutline,
   mdiInboxRemoveOutline,
+  mdiDelete,
 } from "@mdi/js";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -26,6 +27,7 @@ interface OrdersTableProps {
   isSearching: boolean;
   onViewDetails: (id: string) => void;
   onCancel: (id: string) => void;
+  onDelete: (id: string) => void;
   currentPage: number;
   pageSize: number;
 }
@@ -35,6 +37,7 @@ export function OrdersTable({
   isSearching,
   onViewDetails,
   onCancel,
+  onDelete,
   currentPage,
   pageSize,
 }: OrdersTableProps) {
@@ -77,7 +80,7 @@ export function OrdersTable({
             <TableCell>
               <button
                 onClick={() => onViewDetails(order._id)}
-                className="text-primary hover:underline font-mono"
+                className="text-primary hover:underline "
               >
                 #{order._id?.slice(-8)}
               </button>
@@ -195,6 +198,23 @@ export function OrdersTable({
                       </Button>
                     </motion.div>
                   )}
+
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Button
+                    className="bg-red-500 hover:bg-red-600 border-none"
+                    size="icon"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onDelete(order._id);
+                    }}
+                    title="Xóa đơn"
+                  >
+                    <Icon path={mdiDelete} size={0.8} />
+                  </Button>
+                </motion.div>
               </div>
             </TableCell>
           </TableRow>
