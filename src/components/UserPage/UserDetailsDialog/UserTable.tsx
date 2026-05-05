@@ -4,7 +4,8 @@ import {
   IconActivity,
   IconStar,
   IconTruck,
-  IconBuildingBank
+  IconBuildingBank,
+  IconFileCheck
 } from "@tabler/icons-react";
 import { formatDate, formatCurrency } from "@/lib/format";
 import { getRoleBadge, getStatusBadge } from "@/lib/badge-helpers";
@@ -26,7 +27,7 @@ export const UserTable = ({ user }: UserTableProps) => {
     </TableRow>
   );
 
-  const profile = user.role === "DRIVER" ? user.driverProfile : {};
+  const profile = user.driverProfile || {};
 
   return (
     <div className="space-y-4">
@@ -74,7 +75,7 @@ export const UserTable = ({ user }: UserTableProps) => {
                   {formatCurrency(user.walletBalance || 0)}
                 </Badge>,
               )}
-              {user.role === "DRIVER" &&
+              {(user.role === "DRIVER" || user.driverProfile) &&
                 renderTableRow(
                   "Đánh giá",
                   <Badge variant="amber">
@@ -102,6 +103,141 @@ export const UserTable = ({ user }: UserTableProps) => {
           </Table>
         </CardContent>
       </Card>
+
+      {user.driverProfile && (
+        <Card className="border-primary/20 bg-primary/5">
+          <CardHeader className="border-b border-b-primary/20 py-3 bg-primary/10">
+            <div className="flex items-center gap-2">
+              <IconFileCheck className="h-5 w-5 text-primary" />
+              <span className="font-semibold text-primary">
+                Yêu cầu hồ sơ duyệt tài xế
+              </span>
+            </div>
+          </CardHeader>
+          <CardContent className="pt-4 space-y-4">
+            <Table>
+              <TableBody>
+                {renderTableRow(
+                  "Trạng thái hồ sơ",
+                  getStatusBadge(profile?.status),
+                )}
+                {renderTableRow(
+                  "Loại xe",
+                  <Badge variant="neutral">
+                    {profile?.vehicleType}
+                  </Badge>
+                )}
+                {renderTableRow(
+                  "Biển số xe",
+                  <Badge variant="neutral">
+                    {profile?.plateNumber}
+                  </Badge>
+                )}
+                {renderTableRow(
+                  "Số CCCD",
+                  <Badge variant="neutral">
+                    {profile?.identityNumber || "Chưa cập nhật"}
+                  </Badge>
+                )}
+                {renderTableRow(
+                  "Số bằng lái",
+                  <Badge variant="neutral">
+                    {profile?.drivingLicenseNumber || "Chưa cập nhật"}
+                  </Badge>
+                )}
+                {profile?.rejectionReason && renderTableRow(
+                  "Lý do từ chối",
+                  <span className="text-red-500 font-semibold bg-red-500/10 px-2 py-1 rounded">
+                    {profile.rejectionReason}
+                  </span>
+                )}
+              </TableBody>
+            </Table>
+
+            {/* Bank Info Summary */}
+            <div className="bg-darkBackgroundV1/40 p-4 rounded-lg border border-darkBorderV1 space-y-3">
+              <div className="flex items-center gap-2 text-primary font-semibold text-sm">
+                <IconBuildingBank className="h-4 w-4" />
+                Thông tin ngân hàng
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="space-y-1">
+                  <p className="text-xs text-neutral-400 uppercase font-bold">Ngân hàng</p>
+                  <p className="text-sm font-medium">{profile?.bankInfo?.bankName || "N/A"}</p>
+                </div>
+                <div className="space-y-1">
+                  <p className="text-xs text-neutral-400 uppercase font-bold">Số tài khoản</p>
+                  <p className="text-sm font-medium">{profile?.bankInfo?.accountNumber || "N/A"}</p>
+                </div>
+                <div className="space-y-1">
+                  <p className="text-xs text-neutral-400 uppercase font-bold">Chủ tài khoản</p>
+                  <p className="text-sm font-medium">{profile?.bankInfo?.accountHolder || "N/A"}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Document Images Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-2">
+              <div className="space-y-2">
+                <p className="text-xs font-bold text-neutral-400 uppercase flex items-center gap-1">
+                  <span>Ảnh CCCD mặt trước</span>
+                </p>
+                <div className="aspect-video rounded-xl overflow-hidden border-2 border-darkBorderV1 bg-darkBackgroundV1/50 group cursor-pointer hover:border-primary/50 transition-all">
+                  {profile?.identityFrontImage ? (
+                    <img
+                      src={profile.identityFrontImage}
+                      alt="CCCD Front"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-neutral-500 text-xs italic">
+                      Trống
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <p className="text-xs font-bold text-neutral-400 uppercase flex items-center gap-1">
+                  <span>Ảnh CCCD mặt sau</span>
+                </p>
+                <div className="aspect-video rounded-xl overflow-hidden border-2 border-darkBorderV1 bg-darkBackgroundV1/50 group cursor-pointer hover:border-primary/50 transition-all">
+                  {profile?.identityBackImage ? (
+                    <img
+                      src={profile.identityBackImage}
+                      alt="CCCD Back"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-neutral-500 text-xs italic">
+                      Trống
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <p className="text-xs font-bold text-neutral-400 uppercase flex items-center gap-1">
+                  <span>Ảnh đăng ký xe (Cà vẹt)</span>
+                </p>
+                <div className="aspect-video rounded-xl overflow-hidden border-2 border-darkBorderV1 bg-darkBackgroundV1/50 group cursor-pointer hover:border-primary/50 transition-all">
+                  {profile?.vehicleRegistrationImage ? (
+                    <img
+                      src={profile.vehicleRegistrationImage}
+                      alt="Vehicle Registration"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-neutral-500 text-xs italic">
+                      Trống
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {user.role === "DRIVER" && (
         <>

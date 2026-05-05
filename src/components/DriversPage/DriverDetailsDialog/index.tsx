@@ -88,7 +88,7 @@ export const DriverDetailsDialog = ({
   useEffect(() => {
     if (userData?.data) {
       const user = userData.data;
-      const profile = user.role === "DRIVER" ? user.driverProfile : {};
+      const profile = user.driverProfile || {};
 
       setFormData({
         name: user.name,
@@ -227,7 +227,7 @@ export const DriverDetailsDialog = ({
     setErrors({});
     if (userData?.data) {
       const user = userData.data;
-      const profile = user.role === "DRIVER" ? user.driverProfile : {};
+      const profile = user.driverProfile || {};
 
       setFormData({
         name: user.name,
