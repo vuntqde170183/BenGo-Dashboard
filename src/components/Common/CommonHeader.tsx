@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { useMenuSidebar } from "@/stores/useMenuSidebar";
-import { mdiBellOutline, mdiLoading, mdiLogout, mdiMagnify } from "@mdi/js";
+import { mdiLogout } from "@mdi/js";
 import { Icon } from "@mdi/react";
 import type React from "react";
 import { useRef, useState } from "react";
@@ -33,46 +32,7 @@ export default function CommonHeader() {
             <HamburgerMenu size="20" color="#fff" />
           </button>
         </div>
-        <div className="relative hidden md:block">
-          <form
-            onSubmit={handleSearchSubmit}
-            className="relative flex items-center gap-4"
-          >
-            <div className="relative w-[440px] flex justify-between items-center rounded-md bg-darkBorderV1">
-              {isLoading ? (
-                <Icon
-                  path={mdiLoading}
-                  size={1}
-                  spin
-                  className="absolute left-[10px] top-1/2 transform -translate-y-1/2 text-mainActiveV1"
-                />
-              ) : (
-                <Icon
-                  path={mdiMagnify}
-                  size={1}
-                  className="absolute left-[10px] top-1/2 transform -translate-y-1/2 text-neutral-400"
-                />
-              )}
-              <Input
-                ref={inputRef}
-                placeholder="Tìm kiếm..."
-                className="w-full pl-10 border-none focus:!outline-none focus:!ring-0 focus:!border-none !bg-transparent text-neutral-300 placeholder:text-neutral-300"
-                value={searchTerm}
-                onChange={handleSearchChange}
-                disabled={isLoading}
-              />
-            </div>
-            <button
-              type="submit"
-              style={{ display: "none" }}
-              aria-hidden="true"
-            ></button>
-          </form>
-        </div>
         <div className="flex items-center gap-4">
-          <Button variant="ghost" size="icon">
-            <Icon path={mdiBellOutline} size={0.8} />
-          </Button>
           <Button onClick={logoutUser} className="bg-red-500 hover:bg-red-600">
             Đăng xuất
             <Icon path={mdiLogout} size={0.8} />

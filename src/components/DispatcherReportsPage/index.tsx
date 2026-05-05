@@ -88,7 +88,7 @@ export default function DispatcherReportsPage() {
                                 </div>
                                 <Icon path={mdiPackageVariant} size={1.5} className="text-primary mb-2" />
                                 {isLoadingPerf ? <LoadingSpinner /> : <p className="text-4xl font-black text-neutral-300">{performance?.totalTrips || 0}</p>}
-                                <p className="text-xs text-neutral-400 font-semibold uppercase">Tổng chuyến gán</p>
+                                <p className="text-xs text-neutral-400 font-semibold uppercase">Tổng chuyến</p>
                             </CardContent>
                         </Card>
 
@@ -99,7 +99,7 @@ export default function DispatcherReportsPage() {
                                 </div>
                                 <Icon path={mdiCurrencyUsd} size={1.5} className="text-emerald-500 mb-2" />
                                 {isLoadingPerf ? <LoadingSpinner /> : <p className="text-4xl font-black text-emerald-500">{formatCurrency(performance?.totalEarnings || 0)}</p>}
-                                <p className="text-xs text-neutral-400 font-semibold uppercase">Thu nhập gộp</p>
+                                <p className="text-xs text-neutral-400 font-semibold uppercase">Thu nhập</p>
                             </CardContent>
                         </Card>
 
@@ -163,7 +163,6 @@ export default function DispatcherReportsPage() {
                                 Dữ liệu thời gian thực được tổng hợp từ hệ thống điều phối BenGo.
                                 Tài xế đang có mức độ tin cậy {(performance?.acceptanceRate || 0) > 90 ? 'CAO' : 'TRUNG BÌNH'}.
                             </p>
-                            <Button variant="ghost" className="mt-6 text-primary hover:bg-primary/5">Xuất báo cáo PDF</Button>
                         </Card>
                     </div>
                 </div>
