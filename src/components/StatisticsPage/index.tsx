@@ -61,6 +61,7 @@ import {
 import MetricCard from "@/components/Common/MetricCard";
 import { getOrderStatusBadge, getStatusBadge } from "@/lib/badge-helpers";
 import { Pagination } from "@/components/ui/pagination";
+import * as XLSX from "xlsx-js-style";
 
 function DashboardSkeleton() {
   return (
@@ -194,11 +195,133 @@ export default function StatisticsPage() {
 
   const isLoading = isLoadingOverview || isLoadingReports || isLoadingSummary || isLoadingGrowth;
 
-  const handleExport = (type: string) => {
-    toast.info("Đang chuẩn bị tệp Excel...");
-    const url = adminReportApi.getExportUrl(type, { ...dateRange, format: 'excel' });
-    window.open(url, '_blank');
+  const handleExport = async (type: string) => {
+    let dataToExport = [];
+
+    try {
+      if (type === "orders") {
+        toast.info("Đang lấy toàn bộ danh sách đơn hàng...");
+        const response = await adminReportApi.getReportOrders({ ...dateRange, limit: 2000 });
+        dataToExport = response?.data || [];
+      } else {
+        toast.info("Đang lấy danh sách khách hàng...");
+        const response = await adminReportApi.getCustomersLoyalty({ limit: 1000 });
+        dataToExport = response?.data || [];
+      }
+    } catch (error) {
+      toast.error("Lỗi khi lấy dữ liệu xuất file");
+      return;
+    }
+
+    if (!dataToExport || dataToExport.length === 0) {
+      toast.warning("Không có dữ liệu để xuất!");
+      return;
+    }
+
+    // 1. Prepare Headers & Title
+    const headers = type === "orders"
+      ? ["STT", "Thời gian", "Khách hàng", "Tài xế", "Điểm đi", "Giá trị", "Phí sàn", "Thanh toán", "Trạng thái"]
+      : ["STT", "Khách hàng", "Số điện thoại", "Tổng đơn", "Chi tiêu"];
+
+    const title = type === "orders" ? "BÁO CÁO CHI TIẾT ĐƠN HÀNG" : "BÁO CÁO KHÁCH HÀNG THÂN THIẾT";
+
+    // 2. Format Data Rows
+    const formattedRows = type === "orders"
+      ? dataToExport.map((order: any, index: number) => [
+        index + 1,
+        formatDate(order.createdAt),
+        order.customerName,
+        order.driverName || "---",
+        order.pickupAddress,
+        order.totalPrice,
+        order.platformFee,
+        order.paymentMethod,
+        order.status
+      ])
+      : dataToExport.map((user: any, index: number) => [
+        index + 1,
+        user.name,
+        user.phone,
+        user.totalOrders,
+        user.totalSpending
+      ]);
+
+    // 3. Create Sheet with Title, Spacer, and Headers
+    const worksheetData = [
+      [title],          // Row 1: Title
+      [],               // Row 2: Spacer
+      headers,          // Row 3: Headers
+      ...formattedRows  // Row 4+: Data
+    ];
+
+    const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
+
+    // 4. Apply Styles
+    // Style Title (Cell A1)
+    worksheet["A1"].s = {
+      font: { bold: true, sz: 16, color: { rgb: "000000" } },
+      alignment: { horizontal: "center", vertical: "center" }
+    };
+
+    // Merge Title across all columns
+    worksheet["!merges"] = [
+      { s: { r: 0, c: 0 }, e: { r: 0, c: headers.length - 1 } }
+    ];
+
+    // Style Headers (Row 3 -> Index 2)
+    const headerStyle = {
+      fill: { fgColor: { rgb: "FFFF00" } }, // Yellow Background
+      font: { bold: true, color: { rgb: "000000" } },
+      alignment: { horizontal: "center", vertical: "center" },
+      border: {
+        top: { style: "thin" },
+        bottom: { style: "thin" },
+        left: { style: "thin" },
+        right: { style: "thin" }
+      }
+    };
+
+    const range = XLSX.utils.decode_range(worksheet["!ref"] || "A1:A1");
+    for (let C = range.s.c; C <= range.e.c; ++C) {
+      const address = XLSX.utils.encode_cell({ r: 2, c: C });
+      if (worksheet[address]) {
+        worksheet[address].s = headerStyle;
+      }
+    }
+
+    // 5. Set Column Widths
+    worksheet["!cols"] = type === "orders"
+      ? [
+        { wch: 6 },   // STT
+        { wch: 18 },  // Thời gian
+        { wch: 25 },  // Khách hàng
+        { wch: 25 },  // Tài xế
+        { wch: 55 },  // Điểm đi (Rộng nhất)
+        { wch: 15 },  // Giá trị
+        { wch: 15 },  // Phí sàn
+        { wch: 15 },  // Thanh toán
+        { wch: 15 }   // Trạng thái
+      ]
+      : [
+        { wch: 6 },   // STT
+        { wch: 30 },  // Khách hàng
+        { wch: 20 },  // Số điện thoại
+        { wch: 15 },  // Tổng đơn
+        { wch: 20 }   // Chi tiêu
+      ];
+
+    // 6. Generate and Download
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Báo cáo");
+
+    const filename = type === "orders"
+      ? `Bao_cao_don_hang_${new Date().getTime()}.xlsx`
+      : `Bao_cao_khach_hang_${new Date().getTime()}.xlsx`;
+
+    XLSX.writeFile(workbook, filename);
+    toast.success("Đã xuất tệp Excel thành công!");
   };
+
 
 
   const revenueData = useMemo(() => {
